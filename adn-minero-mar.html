@@ -29,6 +29,64 @@
   </style>
 </head>
 <body class="text-stone-100 font-sans antialiased">
+<style id="mobilePlayPause">
+@media (min-width:821px){#adnPP{display:none!important}}
+@media (max-width:820px){
+  #adnPP{position:fixed;right:14px;bottom:16px;z-index:100000;width:58px;height:58px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(160deg,#c48451,#8a5533);color:#fff;border:2px solid rgba(255,255,255,.28);
+    box-shadow:0 8px 22px rgba(0,0,0,.55);cursor:pointer;-webkit-tap-highlight-color:transparent}
+  #adnPP:active{transform:scale(.93)}
+  #adnPP svg{width:28px;height:28px;display:block;pointer-events:none}
+  #adnPP .lbl{position:absolute;bottom:64px;right:2px;font-size:12px;font-weight:600;
+    background:rgba(20,17,16,.92);color:#e8c9a6;padding:4px 9px;border-radius:7px;white-space:nowrap;
+    opacity:0;transform:translateY(4px);transition:opacity .25s,transform .25s;pointer-events:none;
+    box-shadow:0 4px 12px rgba(0,0,0,.4)}
+  #adnPP.show-lbl .lbl{opacity:1;transform:translateY(0)}
+}
+</style>
+<div id="adnPP" role="button" aria-label="Pausar o reanudar la rotacion" title="Pausar/Reanudar">
+  <span class="lbl" id="adnPPlbl">Pausar</span>
+  <svg id="adnPPicon" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4.2" height="14" rx="1.2"></rect><rect x="13.8" y="5" width="4.2" height="14" rx="1.2"></rect></svg>
+</div>
+<script>
+(function(){
+  if(window.__adnPP)return; window.__adnPP=1;
+  var _si=window.setInterval.bind(window), _ci=window.clearInterval.bind(window);
+  var timers=new Map(), paused=false;
+  window.setInterval=function(fn,delay){
+    var extra=Array.prototype.slice.call(arguments,2);
+    var id=_si.apply(window,[fn,delay].concat(extra));
+    if(typeof delay==='number'&&delay>=3000)timers.set(id,{fn:fn,delay:delay,extra:extra});
+    return id;
+  };
+  window.clearInterval=function(id){timers.delete(id);return _ci(id);};
+  function progs(){try{return document.querySelectorAll('[id$="rogress" i]');}catch(e){return [];}}
+  function pauseAll(){
+    timers.forEach(function(v,id){_ci(id);});
+    progs().forEach(function(p){var w=getComputedStyle(p).width;p.style.transition='none';p.style.width=w;});
+    paused=true;
+  }
+  function resumeAll(){
+    var old=Array.from(timers.entries());timers.clear();
+    old.forEach(function(pr){var v=pr[1];var nid=_si.apply(window,[v.fn,v.delay].concat(v.extra));timers.set(nid,v);});
+    progs().forEach(function(p){void p.offsetWidth;p.style.transition='width 12000ms linear';p.style.width='100%';});
+    paused=false;
+  }
+  var PLAY='<path d="M8 5v14l11-7z"></path>';
+  var PAUSE='<rect x="6" y="5" width="4.2" height="14" rx="1.2"></rect><rect x="13.8" y="5" width="4.2" height="14" rx="1.2"></rect>';
+  var b=document.getElementById('adnPP');
+  if(b){
+    var icon=document.getElementById('adnPPicon'), lbl=document.getElementById('adnPPlbl');
+    b.addEventListener('click',function(){
+      if(!paused){pauseAll();icon.innerHTML=PLAY;lbl.textContent='Reanudar';}
+      else{resumeAll();icon.innerHTML=PAUSE;lbl.textContent='Pausar';}
+      b.classList.add('show-lbl');clearTimeout(b._t);b._t=setTimeout(function(){b.classList.remove('show-lbl');},1500);
+    });
+  }
+})();
+</script>
+
 <style id="mobileReflow">
 /* ===== ADN Minero · Reflow vertical para teléfonos ===== */
 @media (max-width: 820px){
