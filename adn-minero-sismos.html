@@ -31,6 +31,9 @@
     #lista::-webkit-scrollbar { width: 7px; } #lista::-webkit-scrollbar-thumb { background: rgba(196,168,148,.22); border-radius: 8px; }
     @keyframes txtfade { from { opacity: 0; } to { opacity: 1; } }
     .fade { animation: txtfade .5s ease both; }
+    /* Enlace a Google Maps: solo en formato móvil */
+    .adn-maps { display: none; }
+    @media (max-width: 820px) { .adn-maps { display: inline-flex; } }
   </style>
 </head>
 
@@ -183,6 +186,10 @@
         <p class="text-[10px] uppercase tracking-wider text-stone-400">Último sismo registrado</p>
         <p id="heroPlace" class="text-3xl font-extrabold tracking-tight leading-tight truncate mt-0.5">—</p>
         <p id="heroMeta" class="text-sm text-stone-400 mt-1.5 flex items-center gap-4 flex-wrap">—</p>
+        <a id="mapsLink" href="#" target="_blank" rel="noopener" class="adn-maps mt-2 items-center gap-2 text-sm font-semibold text-[#e6c1a3] bg-[#b5734f]/15 border border-[#c08457]/30 rounded-lg px-3 py-2 active:scale-95 transition">
+          <i data-lucide="map-pin" class="w-4 h-4"></i> Ver epicentro en Google Maps
+          <i data-lucide="external-link" class="w-3.5 h-3.5 text-[#cf9b6f]"></i>
+        </a>
       </div>
       <div id="heroWhen" class="text-right shrink-0">
         <p class="text-2xl font-bold text-[#e8c9a6] tabnum">—</p>
@@ -294,6 +301,7 @@
           const arg = /ARGENTINA/i.test(fr), bol = /BOLIVIA/i.test(fr), per = /PERU/i.test(fr);
           return {
             mag: p.mag,
+            lat: p.lat, lon: p.lon,
             lugar: fmtRegion(fr),
             prof: p.depth,
             region: arg ? 'Frontera con Argentina' : bol ? 'Frontera con Bolivia' : per ? 'Frontera con Perú' : regionCL(p.lat),
@@ -330,6 +338,7 @@
       $('heroMag').style.background = col+'22'; $('heroMag').style.borderColor = col+'66';
       $('heroMagVal').textContent = 'M'+fmtMag(h.mag); $('heroMagVal').style.color = col;
       $('heroPlace').textContent = h.lugar;
+      if (h.lat != null && h.lon != null) $('mapsLink').href = `https://www.google.com/maps/search/?api=1&query=${h.lat},${h.lon}`;
       $('heroMeta').innerHTML = `<span class="inline-flex items-center gap-1.5 text-[#e8c9a6] font-semibold"><i data-lucide="map-pin" class="w-4 h-4"></i> ${h.region}</span>
         <span class="inline-flex items-center gap-1.5"><i data-lucide="arrow-down-to-line" class="w-4 h-4 text-stone-500"></i> ${Math.round(h.prof)} km de profundidad</span>
         <span class="inline-flex items-center gap-1.5"><i data-lucide="clock" class="w-4 h-4 text-stone-500"></i> ${new Date(h.t).toLocaleString('es-CL',{timeZone:TZ, day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit'})}</span>`;
