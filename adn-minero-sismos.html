@@ -302,10 +302,25 @@
       fetchTimer = setTimeout(fetchSismos, 60 * 1000);
     }
 
+    let lastTopT = null;
+    function fmtRow(s){
+      const c = magColor(s.mag);
+      return `<div class="glass-strong rounded-xl px-3 py-2 flex items-center gap-3">
+          <div class="h-11 w-14 rounded-lg grid place-items-center shrink-0 tabnum" style="background:${c}22;border:1px solid ${c}55">
+            <span class="text-lg font-extrabold" style="color:${c}">${fmtMag(s.mag)}</span>
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="text-sm font-semibold truncate">${s.lugar}</p>
+            <p class="text-[11px] text-stone-500"><span class="text-[#cf9b6f]">${s.region}</span> · ${Math.round(s.prof)} km prof.</p>
+          </div>
+          <span class="text-xs text-stone-400 tabnum shrink-0 haceX" data-t="${s.t}">${haceCuanto(s.t)}</span>
+        </div>`;
+    }
     function render(){
       if (!sismos.length) return;
       // Hero: el más reciente
       const h = sismos[0], col = magColor(h.mag);
+      const cambio = (h.t !== lastTopT);
       $('heroMag').style.background = col+'22'; $('heroMag').style.borderColor = col+'66';
       $('heroMagVal').textContent = 'M'+fmtMag(h.mag); $('heroMagVal').style.color = col;
       $('heroPlace').textContent = h.lugar;
@@ -313,7 +328,8 @@
         <span class="inline-flex items-center gap-1.5"><i data-lucide="arrow-down-to-line" class="w-4 h-4 text-stone-500"></i> ${Math.round(h.prof)} km de profundidad</span>
         <span class="inline-flex items-center gap-1.5"><i data-lucide="clock" class="w-4 h-4 text-stone-500"></i> ${new Date(h.t).toLocaleString('es-CL',{timeZone:TZ, day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit'})}</span>`;
       $('heroWhen').firstElementChild.textContent = haceCuanto(h.t);
-      const hw = $('heroWrap'); hw.classList.remove('fade'); void hw.offsetWidth; hw.classList.add('fade');
+      // el fundido solo si cambió el sismo más reciente (evita parpadeo cada 30 s)
+      if (cambio) { const hw = $('heroWrap'); hw.classList.remove('fade'); void hw.offsetWidth; hw.classList.add('fade'); }
 
       // Estadísticas
       const ahora = Date.now();
@@ -323,28 +339,21 @@
       $('statReciente').textContent = haceCuanto(sismos[0].t);
       $('totalCount').textContent = sismos.length;
 
-      // Lista
-      const box = $('lista'); box.innerHTML = '';
-      sismos.slice(0, 30).forEach(s => {
-        const c = magColor(s.mag);
-        const el = document.createElement('div');
-        el.className = 'glass-strong rounded-xl px-3 py-2 flex items-center gap-3';
-        el.innerHTML = `
-          <div class="h-11 w-14 rounded-lg grid place-items-center shrink-0 tabnum" style="background:${c}22;border:1px solid ${c}55">
-            <span class="text-lg font-extrabold" style="color:${c}">${fmtMag(s.mag)}</span>
-          </div>
-          <div class="min-w-0 flex-1">
-            <p class="text-sm font-semibold truncate">${s.lugar}</p>
-            <p class="text-[11px] text-stone-500"><span class="text-[#cf9b6f]">${s.region}</span> · ${Math.round(s.prof)} km prof.</p>
-          </div>
-          <span class="text-xs text-stone-400 tabnum shrink-0">${haceCuanto(s.t)}</span>`;
-        box.appendChild(el);
-      });
+      // Lista: se reemplaza de una sola vez (atómica), sin colapsar el layout
+      $('lista').innerHTML = sismos.slice(0, 30).map(fmtRow).join('');
       drawIcons();
+      lastTopT = h.t;
+    }
+    // Actualiza solo los textos "hace X" en su lugar, sin reconstruir ni parpadear
+    function refreshTimes(){
+      if (!sismos.length) return;
+      $('heroWhen').firstElementChild.textContent = haceCuanto(sismos[0].t);
+      $('statReciente').textContent = haceCuanto(sismos[0].t);
+      document.querySelectorAll('#lista .haceX').forEach(el => { el.textContent = haceCuanto(+el.getAttribute('data-t')); });
     }
 
     drawIcons(); tick(); setInterval(tick, 1000);
-    setInterval(render, 30 * 1000);   // refresca los "hace X" sin re-consultar
+    setInterval(refreshTimes, 30 * 1000);   // solo actualiza los "hace X" en el sitio (sin redibujar)
     fetchSismos();
     document.addEventListener('visibilitychange', () => { if (!document.hidden) fetchSismos(); });
   </script>
