@@ -126,6 +126,10 @@
   #stage .min-h-0{min-height:0!important}
   /* Movil: sin scroll interno, que scrollee la pagina entera (evita tiritar y "no baja") */
   #stage [class*="overflow-y-auto"],#stage [class*="overflow-auto"],#stage [class*="overflow-y-scroll"]{overflow:visible!important;max-height:none!important;height:auto!important;flex:0 0 auto!important}
+  /* Movil: sin backdrop-filter (blur) -> scroll fluido en telefonos reales (evita tiritar) */
+  .glass,.glass-strong{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  .glass{background:rgba(38,32,27,0.92)!important}
+  .glass-strong{background:rgba(46,39,33,0.96)!important}
 
   /* Números gigantes: contenerlos para que quepan en pantalla angosta */
   #stage .text-7xl{font-size:2.7rem!important;line-height:1.05!important}
