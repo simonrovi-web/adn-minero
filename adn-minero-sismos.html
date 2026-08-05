@@ -162,7 +162,7 @@
         <span class="relative flex h-3 w-3"><span class="animate-ping2 absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span></span>
         <div>
           <p class="text-[10px] uppercase tracking-wider text-stone-400">Monitoreo activo</p>
-          <p class="text-sm font-semibold text-emerald-300">En vivo · USGS</p>
+          <p class="text-sm font-semibold text-emerald-300">En vivo · CSN vía EMSC</p>
           <p class="text-[11px] text-stone-500 mt-0.5">actualizado <span id="lastUpdate">—</span></p>
         </div>
       </div>
@@ -221,7 +221,7 @@
         <span><b class="text-stone-200">¿Qué mide?</b> La <b class="text-[#cf9b6f]">magnitud</b> es la energía que libera el sismo, en escala <b class="text-stone-200">logarítmica</b>: cada grado ≈ <b class="text-stone-200">32× más energía</b> (un M6 es miles de veces más fuerte que un M3, no "el doble").</span>
         <span><b class="text-[#cf9b6f]">Profundidad:</b> km bajo la superficie donde se originó · los sismos <b class="text-stone-200">profundos (&gt;70 km) se sienten menos</b> arriba.</span>
         <span><b class="text-[#cf9b6f]">Epicentro:</b> el punto en la superficie justo sobre el origen del sismo.</span>
-        <span class="text-stone-500 w-full">Fuente: <b class="text-stone-300">USGS</b> · monitoreo global en tiempo real · refresca cada 2 min · magnitudes y ubicaciones <b class="text-stone-300">preliminares</b> (pueden revisarse) · no reemplaza avisos oficiales del CSN / SHOA / SENAPRED.</span>
+        <span class="text-stone-500 w-full">Fuente: <b class="text-stone-300">CSN (Centro Sismológico Nacional) vía EMSC</b> · sismos de Chile en tiempo real · refresca cada 1 min · magnitudes y ubicaciones <b class="text-stone-300">preliminares</b> (pueden revisarse) · no reemplaza avisos oficiales del CSN / SHOA / SENAPRED.</span>
       </div>
     </footer>
 
@@ -267,26 +267,34 @@
       return 'hace ' + Math.floor(s/86400) + ' d';
     }
 
+    // Formatea la región EMSC (ej. "ANTOFAGASTA, CHILE" -> "Antofagasta")
+    function fmtRegion(s){
+      s = (s || '—').toLowerCase().replace(/(^|[\s,])([a-záéíóúñ])/g, (m,a,b) => a + b.toUpperCase());
+      return s.replace(/,?\s*Chile$/i, '');
+    }
+
     async function fetchSismos(){
       try {
-        const start = new Date(Date.now() - 7*24*3600*1000).toISOString();
-        const url = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson'
-          + '&starttime=' + start + '&minlatitude=-58&maxlatitude=-17&minlongitude=-76&maxlongitude=-66'
-          + '&minmagnitude=2.5&orderby=time&limit=60';
+        const url = 'https://www.seismicportal.eu/fdsnws/event/1/query?format=json&orderby=time&limit=60'
+          + '&minlat=-58&maxlat=-17&minlon=-76&maxlon=-66&minmag=2.5';
         const r = await fetch(url);
         if (!r.ok) throw new Error('HTTP ' + r.status);
         const j = await r.json();
-        sismos = (j.features || []).map(f => ({
-          mag: f.properties.mag,
-          lugar: limpiaLugar(f.properties.place),
-          prof: f.geometry.coordinates[2],
-          region: /Argentina/.test(f.properties.place || '') ? 'Frontera con Argentina' : regionCL(f.geometry.coordinates[1]),
-          t: f.properties.time
-        }));
+        sismos = (j.features || []).map(f => {
+          const p = f.properties, fr = p.flynn_region || '';
+          const arg = /ARGENTINA/i.test(fr), bol = /BOLIVIA/i.test(fr), per = /PERU/i.test(fr);
+          return {
+            mag: p.mag,
+            lugar: fmtRegion(fr),
+            prof: p.depth,
+            region: arg ? 'Frontera con Argentina' : bol ? 'Frontera con Bolivia' : per ? 'Frontera con Perú' : regionCL(p.lat),
+            t: Date.parse(p.time)
+          };
+        });
         $('lastUpdate').textContent = new Date().toLocaleTimeString('es-CL', { timeZone:TZ, hour:'2-digit', minute:'2-digit' });
-      } catch (e) { console.warn('USGS no disponible', e); }
+      } catch (e) { console.warn('EMSC no disponible', e); }
       render();
-      setTimeout(fetchSismos, 2 * 60 * 1000);
+      setTimeout(fetchSismos, 60 * 1000);
     }
 
     function render(){
