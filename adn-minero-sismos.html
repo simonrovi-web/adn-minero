@@ -231,6 +231,7 @@
   <script>
     const TZ = 'America/Santiago';
     let sismos = [];
+    let fetchTimer = null, fetching = false;
 
     const $ = (id) => document.getElementById(id);
     const drawIcons = () => window.lucide && lucide.createIcons();
@@ -274,6 +275,8 @@
     }
 
     async function fetchSismos(){
+      if (fetching) return;
+      fetching = true;
       try {
         const url = 'https://www.seismicportal.eu/fdsnws/event/1/query?format=json&orderby=time&limit=60'
           + '&minlat=-58&maxlat=-17&minlon=-76&maxlon=-66&minmag=2.5';
@@ -293,8 +296,10 @@
         });
         $('lastUpdate').textContent = new Date().toLocaleTimeString('es-CL', { timeZone:TZ, hour:'2-digit', minute:'2-digit' });
       } catch (e) { console.warn('EMSC no disponible', e); }
+      finally { fetching = false; }
       render();
-      setTimeout(fetchSismos, 60 * 1000);
+      clearTimeout(fetchTimer);
+      fetchTimer = setTimeout(fetchSismos, 60 * 1000);
     }
 
     function render(){
