@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ski Central Andes · Condiciones en los centros</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      keyframes: { spinSlow: { to: { transform: 'rotate(360deg)' } }, ping2: { '75%,100%': { transform: 'scale(2)', opacity: 0 } } },
+      animation: { spinSlow: 'spinSlow 1s linear infinite', ping2: 'ping2 1.6s cubic-bezier(0,0,0.2,1) infinite' } } } };
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    html, body { height: 100%; overflow: hidden; font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; }
+    body {
+      background:
+        radial-gradient(1200px 600px at 15% -10%, rgba(56,189,248,0.14), transparent 60%),
+        radial-gradient(1000px 500px at 100% 0%, rgba(148,163,184,0.10), transparent 55%),
+        radial-gradient(900px 700px at 50% 120%, rgba(56,189,248,0.08), transparent 60%),
+        #0a1420;
+    }
+    /* Escenario 16:9 (1600×900) escalado */
+    #viewport { position: fixed; inset: 0; display: grid; place-items: center; }
+    #stage { width: 1600px; height: 900px; transform-origin: center center; transform: scale(var(--s, 1)); display: flex; flex-direction: column; padding: 24px; gap: 14px; }
+    .glass {
+      background: linear-gradient(160deg, rgba(30,41,59,0.58), rgba(15,23,42,0.40));
+      backdrop-filter: blur(16px) saturate(130%); -webkit-backdrop-filter: blur(16px) saturate(130%);
+      border: 1px solid rgba(148,163,184,0.15);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.45), inset 0 1px 0 rgba(224,242,254,0.05);
+    }
+    .glass-strong {
+      background: linear-gradient(160deg, rgba(37,49,68,0.72), rgba(17,26,43,0.55));
+      backdrop-filter: blur(20px) saturate(150%); -webkit-backdrop-filter: blur(20px) saturate(150%);
+      border: 1px solid rgba(148,163,184,0.18);
+    }
+    .metric-icon { filter: drop-shadow(0 0 8px currentColor); }
+    .tabnum { font-variant-numeric: tabular-nums; }
+    #snowBig { text-shadow: 0 0 22px rgba(125,211,252,0.35); }
+    @keyframes txtfade { from { opacity: 0; } to { opacity: 1; } }
+    .fade { animation: txtfade .5s ease both; }
+    #progress { box-shadow: 0 0 10px rgba(56,189,248,.6); }
+    #forecast > div { transition: border-color .3s ease, transform .3s ease; }
+
+    /* ================= REFLOW VERTICAL PARA MÓVIL ================= */
+    @media (max-width: 820px){
+      html,body{height:auto!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important}
+      #viewport{position:static!important;display:block!important;place-items:stretch!important;inset:auto!important;height:auto!important}
+      #stage{position:static!important;width:100%!important;max-width:100vw!important;height:auto!important;
+             transform:none!important;transform-origin:top left!important;padding:14px!important;padding-bottom:96px!important;gap:12px!important;overflow-x:hidden!important}
+      #stage .flex{flex-wrap:wrap!important}
+      #stage .flex-1{flex:1 1 auto!important;min-width:min(100%,240px)!important}
+      #stage header{flex-direction:column!important;align-items:stretch!important;gap:12px!important}
+      #stage header > *{width:100%!important;text-align:left!important;border-left:0!important;border-right:0!important;justify-content:flex-start!important}
+      #stage .w-40,#stage .w-44,#stage .w-48,#stage .w-52,#stage .w-56,#stage .w-60,#stage .w-64,#stage .w-72,#stage .w-80{width:100%!important}
+      #stage [class*="grid-cols-"]{grid-template-columns:1fr!important}
+      #stage .min-h-0{min-height:0!important}
+      #stage [class*="overflow-y-auto"],#stage [class*="overflow-auto"]{overflow:visible!important;max-height:none!important;height:auto!important;flex:0 0 auto!important}
+      /* sin blur pesado en móvil -> scroll fluido */
+      .glass,.glass-strong{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+      .glass{background:rgba(23,33,50,0.94)!important}
+      .glass-strong{background:rgba(30,43,66,0.96)!important}
+      #stage .text-7xl{font-size:2.7rem!important;line-height:1.05!important}
+      #stage .text-6xl{font-size:2.4rem!important;line-height:1.05!important}
+      #stage .text-5xl{font-size:2.05rem!important;line-height:1.08!important}
+      #stage .truncate{white-space:normal!important;overflow:visible!important;text-overflow:clip!important}
+    }
+    /* ================= CONTROL PLAY/PAUSA (SOLO MÓVIL) ================= */
+    @media (min-width:821px){#skiPP{display:none!important}}
+    @media (max-width:820px){
+      #skiPP{position:fixed;right:14px;bottom:16px;z-index:100000;display:flex;align-items:center;gap:6px;padding:6px;border-radius:999px;
+        background:linear-gradient(160deg,rgba(30,58,95,.96),rgba(15,28,48,.96));border:1px solid rgba(148,163,184,.25);box-shadow:0 10px 30px rgba(0,0,0,.55)}
+      #skiPP button{width:46px;height:46px;border:0;border-radius:50%;background:transparent;color:#e0f2fe;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
+      #skiPP button:active{transform:scale(.9)}
+      #skiPP button[data-act="toggle"]{background:linear-gradient(160deg,#38bdf8,#0284c7);color:#04121f;width:54px;height:54px}
+      #skiPP svg{width:24px;height:24px;pointer-events:none}
+      #skiPP button[data-act="toggle"] svg{width:26px;height:26px}
+    }
+  </style>
+</head>
+<body class="text-slate-100 antialiased">
+<div id="viewport">
+  <div id="stage">
+
+    <!-- ================= CABECERA / ROTACIÓN ================= -->
+    <header class="glass rounded-2xl px-5 py-3 flex items-center justify-between gap-5 shrink-0">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(56,189,248,.15);border:1px solid rgba(56,189,248,.3)">
+          <i data-lucide="snowflake" class="w-7 h-7 text-[#7dd3fc] metric-icon"></i>
+        </div>
+        <div class="min-w-0">
+          <p class="text-2xl font-extrabold tracking-tight leading-none flex items-center gap-2.5">SKI CENTRAL ANDES <span class="fi fi-cl" style="font-size:1.1em;border-radius:3px;box-shadow:0 1px 3px rgba(0,0,0,.4)"></span></p>
+          <p class="text-xs text-slate-400 mt-1 flex items-center gap-2"><i data-lucide="mountain-snow" class="w-4 h-4 text-[#7dd3fc]"></i> Condiciones en los centros de ski · en vivo</p>
+        </div>
+      </div>
+      <div class="text-right shrink-0 px-5 border-x border-white/10">
+        <p id="clock" class="text-3xl font-bold tracking-tight leading-none tabnum">--:--:--</p>
+        <p id="clockDate" class="text-xs text-slate-400 mt-1 capitalize">hora local · Chile</p>
+      </div>
+      <div class="flex items-center gap-3 shrink-0">
+        <span id="counter" class="text-xs text-slate-400 tabnum">—</span>
+        <div class="flex items-center gap-1.5">
+          <button id="prevBtn" class="glass-strong rounded-lg h-9 w-9 grid place-items-center hover:bg-[#38bdf8]/15 transition active:scale-95" title="Anterior"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+          <button id="pauseBtn" class="glass-strong rounded-lg h-9 w-9 grid place-items-center hover:bg-[#38bdf8]/15 transition active:scale-95" title="Pausar/Reanudar"><i id="pauseIcon" data-lucide="pause" class="w-5 h-5"></i></button>
+          <button id="nextBtn" class="glass-strong rounded-lg h-9 w-9 grid place-items-center hover:bg-[#38bdf8]/15 transition active:scale-95" title="Siguiente"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+        </div>
+        <button id="refreshBtn" class="glass-strong rounded-lg h-9 w-9 grid place-items-center hover:bg-[#38bdf8]/15 transition active:scale-95" title="Actualizar"><i id="refreshIcon" data-lucide="refresh-cw" class="w-5 h-5"></i></button>
+      </div>
+    </header>
+    <!-- barra de progreso -->
+    <div class="h-1.5 rounded-full bg-slate-700/40 overflow-hidden shrink-0 -mt-1">
+      <div id="progress" class="h-full" style="width:0%; background:linear-gradient(90deg,#7dd3fc,#38bdf8)"></div>
+    </div>
+    <!-- puntos -->
+    <div id="dots" class="flex items-center gap-1.5 shrink-0 justify-center"></div>
+
+    <!-- ================= HERO ================= -->
+    <section class="glass rounded-2xl px-6 py-4 flex items-center gap-6 shrink-0 fade-el" id="heroWrap">
+      <div class="min-w-0 flex-1">
+        <p class="text-[11px] uppercase tracking-[0.2em] text-[#7dd3fc]">Centro de ski</p>
+        <h1 id="cName" class="text-4xl font-extrabold tracking-tight truncate mt-0.5">—</h1>
+        <p class="text-slate-400 text-sm mt-1 flex flex-wrap items-center gap-x-4 gap-y-0.5">
+          <span class="inline-flex items-center gap-1.5"><i data-lucide="map-pin" class="w-4 h-4"></i> <span id="cCoords">—</span></span>
+          <span class="inline-flex items-center gap-1.5"><i data-lucide="triangle" class="w-4 h-4"></i> <span id="cElev">—</span></span>
+          <span class="inline-flex items-center gap-1.5"><i data-lucide="globe" class="w-4 h-4"></i> <span id="cRegion">—</span></span>
+        </p>
+        <a id="mapsLink" href="#" target="_blank" rel="noopener" class="adn-maps mt-2 items-center gap-2 text-sm font-semibold text-[#bae6fd] bg-[#38bdf8]/12 border border-[#38bdf8]/30 rounded-lg px-3 py-2 active:scale-95 transition">
+          <i data-lucide="map-pin" class="w-4 h-4"></i> Ver en Google Maps <i data-lucide="external-link" class="w-3.5 h-3.5 text-[#7dd3fc]"></i>
+        </a>
+      </div>
+      <div class="text-center shrink-0">
+        <div class="flex items-start gap-2 justify-center">
+          <span id="temp" class="text-[86px] font-extrabold tracking-tighter leading-none">--</span>
+          <span class="mt-3 flex items-start text-4xl font-semibold text-slate-400">°<span class="ml-0.5">C</span></span>
+        </div>
+        <p class="mt-1 text-sm text-slate-400"><span id="skyText" class="text-slate-200 font-medium">—</span> · sensación <span id="feels" class="text-slate-100 font-semibold">--°</span></p>
+      </div>
+      <div class="text-center shrink-0">
+        <div class="h-24 w-24 rounded-full bg-gradient-to-br from-slate-700/30 to-slate-900/30 border border-white/5 grid place-items-center mx-auto">
+          <i id="skyIcon" data-lucide="loader" class="w-14 h-14 text-[#7dd3fc] metric-icon animate-spinSlow"></i>
+        </div>
+        <div class="mt-2 flex items-center justify-center gap-3 text-xs text-slate-400">
+          <span class="inline-flex items-center gap-1"><i data-lucide="arrow-down" class="w-4 h-4 text-sky-300"></i> Mín <span id="tmin" class="text-slate-200 font-medium">--°</span></span>
+          <span class="inline-flex items-center gap-1"><i data-lucide="arrow-up" class="w-4 h-4 text-amber-300"></i> Máx <span id="tmax" class="text-slate-200 font-medium">--°</span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= MÉTRICAS DE NIEVE / SKI ================= -->
+    <main class="grid grid-cols-3 gap-4 flex-1 min-h-0">
+      <!-- Nieve fresca + altura de nieve (destacado) -->
+      <div class="glass rounded-2xl p-5 flex flex-col justify-center gap-4">
+        <div>
+          <p class="text-xs uppercase tracking-wider text-slate-400 flex items-center gap-2"><i data-lucide="snowflake" class="w-5 h-5 text-[#7dd3fc]"></i> Nieve fresca (hoy)</p>
+          <p class="mt-1"><span id="snowNew" class="text-4xl font-extrabold tabnum text-[#bae6fd]">--</span> <span class="text-lg text-slate-400">cm</span></p>
+        </div>
+        <div class="h-px bg-white/10"></div>
+        <div>
+          <p class="text-xs uppercase tracking-wider text-slate-400 flex items-center gap-2"><i data-lucide="layers" class="w-5 h-5 text-[#7dd3fc]"></i> Altura de nieve (base)</p>
+          <p class="mt-1"><span id="snowBig" class="text-5xl font-extrabold tabnum">--</span> <span class="text-lg text-slate-400">cm</span></p>
+          <p id="snowNote" class="text-xs text-slate-500 mt-1">—</p>
+        </div>
+      </div>
+
+      <!-- Viento (riesgo andariveles) + cota -->
+      <div class="grid grid-rows-2 gap-4">
+        <div id="windCard" class="glass rounded-2xl p-5 flex flex-col justify-center">
+          <p class="text-xs uppercase tracking-wider text-slate-400 flex items-center gap-2"><i data-lucide="wind" class="w-5 h-5 text-[#7dd3fc]"></i> Viento en cumbre</p>
+          <p class="mt-1"><span id="wind" class="text-4xl font-extrabold tabnum">--</span> <span class="text-base text-slate-400">km/h</span></p>
+          <p class="text-xs text-slate-500 mt-1">Ráfagas <span id="gust" class="text-slate-300 font-semibold">--</span> km/h · <span id="windRisk" class="font-semibold">—</span></p>
+        </div>
+        <div class="glass rounded-2xl p-5 flex flex-col justify-center">
+          <p class="text-xs uppercase tracking-wider text-slate-400 flex items-center gap-2"><i data-lucide="thermometer-snowflake" class="w-5 h-5 text-[#7dd3fc]"></i> Cota de nieve (isoterma 0°)</p>
+          <p class="mt-1"><span id="freeze" class="text-3xl font-extrabold tabnum">--</span> <span class="text-base text-slate-400">m s.n.m.</span></p>
+          <p id="freezeNote" class="text-xs text-slate-500 mt-1">—</p>
+        </div>
+      </div>
+
+      <!-- Visibilidad, UV, humedad -->
+      <div class="grid grid-rows-2 gap-4">
+        <div class="glass rounded-2xl p-5 flex flex-col justify-center">
+          <p class="text-xs uppercase tracking-wider text-slate-400 flex items-center gap-2"><i data-lucide="eye" class="w-5 h-5 text-[#7dd3fc]"></i> Visibilidad</p>
+          <p class="mt-1"><span id="vis" class="text-3xl font-extrabold tabnum">--</span> <span class="text-base text-slate-400">km</span></p>
+          <p id="visNote" class="text-xs text-slate-500 mt-1">—</p>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="glass rounded-2xl p-4 flex flex-col justify-center">
+            <p class="text-[11px] uppercase tracking-wider text-slate-400 flex items-center gap-1.5"><i data-lucide="sun" class="w-4 h-4 text-amber-300"></i> UV</p>
+            <p class="mt-1"><span id="uv" class="text-3xl font-extrabold tabnum">--</span></p>
+            <p id="uvLabel" class="text-xs text-slate-500 mt-0.5">—</p>
+          </div>
+          <div class="glass rounded-2xl p-4 flex flex-col justify-center">
+            <p class="text-[11px] uppercase tracking-wider text-slate-400 flex items-center gap-1.5"><i data-lucide="droplets" class="w-4 h-4 text-sky-300"></i> Humedad</p>
+            <p class="mt-1"><span id="hum" class="text-3xl font-extrabold tabnum">--</span><span class="text-base text-slate-400">%</span></p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ================= PRONÓSTICO DE NIEVE (PRÓX. DÍAS) ================= -->
+    <section class="glass rounded-2xl px-5 py-3 shrink-0">
+      <div class="flex items-center justify-between mb-2">
+        <p class="text-sm font-semibold flex items-center gap-2"><i data-lucide="calendar" class="w-5 h-5 text-[#7dd3fc]"></i> Pronóstico de nieve · próximos días</p>
+        <p class="text-xs text-slate-500">Fuente: Open-Meteo · corrige altitud del centro · refresca cada 10 min</p>
+      </div>
+      <div id="forecast" class="grid grid-cols-6 gap-3"></div>
+    </section>
+
+  </div>
+</div>
+
+<!-- control play/pausa móvil -->
+<div id="skiPP" role="group" aria-label="Controles">
+  <button data-act="prev" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 6h2.2v12H7zM20 6v12l-9.2-6z"></path></svg></button>
+  <button data-act="toggle" aria-label="Pausar o reanudar"><svg id="skiPPicon" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4.2" height="14" rx="1.2"></rect><rect x="13.8" y="5" width="4.2" height="14" rx="1.2"></rect></svg></button>
+  <button data-act="next" aria-label="Siguiente"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.8 6H17v12h-2.2zM4 6l9.2 6L4 18z"></path></svg></button>
+</div>
+<style>.adn-maps{display:none}@media(max-width:820px){.adn-maps{display:inline-flex}}</style>
+
+<script>
+  const TZ = 'America/Santiago';
+  const ROTATE_MS = 12000, REFRESH_MS = 10 * 60 * 1000;
+  const $ = (id) => document.getElementById(id);
+  const drawIcons = () => window.lucide && lucide.createIcons();
+  const round = (v) => (v == null ? '--' : Math.round(v));
+
+  // ===== Centros de ski del Central Andes (edítalos libremente) =====
+  const CENTROS = [
+    { nombre: 'Valle Nevado',          lat: -33.3556, lon: -70.2506, elev: 2860, region: 'Región Metropolitana, Chile' },
+    { nombre: 'La Parva',              lat: -33.3286, lon: -70.2856, elev: 2750, region: 'Región Metropolitana, Chile' },
+    { nombre: 'El Colorado / Farellones', lat: -33.3536, lon: -70.2933, elev: 2430, region: 'Región Metropolitana, Chile' },
+    { nombre: 'Portillo',              lat: -32.8342, lon: -70.1289, elev: 2880, region: 'Región de Valparaíso, Chile' },
+    { nombre: 'Nevados de Chillán',    lat: -36.9053, lon: -71.4058, elev: 1650, region: 'Región de Ñuble, Chile' },
+    { nombre: 'Corralco',              lat: -38.4386, lon: -71.5133, elev: 1450, region: 'Región de La Araucanía, Chile' },
+  ];
+
+  let current = 0, paused = false, rotTimer = null;
+  const cache = {};
+
+  function fitStage(){ const w = window.innerWidth || 1600, h = window.innerHeight || 900; $('stage').style.setProperty('--s', Math.min(w/1600, h/900) || 1); }
+  window.addEventListener('resize', fitStage); window.addEventListener('load', fitStage); fitStage();
+
+  function tick(){ const n = new Date();
+    $('clock').textContent = n.toLocaleTimeString('es-CL', { timeZone:TZ, hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false });
+    $('clockDate').textContent = n.toLocaleDateString('es-CL', { timeZone:TZ, weekday:'long', day:'2-digit', month:'long' }) + ' · hora Chile';
+  }
+
+  // WMO -> [texto, icono, esNieve]
+  function wmo(c){
+    const m = {
+      0:['Despejado','sun',0], 1:['Mayormente despejado','cloud-sun',0], 2:['Parcialmente nublado','cloud-sun',0], 3:['Nublado','cloud',0],
+      45:['Niebla','cloud-fog',0], 48:['Niebla helada','cloud-fog',0],
+      51:['Llovizna','cloud-drizzle',0], 53:['Llovizna','cloud-drizzle',0], 55:['Llovizna intensa','cloud-drizzle',0],
+      56:['Llovizna helada','cloud-drizzle',0], 57:['Llovizna helada','cloud-drizzle',0],
+      61:['Lluvia','cloud-rain',0], 63:['Lluvia','cloud-rain',0], 65:['Lluvia fuerte','cloud-rain',0],
+      66:['Lluvia helada','cloud-hail',0], 67:['Lluvia helada','cloud-hail',0],
+      71:['Nevando','cloud-snow',1], 73:['Nevando','cloud-snow',1], 75:['Nevada fuerte','cloud-snow',1], 77:['Cristales de nieve','snowflake',1],
+      80:['Chubascos','cloud-rain',0], 81:['Chubascos','cloud-rain',0], 82:['Chubascos fuertes','cloud-rain',0],
+      85:['Chubascos de nieve','cloud-snow',1], 86:['Chubascos de nieve','cloud-snow',1],
+      95:['Tormenta','cloud-lightning',0], 96:['Tormenta con granizo','cloud-lightning',0], 99:['Tormenta con granizo','cloud-lightning',0],
+    };
+    return m[c] || ['—','cloud',0];
+  }
+  const NIGHT = { 'sun':'moon', 'cloud-sun':'cloud-moon' };
+  const iconDN = (ic, isDay) => (isDay ? ic : (NIGHT[ic] || ic));
+
+  function buildDots(){
+    $('dots').innerHTML = CENTROS.map((_, i) => `<span class="dot h-2 rounded-full transition-all duration-300" data-i="${i}" style="width:${i===current?22:8}px;background:${i===current?'#38bdf8':'rgba(148,163,184,.35)'}"></span>`).join('');
+  }
+  function updateDots(){ document.querySelectorAll('.dot').forEach((d,i)=>{ d.style.width = (i===current?22:8)+'px'; d.style.background = i===current?'#38bdf8':'rgba(148,163,184,.35)'; }); }
+
+  function apiUrl(c){
+    return 'https://api.open-meteo.com/v1/forecast'
+      + `?latitude=${c.lat}&longitude=${c.lon}&elevation=${c.elev}&timezone=${encodeURIComponent(TZ)}`
+      + '&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m,wind_gusts_10m,is_day,snowfall,precipitation'
+      + '&hourly=snow_depth,freezing_level_height,visibility,uv_index,weather_code,is_day,snowfall'
+      + '&daily=snowfall_sum,temperature_2m_max,temperature_2m_min,weather_code'
+      + '&wind_speed_unit=kmh&forecast_days=6';
+  }
+  function currentHourIndex(times){
+    const now = Date.now();
+    for (let i = 0; i < times.length - 1; i++){ if (new Date(times[i]).getTime() <= now && now < new Date(times[i+1]).getTime()) return i; }
+    return 0;
+  }
+  async function getData(i, force){
+    if (!force && cache[i] && (Date.now() - cache[i].t < REFRESH_MS)) return cache[i].data;
+    const r = await fetch(apiUrl(CENTROS[i]));
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
+    cache[i] = { t: Date.now(), data };
+    return data;
+  }
+
+  function render(c, data){
+    const cur = data.current, hi = currentHourIndex(data.hourly.time);
+    const isDay = cur.is_day;
+    $('cName').textContent = c.nombre;
+    $('cCoords').textContent = `${c.lat.toFixed(4)}, ${c.lon.toFixed(4)}`;
+    $('cElev').textContent = `~${c.elev.toLocaleString('es-CL')} m s.n.m.`;
+    $('cRegion').textContent = c.region;
+    $('mapsLink').href = `https://www.google.com/maps/search/?api=1&query=${c.lat},${c.lon}`;
+
+    $('temp').textContent = round(cur.temperature_2m);
+    $('feels').textContent = round(cur.apparent_temperature) + '°';
+    $('hum').textContent = round(cur.relative_humidity_2m);
+    const [sky, ic] = wmo(cur.weather_code);
+    $('skyText').textContent = sky;
+    $('skyIcon').setAttribute('data-lucide', iconDN(ic, isDay));
+    $('skyIcon').classList.remove('animate-spinSlow');
+
+    $('tmin').textContent = round(data.daily.temperature_2m_min[0]) + '°';
+    $('tmax').textContent = round(data.daily.temperature_2m_max[0]) + '°';
+
+    // Nieve fresca hoy (daily snowfall_sum[0]) y acumulada (snow_depth en metros -> cm)
+    const fresca = data.daily.snowfall_sum?.[0] ?? cur.snowfall ?? 0;
+    $('snowNew').textContent = (Math.round(fresca * 10) / 10).toLocaleString('es-CL');
+    const depthM = data.hourly.snow_depth?.[hi];
+    const depthCm = depthM != null ? Math.round(depthM * 100) : null;
+    $('snowBig').textContent = depthCm != null ? depthCm.toLocaleString('es-CL') : '--';
+    $('snowNote').textContent = depthCm != null ? (depthCm >= 100 ? 'Buena base de nieve' : depthCm >= 40 ? 'Base moderada' : 'Base baja') : 'Sin dato';
+
+    // Viento + riesgo andariveles
+    const wind = cur.wind_speed_10m, gust = cur.wind_gusts_10m;
+    $('wind').textContent = round(wind);
+    $('gust').textContent = round(gust);
+    const g = gust ?? 0;
+    let risk, rcol, wcol;
+    if (g >= 70){ risk = 'riesgo alto de cierre'; rcol = '#f87171'; wcol = 'rgba(248,113,113,.4)'; }
+    else if (g >= 45){ risk = 'atención (andariveles)'; rcol = '#fbbf24'; wcol = 'rgba(251,191,36,.35)'; }
+    else { risk = 'condición favorable'; rcol = '#4ade80'; wcol = 'rgba(148,163,184,.18)'; }
+    $('windRisk').textContent = risk; $('windRisk').style.color = rcol;
+    $('windCard').style.borderColor = wcol;
+
+    // Cota de nieve
+    const fz = data.hourly.freezing_level_height?.[hi];
+    $('freeze').textContent = fz != null ? Math.round(fz).toLocaleString('es-CL') : '--';
+    $('freezeNote').textContent = fz != null ? (fz <= c.elev ? 'Nieve hasta la base ❄️' : `Nieve sobre ${Math.round(fz).toLocaleString('es-CL')} m`) : '—';
+
+    // Visibilidad
+    const visM = data.hourly.visibility?.[hi];
+    const visKm = visM != null ? Math.round(visM / 1000) : null;
+    $('vis').textContent = visKm != null ? visKm : '--';
+    $('visNote').textContent = visKm == null ? '—' : (visKm >= 20 ? 'Excelente' : visKm >= 5 ? 'Buena' : visKm >= 1 ? 'Reducida' : 'Muy baja');
+
+    // UV
+    const uv = data.hourly.uv_index?.[hi];
+    $('uv').textContent = uv != null ? Math.round(uv) : '--';
+    const uvl = uv == null ? '—' : uv < 3 ? 'Bajo' : uv < 6 ? 'Moderado' : uv < 8 ? 'Alto' : uv < 11 ? 'Muy alto' : 'Extremo';
+    $('uvLabel').textContent = uvl;
+
+    renderForecast(data.daily);
+
+    const hw = $('heroWrap'); hw.classList.remove('fade'); void hw.offsetWidth; hw.classList.add('fade');
+    drawIcons();
+  }
+
+  function renderForecast(daily){
+    const box = $('forecast'); const dias = Math.min(6, daily.time.length);
+    let html = '';
+    for (let i = 0; i < dias; i++){
+      const d = new Date(daily.time[i] + 'T12:00:00');
+      const dl = i === 0 ? 'Hoy' : d.toLocaleDateString('es-CL', { timeZone:TZ, weekday:'short' });
+      const [ , ic ] = wmo(daily.weather_code[i]);
+      const snow = daily.snowfall_sum[i] ?? 0;
+      const strong = snow >= 5;
+      html += `<div class="rounded-xl px-2 py-2.5 text-center ${strong?'':'bg-slate-700/20'}" ${strong?'style="background:rgba(56,189,248,.14);border:1px solid rgba(56,189,248,.3)"':''}>
+        <p class="text-xs text-slate-400 capitalize">${dl}</p>
+        <i data-lucide="${ic}" class="w-7 h-7 mx-auto my-1.5 ${strong?'text-[#7dd3fc]':'text-slate-300'}"></i>
+        <p class="text-lg font-bold tabnum ${strong?'text-[#bae6fd]':'text-slate-200'}">${(Math.round(snow*10)/10).toLocaleString('es-CL')}<span class="text-[11px] text-slate-400"> cm</span></p>
+        <p class="text-[11px] text-slate-500 tabnum">${round(daily.temperature_2m_max[i])}° / ${round(daily.temperature_2m_min[i])}°</p>
+      </div>`;
+    }
+    box.innerHTML = html;
+  }
+
+  function showCentro(i){ current = ((i % CENTROS.length) + CENTROS.length) % CENTROS.length; updateDots();
+    $('counter').textContent = `${current+1} / ${CENTROS.length}`;
+    getData(current).then(d => render(CENTROS[current], d)).catch(e => console.warn('Open-Meteo', e));
+  }
+  function restartProgress(){ const p = $('progress'); p.style.transition = 'none'; p.style.width = '0%'; void p.offsetWidth; if (!paused){ p.style.transition = `width ${ROTATE_MS}ms linear`; p.style.width = '100%'; } }
+  function nextCentro(step = 1){ showCentro(current + step); restartProgress(); }
+  function startRotation(){ clearInterval(rotTimer); rotTimer = setInterval(() => nextCentro(1), ROTATE_MS); restartProgress(); }
+  function stopRotation(){ clearInterval(rotTimer); rotTimer = null; }
+  function freezeProgress(){ const p = $('progress'); p.style.transition = 'none'; p.style.width = getComputedStyle(p).width; }
+  function togglePause(){ paused = !paused; $('pauseIcon').setAttribute('data-lucide', paused ? 'play' : 'pause'); drawIcons(); if (paused){ stopRotation(); freezeProgress(); } else { startRotation(); } }
+
+  $('prevBtn').addEventListener('click', () => { nextCentro(-1); if (!paused) startRotation(); });
+  $('nextBtn').addEventListener('click', () => { nextCentro(1); if (!paused) startRotation(); });
+  $('pauseBtn').addEventListener('click', togglePause);
+  $('refreshBtn').addEventListener('click', async () => { const ic = $('refreshIcon'); ic.classList.add('animate-spinSlow'); try { const d = await getData(current, true); render(CENTROS[current], d); } catch(e){} finally { ic.classList.remove('animate-spinSlow'); } });
+
+  // control flotante móvil -> delega en los botones nativos
+  (function(){
+    var root = $('skiPP'); if (!root) return;
+    var icon = $('skiPPicon'), disp = false;
+    var PLAY = '<path d="M8 5v14l11-7z"></path>';
+    var PAUSE = '<rect x="6" y="5" width="4.2" height="14" rx="1.2"></rect><rect x="13.8" y="5" width="4.2" height="14" rx="1.2"></rect>';
+    root.addEventListener('click', function(ev){ var b = ev.target.closest('button'); if(!b) return; var a = b.getAttribute('data-act');
+      if (a === 'next') $('nextBtn').click(); else if (a === 'prev') $('prevBtn').click();
+      else { $('pauseBtn').click(); disp = !disp; icon.innerHTML = disp ? PLAY : PAUSE; } });
+  })();
+
+  // ===== INIT =====
+  buildDots(); drawIcons(); tick(); setInterval(tick, 1000);
+  CENTROS.forEach((_, i) => getData(i).catch(() => {}));
+  showCentro(0); startRotation();
+  document.addEventListener('visibilitychange', () => { if (document.hidden) stopRotation(); else if (!paused) startRotation(); });
+</script>
+</body>
+</html>
