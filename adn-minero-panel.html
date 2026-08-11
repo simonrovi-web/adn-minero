@@ -267,10 +267,16 @@
               <span class="inline-flex items-center gap-1.5"><i data-lucide="triangle" class="w-5 h-5"></i> <span id="fElev">—</span></span>
               <span class="inline-flex items-center gap-1.5"><i data-lucide="globe" class="w-5 h-5"></i> <span id="fRegion">—</span></span>
             </p>
-            <a id="mapsLink" href="#" target="_blank" rel="noopener" class="adn-maps mt-2 items-center gap-2 text-sm font-semibold text-[#e6c1a3] bg-[#b5734f]/15 border border-[#c08457]/30 rounded-lg px-3 py-2 active:scale-95 transition">
-              <i data-lucide="map-pin" class="w-4 h-4"></i> Ver en Google Maps
-              <i data-lucide="external-link" class="w-3.5 h-3.5 text-[#cf9b6f]"></i>
-            </a>
+            <div class="flex flex-wrap items-center gap-2 mt-2">
+              <a id="mapsLink" href="#" target="_blank" rel="noopener" class="adn-maps items-center gap-2 text-sm font-semibold text-[#e6c1a3] bg-[#b5734f]/15 border border-[#c08457]/30 rounded-lg px-3 py-2 active:scale-95 transition">
+                <i data-lucide="map-pin" class="w-4 h-4"></i> Ver en Google Maps
+                <i data-lucide="external-link" class="w-3.5 h-3.5 text-[#cf9b6f]"></i>
+              </a>
+              <a id="fWebLink" href="#" target="_blank" rel="noopener" class="adn-maps items-center gap-2 text-sm font-semibold text-[#e6c1a3] border border-[#c8a894]/25 rounded-lg px-3 py-2 active:scale-95 transition" style="background:rgba(43,37,32,.55)">
+                <i data-lucide="globe" class="w-4 h-4 text-[#cf9b6f]"></i> Sitio web · <span id="fWebEmp">—</span>
+                <i data-lucide="external-link" class="w-3.5 h-3.5 text-[#cf9b6f]"></i>
+              </a>
+            </div>
           </div>
         </div>
 
@@ -702,6 +708,10 @@
       $('fName').textContent = f.nombre;
       $('fCoords').textContent = `${f.lat.toFixed(5)}, ${f.lon.toFixed(5)}`;
       $('mapsLink').href = `https://www.google.com/maps/search/?api=1&query=${f.lat},${f.lon}`;
+      const mi = mineraInfo(f.nombre);
+      $('fWebEmp').textContent = mi.emp;
+      $('fWebLink').style.display = mi.web ? '' : 'none';
+      if (mi.web) $('fWebLink').href = mi.web;
       $('fElev').textContent = `~${f.elev.toLocaleString('es-CL')} msnm`;
       $('fRegion').textContent = f.region;
       $('elevCode').textContent = `elevation=${f.elev}`;
@@ -763,9 +773,26 @@
     });
 
     // Lista de todas las faenas con enlace a Maps (solo móvil)
+    // Sitio web de la minera operadora, según la empresa en el nombre de la faena
+    const MINERA_WEB = {
+      'CODELCO':'https://www.codelco.com', 'BHP':'https://www.bhp.com', 'AMSA':'https://www.aminerals.cl',
+      'Teck':'https://www.teck.com', 'SQM':'https://www.sqm.com', 'Lundin':'https://www.lundinmining.com',
+      'Capstone':'https://capstonecopper.com', 'Anglo American':'https://chile.angloamerican.com', 'KGHM':'https://kghm.com',
+      'Glencore':'https://www.glencore.com', 'Gold Fields':'https://www.goldfields.com', 'Kinross':'https://www.kinross.com',
+      'CAP':'https://www.capmineria.cl', 'Freeport':'https://www.fcx.com',
+    };
+    function mineraInfo(nombre){
+      if (/Collahuasi/i.test(nombre)) return { emp:'Collahuasi', web:'https://www.collahuasi.cl' };
+      const m = nombre.match(/\(([^)]+)\)/), raw = m ? m[1] : '';
+      if (/litio/i.test(raw)) return /Atacama/i.test(nombre) ? { emp:'SQM · litio', web:'https://www.sqm.com' } : { emp:'Codelco · litio', web:'https://www.codelco.com' };
+      if (/salitre/i.test(raw)) return { emp:'SQM', web:'https://www.sqm.com' };
+      const first = raw.split('/')[0].trim();
+      return { emp: first || raw || '—', web: MINERA_WEB[first] || MINERA_WEB[raw] || null };
+    }
+
     function buildFaenaMapList(){
       const box = document.getElementById('faenaMapItems'); if (!box) return;
-      box.innerHTML = FAENAS.map(f => `<div class="glass-strong rounded-xl px-3 py-2 flex items-center gap-3"><div class="min-w-0 flex-1"><p class="text-sm font-semibold truncate">${f.nombre}</p><p class="text-[11px] text-stone-500">${f.zona} · ~${f.elev.toLocaleString('es-CL')} msnm</p></div><a href="https://www.google.com/maps/search/?api=1&query=${f.lat},${f.lon}" target="_blank" rel="noopener" class="shrink-0 h-9 w-9 rounded-lg flex items-center justify-center bg-[#b5734f]/18 border border-[#c08457]/30 text-[#e6c1a3] active:scale-90" title="Ver en Maps"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg></a></div>`).join('');
+      box.innerHTML = FAENAS.map(f => { const mi = mineraInfo(f.nombre); return `<div class="glass-strong rounded-xl px-3 py-2 flex items-center gap-3"><div class="min-w-0 flex-1"><p class="text-sm font-semibold truncate">${f.nombre}</p><p class="text-[11px] text-stone-500">${f.zona} · ~${f.elev.toLocaleString('es-CL')} msnm</p></div>${mi.web ? `<a href="${mi.web}" target="_blank" rel="noopener" class="shrink-0 h-9 w-9 rounded-lg flex items-center justify-center border border-[#c8a894]/25 text-[#cf9b6f] active:scale-90" style="background:rgba(43,37,32,.6)" title="Sitio web ${mi.emp}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20"></path></svg></a>` : ''}<a href="https://www.google.com/maps/search/?api=1&query=${f.lat},${f.lon}" target="_blank" rel="noopener" class="shrink-0 h-9 w-9 rounded-lg flex items-center justify-center bg-[#b5734f]/18 border border-[#c08457]/30 text-[#e6c1a3] active:scale-90" title="Ver en Maps"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg></a></div>`; }).join('');
     }
 
     // ====================== INIT ======================
