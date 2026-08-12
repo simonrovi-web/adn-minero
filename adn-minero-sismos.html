@@ -34,6 +34,16 @@
     /* Enlace a Google Maps: solo en formato móvil */
     .adn-maps { display: none; }
     @media (max-width: 820px) { .adn-maps { display: inline-flex; } }
+    .adn-mobile-only { display: none; }
+    @media (max-width: 820px) { .adn-mobile-only { display: block; } }
+    /* Banner de alerta sísmica (aparece solo al gatillarse) */
+    #quakeAlert { display:none; position: fixed; top: 10px; left: 10px; right: 10px; z-index: 100001;
+      border-radius: 16px; padding: 12px 14px; color: #fff;
+      background: linear-gradient(160deg, #b91c1c, #7f1d1d); border: 1px solid rgba(255,255,255,.25);
+      box-shadow: 0 12px 34px rgba(0,0,0,.55); animation: qaIn .35s ease both; }
+    #quakeAlert.show { display: block; }
+    @keyframes qaIn { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: none; } }
+    @media (min-width: 821px) { #quakeAlert { display: none !important; } }
   </style>
 </head>
 
@@ -151,6 +161,17 @@
 
 
 
+<div id="quakeAlert" role="alert">
+  <div class="flex items-start gap-3">
+    <div class="text-2xl leading-none mt-0.5">⚠️</div>
+    <div class="min-w-0 flex-1">
+      <p class="font-extrabold text-base leading-tight" id="qaTitle">Sismo cerca de tu sector</p>
+      <p class="text-sm text-red-100 mt-0.5" id="qaBody">—</p>
+      <p class="text-[11px] text-red-200/80 mt-1">Informativo · no reemplaza avisos oficiales de SENAPRED / SHOA.</p>
+    </div>
+    <button id="qaClose" class="shrink-0 text-red-100 text-xl leading-none px-1" aria-label="Cerrar">✕</button>
+  </div>
+</div>
 <div id="viewport">
   <div id="stage">
 
@@ -194,6 +215,27 @@
       <div id="heroWhen" class="text-right shrink-0">
         <p class="text-2xl font-bold text-[#e8c9a6] tabnum">—</p>
         <p class="text-xs text-stone-500">del evento</p>
+      </div>
+    </section>
+
+    <!-- ============ ALERTAS POR SECTOR (opt-in, solo móvil) ============ -->
+    <section class="adn-mobile-only glass rounded-2xl p-4 shrink-0">
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <p class="text-sm font-bold flex items-center gap-2"><i data-lucide="bell-ring" class="w-5 h-5 text-[#cf9b6f]"></i> Alertas por sector</p>
+          <p class="text-xs text-stone-400 mt-1">Te avisa si ocurre un sismo fuerte cerca de tu ubicación, mientras esta app esté abierta.</p>
+        </div>
+        <button id="alertToggle" class="shrink-0 rounded-lg px-3 py-2 text-sm font-semibold bg-[#b5734f]/20 border border-[#c08457]/40 text-[#e6c1a3] active:scale-95 transition">Activar</button>
+      </div>
+      <p id="alertStatus" class="text-xs mt-2 text-stone-400">Desactivadas.</p>
+      <p class="text-[11px] text-stone-500 mt-2 leading-snug">
+        🔒 <b class="text-stone-300">Privacidad:</b> tu ubicación se usa <b class="text-stone-300">solo en tu teléfono</b> para calcular la distancia al epicentro; <b class="text-stone-300">no se envía ni se guarda en ningún servidor</b>. Puedes desactivarla cuando quieras.<br>
+        ⚠️ <b class="text-stone-300">Informativo:</b> los datos llegan con minutos de desfase. <b class="text-stone-300">No reemplaza</b> el SAE de SENAPRED ni al SHOA. Ante emergencia, sigue las vías oficiales.
+      </p>
+      <div class="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-[11px]">
+        <a href="https://www.senapred.cl" target="_blank" rel="noopener" class="text-[#cf9b6f] underline decoration-dotted">SENAPRED</a>
+        <a href="http://www.shoa.cl/php/tsunami" target="_blank" rel="noopener" class="text-[#cf9b6f] underline decoration-dotted">SHOA · tsunami</a>
+        <a href="https://www.sismologia.cl" target="_blank" rel="noopener" class="text-[#cf9b6f] underline decoration-dotted">CSN oficial</a>
       </div>
     </section>
 
@@ -312,6 +354,7 @@
       } catch (e) { console.warn('EMSC no disponible', e); }
       finally { fetching = false; }
       render();
+      checkAlerts();
       clearTimeout(fetchTimer);
       fetchTimer = setTimeout(fetchSismos, 60 * 1000);
     }
@@ -367,6 +410,49 @@
       $('statReciente').textContent = haceCuanto(sismos[0].t);
       document.querySelectorAll('#lista .haceX').forEach(el => { el.textContent = haceCuanto(+el.getAttribute('data-t')); });
     }
+
+    // ================= ALERTAS POR SECTOR (opt-in · todo en el dispositivo) =================
+    const ALERT = { on:false, loc:null, alerted:new Set(), MAG_MIN:4.5 };
+    function haversine(a,b,c,d){ const R=6371, toR=x=>x*Math.PI/180; const dLat=toR(c-a), dLon=toR(d-b);
+      const s=Math.sin(dLat/2)**2 + Math.cos(toR(a))*Math.cos(toR(c))*Math.sin(dLon/2)**2; return 2*R*Math.asin(Math.sqrt(s)); }
+    function radioKm(m){ if(m>=6.5)return 900; if(m>=6)return 600; if(m>=5.5)return 400; if(m>=5)return 250; return 120; }
+    function setAlertUI(){ const b=$('alertToggle'), s=$('alertStatus');
+      if(ALERT.on){ b.textContent='Desactivar'; b.style.background='rgba(16,185,129,.2)'; b.style.borderColor='rgba(52,211,153,.45)'; b.style.color='#a7f3d0';
+        s.innerHTML='✅ <b class="text-emerald-300">Activas</b> · vigilando sismos fuertes cerca de tu sector.'; }
+      else { b.textContent='Activar'; b.style.background=''; b.style.borderColor=''; b.style.color=''; s.textContent='Desactivadas.'; } }
+    async function enableAlerts(){
+      try { if ('Notification' in window && Notification.permission==='default') await Notification.requestPermission(); } catch(e){}
+      if (!('geolocation' in navigator)) { $('alertStatus').textContent='Tu navegador no permite ubicación.'; return; }
+      $('alertStatus').textContent='Obteniendo tu ubicación…';
+      navigator.geolocation.getCurrentPosition(
+        pos => { ALERT.loc={ lat:pos.coords.latitude, lon:pos.coords.longitude }; ALERT.on=true;
+          ALERT.alerted = new Set(sismos.map(s => s.t+'|'+s.mag));  // solo avisa los NUEVOS
+          try{ localStorage.setItem('adnAlert','1'); }catch(e){} setAlertUI(); },
+        err => { $('alertStatus').textContent = err.code===1 ? 'Permiso de ubicación denegado. Actívalo para recibir alertas por sector.' : 'No se pudo obtener la ubicación.'; },
+        { enableHighAccuracy:false, timeout:12000, maximumAge:600000 }
+      );
+    }
+    function disableAlerts(){ ALERT.on=false; ALERT.loc=null; try{ localStorage.removeItem('adnAlert'); }catch(e){} setAlertUI(); }
+    function checkAlerts(){
+      if (!ALERT.on || !ALERT.loc || !sismos.length) return; const ahora=Date.now();
+      for (const s of sismos){
+        if (s.lat==null || s.lon==null) continue;
+        const key = s.t+'|'+s.mag; if (ALERT.alerted.has(key)) continue; ALERT.alerted.add(key);
+        if ((ahora - s.t) > 60*60*1000) continue;                 // sismo viejo: ignorar
+        if (s.mag==null || s.mag < ALERT.MAG_MIN) continue;
+        const dist = haversine(ALERT.loc.lat, ALERT.loc.lon, s.lat, s.lon);
+        if (dist <= radioKm(s.mag)) { triggerAlert(s, dist); break; }
+      }
+    }
+    function triggerAlert(s, dist){
+      const mag='M'+fmtMag(s.mag), txt=`${mag} · a ${Math.round(dist)} km de tu sector · ${s.lugar} · ${haceCuanto(s.t)}`;
+      $('qaTitle').textContent = `Sismo ${mag} cerca de tu sector`; $('qaBody').textContent = txt;
+      const qa=$('quakeAlert'); qa.classList.add('show'); clearTimeout(triggerAlert._t); triggerAlert._t=setTimeout(()=>qa.classList.remove('show'),30000);
+      try { if ('Notification' in window && Notification.permission==='granted') new Notification('⚠️ Sismo cerca de tu sector', { body:txt, tag:'adn-sismo' }); } catch(e){}
+    }
+    $('alertToggle').addEventListener('click', ()=>{ ALERT.on ? disableAlerts() : enableAlerts(); });
+    $('qaClose').addEventListener('click', ()=> $('quakeAlert').classList.remove('show'));
+    try { if (localStorage.getItem('adnAlert')==='1') $('alertStatus').textContent = 'Toca "Activar" para reanudar las alertas por sector.'; } catch(e){}
 
     drawIcons(); tick(); setInterval(tick, 1000);
     setInterval(refreshTimes, 30 * 1000);   // solo actualiza los "hace X" en el sitio (sin redibujar)
