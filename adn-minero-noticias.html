@@ -47,7 +47,7 @@
 <script>
   const TZ = 'America/Santiago';
   const GNEWS = 'https://news.google.com/rss/search?q=' + encodeURIComponent('minería Chile cobre litio') + '&hl=es-419&gl=CL&ceid=CL:es';
-  const API = 'https://api.rss2json.com/v1/api.json?count=20&rss_url=' + encodeURIComponent(GNEWS);
+  const API = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(GNEWS);
   const REFRESH_MS = 15 * 60 * 1000;
 
   // Respaldo: si la fuente falla, la wincha nunca queda vacía
