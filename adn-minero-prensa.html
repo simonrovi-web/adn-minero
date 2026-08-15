@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ADN Minero · Noticias Mineras</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      keyframes: { spinSlow:{ to:{ transform:'rotate(360deg)' } }, ping2:{ '75%,100%':{ transform:'scale(2)', opacity:0 } }, eq:{ '0%,100%':{ transform:'scaleY(.4)' }, '50%':{ transform:'scaleY(1)' } } },
+      animation: { spinSlow:'spinSlow 1s linear infinite', ping2:'ping2 1.6s cubic-bezier(0,0,0.2,1) infinite' } } } };
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    html, body { height:100%; overflow:hidden; font-family:'Inter', ui-sans-serif, system-ui, sans-serif; }
+    body { background:
+      radial-gradient(1200px 600px at 15% -10%, rgba(181,115,79,0.14), transparent 60%),
+      radial-gradient(1000px 500px at 100% 0%, rgba(120,108,100,0.10), transparent 55%),
+      #141110; }
+    #viewport { position:fixed; inset:0; display:grid; place-items:center; }
+    #stage { width:1600px; height:900px; transform-origin:center center; transform:scale(var(--s,1)); display:flex; flex-direction:column; padding:24px; gap:14px; }
+    .glass { background:linear-gradient(160deg, rgba(43,37,32,0.60), rgba(26,21,18,0.40)); backdrop-filter:blur(16px) saturate(130%); -webkit-backdrop-filter:blur(16px) saturate(130%); border:1px solid rgba(196,168,148,0.13); box-shadow:0 8px 30px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,240,230,0.04); }
+    .glass-strong { background:linear-gradient(160deg, rgba(48,41,35,0.75), rgba(28,23,19,0.55)); backdrop-filter:blur(20px) saturate(150%); -webkit-backdrop-filter:blur(20px) saturate(150%); border:1px solid rgba(196,168,148,0.16); }
+    .metric-icon{ filter:drop-shadow(0 0 8px currentColor); }
+    .tabnum{ font-variant-numeric:tabular-nums; }
+    #progress { box-shadow:0 0 10px rgba(181,115,79,.6); }
+    @keyframes txtfade{ from{opacity:0} to{opacity:1} }
+    .fade{ animation:txtfade .5s ease both; }
+    /* barras de "hablando" */
+    .eqbar{ width:4px; background:#7ee787; border-radius:2px; transform-origin:bottom; animation:eq .9s ease-in-out infinite; }
+    @keyframes eq{ 0%,100%{ transform:scaleY(.35) } 50%{ transform:scaleY(1) } }
+
+    /* ===== reflow móvil ===== */
+    @media (max-width:820px){
+      html,body{height:auto!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important}
+      #viewport{position:static!important;display:block!important;inset:auto!important;height:auto!important}
+      #stage{position:static!important;width:100%!important;max-width:100vw!important;height:auto!important;transform:none!important;padding:14px!important;padding-bottom:96px!important;gap:12px!important;overflow-x:hidden!important}
+      #stage .flex{flex-wrap:wrap!important}
+      #stage header{flex-direction:column!important;align-items:stretch!important;gap:12px!important}
+      #stage header > *{width:100%!important;text-align:left!important;border:0!important;justify-content:flex-start!important}
+      #stage [class*="overflow-y-auto"]{overflow:visible!important;max-height:none!important;height:auto!important;flex:0 0 auto!important}
+      #stage .min-h-0{min-height:0!important}
+      .glass,.glass-strong{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:rgba(28,22,18,.96)!important}
+      #headline{font-size:1.9rem!important;line-height:1.15!important}
+    }
+    @media (min-width:821px){ #skiPP{display:none!important} }
+    @media (max-width:820px){
+      #skiPP{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:100000;display:flex;align-items:center;gap:6px;padding:6px;border-radius:999px;background:linear-gradient(160deg,rgba(40,30,24,.96),rgba(24,18,15,.96));border:1px solid rgba(196,168,148,.22);box-shadow:0 10px 30px rgba(0,0,0,.55)}
+      #skiPP button{width:46px;height:46px;border:0;border-radius:50%;background:transparent;color:#e8c9a6;display:flex;align-items:center;justify-content:center}
+      #skiPP button[data-act="toggle"]{background:linear-gradient(160deg,#c48451,#8a5533);color:#fff;width:54px;height:54px}
+      #skiPP svg{width:24px;height:24px;pointer-events:none} #skiPP button[data-act="toggle"] svg{width:26px;height:26px}
+    }
+  </style>
+</head>
+<body class="text-stone-100 antialiased">
+<div id="viewport"><div id="stage">
+
+  <!-- HEADER -->
+  <header class="glass rounded-2xl px-5 py-3 flex items-center justify-between gap-5 shrink-0">
+    <div class="flex items-center gap-3 min-w-0">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(181,115,79,.15);border:1px solid rgba(196,140,100,.3)"><i data-lucide="newspaper" class="w-7 h-7 text-[#cf9b6f] metric-icon"></i></div>
+      <div class="min-w-0">
+        <p class="text-2xl font-extrabold tracking-tight leading-none flex items-center gap-2.5">NOTICIAS MINERAS <span class="fi fi-cl" style="font-size:1.1em;border-radius:3px;box-shadow:0 1px 3px rgba(0,0,0,.4)"></span></p>
+        <p class="text-xs text-stone-400 mt-1 flex items-center gap-2"><i data-lucide="rss" class="w-4 h-4 text-[#cf9b6f]"></i> ADN Minero · titulares de la minería de Chile, en vivo</p>
+      </div>
+    </div>
+    <div class="text-right shrink-0 px-5 border-x border-white/10">
+      <p id="clock" class="text-3xl font-bold tracking-tight leading-none tabnum">--:--:--</p>
+      <p id="clockDate" class="text-xs text-stone-400 mt-1 capitalize">hora local · Chile</p>
+    </div>
+    <div class="flex items-center gap-2 shrink-0">
+      <span id="counter" class="text-xs text-stone-400 tabnum mr-1">—</span>
+      <button id="prevBtn" class="glass-strong rounded-lg h-9 w-9 grid place-items-center hover:bg-[#b5734f]/15 transition active:scale-95" title="Anterior"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+      <button id="pauseBtn" class="glass-strong rounded-lg h-9 w-9 grid place-items-center hover:bg-[#b5734f]/15 transition active:scale-95" title="Pausar/Reanudar"><i id="pauseIcon" data-lucide="pause" class="w-5 h-5"></i></button>
+      <button id="nextBtn" class="glass-strong rounded-lg h-9 w-9 grid place-items-center hover:bg-[#b5734f]/15 transition active:scale-95" title="Siguiente"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+      <button id="voiceBtn" class="glass-strong rounded-lg h-9 px-3 grid place-items-center hover:bg-[#b5734f]/15 transition active:scale-95 flex items-center gap-2 text-sm font-semibold" title="Activar/silenciar locución"><i id="voiceIcon" data-lucide="volume-x" class="w-5 h-5"></i> <span id="voiceLbl">Locución</span></button>
+    </div>
+  </header>
+  <div class="h-1.5 rounded-full bg-stone-700/40 overflow-hidden shrink-0"><div id="progress" class="h-full" style="width:0%; background:linear-gradient(90deg,#d9a877,#b5734f)"></div></div>
+
+  <!-- HERO NOTICIA -->
+  <section id="heroWrap" class="glass rounded-2xl p-7 flex-1 min-h-0 flex flex-col justify-center">
+    <div class="flex items-center gap-3 mb-4">
+      <span id="srcBadge" class="text-xs font-bold px-3 py-1 rounded-full" style="background:rgba(181,115,79,.18);border:1px solid rgba(196,140,100,.35);color:#e6c1a3">—</span>
+      <span id="when" class="text-xs text-stone-400 flex items-center gap-1.5"><i data-lucide="clock" class="w-4 h-4"></i> —</span>
+      <span id="speaking" class="hidden items-end gap-0.5 h-4 ml-1"><span class="eqbar" style="height:100%;animation-delay:0s"></span><span class="eqbar" style="height:100%;animation-delay:.15s"></span><span class="eqbar" style="height:100%;animation-delay:.3s"></span><span class="text-[11px] text-emerald-300 ml-1 self-center">leyendo…</span></span>
+    </div>
+    <h1 id="headline" class="text-4xl font-extrabold tracking-tight leading-tight fade">Cargando titulares mineros…</h1>
+    <a id="readLink" href="#" target="_blank" rel="noopener" class="inline-flex items-center gap-2 mt-6 text-sm font-semibold text-[#e6c1a3] bg-[#b5734f]/15 border border-[#c08457]/30 rounded-lg px-4 py-2.5 w-fit active:scale-95 transition">
+      <i data-lucide="external-link" class="w-4 h-4 text-[#cf9b6f]"></i> Leer la nota en la fuente
+    </a>
+  </section>
+
+  <!-- COLA DE PRÓXIMAS -->
+  <section class="glass rounded-2xl px-5 py-3 shrink-0">
+    <p class="text-xs uppercase tracking-wider text-stone-400 flex items-center gap-2 mb-2"><i data-lucide="list" class="w-4 h-4 text-[#cf9b6f]"></i> A continuación</p>
+    <div id="queue" class="grid grid-cols-3 gap-3"></div>
+    <p class="text-[11px] text-stone-500 mt-3">Fuente: <b class="text-stone-300">Google Noticias</b> (agregador de múltiples medios) · se actualiza cada 12 min · los titulares y su contenido pertenecen a cada medio citado.</p>
+  </section>
+
+</div></div>
+
+<div id="skiPP" role="group" aria-label="Controles">
+  <button data-act="prev" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 6h2.2v12H7zM20 6v12l-9.2-6z"></path></svg></button>
+  <button data-act="toggle" aria-label="Pausar o reanudar"><svg id="skiPPicon" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4.2" height="14" rx="1.2"></rect><rect x="13.8" y="5" width="4.2" height="14" rx="1.2"></rect></svg></button>
+  <button data-act="next" aria-label="Siguiente"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.8 6H17v12h-2.2zM4 6l9.2 6L4 18z"></path></svg></button>
+</div>
+
+<script>
+  const TZ='America/Santiago';
+  const GNEWS='https://news.google.com/rss/search?q='+encodeURIComponent('minería Chile cobre litio')+'&hl=es-419&gl=CL&ceid=CL:es';
+  const API='https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(GNEWS);
+  const REFRESH_MS=12*60*1000, ROTATE_MS=11000;
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+
+  const FALLBACK=[
+    {t:'Chile es el mayor productor de cobre del mundo, con cerca de un cuarto de la producción global', s:'ADN Minero', link:'#', t0:Date.now()},
+    {t:'El litio chileno es clave para las baterías y la transición energética mundial', s:'ADN Minero', link:'#', t0:Date.now()},
+    {t:'La minería aporta una parte importante del PIB y de las exportaciones de Chile', s:'ADN Minero', link:'#', t0:Date.now()},
+    {t:'Codelco es la mayor productora de cobre del planeta', s:'ADN Minero', link:'#', t0:Date.now()},
+    {t:'Chile lidera el mundo en cobre y renio, y es segundo en litio', s:'ADN Minero', link:'#', t0:Date.now()},
+  ];
+
+  let items=[], idx=0, paused=false, voiceOn=false, rotTimer=null, safeTimer=null;
+  const synth=window.speechSynthesis; let voice=null;
+
+  function tick(){ const n=new Date();
+    $('clock').textContent=n.toLocaleTimeString('es-CL',{timeZone:TZ,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+    $('clockDate').textContent=n.toLocaleDateString('es-CL',{timeZone:TZ,weekday:'long',day:'2-digit',month:'long'})+' · hora Chile';
+  }
+  function hace(ms){ if(!ms) return ''; const s=Math.max(0,(Date.now()-ms)/1000);
+    if(s<3600) return 'hace '+Math.max(1,Math.floor(s/60))+' min'; if(s<86400) return 'hace '+Math.floor(s/3600)+' h'; return 'hace '+Math.floor(s/86400)+' d'; }
+  function limpia(t){ const i=t.lastIndexOf(' - '); return i>20 ? {t:t.slice(0,i).trim(), s:t.slice(i+3).trim()} : {t:t.trim(), s:''}; }
+
+  // ---- voz ----
+  function pickVoice(){ const vs=synth?synth.getVoices():[]; if(!vs.length) return;
+    const es=vs.filter(v=>/^es/i.test(v.lang));
+    const pref=['Pablo','Raul','Raúl','Jorge','Diego','Carlos','Miguel','Enrique','Sabina','Helena','Laura','Google español'];
+    for(const p of pref){ const m=es.find(v=>v.name.includes(p)); if(m){ voice=m; return; } }
+    voice = es.find(v=>/es-CL/i.test(v.lang)) || es.find(v=>/es-MX/i.test(v.lang)) || es.find(v=>/es-ES/i.test(v.lang)) || es[0] || vs[0] || null;
+  }
+  if(synth){ synth.onvoiceschanged=pickVoice; pickVoice(); }
+  function speak(text){ if(!synth) return; synth.cancel();
+    const u=new SpeechSynthesisUtterance(text); if(voice) u.voice=voice; u.lang=(voice&&voice.lang)||'es-ES'; u.rate=0.97; u.pitch=0.9; u.volume=1;
+    u.onstart=()=>{ $('speaking').classList.remove('hidden'); $('speaking').classList.add('flex'); };
+    u.onend=()=>{ $('speaking').classList.add('hidden'); $('speaking').classList.remove('flex'); if(voiceOn && !paused) next(); };
+    synth.speak(u);
+  }
+
+  function restartProgress(ms){ const p=$('progress'); p.style.transition='none'; p.style.width='0%'; void p.offsetWidth;
+    if(!paused){ p.style.transition='width '+ms+'ms linear'; p.style.width='100%'; } }
+  function freezeProgress(){ const p=$('progress'); p.style.transition='none'; p.style.width=getComputedStyle(p).width; }
+
+  function render(){ if(!items.length) return; const it=items[((idx%items.length)+items.length)%items.length];
+    $('srcBadge').textContent=it.s||'Noticias'; $('when').innerHTML='<i data-lucide="clock" class="w-4 h-4"></i> '+(hace(it.t0)||'reciente');
+    const h=$('headline'); h.classList.remove('fade'); void h.offsetWidth; h.classList.add('fade'); h.textContent=it.t;
+    $('readLink').href=it.link||'#'; $('readLink').style.display=(it.link&&it.link!=='#')?'':'none';
+    $('counter').textContent=((idx%items.length)+1)+' / '+items.length;
+    // cola
+    let q='';
+    for(let k=1;k<=3;k++){ const n=items[(idx+k)%items.length]; if(!n) break;
+      q+='<div class="glass-strong rounded-xl px-3 py-2.5"><p class="text-[11px] text-[#cf9b6f] font-semibold truncate">'+(n.s||'Noticias')+'</p><p class="text-sm text-stone-200 mt-0.5" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">'+n.t+'</p></div>'; }
+    $('queue').innerHTML=q; drawIcons();
+  }
+
+  function schedule(){ clearTimeout(rotTimer); clearTimeout(safeTimer); if(paused) { freezeProgress(); return; }
+    if(voiceOn && synth){ const words=items.length?items[idx%items.length].t.split(/\s+/).length:12; const est=Math.min(18000,Math.max(4500,words*380));
+      restartProgress(est); speak(items[idx%items.length].t);
+      safeTimer=setTimeout(()=>{ if(voiceOn&&!paused) next(); }, est+6000); // por si onend no dispara
+    } else { restartProgress(ROTATE_MS); rotTimer=setTimeout(next, ROTATE_MS); }
+  }
+  function goto(i){ idx=((i%items.length)+items.length)%items.length; render(); schedule(); }
+  function next(){ goto(idx+1); }
+  function prev(){ goto(idx-1); }
+
+  function togglePause(){ paused=!paused; $('pauseIcon').setAttribute('data-lucide', paused?'play':'pause'); drawIcons();
+    if(paused){ clearTimeout(rotTimer); clearTimeout(safeTimer); if(synth) synth.cancel(); freezeProgress(); }
+    else { schedule(); } }
+  function toggleVoice(){ voiceOn=!voiceOn;
+    $('voiceIcon').setAttribute('data-lucide', voiceOn?'volume-2':'volume-x'); $('voiceLbl').textContent=voiceOn?'Locución ON':'Locución'; drawIcons();
+    if(synth) synth.cancel(); clearTimeout(rotTimer); clearTimeout(safeTimer);
+    if(!paused) schedule(); // reprograma según el nuevo modo
+  }
+
+  $('prevBtn').addEventListener('click', ()=>{ if(synth) synth.cancel(); prev(); });
+  $('nextBtn').addEventListener('click', ()=>{ if(synth) synth.cancel(); next(); });
+  $('pauseBtn').addEventListener('click', togglePause);
+  $('voiceBtn').addEventListener('click', toggleVoice);
+  (function(){ var r=$('skiPP'); if(!r) return; var ic=$('skiPPicon'), disp=false;
+    var PLAY='<path d="M8 5v14l11-7z"></path>', PAUSE='<rect x="6" y="5" width="4.2" height="14" rx="1.2"></rect><rect x="13.8" y="5" width="4.2" height="14" rx="1.2"></rect>';
+    r.addEventListener('click',function(ev){ var b=ev.target.closest('button'); if(!b) return; var a=b.getAttribute('data-act');
+      if(a==='next') $('nextBtn').click(); else if(a==='prev') $('prevBtn').click(); else { $('pauseBtn').click(); disp=!disp; ic.innerHTML=disp?PLAY:PAUSE; } }); })();
+
+  async function load(){
+    let list=null;
+    try{ const r=await fetch(API,{cache:'no-store'}); const j=await r.json();
+      if(j&&j.status==='ok'&&Array.isArray(j.items)&&j.items.length){
+        list=j.items.slice(0,15).map(it=>{ const c=limpia(it.title||''); return {t:c.t, s:c.s, link:it.link||'#', t0:it.pubDate?Date.parse(it.pubDate):Date.now()}; }).filter(x=>x.t&&x.t.length>15);
+      }
+    }catch(e){}
+    if(!list||!list.length) list=FALLBACK;
+    const wasEmpty=!items.length; items=list; if(idx>=items.length) idx=0;
+    if(wasEmpty){ render(); schedule(); } else { render(); }  // si ya rotaba, no reinicia el ciclo
+    clearTimeout(load._t); load._t=setTimeout(load, REFRESH_MS);
+  }
+
+  fitStageInit();
+  function fitStageInit(){ function f(){ const w=innerWidth||1600,h=innerHeight||900; $('stage').style.setProperty('--s',Math.min(w/1600,h/900)||1); } addEventListener('resize',f); addEventListener('load',f); f(); }
+  drawIcons(); tick(); setInterval(tick,1000); load();
+  document.addEventListener('visibilitychange', ()=>{ if(document.hidden){ clearTimeout(rotTimer); clearTimeout(safeTimer); if(synth) synth.cancel(); } else if(!paused){ schedule(); } });
+</script>
+</body>
+</html>
