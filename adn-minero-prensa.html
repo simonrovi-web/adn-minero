@@ -98,11 +98,11 @@
       </a>
     </div>
     <!-- Gráfica de categoría (rellena el cuadro, cambia con el titular) -->
-    <div id="catCard" class="hidden md:flex shrink-0 w-[360px] self-stretch rounded-2xl flex-col items-center justify-center gap-6 relative" style="background:linear-gradient(160deg, rgba(48,41,35,.5), rgba(24,19,16,.5));border:1px solid rgba(196,140,100,.3)">
-      <div id="catRing" class="h-44 w-44 rounded-full grid place-items-center" style="background:rgba(207,155,111,.10);border:2px solid rgba(207,155,111,.35)">
-        <i id="catIcon" data-lucide="pickaxe" class="w-24 h-24 text-[#cf9b6f] metric-icon"></i>
+    <div id="catCard" class="hidden md:flex shrink-0 w-[380px] self-stretch rounded-2xl flex-col items-center justify-center gap-7 relative" style="background:linear-gradient(160deg, rgba(48,41,35,.5), rgba(24,19,16,.5));border:1px solid rgba(196,140,100,.3)">
+      <div id="catRing" class="h-52 w-52 rounded-full grid place-items-center" style="background:rgba(207,155,111,.10);border:2px solid rgba(207,155,111,.35)">
+        <i id="catIcon" data-lucide="pickaxe" class="w-28 h-28 text-[#cf9b6f] metric-icon"></i>
       </div>
-      <p id="catLabel" class="text-3xl font-extrabold tracking-[0.16em] text-[#cf9b6f]">MINERÍA</p>
+      <p id="catLabel" class="text-4xl font-extrabold tracking-[0.14em] text-[#cf9b6f]">MINERÍA</p>
       <p class="text-xs uppercase tracking-widest text-stone-500 absolute bottom-4">ADN Minero</p>
     </div>
   </section>
@@ -151,10 +151,13 @@
   function categoria(t){ const s=(t||'').toLowerCase();
     const m=[
       [/sismo|terremoto|temblor/, 'activity','SISMO','#f87171'],
+      [/accidente|rescate|derrumbe|fallecid|muert|atrapad|emergencia|seguridad|riesgo|colaps/, 'shield-alert','SEGURIDAD','#f59e0b'],
+      [/exporta|embarque|env[ií]o|\btonelada|puerto/, 'ship','EXPORTACIÓN','#67c7c4'],
       [/codelco|bhp|escondida|sqm|anglo|collahuasi|teck|glencore|antofagasta|lundin|albemarle|empresa|compañ[ií]a|faena/, 'building-2','EMPRESAS','#cf9b6f'],
-      [/exporta|fiscal|\bpib\b|econom|precio|d[oó]lar|inversi[oó]n|royalty|impuesto|ganancia|producci[oó]n|\bmercado\b/, 'trending-up','ECONOMÍA','#86b98f'],
+      [/fiscal|\bpib\b|econom|precio|d[oó]lar|inversi[oó]n|royalty|impuesto|ganancia|producci[oó]n|\bmercado\b/, 'trending-up','ECONOMÍA','#86b98f'],
+      [/contaminaci|relave|glaciar|biodivers|ambient|sosten|hu[ií]dobro|descarboniz/, 'leaf','MEDIOAMBIENTE','#8bd48b'],
       [/energ|transici|renovab|solar|hidr[oó]gen|\bplanta\b/, 'zap','ENERGÍA','#7dd3fc'],
-      [/agua|comunidad|ambient|sosten|glaciar|territorio|huelga|sindicat|trabajador/, 'droplets','TERRITORIO','#7fbfd1'],
+      [/agua|comunidad|territorio|huelga|sindicat|trabajador/, 'droplets','TERRITORIO','#7fbfd1'],
       [/litio|lithium|bater[ií]a|salar/, 'battery-charging','LITIO','#a3e635'],
       [/\boro\b|gold/, 'gem','ORO','#fbbf24'],
       [/plata\b|silver/, 'gem','PLATA','#cbd5e1'],
