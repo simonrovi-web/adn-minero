@@ -150,14 +150,14 @@
   function limpia(t){ const i=t.lastIndexOf(' - '); return i>20 ? {t:t.slice(0,i).trim(), s:t.slice(i+3).trim()} : {t:t.trim(), s:''}; }
   function categoria(t){ const s=(t||'').toLowerCase();
     const m=[
+      [/sismo|terremoto|temblor/, 'activity','SISMO','#f87171'],
+      [/codelco|bhp|escondida|sqm|anglo|collahuasi|teck|glencore|antofagasta|lundin|albemarle|empresa|compañ[ií]a|faena/, 'building-2','EMPRESAS','#cf9b6f'],
+      [/exporta|fiscal|\bpib\b|econom|precio|d[oó]lar|inversi[oó]n|royalty|impuesto|ganancia|producci[oó]n|\bmercado\b/, 'trending-up','ECONOMÍA','#86b98f'],
+      [/energ|transici|renovab|solar|hidr[oó]gen|\bplanta\b/, 'zap','ENERGÍA','#7dd3fc'],
+      [/agua|comunidad|ambient|sosten|glaciar|territorio|huelga|sindicat|trabajador/, 'droplets','TERRITORIO','#7fbfd1'],
       [/litio|lithium|bater[ií]a|salar/, 'battery-charging','LITIO','#a3e635'],
       [/\boro\b|gold/, 'gem','ORO','#fbbf24'],
       [/plata\b|silver/, 'gem','PLATA','#cbd5e1'],
-      [/sismo|terremoto|temblor/, 'activity','SISMO','#f87171'],
-      [/energ|transici|renovab|solar|hidr[oó]gen|planta/, 'zap','ENERGÍA','#7dd3fc'],
-      [/exporta|fiscal|\bpib\b|econom|precio|d[oó]lar|inversi[oó]n|royalty|impuesto|ganancia/, 'trending-up','ECONOMÍA','#86b98f'],
-      [/codelco|bhp|escondida|sqm|anglo|collahuasi|teck|glencore|empresa|compañ[ií]a|faena/, 'building-2','EMPRESAS','#cf9b6f'],
-      [/agua|comunidad|ambient|sosten|glaciar|territorio|huelga|sindicat|trabajador/, 'droplets','TERRITORIO','#7fbfd1'],
       [/cobre|copper|c[aá]todo|mineral/, 'coins','COBRE','#e0955f'],
     ];
     for(const it of m){ if(it[0].test(s)) return {ic:it[1], lb:it[2], c:it[3]}; }
