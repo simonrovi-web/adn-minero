@@ -108,6 +108,7 @@
     @keyframes txtfade { from { opacity: 0; } to { opacity: 1; } }
     .txt-swap { animation: txtfade .5s ease both; }
   </style>
+<style>/* movil: ocultar hora */@media (max-width:820px){#clock,#clockDate{display:none!important}*:has(> #clock){display:none!important}}</style>
 </head>
 
 <body class="text-stone-100 font-sans antialiased">
@@ -407,11 +408,6 @@
           </div>
         </div>
         <div id="forecast" class="grid grid-cols-5 gap-3 fade-el"></div>
-      </section>
-
-      <section class="adn-mobile-only glass rounded-2xl p-4">
-        <p class="text-sm font-semibold flex items-center gap-2 mb-3"><i data-lucide="map" class="w-5 h-5 text-[#cf9b6f]"></i> Todas las faenas · ubicación en Maps</p>
-        <div id="faenaMapItems" class="space-y-2"></div>
       </section>
 
     </div>
