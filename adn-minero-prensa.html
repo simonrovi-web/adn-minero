@@ -134,7 +134,7 @@
   <section class="glass rounded-2xl px-5 py-3 shrink-0">
     <p class="text-xs uppercase tracking-wider text-stone-400 flex items-center gap-2 mb-2"><i data-lucide="list" class="w-4 h-4 text-[#cf9b6f]"></i> A continuación</p>
     <div id="queue" class="grid grid-cols-3 gap-3"></div>
-    <p class="text-[11px] text-stone-500 mt-3">Fuente: <b class="text-stone-300">Google Noticias</b> (agregador de múltiples medios) · se actualiza cada 12 min · los titulares y su contenido pertenecen a cada medio citado.</p>
+    <p class="text-[11px] text-stone-500 mt-3">Fuente: <b class="text-stone-300">Google Noticias</b> (agregador de múltiples medios) · solo titulares de los últimos 7 días · se actualiza cada 12 min · los titulares y su contenido pertenecen a cada medio citado.</p>
   </section>
 
 </div></div>
@@ -149,7 +149,7 @@
   const TZ='America/Santiago';
   const GNEWS='https://news.google.com/rss/search?q='+encodeURIComponent('minería Chile cobre litio')+'&hl=es-419&gl=CL&ceid=CL:es';
   const API='https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(GNEWS);
-  const REFRESH_MS=12*60*1000, ROTATE_MS=11000;
+  const REFRESH_MS=12*60*1000, ROTATE_MS=11000, MAX_AGE_MS=7*24*60*60*1000; // solo noticias de la última semana
   const $=id=>document.getElementById(id);
   const drawIcons=()=>window.lucide&&lucide.createIcons();
 
@@ -269,7 +269,12 @@
     const ctl=new AbortController(); const to=setTimeout(()=>ctl.abort(),8000);
     try{ const r=await fetch(API,{cache:'no-store',signal:ctl.signal}); const j=await r.json(); clearTimeout(to);
       if(j&&j.status==='ok'&&Array.isArray(j.items)&&j.items.length){
-        const list=j.items.slice(0,15).map(it=>{ const c=limpia(it.title||''); return {t:c.t, s:c.s, link:it.link||'#', t0:it.pubDate?Date.parse(it.pubDate):Date.now()}; }).filter(x=>x.t&&x.t.length>15);
+        const now=Date.now();
+        const list=j.items.map(it=>{ const c=limpia(it.title||''); return {t:c.t, s:c.s, link:it.link||'#', t0:it.pubDate?Date.parse(it.pubDate):now}; })
+          .filter(x=>x.t&&x.t.length>15)
+          .filter(x=>x.t0 && (now-x.t0)<=MAX_AGE_MS)   // solo última semana
+          .sort((a,b)=>b.t0-a.t0)                       // más recientes primero
+          .slice(0,15);
         if(list.length) return list;
       }
     }catch(e){ clearTimeout(to); }
