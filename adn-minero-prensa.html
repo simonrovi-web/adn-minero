@@ -33,6 +33,11 @@
     .eqbar{ width:4px; background:#7ee787; border-radius:2px; transform-origin:bottom; animation:eq .9s ease-in-out infinite; }
     @keyframes eq{ 0%,100%{ transform:scaleY(.35) } 50%{ transform:scaleY(1) } }
 
+    /* ===== controles (anterior / pausa / siguiente) ===== */
+    .ctrl-btn{ display:grid; place-items:center; width:2.5rem; height:2.5rem; border-radius:999px; color:#e6d4c4; cursor:pointer; transition:transform .15s ease, border-color .25s ease, background .25s ease, color .25s ease; background:linear-gradient(160deg, rgba(48,41,35,.78), rgba(28,23,19,.58)); border:1px solid rgba(196,168,148,.18); backdrop-filter:blur(14px) saturate(140%); -webkit-backdrop-filter:blur(14px) saturate(140%); }
+    .ctrl-btn:hover{ border-color:rgba(207,155,111,.55); color:#f0e2d3; background:linear-gradient(160deg, rgba(58,49,42,.85), rgba(34,28,23,.66)); }
+    .ctrl-btn:active{ transform:scale(.92); }
+
     /* ===== botón de locución ===== */
     .voice-btn{ display:inline-flex; align-items:center; gap:.5rem; height:2.5rem; padding:0 1rem; border-radius:999px; font-size:.82rem; font-weight:700; letter-spacing:.015em; color:#e6d4c4; cursor:pointer; transition:transform .15s ease, border-color .25s ease, box-shadow .3s ease, background .3s ease; background:linear-gradient(160deg, rgba(48,41,35,.78), rgba(28,23,19,.58)); border:1px solid rgba(196,168,148,.18); backdrop-filter:blur(14px) saturate(140%); -webkit-backdrop-filter:blur(14px) saturate(140%); white-space:nowrap; }
     .voice-btn:hover{ border-color:rgba(207,155,111,.55); color:#f0e2d3; }
@@ -91,9 +96,9 @@
     </div>
     <div class="flex items-center gap-2 shrink-0">
       <span id="counter" class="text-xs text-stone-400 tabnum mr-1">—</span>
-      <button id="prevBtn" class="glass-strong rounded-lg h-9 w-9 grid place-items-center hover:bg-[#b5734f]/15 transition active:scale-95" title="Anterior"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
-      <button id="pauseBtn" class="glass-strong rounded-lg h-9 w-9 grid place-items-center hover:bg-[#b5734f]/15 transition active:scale-95" title="Pausar/Reanudar"><i id="pauseIcon" data-lucide="pause" class="w-5 h-5"></i></button>
-      <button id="nextBtn" class="glass-strong rounded-lg h-9 w-9 grid place-items-center hover:bg-[#b5734f]/15 transition active:scale-95" title="Siguiente"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+      <button id="prevBtn" class="ctrl-btn" title="Anterior"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+      <button id="pauseBtn" class="ctrl-btn" title="Pausar/Reanudar"><i id="pauseIcon" data-lucide="pause" class="w-5 h-5"></i></button>
+      <button id="nextBtn" class="ctrl-btn" title="Siguiente"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
       <button id="voiceBtn" class="voice-btn ml-1" title="Activar/silenciar locución"><span class="vic"><i id="voiceIcon" data-lucide="mic-off" class="w-5 h-5"></i></span><span id="voiceLbl">Locución</span><span class="voice-wave" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>
     </div>
   </header>
