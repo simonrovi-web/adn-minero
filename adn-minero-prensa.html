@@ -167,16 +167,25 @@
     return {ic:'pickaxe', lb:'MINERÍA', c:'#cf9b6f'};
   }
 
-  // ---- voz ----
+  // ---- voz (femenina y lo más natural posible según el dispositivo) ----
+  // Nombres de voces femeninas de es-* conocidas en Chrome/Edge/Windows/Android/iOS
+  const FEM=['elvira','dalia','ximena','paloma','sabina','helena','laura','esperanza','marisol','ángela','angela','lucia','lucía','mónica','monica','paulina','catalina','mia','isabela','conchita','penélope','penelope','luciana','camila'];
   function pickVoice(){ const vs=synth?synth.getVoices():[]; if(!vs.length) return;
     const es=vs.filter(v=>/^es/i.test(v.lang));
-    const pref=['Pablo','Raul','Raúl','Jorge','Diego','Carlos','Miguel','Enrique','Sabina','Helena','Laura','Google español'];
-    for(const p of pref){ const m=es.find(v=>v.name.includes(p)); if(m){ voice=m; return; } }
-    voice = es.find(v=>/es-CL/i.test(v.lang)) || es.find(v=>/es-MX/i.test(v.lang)) || es.find(v=>/es-ES/i.test(v.lang)) || es[0] || vs[0] || null;
+    if(!es.length){ voice=vs[0]||null; return; }
+    const isFem=n=>FEM.some(f=>n.includes(f));
+    const score=v=>{ const n=v.name.toLowerCase(); let s=0;
+      if(/natural|online|neural/.test(n)) s+=100;      // voces neuronales = menos robóticas
+      if(n.includes('google')) s+=60;                  // Google TTS suena natural (y es femenina)
+      if(isFem(n)) s+=50;                               // femenina conocida
+      if(/es-cl/i.test(v.lang)) s+=8; else if(/es-mx|es-us|es-419/i.test(v.lang)) s+=5; else if(/es-es/i.test(v.lang)) s+=3;
+      if(/male|raul|raúl|pablo|jorge|diego|carlos|miguel|enrique|alvaro|álvaro|dario|darío/.test(n)) s-=80; // evitar masculinas
+      return s; };
+    voice = es.slice().sort((a,b)=>score(b)-score(a))[0] || es[0] || vs[0] || null;
   }
   if(synth){ synth.onvoiceschanged=pickVoice; pickVoice(); }
   function speak(text){ if(!synth) return; synth.cancel();
-    const u=new SpeechSynthesisUtterance(text); if(voice) u.voice=voice; u.lang=(voice&&voice.lang)||'es-ES'; u.rate=0.97; u.pitch=0.9; u.volume=1;
+    const u=new SpeechSynthesisUtterance(text); if(voice) u.voice=voice; u.lang=(voice&&voice.lang)||'es-ES'; u.rate=0.96; u.pitch=1.02; u.volume=1;
     u.onstart=()=>{ $('speaking').classList.remove('hidden'); $('speaking').classList.add('flex'); };
     u.onend=()=>{ $('speaking').classList.add('hidden'); $('speaking').classList.remove('flex'); if(voiceOn && !paused) next(); };
     synth.speak(u);
