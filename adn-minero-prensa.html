@@ -134,7 +134,7 @@
   <section class="glass rounded-2xl px-5 py-3 shrink-0">
     <p class="text-xs uppercase tracking-wider text-stone-400 flex items-center gap-2 mb-2"><i data-lucide="list" class="w-4 h-4 text-[#cf9b6f]"></i> A continuación</p>
     <div id="queue" class="grid grid-cols-3 gap-3"></div>
-    <p class="text-[11px] text-stone-500 mt-3">Fuente: <b class="text-stone-300">Google Noticias</b> (agregador de múltiples medios) · solo titulares de los últimos 7 días · se actualiza cada 12 min · los titulares y su contenido pertenecen a cada medio citado.</p>
+    <p class="text-[11px] text-stone-500 mt-3">Fuente: <b class="text-stone-300">Google Noticias</b> (agregador de múltiples medios) · prioriza titulares de los últimos 7 días · se actualiza cada 12 min · los titulares y su contenido pertenecen a cada medio citado.</p>
   </section>
 
 </div></div>
@@ -269,12 +269,12 @@
     const ctl=new AbortController(); const to=setTimeout(()=>ctl.abort(),8000);
     try{ const r=await fetch(API,{cache:'no-store',signal:ctl.signal}); const j=await r.json(); clearTimeout(to);
       if(j&&j.status==='ok'&&Array.isArray(j.items)&&j.items.length){
-        const now=Date.now();
-        const list=j.items.map(it=>{ const c=limpia(it.title||''); return {t:c.t, s:c.s, link:it.link||'#', t0:it.pubDate?Date.parse(it.pubDate):now}; })
+        const now=Date.now(), MIN=15, MAX=20;
+        const all=j.items.map(it=>{ const c=limpia(it.title||''); return {t:c.t, s:c.s, link:it.link||'#', t0:it.pubDate?Date.parse(it.pubDate):now}; })
           .filter(x=>x.t&&x.t.length>15)
-          .filter(x=>x.t0 && (now-x.t0)<=MAX_AGE_MS)   // solo última semana
-          .sort((a,b)=>b.t0-a.t0)                       // más recientes primero
-          .slice(0,15);
+          .sort((a,b)=>b.t0-a.t0);                       // más recientes primero
+        const fresh=all.filter(x=>x.t0 && (now-x.t0)<=MAX_AGE_MS);  // preferir última semana
+        const list=(fresh.length>=MIN ? fresh : all).slice(0,MAX);  // siempre ≥15: si no hay suficientes frescas, completa con las más recientes
         if(list.length) return list;
       }
     }catch(e){ clearTimeout(to); }
