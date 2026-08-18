@@ -28,6 +28,7 @@
     .live-dot{ width:8px;height:8px;border-radius:50%;background:#5fd48a;box-shadow:0 0 8px #5fd48a;animation:vpulse 1.6s ease-in-out infinite; }
     .qr-card{ background:linear-gradient(160deg,#f4ead9,#e6d3bd); box-shadow:0 12px 40px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.5); }
     .cta-play{ background:linear-gradient(135deg,#f0d7b6,#cf9b6f 55%,#b5734f); color:#2a1c12; box-shadow:0 8px 26px rgba(181,115,79,.5); }
+    .cta-yt{ background:linear-gradient(135deg,#ff5252,#e02424); color:#fff; box-shadow:0 8px 26px rgba(224,36,36,.42); }
     @keyframes shimmer{ 0%{transform:translateX(-120%)} 100%{transform:translateX(220%)} }
     .shine{ position:relative; overflow:hidden; }
     .shine::after{ content:''; position:absolute; top:0; left:0; width:40%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent); animation:shimmer 3.4s ease-in-out infinite; }
@@ -76,20 +77,32 @@
 
   <!-- STATS + CTA -->
   <div id="ctaRow" class="flex items-stretch gap-4 shrink-0">
-    <div class="glass rounded-2xl px-6 py-4 flex-1 grid grid-cols-3 gap-2 divide-x divide-white/10">
-      <div class="text-center px-2"><p class="text-4xl font-black brand-grad tabnum">14</p><p class="text-xs text-stone-400 mt-1 leading-tight">paneles en vivo</p></div>
-      <div class="text-center px-2"><p class="text-4xl font-black brand-grad tabnum">34</p><p class="text-xs text-stone-400 mt-1 leading-tight">faenas monitoreadas</p></div>
-      <div class="text-center px-2"><p class="text-4xl font-black brand-grad tabnum">24/7</p><p class="text-xs text-stone-400 mt-1 leading-tight">actualización continua</p></div>
+    <div class="glass rounded-2xl px-5 py-4 flex flex-col justify-center gap-3 shrink-0" style="min-width:150px">
+      <div class="grid grid-cols-3 gap-2 divide-x divide-white/10">
+        <div class="text-center px-1"><p class="text-3xl font-black brand-grad tabnum">14</p><p class="text-[10px] text-stone-400 mt-0.5 leading-tight">paneles</p></div>
+        <div class="text-center px-1"><p class="text-3xl font-black brand-grad tabnum">34</p><p class="text-[10px] text-stone-400 mt-0.5 leading-tight">faenas</p></div>
+        <div class="text-center px-1"><p class="text-3xl font-black brand-grad tabnum">24/7</p><p class="text-[10px] text-stone-400 mt-0.5 leading-tight">en vivo</p></div>
+      </div>
+      <p class="text-[11px] text-stone-500 text-center leading-snug flex items-center justify-center gap-1.5"><i data-lucide="smartphone" class="w-3.5 h-3.5"></i> Android · iPhone · Web</p>
     </div>
-    <div class="glass rounded-2xl px-6 py-4 flex items-center gap-5 shrink-0">
-      <div class="qr-card rounded-xl p-2.5 shrink-0"><img id="qr" alt="QR ADN Minero" class="w-[110px] h-[110px] block rounded-md" /></div>
+
+    <!-- Descargar app -->
+    <div class="glass rounded-2xl px-5 py-4 flex items-center gap-4 flex-1 min-w-0">
+      <div class="qr-card rounded-xl p-2.5 shrink-0"><img id="qr" alt="QR descargar ADN Minero" class="w-[104px] h-[104px] block rounded-md" /></div>
       <div class="min-w-0">
-        <p class="text-lg font-extrabold leading-tight">Descárgala ahora</p>
-        <p class="text-sm text-stone-400 mt-0.5 mb-3 leading-snug">Escanea el código o<br>búscala como <b class="text-[#e8c9a6]">ADN Minero</b></p>
-        <div class="flex flex-col gap-2">
-          <span class="cta-play inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold w-fit"><i data-lucide="play" class="w-4 h-4 fill-current"></i> Google Play</span>
-          <span class="inline-flex items-center gap-2 text-xs text-stone-400"><i data-lucide="smartphone" class="w-3.5 h-3.5"></i> También en iPhone y web · simonrovi-web.github.io/adn-minero</span>
-        </div>
+        <p class="text-lg font-extrabold leading-tight">Descárgala gratis</p>
+        <p class="text-[13px] text-stone-400 mt-0.5 mb-2.5 leading-snug">Escanea el código o<br>búscala como <b class="text-[#e8c9a6]">ADN Minero</b></p>
+        <span class="cta-play inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold w-fit"><i data-lucide="play" class="w-4 h-4 fill-current"></i> Google Play</span>
+      </div>
+    </div>
+
+    <!-- Suscríbete YouTube -->
+    <div class="glass rounded-2xl px-5 py-4 flex items-center gap-4 flex-1 min-w-0" style="border-color:rgba(255,60,60,.28)">
+      <div class="qr-card rounded-xl p-2.5 shrink-0"><img id="qryt" alt="QR suscribirse en YouTube" class="w-[104px] h-[104px] block rounded-md" /></div>
+      <div class="min-w-0">
+        <p class="text-lg font-extrabold leading-tight flex items-center gap-2"><i data-lucide="youtube" class="w-6 h-6 text-[#ff3d3d]"></i> Suscríbete</p>
+        <p class="text-[13px] text-stone-400 mt-0.5 mb-2.5 leading-snug">Videos de la minería<br>en <b class="text-[#f0b5b5]">@ADNMinero</b></p>
+        <span class="cta-yt inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold w-fit"><i data-lucide="youtube" class="w-4 h-4"></i> YouTube</span>
       </div>
     </div>
   </div>
@@ -113,6 +126,7 @@
       <p class="text-sm text-stone-400 leading-snug">${a.d}</p>
     </div>`).join('');
   document.getElementById('qr').src = "data:image/png;base64,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";
+  document.getElementById('qryt').src = "data:image/png;base64,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";
   function fit(){ const w=innerWidth||1600,h=innerHeight||900; document.getElementById('stage').style.setProperty('--s',Math.min(w/1600,h/900)||1); }
   addEventListener('resize',fit); addEventListener('load',fit); fit(); drawIcons();
 </script>
