@@ -43,7 +43,7 @@
       <p class="text-lg text-[#cf9b6f] font-semibold mt-3">Un aporte de ADN Minero a la minería de Chile</p>
       <p class="text-stone-400 max-w-2xl mx-auto mt-4 leading-relaxed">Tableros con información en tiempo real y datos oficiales sobre la industria que mueve al país. Todo con fuentes públicas, gratis y para todos. Haz clic en cualquiera para abrirlo en pantalla completa.</p>
       <div class="flex flex-wrap items-center justify-center gap-3 mt-6 text-xs">
-        <span class="glass rounded-full px-4 py-1.5 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4 text-[#cf9b6f]"></i> 13 paneles</span>
+        <span class="glass rounded-full px-4 py-1.5 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4 text-[#cf9b6f]"></i> 14 paneles</span>
         <span class="glass rounded-full px-4 py-1.5 flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-emerald-400"></span> Datos en vivo</span>
         <span class="glass rounded-full px-4 py-1.5 flex items-center gap-2"><i data-lucide="badge-check" class="w-4 h-4 text-[#cf9b6f]"></i> Fuentes oficiales</span>
       </div>
@@ -89,6 +89,7 @@
   <script>
     const VIVO = [
       { t:'Noticias Mineras',       f:'adn-minero-prensa.html',           i:'newspaper',  c:'#cf9b6f', v:true, d:'Titulares de la minería de Chile en vivo, con rotación automática y locución. Fuente: Google Noticias.' },
+      { t:'Trabajos y Servicios',   f:'adn-minero-empleos.html',          i:'briefcase',  c:'#a7d18a', badge:'nuevo', badgeCls:'bg-amber-500/15 text-amber-300 border border-amber-400/30', d:'Ofertas de empleo minero y servicios/proveedores, en un tablero con pestañas Trabajos y Servicios.' },
       { t:'Clima de Faenas',        f:'adn-minero-panel.html',            i:'cloud-sun',  c:'#7fbfd1', d:'El clima en tiempo real de 34 faenas mineras: temperatura, viento, UV y pronóstico.' },
       { t:'Commodities Mineros',    f:'adn-minero-commodities.html',      i:'coins',      c:'#cf9b6f', d:'Precio del cobre, oro, plata, dólar y las principales divisas, en vivo.' },
       { t:'Sismos en Vivo',         f:'adn-minero-sismos.html',           i:'activity',   c:'#e05a3f', d:'Monitoreo sísmico de Chile casi al instante, con magnitud y región.' },
@@ -103,6 +104,7 @@
       { t:'Cuenta Pública 2026',    f:'adn-minero-cuenta-publica.html',   i:'file-text',  c:'#c9a888', d:'Resumen de las cifras oficiales del Ministerio de Minería.' },
       { t:'El Cobre y la Energía',  f:'adn-minero-cobre-transicion.html', i:'zap',        c:'#a7d18a', d:'Por qué el mundo necesita cada vez más cobre chileno.' },
       { t:'Chile en el Mundo',      f:'adn-minero-chile-mundo.html',      i:'globe',      c:'#cf9b6f', d:'El liderazgo minero de Chile: 1º en cobre y renio, 2º en litio.' },
+      { t:'Descarga y comparte',    f:'adn-minero-promo.html',            i:'download',   c:'#e8c9a6', badge:'compartir', badgeCls:'bg-[#cf9b6f]/15 text-[#e8c9a6] border border-[#cf9b6f]/30', d:'Afiche con las ventajas de ADN Minero, QR para descargar la app y para suscribirse en YouTube.' },
     ];
 
     function card(p, vivo){
@@ -110,7 +112,7 @@
         <div class="flex items-start justify-between">
           <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:${p.c}22;border:1px solid ${p.c}40"><i data-lucide="${p.i}" class="w-6 h-6 metric-icon" style="color:${p.c}"></i></div>
           <div class="flex flex-col items-end gap-1 shrink-0">
-            <span class="text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full ${vivo?'bg-emerald-500/15 text-emerald-300 border border-emerald-400/20':'bg-amber-500/12 text-amber-300 border border-amber-400/20'}">${vivo?'en vivo':'datos'}</span>
+            <span class="text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full ${p.badgeCls||(vivo?'bg-emerald-500/15 text-emerald-300 border border-emerald-400/20':'bg-amber-500/12 text-amber-300 border border-amber-400/20')}">${p.badge||(vivo?'en vivo':'datos')}</span>
             ${p.v?`<span class="voice-chip text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full flex items-center gap-1"><span class="vdot"></span><i data-lucide="mic" class="w-3 h-3"></i> con voz</span>`:''}
           </div>
         </div>

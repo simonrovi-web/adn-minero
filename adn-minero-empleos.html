@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ADN Minero · Trabajos y Servicios</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      keyframes: { eq:{ '0%,100%':{ transform:'scaleY(.4)' }, '50%':{ transform:'scaleY(1)' } } } } } };
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    html, body { height:100%; overflow:hidden; font-family:'Inter', ui-sans-serif, system-ui, sans-serif; }
+    body { background:
+      radial-gradient(1200px 600px at 15% -10%, rgba(181,115,79,0.14), transparent 60%),
+      radial-gradient(1000px 500px at 100% 0%, rgba(120,108,100,0.10), transparent 55%),
+      #141110; }
+    #viewport { position:fixed; inset:0; display:grid; place-items:center; }
+    #stage { width:1600px; height:900px; transform-origin:center center; transform:scale(var(--s,1)); display:flex; flex-direction:column; padding:24px; gap:14px; }
+    .glass { background:linear-gradient(160deg, rgba(43,37,32,0.60), rgba(26,21,18,0.40)); backdrop-filter:blur(16px) saturate(130%); -webkit-backdrop-filter:blur(16px) saturate(130%); border:1px solid rgba(196,168,148,0.13); box-shadow:0 8px 30px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,240,230,0.04); }
+    .glass-strong { background:linear-gradient(160deg, rgba(48,41,35,0.75), rgba(28,23,19,0.55)); backdrop-filter:blur(20px) saturate(150%); -webkit-backdrop-filter:blur(20px) saturate(150%); border:1px solid rgba(196,168,148,0.16); }
+    .metric-icon{ filter:drop-shadow(0 0 8px currentColor); }
+    .tabnum{ font-variant-numeric:tabular-nums; }
+    #progress { box-shadow:0 0 10px rgba(181,115,79,.6); }
+    @keyframes txtfade{ from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none} }
+    .fade{ animation:txtfade .45s ease both; }
+    .card-job:hover{ border-color:rgba(207,155,111,.4); }
+
+    .ctrl-btn{ display:grid; place-items:center; width:2.5rem; height:2.5rem; border-radius:999px; color:#e6d4c4; cursor:pointer; transition:transform .15s ease, border-color .25s ease, background .25s ease; background:linear-gradient(160deg, rgba(48,41,35,.78), rgba(28,23,19,.58)); border:1px solid rgba(196,168,148,.18); }
+    .ctrl-btn:hover{ border-color:rgba(207,155,111,.55); color:#f0e2d3; }
+    .ctrl-btn:active{ transform:scale(.92); }
+    .tab-btn{ padding:.4rem 1rem; border-radius:999px; font-size:.85rem; font-weight:700; cursor:pointer; transition:all .2s ease; color:#c9b7a5; background:transparent; border:1px solid rgba(196,168,148,.2); white-space:nowrap; }
+    .tab-btn.on{ color:#2a1c12; background:linear-gradient(135deg,#f0d7b6,#cf9b6f 55%,#b5734f); border-color:rgba(240,215,182,.6); box-shadow:0 4px 14px rgba(181,115,79,.4); }
+
+    /* ===== reflow móvil ===== */
+    @media (max-width:820px){
+      html,body{height:auto!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important}
+      #viewport{position:static!important;display:block!important;inset:auto!important;height:auto!important}
+      #stage{position:static!important;width:100%!important;max-width:100vw!important;height:auto!important;transform:none!important;padding:14px!important;padding-bottom:96px!important;gap:12px!important;overflow-x:hidden!important}
+      #stage header{flex-direction:column!important;align-items:stretch!important;gap:12px!important}
+      #stage header > *{width:100%!important;text-align:left!important;border:0!important;justify-content:flex-start!important}
+      .glass,.glass-strong{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:rgba(28,22,18,.96)!important}
+      #grid{grid-template-columns:1fr!important; grid-auto-rows:auto!important; overflow:visible!important; height:auto!important}
+      #board{flex:0 0 auto!important; min-height:0!important}
+      .card-job{min-height:0!important}
+      #clock,#clockDate{display:none!important} *:has(> #clock){display:none!important}
+    }
+    @media (min-width:821px){ #skiPP{display:none!important} }
+    @media (max-width:820px){
+      #skiPP{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:100000;display:flex;align-items:center;gap:6px;padding:6px;border-radius:999px;background:linear-gradient(160deg,rgba(40,30,24,.96),rgba(24,18,15,.96));border:1px solid rgba(196,168,148,.22);box-shadow:0 10px 30px rgba(0,0,0,.55)}
+      #skiPP button{width:46px;height:46px;border:0;border-radius:50%;background:transparent;color:#e8c9a6;display:flex;align-items:center;justify-content:center}
+      #skiPP button[data-act="toggle"]{background:linear-gradient(135deg,#f0d7b6,#cf9b6f 55%,#b5734f);color:#2a1c12;width:54px;height:54px;box-shadow:0 4px 16px rgba(181,115,79,.5),0 0 20px rgba(207,155,111,.35)}
+      #skiPP svg{width:24px;height:24px;pointer-events:none} #skiPP button[data-act="toggle"] svg{width:26px;height:26px}
+    }
+  </style>
+</head>
+<body class="text-stone-100 antialiased">
+<div id="viewport"><div id="stage">
+
+  <!-- HEADER -->
+  <header class="glass rounded-2xl px-5 py-3 flex items-center justify-between gap-5 shrink-0">
+    <div class="flex items-center gap-3 min-w-0">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(181,115,79,.15);border:1px solid rgba(196,140,100,.3)"><i data-lucide="briefcase" class="w-7 h-7 text-[#cf9b6f] metric-icon"></i></div>
+      <div class="min-w-0">
+        <p class="text-2xl font-extrabold tracking-tight leading-none flex items-center gap-2.5">TRABAJOS Y SERVICIOS <span class="fi fi-cl" style="font-size:1.1em;border-radius:3px;box-shadow:0 1px 3px rgba(0,0,0,.4)"></span></p>
+        <p class="text-xs text-stone-400 mt-1 flex items-center gap-2"><i data-lucide="pickaxe" class="w-4 h-4 text-[#cf9b6f]"></i> ADN Minero · avisos de empleo y servicios para la minería de Chile</p>
+      </div>
+    </div>
+    <div class="text-right shrink-0 px-5 border-x border-white/10">
+      <p id="clock" class="text-3xl font-bold tracking-tight leading-none tabnum">--:--:--</p>
+      <p id="clockDate" class="text-xs text-stone-400 mt-1 capitalize">hora local · Chile</p>
+    </div>
+    <div class="flex items-center gap-2 shrink-0">
+      <div class="flex items-center gap-1.5 mr-1">
+        <button class="tab-btn on" data-tab="todos">Todos</button>
+        <button class="tab-btn" data-tab="trabajo">Trabajos</button>
+        <button class="tab-btn" data-tab="servicio">Servicios</button>
+      </div>
+      <button id="prevBtn" class="ctrl-btn" title="Anterior"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+      <button id="pauseBtn" class="ctrl-btn" title="Pausar/Reanudar"><i id="pauseIcon" data-lucide="pause" class="w-5 h-5"></i></button>
+      <button id="nextBtn" class="ctrl-btn" title="Siguiente"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+    </div>
+  </header>
+  <div class="h-1.5 rounded-full bg-stone-700/40 overflow-hidden shrink-0"><div id="progress" class="h-full" style="width:0%; background:linear-gradient(90deg,#d9a877,#b5734f)"></div></div>
+
+  <!-- TABLERO DE AVISOS -->
+  <section id="board" class="flex-1 min-h-0 flex flex-col gap-3">
+    <div id="grid" class="grid grid-cols-3 gap-4 flex-1 min-h-0" style="grid-auto-rows:1fr"></div>
+    <div class="glass rounded-xl px-5 py-2.5 shrink-0 flex items-center justify-between gap-4">
+      <p class="text-[11px] text-stone-500 flex items-center gap-2"><i data-lucide="megaphone" class="w-4 h-4 text-[#cf9b6f]"></i> ¿Quieres publicar un aviso? Escríbenos a <b class="text-stone-300">adnminerochile@gmail.com</b></p>
+      <p id="pageInfo" class="text-[11px] text-stone-400 tabnum">—</p>
+    </div>
+  </section>
+
+</div></div>
+
+<div id="skiPP" role="group" aria-label="Controles">
+  <button data-act="prev" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 6h2.2v12H7zM20 6v12l-9.2-6z"></path></svg></button>
+  <button data-act="toggle" aria-label="Pausar o reanudar"><svg id="skiPPicon" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4.2" height="14" rx="1.2"></rect><rect x="13.8" y="5" width="4.2" height="14" rx="1.2"></rect></svg></button>
+  <button data-act="next" aria-label="Siguiente"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.8 6H17v12h-2.2zM4 6l9.2 6L4 18z"></path></svg></button>
+</div>
+
+<script>
+  const TZ='America/Santiago';
+  // ====== CONEXIÓN A GOOGLE SHEET (pega aquí la URL "Publicar en la web → CSV") ======
+  const SHEET_CSV_URL = ''; // ej: https://docs.google.com/spreadsheets/d/e/XXXX/pub?output=csv
+  // Columnas esperadas (fila 1 de la planilla): tipo | titulo | empresa | ubicacion | detalle | contacto | fecha
+  const REFRESH_MS=8*60*1000, ROTATE_MS=13000, PAGE=6;
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+
+  const FALLBACK=[
+    {tipo:'Trabajo', titulo:'Operador de Equipos Pesados', empresa:'Faena Cobre Centro', ubicacion:'Región de Antofagasta', detalle:'Turno 7x7. Licencia D vigente y experiencia en CAEX. Excluyente examen preocupacional de altura.', contacto:'reclutamiento@ejemplo.cl', fecha:''},
+    {tipo:'Servicio', titulo:'Arriendo de Camionetas 4x4 para Faena', empresa:'RentaMinera SpA', ubicacion:'Calama y alrededores', detalle:'Flota certificada para minería, mantención incluida y disponibilidad inmediata.', contacto:'+56 9 1234 5678', fecha:''},
+    {tipo:'Trabajo', titulo:'Mantenedor Mecánico', empresa:'Contratista Minero', ubicacion:'Región de Atacama', detalle:'Mantención de correas y chancado. Turno 4x3. Deseable experiencia en plantas concentradoras.', contacto:'postula@ejemplo.cl', fecha:''},
+    {tipo:'Servicio', titulo:'Capacitación en Seguridad Minera (DS132)', empresa:'Consultora SST', ubicacion:'Online / a faena', detalle:'Cursos certificados: trabajo en altura, espacios confinados, izaje y bloqueo.', contacto:'https://ejemplo.cl/cursos', fecha:''},
+    {tipo:'Trabajo', titulo:'Prevencionista de Riesgos', empresa:'Minera del Norte', ubicacion:'Región de Tarapacá', detalle:'Título profesional + registro SEREMI. Experiencia mínima 3 años en faena.', contacto:'rrhh@ejemplo.cl', fecha:''},
+    {tipo:'Servicio', titulo:'Transporte de Personal a Faenas', empresa:'Buses Cordillera', ubicacion:'II y III Región', detalle:'Traslados certificados, conductores con acreditación minera y GPS en línea.', contacto:'+56 9 8765 4321', fecha:''},
+    {tipo:'Trabajo', titulo:'Geólogo/a de Terreno', empresa:'Exploraciones Andinas', ubicacion:'Región de Coquimbo', detalle:'Campañas de sondaje. Manejo de logueo y QAQC. Turno 10x10.', contacto:'seleccion@ejemplo.cl', fecha:''},
+    {tipo:'Servicio', titulo:'Venta y Recarga de EPP Minero', empresa:'Distribuidora Segura', ubicacion:'Despacho a todo Chile', detalle:'Cascos, respiradores, calzado de seguridad y ropa ignífuga con certificación.', contacto:'ventas@ejemplo.cl', fecha:''},
+  ];
+
+  let listings=[], filtered=[], page=0, filter='todos', paused=false, rotTimer=null;
+
+  function tick(){ const n=new Date();
+    $('clock').textContent=n.toLocaleTimeString('es-CL',{timeZone:TZ,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+    $('clockDate').textContent=n.toLocaleDateString('es-CL',{timeZone:TZ,weekday:'long',day:'2-digit',month:'long'})+' · hora Chile';
+  }
+
+  // --- CSV ---
+  function parseCSV(text){
+    const rows=[]; let row=[], f='', q=false;
+    for(let i=0;i<text.length;i++){ const c=text[i];
+      if(q){ if(c==='"'){ if(text[i+1]==='"'){f+='"';i++;} else q=false; } else f+=c; }
+      else { if(c==='"') q=true; else if(c===','){ row.push(f); f=''; } else if(c==='\n'){ row.push(f); rows.push(row); row=[]; f=''; } else if(c!=='\r') f+=c; }
+    }
+    if(f.length||row.length){ row.push(f); rows.push(row); }
+    return rows;
+  }
+  const norm=s=>(s||'').toString().trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  function rowsToListings(rows){
+    if(!rows.length) return [];
+    const head=rows[0].map(norm);
+    const idx=k=>head.findIndex(h=>h===k || h.startsWith(k));
+    const iT=idx('tipo'), iN=idx('titulo'), iE=idx('empresa'), iU=idx('ubicacion'), iD=idx('detalle'), iC=idx('contacto'), iF=idx('fecha');
+    const out=[];
+    for(let r=1;r<rows.length;r++){ const c=rows[r]; if(!c || !c.join('').trim()) continue;
+      const titulo=(c[iN]||'').trim(); if(!titulo) continue;
+      const tipo=norm(c[iT]).startsWith('serv')?'Servicio':'Trabajo';
+      out.push({ tipo, titulo, empresa:(c[iE]||'').trim(), ubicacion:(c[iU]||'').trim(), detalle:(c[iD]||'').trim(), contacto:(c[iC]||'').trim(), fecha:(c[iF]||'').trim() });
+    }
+    return out;
+  }
+
+  // --- contacto -> link ---
+  function contactLink(v){
+    v=(v||'').trim(); if(!v) return null;
+    if(/^https?:\/\//i.test(v)) return {href:v, label:'Ver más', icon:'external-link'};
+    if(/@/.test(v)) return {href:'mailto:'+v, label:v, icon:'mail'};
+    const digits=v.replace(/[^\d+]/g,'');
+    if(digits.length>=8) return {href:'https://wa.me/'+digits.replace(/^\+/,''), label:v, icon:'phone'};
+    return {href:'#', label:v, icon:'info'};
+  }
+
+  function card(it){
+    const isJob=it.tipo==='Trabajo';
+    const c = isJob ? '#cf9b6f' : '#7fbfd1';
+    const ic = isJob ? 'hard-hat' : 'wrench';
+    const cl=contactLink(it.contacto);
+    return `<div class="card-job glass-strong rounded-2xl p-5 flex flex-col gap-2.5 relative overflow-hidden transition" style="border-color:${c}22">
+      <div class="flex items-center justify-between gap-2">
+        <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full inline-flex items-center gap-1.5" style="background:${c}1f;border:1px solid ${c}44;color:${c}"><i data-lucide="${ic}" class="w-3.5 h-3.5"></i> ${it.tipo}</span>
+        ${it.fecha?`<span class="text-[11px] text-stone-500">${it.fecha}</span>`:''}
+      </div>
+      <h3 class="text-[19px] font-bold leading-tight" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${it.titulo}</h3>
+      <div class="flex flex-col gap-1 text-sm text-stone-300">
+        ${it.empresa?`<p class="flex items-center gap-1.5 truncate"><i data-lucide="building-2" class="w-4 h-4 text-stone-500 shrink-0"></i> ${it.empresa}</p>`:''}
+        ${it.ubicacion?`<p class="flex items-center gap-1.5 truncate"><i data-lucide="map-pin" class="w-4 h-4 text-stone-500 shrink-0"></i> ${it.ubicacion}</p>`:''}
+      </div>
+      ${it.detalle?`<p class="text-[13px] text-stone-400 leading-snug flex-1" style="display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">${it.detalle}</p>`:'<div class="flex-1"></div>'}
+      ${cl?`<a href="${cl.href}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-semibold rounded-lg px-3 py-2 w-fit active:scale-95 transition" style="color:${c};background:${c}14;border:1px solid ${c}33"><i data-lucide="${cl.icon}" class="w-4 h-4"></i> ${cl.label}</a>`:''}
+    </div>`;
+  }
+
+  function applyFilter(){ filtered = filter==='todos' ? listings : listings.filter(x=>norm(x.tipo)===filter); if(page>=pages()) page=0; }
+  function pages(){ return Math.max(1, Math.ceil(filtered.length/PAGE)); }
+  function render(){
+    const start=page*PAGE, slice=filtered.slice(start, start+PAGE);
+    $('grid').innerHTML = slice.length ? slice.map(card).join('') : `<div class="col-span-3 grid place-items-center text-stone-500 gap-3 py-10"><i data-lucide="inbox" class="w-12 h-12"></i><p>No hay avisos en esta categoría por ahora.</p></div>`;
+    const total=filtered.length;
+    $('pageInfo').textContent = total ? `${Math.min(start+1,total)}–${Math.min(start+slice.length,total)} de ${total} · página ${page+1}/${pages()}` : '0 avisos';
+    drawIcons();
+  }
+  function restartProgress(ms){ const p=$('progress'); p.style.transition='none'; p.style.width='0%'; void p.offsetWidth; if(!paused){ p.style.transition='width '+ms+'ms linear'; p.style.width='100%'; } }
+  function schedule(){ clearTimeout(rotTimer); if(paused){ return; } if(pages()>1){ restartProgress(ROTATE_MS); rotTimer=setTimeout(next, ROTATE_MS); } else restartProgress(0); }
+  function goto(p){ const n=pages(); page=((p%n)+n)%n; render(); schedule(); }
+  function next(){ goto(page+1); }
+  function prev(){ goto(page-1); }
+  function setFilter(f){ filter=f; page=0; document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('on', b.dataset.tab===f)); applyFilter(); render(); schedule(); }
+  function togglePause(){ paused=!paused; $('pauseIcon').setAttribute('data-lucide', paused?'play':'pause'); drawIcons(); if(paused){ clearTimeout(rotTimer); const p=$('progress'); p.style.transition='none'; p.style.width=getComputedStyle(p).width; } else schedule(); }
+
+  document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click', ()=>setFilter(b.dataset.tab)));
+  $('prevBtn').addEventListener('click', prev);
+  $('nextBtn').addEventListener('click', next);
+  $('pauseBtn').addEventListener('click', togglePause);
+  (function(){ var r=$('skiPP'); if(!r) return; var ic=$('skiPPicon'), disp=false;
+    var PLAY='<path d="M8 5v14l11-7z"></path>', PAUSE='<rect x="6" y="5" width="4.2" height="14" rx="1.2"></rect><rect x="13.8" y="5" width="4.2" height="14" rx="1.2"></rect>';
+    r.addEventListener('click',function(ev){ var b=ev.target.closest('button'); if(!b) return; var a=b.getAttribute('data-act');
+      if(a==='next') next(); else if(a==='prev') prev(); else { togglePause(); disp=!disp; ic.innerHTML=disp?PLAY:PAUSE; } }); })();
+
+  async function fetchSheet(){
+    if(!SHEET_CSV_URL) return null;
+    try{ const ctl=new AbortController(); const to=setTimeout(()=>ctl.abort(),8000);
+      const r=await fetch(SHEET_CSV_URL+(SHEET_CSV_URL.includes('?')?'&':'?')+'_t='+Date.now(), {cache:'no-store', signal:ctl.signal});
+      const txt=await r.text(); clearTimeout(to);
+      const list=rowsToListings(parseCSV(txt));
+      return list.length ? list : null;
+    }catch(e){ return null; }
+  }
+  async function load(){
+    const fresh=await fetchSheet();
+    listings = fresh || (listings.length ? listings : FALLBACK);
+    applyFilter(); render(); schedule();
+    clearTimeout(load._t); load._t=setTimeout(load, REFRESH_MS);
+  }
+
+  function fitStageInit(){ function f(){ const w=innerWidth||1600,h=innerHeight||900; $('stage').style.setProperty('--s',Math.min(w/1600,h/900)||1); } addEventListener('resize',f); addEventListener('load',f); f(); }
+  fitStageInit(); drawIcons(); tick(); setInterval(tick,1000); load();
+  document.addEventListener('visibilitychange', ()=>{ if(document.hidden){ clearTimeout(rotTimer); } else if(!paused){ schedule(); } });
+</script>
+</body>
+</html>
