@@ -147,9 +147,15 @@
 
 <script>
   const TZ='America/Santiago';
-  const GNEWS='https://news.google.com/rss/search?q='+encodeURIComponent('minería Chile cobre litio')+'&hl=es-419&gl=CL&ceid=CL:es';
-  const API='https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(GNEWS);
-  const REFRESH_MS=12*60*1000, ROTATE_MS=11000, MAX_AGE_MS=7*24*60*60*1000; // solo noticias de la última semana
+  // Varias búsquedas mineras: se combinan para asegurar al menos 15 titulares
+  const QUERIES=[
+    'minería Chile cobre litio',
+    'Codelco OR Escondida OR Collahuasi OR "Anglo American" minería Chile',
+    'SQM OR Albemarle OR litio OR salar Chile',
+    'Cochilco OR Sernageomin OR "Ministerio de Minería" OR royalty minero Chile'
+  ];
+  const apiUrl=q=>'https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent('https://news.google.com/rss/search?q='+encodeURIComponent(q)+'&hl=es-419&gl=CL&ceid=CL:es');
+  const REFRESH_MS=12*60*1000, ROTATE_MS=11000, MAX_AGE_MS=7*24*60*60*1000; // se prioriza la última semana
   const $=id=>document.getElementById(id);
   const drawIcons=()=>window.lucide&&lucide.createIcons();
 
@@ -265,20 +271,27 @@
     r.addEventListener('click',function(ev){ var b=ev.target.closest('button'); if(!b) return; var a=b.getAttribute('data-act');
       if(a==='next') $('nextBtn').click(); else if(a==='prev') $('prevBtn').click(); else { $('pauseBtn').click(); disp=!disp; ic.innerHTML=disp?PLAY:PAUSE; } }); })();
 
-  async function fetchNews(){
+  async function fetchOne(q){
     const ctl=new AbortController(); const to=setTimeout(()=>ctl.abort(),8000);
-    try{ const r=await fetch(API,{cache:'no-store',signal:ctl.signal}); const j=await r.json(); clearTimeout(to);
-      if(j&&j.status==='ok'&&Array.isArray(j.items)&&j.items.length){
-        const now=Date.now(), MIN=15, MAX=20;
-        const all=j.items.map(it=>{ const c=limpia(it.title||''); return {t:c.t, s:c.s, link:it.link||'#', t0:it.pubDate?Date.parse(it.pubDate):now}; })
-          .filter(x=>x.t&&x.t.length>15)
-          .sort((a,b)=>b.t0-a.t0);                       // más recientes primero
-        const fresh=all.filter(x=>x.t0 && (now-x.t0)<=MAX_AGE_MS);  // preferir última semana
-        const list=(fresh.length>=MIN ? fresh : all).slice(0,MAX);  // siempre ≥15: si no hay suficientes frescas, completa con las más recientes
-        if(list.length) return list;
-      }
+    try{ const r=await fetch(apiUrl(q),{cache:'no-store',signal:ctl.signal}); const j=await r.json(); clearTimeout(to);
+      if(j&&j.status==='ok'&&Array.isArray(j.items)) return j.items;
     }catch(e){ clearTimeout(to); }
-    return null;
+    return [];
+  }
+  async function fetchNews(){
+    const now=Date.now(), MIN=15, MAX=20;
+    const results=await Promise.all(QUERIES.map(fetchOne));   // varias búsquedas en paralelo
+    const seen=new Set(); const all=[];
+    for(const items of results){ for(const it of items){
+      const c=limpia(it.title||''); if(!c.t || c.t.length<=15) continue;
+      const key=c.t.toLowerCase().replace(/\s+/g,' ').slice(0,55);   // dedup por titular
+      if(seen.has(key)) continue; seen.add(key);
+      all.push({t:c.t, s:c.s, link:it.link||'#', t0:it.pubDate?Date.parse(it.pubDate):now});
+    }}
+    if(!all.length) return null;
+    all.sort((a,b)=>b.t0-a.t0);                                // más recientes primero
+    const fresh=all.filter(x=>x.t0 && (now-x.t0)<=MAX_AGE_MS);  // preferir última semana
+    return (fresh.length>=MIN ? fresh : all).slice(0,MAX);      // siempre ≥15 si la fuente los tiene
   }
   async function load(){
     let list=await fetchNews();
