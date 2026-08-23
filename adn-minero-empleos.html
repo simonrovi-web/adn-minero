@@ -89,9 +89,9 @@
 
   <!-- TABLERO DE AVISOS -->
   <section id="board" class="flex-1 min-h-0 flex flex-col gap-3">
-    <div id="grid" class="grid grid-cols-3 gap-4 flex-1 min-h-0" style="grid-auto-rows:1fr"></div>
+    <div id="grid" class="grid grid-cols-3 gap-4 flex-1 min-h-0" style="grid-auto-rows:1fr"><div class="col-span-3 grid place-items-center text-stone-500 gap-3 py-10"><i data-lucide="loader" class="w-10 h-10"></i><p>Buscando trabajos y servicios mineros en Chile…</p></div></div>
     <div class="glass rounded-xl px-5 py-2.5 shrink-0 flex items-center justify-between gap-4">
-      <p class="text-[11px] text-stone-500 flex items-center gap-2"><i data-lucide="megaphone" class="w-4 h-4 text-[#cf9b6f]"></i> ¿Quieres publicar un aviso? Escríbenos a <b class="text-stone-300">adnminerochile@gmail.com</b></p>
+      <p class="text-[11px] text-stone-500 flex items-center gap-2"><i data-lucide="radar" class="w-4 h-4 text-[#cf9b6f]"></i> Búsqueda automática en Google Noticias · toca un aviso para ir a la fuente y postular · referencial</p>
       <p id="pageInfo" class="text-[11px] text-stone-400 tabnum">—</p>
     </div>
   </section>
@@ -106,23 +106,25 @@
 
 <script>
   const TZ='America/Santiago';
-  // ====== CONEXIÓN A GOOGLE SHEET (pega aquí la URL "Publicar en la web → CSV") ======
-  const SHEET_CSV_URL = ''; // ej: https://docs.google.com/spreadsheets/d/e/XXXX/pub?output=csv
-  // Columnas esperadas (fila 1 de la planilla): tipo | titulo | empresa | ubicacion | detalle | contacto | fecha
-  const REFRESH_MS=8*60*1000, ROTATE_MS=13000, PAGE=6;
+  // ====== BÚSQUEDA AUTOMÁTICA EN VIVO (Google Noticias) ======
+  // Busca solo, todos los días, avisos de trabajos y servicios mineros de Chile.
+  // Se refresca al cargar y cada REFRESH_MS. Cada aviso enlaza a su fuente para postular.
+  const T_QUERIES=[
+    'empleo OR trabajo OR vacante OR "ofertas laborales" minería Chile',
+    'trabajo OR empleo "faena minera" OR "operador minero" OR "mantenedor mina" Chile',
+    'empleos OR vacantes Codelco OR Escondida OR Collahuasi OR SQM OR "Anglo American" Chile',
+    'reclutamiento OR contratación OR "se busca" minería OR minera Chile',
+  ];
+  const S_QUERIES=[
+    'servicios OR proveedores OR contratistas minería Chile',
+    'licitación OR "empresa de servicios" minera Chile',
+    '"servicios mineros" OR "proveedor minero" OR "insumos mineros" Chile',
+  ];
+  const apiUrl=q=>'https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent('https://news.google.com/rss/search?q='+encodeURIComponent(q)+'&hl=es-419&gl=CL&ceid=CL:es');
+  const REFRESH_MS=15*60*1000, ROTATE_MS=13000, PAGE=6, MAX=24;
   const $=id=>document.getElementById(id);
   const drawIcons=()=>window.lucide&&lucide.createIcons();
-
-  const FALLBACK=[
-    {tipo:'Trabajo', titulo:'Operador de Equipos Pesados', empresa:'Faena Cobre Centro', ubicacion:'Región de Antofagasta', detalle:'Turno 7x7. Licencia D vigente y experiencia en CAEX. Excluyente examen preocupacional de altura.', contacto:'reclutamiento@ejemplo.cl', fecha:''},
-    {tipo:'Servicio', titulo:'Arriendo de Camionetas 4x4 para Faena', empresa:'RentaMinera SpA', ubicacion:'Calama y alrededores', detalle:'Flota certificada para minería, mantención incluida y disponibilidad inmediata.', contacto:'+56 9 1234 5678', fecha:''},
-    {tipo:'Trabajo', titulo:'Mantenedor Mecánico', empresa:'Contratista Minero', ubicacion:'Región de Atacama', detalle:'Mantención de correas y chancado. Turno 4x3. Deseable experiencia en plantas concentradoras.', contacto:'postula@ejemplo.cl', fecha:''},
-    {tipo:'Servicio', titulo:'Capacitación en Seguridad Minera (DS132)', empresa:'Consultora SST', ubicacion:'Online / a faena', detalle:'Cursos certificados: trabajo en altura, espacios confinados, izaje y bloqueo.', contacto:'https://ejemplo.cl/cursos', fecha:''},
-    {tipo:'Trabajo', titulo:'Prevencionista de Riesgos', empresa:'Minera del Norte', ubicacion:'Región de Tarapacá', detalle:'Título profesional + registro SEREMI. Experiencia mínima 3 años en faena.', contacto:'rrhh@ejemplo.cl', fecha:''},
-    {tipo:'Servicio', titulo:'Transporte de Personal a Faenas', empresa:'Buses Cordillera', ubicacion:'II y III Región', detalle:'Traslados certificados, conductores con acreditación minera y GPS en línea.', contacto:'+56 9 8765 4321', fecha:''},
-    {tipo:'Trabajo', titulo:'Geólogo/a de Terreno', empresa:'Exploraciones Andinas', ubicacion:'Región de Coquimbo', detalle:'Campañas de sondaje. Manejo de logueo y QAQC. Turno 10x10.', contacto:'seleccion@ejemplo.cl', fecha:''},
-    {tipo:'Servicio', titulo:'Venta y Recarga de EPP Minero', empresa:'Distribuidora Segura', ubicacion:'Despacho a todo Chile', detalle:'Cascos, respiradores, calzado de seguridad y ropa ignífuga con certificación.', contacto:'ventas@ejemplo.cl', fecha:''},
-  ];
+  const norm=s=>(s||'').toString().trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
 
   let listings=[], filtered=[], page=0, filter='todos', paused=false, rotTimer=null;
 
@@ -131,58 +133,31 @@
     $('clockDate').textContent=n.toLocaleDateString('es-CL',{timeZone:TZ,weekday:'long',day:'2-digit',month:'long'})+' · hora Chile';
   }
 
-  // --- CSV ---
-  function parseCSV(text){
-    const rows=[]; let row=[], f='', q=false;
-    for(let i=0;i<text.length;i++){ const c=text[i];
-      if(q){ if(c==='"'){ if(text[i+1]==='"'){f+='"';i++;} else q=false; } else f+=c; }
-      else { if(c==='"') q=true; else if(c===','){ row.push(f); f=''; } else if(c==='\n'){ row.push(f); rows.push(row); row=[]; f=''; } else if(c!=='\r') f+=c; }
-    }
-    if(f.length||row.length){ row.push(f); rows.push(row); }
-    return rows;
-  }
-  const norm=s=>(s||'').toString().trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
-  function rowsToListings(rows){
-    if(!rows.length) return [];
-    const head=rows[0].map(norm);
-    const idx=k=>head.findIndex(h=>h===k || h.startsWith(k));
-    const iT=idx('tipo'), iN=idx('titulo'), iE=idx('empresa'), iU=idx('ubicacion'), iD=idx('detalle'), iC=idx('contacto'), iF=idx('fecha');
-    const out=[];
-    for(let r=1;r<rows.length;r++){ const c=rows[r]; if(!c || !c.join('').trim()) continue;
-      const titulo=(c[iN]||'').trim(); if(!titulo) continue;
-      const tipo=norm(c[iT]).startsWith('serv')?'Servicio':'Trabajo';
-      out.push({ tipo, titulo, empresa:(c[iE]||'').trim(), ubicacion:(c[iU]||'').trim(), detalle:(c[iD]||'').trim(), contacto:(c[iC]||'').trim(), fecha:(c[iF]||'').trim() });
-    }
-    return out;
-  }
-
-  // --- contacto -> link ---
-  function contactLink(v){
-    v=(v||'').trim(); if(!v) return null;
-    if(/^https?:\/\//i.test(v)) return {href:v, label:'Ver más', icon:'external-link'};
-    if(/@/.test(v)) return {href:'mailto:'+v, label:v, icon:'mail'};
-    const digits=v.replace(/[^\d+]/g,'');
-    if(digits.length>=8) return {href:'https://wa.me/'+digits.replace(/^\+/,''), label:v, icon:'phone'};
-    return {href:'#', label:v, icon:'info'};
-  }
+  // --- helpers de feed ---
+  function limpia(title){ title=(title||'').trim(); const i=title.lastIndexOf(' - ');
+    if(i>0) return {t:title.slice(0,i).trim(), s:title.slice(i+3).trim()};
+    return {t:title, s:''}; }
+  function fechaCorta(t0){ if(!t0) return ''; const d=new Date(t0), diff=(Date.now()-t0)/86400000;
+    if(diff<1) return 'hoy'; if(diff<2) return 'ayer';
+    return d.toLocaleDateString('es-CL',{day:'2-digit',month:'short'}); }
+  async function fetchOne(q){ const ctl=new AbortController(); const to=setTimeout(()=>ctl.abort(),9000);
+    try{ const r=await fetch(apiUrl(q),{cache:'no-store',signal:ctl.signal}); const j=await r.json(); clearTimeout(to);
+      if(j&&j.status==='ok'&&Array.isArray(j.items)) return j.items;
+    }catch(e){ clearTimeout(to); } return []; }
 
   function card(it){
     const isJob=it.tipo==='Trabajo';
     const c = isJob ? '#cf9b6f' : '#7fbfd1';
     const ic = isJob ? 'hard-hat' : 'wrench';
-    const cl=contactLink(it.contacto);
+    const btn = isJob ? 'Ver oferta y postular' : 'Ver servicio';
     return `<div class="card-job glass-strong rounded-2xl p-5 flex flex-col gap-2.5 relative overflow-hidden transition" style="border-color:${c}22">
       <div class="flex items-center justify-between gap-2">
         <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full inline-flex items-center gap-1.5" style="background:${c}1f;border:1px solid ${c}44;color:${c}"><i data-lucide="${ic}" class="w-3.5 h-3.5"></i> ${it.tipo}</span>
         ${it.fecha?`<span class="text-[11px] text-stone-500">${it.fecha}</span>`:''}
       </div>
-      <h3 class="text-[19px] font-bold leading-tight" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${it.titulo}</h3>
-      <div class="flex flex-col gap-1 text-sm text-stone-300">
-        ${it.empresa?`<p class="flex items-center gap-1.5 truncate"><i data-lucide="building-2" class="w-4 h-4 text-stone-500 shrink-0"></i> ${it.empresa}</p>`:''}
-        ${it.ubicacion?`<p class="flex items-center gap-1.5 truncate"><i data-lucide="map-pin" class="w-4 h-4 text-stone-500 shrink-0"></i> ${it.ubicacion}</p>`:''}
-      </div>
-      ${it.detalle?`<p class="text-[13px] text-stone-400 leading-snug flex-1" style="display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">${it.detalle}</p>`:'<div class="flex-1"></div>'}
-      ${cl?`<a href="${cl.href}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-semibold rounded-lg px-3 py-2 w-fit active:scale-95 transition" style="color:${c};background:${c}14;border:1px solid ${c}33"><i data-lucide="${cl.icon}" class="w-4 h-4"></i> ${cl.label}</a>`:''}
+      <h3 class="text-[18px] font-bold leading-tight flex-1" style="display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">${it.titulo}</h3>
+      ${it.fuente?`<p class="flex items-center gap-1.5 text-sm text-stone-400 truncate"><i data-lucide="newspaper" class="w-4 h-4 text-stone-500 shrink-0"></i> ${it.fuente}</p>`:''}
+      <a href="${it.link}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-semibold rounded-lg px-3 py-2 w-fit active:scale-95 transition" style="color:${c};background:${c}14;border:1px solid ${c}33"><i data-lucide="external-link" class="w-4 h-4"></i> ${btn}</a>
     </div>`;
   }
 
@@ -212,18 +187,24 @@
     r.addEventListener('click',function(ev){ var b=ev.target.closest('button'); if(!b) return; var a=b.getAttribute('data-act');
       if(a==='next') next(); else if(a==='prev') prev(); else { togglePause(); disp=!disp; ic.innerHTML=disp?PLAY:PAUSE; } }); })();
 
-  async function fetchSheet(){
-    if(!SHEET_CSV_URL) return null;
-    try{ const ctl=new AbortController(); const to=setTimeout(()=>ctl.abort(),8000);
-      const r=await fetch(SHEET_CSV_URL+(SHEET_CSV_URL.includes('?')?'&':'?')+'_t='+Date.now(), {cache:'no-store', signal:ctl.signal});
-      const txt=await r.text(); clearTimeout(to);
-      const list=rowsToListings(parseCSV(txt));
-      return list.length ? list : null;
-    }catch(e){ return null; }
+  async function fetchFeeds(){
+    const cats=[['Trabajo', T_QUERIES], ['Servicio', S_QUERIES]];
+    const seen=new Set(); const all=[];
+    for(const [tipo, qs] of cats){
+      const results=await Promise.all(qs.map(fetchOne));
+      for(const items of results){ for(const it of items){
+        const c=limpia(it.title||''); if(!c.t || c.t.length<=18) continue;
+        const key=c.t.toLowerCase().replace(/\s+/g,' ').slice(0,55);
+        if(seen.has(key)) continue; seen.add(key);
+        const t0=it.pubDate?Date.parse(it.pubDate):Date.now();
+        all.push({tipo, titulo:c.t, fuente:c.s, link:it.link||'#', fecha:fechaCorta(t0), t0});
+      }}
+    }
+    all.sort((a,b)=>b.t0-a.t0);
+    return all.slice(0, MAX);
   }
   async function load(){
-    const fresh=await fetchSheet();
-    listings = fresh || (listings.length ? listings : FALLBACK);
+    try{ const fresh=await fetchFeeds(); if(fresh && fresh.length) listings=fresh; }catch(e){}
     applyFilter(); render(); schedule();
     clearTimeout(load._t); load._t=setTimeout(load, REFRESH_MS);
   }
