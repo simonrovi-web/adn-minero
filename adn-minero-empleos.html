@@ -89,9 +89,9 @@
 
   <!-- TABLERO DE AVISOS -->
   <section id="board" class="flex-1 min-h-0 flex flex-col gap-3">
-    <div id="grid" class="grid grid-cols-3 gap-4 flex-1 min-h-0" style="grid-auto-rows:1fr"><div class="col-span-3 grid place-items-center text-stone-500 gap-3 py-10"><i data-lucide="loader" class="w-10 h-10"></i><p>Buscando trabajos y servicios mineros en Chile…</p></div></div>
+    <div id="grid" class="grid grid-cols-3 gap-4 flex-1 min-h-0" style="grid-auto-rows:1fr"></div>
     <div class="glass rounded-xl px-5 py-2.5 shrink-0 flex items-center justify-between gap-4">
-      <p class="text-[11px] text-stone-500 flex items-center gap-2"><i data-lucide="radar" class="w-4 h-4 text-[#cf9b6f]"></i> Búsqueda automática en Google Noticias · toca un aviso para ir a la fuente y postular · referencial</p>
+      <p class="text-[11px] text-stone-500 flex items-center gap-2"><i data-lucide="link" class="w-4 h-4 text-[#cf9b6f]"></i> Postulaciones y empresas de servicios a la minería · toca un aviso para ir al sitio oficial · referencial</p>
       <p id="pageInfo" class="text-[11px] text-stone-400 tabnum">—</p>
     </div>
   </section>
@@ -106,24 +106,35 @@
 
 <script>
   const TZ='America/Santiago';
-  // ====== BÚSQUEDA AUTOMÁTICA EN VIVO (Google Noticias) ======
-  // Busca solo, todos los días, avisos de trabajos y servicios mineros de Chile.
-  // Se refresca al cargar y cada REFRESH_MS. Cada aviso enlaza a su fuente para postular.
-  const T_QUERIES=[
-    'empleo OR trabajo OR vacante OR "ofertas laborales" minería Chile',
-    'trabajo OR empleo "faena minera" OR "operador minero" OR "mantenedor mina" Chile',
-    'empleos OR vacantes Codelco OR Escondida OR Collahuasi OR SQM OR "Anglo American" Chile',
-    'reclutamiento OR contratación OR "se busca" minería OR minera Chile',
-  ];
-  const S_QUERIES=[
-    'servicios OR proveedores OR contratistas minería Chile',
-    'licitación OR "empresa de servicios" minera Chile',
-    '"servicios mineros" OR "proveedor minero" OR "insumos mineros" Chile',
-  ];
-  const apiUrl=q=>'https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent('https://news.google.com/rss/search?q='+encodeURIComponent(q)+'&hl=es-419&gl=CL&ceid=CL:es');
-  const REFRESH_MS=15*60*1000, ROTATE_MS=13000, PAGE=6, MAX=24;
+  // ====== DIRECTORIO: postulaciones de trabajo y empresas de servicios a la minería ======
+  // TRABAJOS -> portal/careers con las ofertas vigentes (se actualizan a diario en el destino).
+  // SERVICIOS -> empresa proveedora real (arriendo de equipos, explosivos, energía, etc.).
+  const ROTATE_MS=13000, PAGE=6;
   const $=id=>document.getElementById(id);
   const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const DATA=[
+    // ---- TRABAJOS (postulaciones · ofertas vigentes) ----
+    {tipo:'Trabajo', titulo:'Codelco · Trabaja en Codelco', empresa:'Codelco', detalle:'Ofertas vigentes de la mayor minera estatal del cobre. Postula en su portal oficial.', link:'https://www.codelco.com/trabaja-en-codelco'},
+    {tipo:'Trabajo', titulo:'BHP · Careers en Chile (Escondida)', empresa:'BHP · Minera Escondida', detalle:'Vacantes en Escondida y Pampa Norte, más programas graduate y trainee.', link:'https://www.bhp.com/es/careers/global-careers/careers-in-chile'},
+    {tipo:'Trabajo', titulo:'Collahuasi · Trabaja con nosotros', empresa:'Collahuasi', detalle:'Reclutamiento y oportunidades en una de las mayores mineras de cobre del país.', link:'https://www.collahuasi.cl/trabaja-con-nosotros/'},
+    {tipo:'Trabajo', titulo:'Anglo American Chile · Oportunidades laborales', empresa:'Anglo American', detalle:'Vacantes vigentes en Los Bronces, El Soldado y demás operaciones en Chile.', link:'https://chile.angloamerican.com/es-es/empleo/opportunidades-laborales'},
+    {tipo:'Trabajo', titulo:'Antofagasta Minerals · Trabaja con nosotros', empresa:'Antofagasta Minerals', detalle:'Portal de empleo de Los Pelambres, Centinela, Antucoya y Zaldívar.', link:'https://www.aminerals.cl/trabaja-con-nosotros'},
+    {tipo:'Trabajo', titulo:'Minera Centinela · Trabaja con nosotros', empresa:'Minera Centinela', detalle:'Vacantes en la operación Centinela, Región de Antofagasta.', link:'https://web.mineracentinela.cl/trabaja-con-nosotros'},
+    {tipo:'Trabajo', titulo:'Computrabajo · Ofertas de minería', empresa:'Computrabajo', detalle:'Cientos de ofertas de trabajo minero en todo Chile, actualizadas a diario.', link:'https://cl.computrabajo.com/trabajo-de-minera'},
+    {tipo:'Trabajo', titulo:'Indeed · Empleos de minería en Chile', empresa:'Indeed', detalle:'Buscador de empleos mineros de múltiples empresas, actualizado a diario.', link:'https://cl.indeed.com/q-mineria-empleos.html'},
+    {tipo:'Trabajo', titulo:'Trabajos en Minera · Reclutamiento minero', empresa:'trabajosenminera.com', detalle:'Bolsa de empleo especializada en la minería chilena.', link:'https://trabajosenminera.com/'},
+    // ---- SERVICIOS (empresas proveedoras a la minería) ----
+    {tipo:'Servicio', titulo:'Finning · Arriendo de equipos CAT', empresa:'Finning', detalle:'Arriendo de maquinaria, plataformas, generadores y compresores para minería.', link:'https://www.finning.com/es_CL/services/rental.html'},
+    {tipo:'Servicio', titulo:'Komatsu Arrienda · Maquinaria pesada', empresa:'Komatsu Chile', detalle:'Arriendo de excavadoras, cargadores, bulldozers y motoniveladoras. 10 sucursales.', link:'https://www.komatsulatinoamerica.com/chile/arriendo/'},
+    {tipo:'Servicio', titulo:'Rinco · Arriendo de maquinaria y equipos', empresa:'Rinco', detalle:'Arriendo de maquinaria para minería y construcción, en Santiago y regiones.', link:'http://www.rinco.cl/'},
+    {tipo:'Servicio', titulo:'Minero Markets · Maquinaria minera', empresa:'Minero Markets', detalle:'Arriendo, venta y financiamiento de equipos y maquinaria minera.', link:'https://mineromarkets.cl/'},
+    {tipo:'Servicio', titulo:'Enaex · Explosivos y tronadura', empresa:'Enaex', detalle:'Servicios integrales de fragmentación de roca y tronadura a cielo abierto.', link:'https://www.enaex.com/cl/es/servicios-a-cielo-abierto/'},
+    {tipo:'Servicio', titulo:'Aggreko · Arriendo de energía', empresa:'Aggreko', detalle:'Arriendo de generadores y soluciones de energía para faenas mineras.', link:'https://www.aggreko.com/es-cl/sectors/mining'},
+    {tipo:'Servicio', titulo:'Epiroc · Equipos y servicios de perforación', empresa:'Epiroc Chile', detalle:'Equipos de perforación y tronadura, con servicio técnico y opciones autónomas.', link:'https://www.epiroc.com/es-cl'},
+    {tipo:'Servicio', titulo:'Empresas de perforación minera · Directorio', empresa:'Maquinaria Pesada MMN', detalle:'Listado de empresas de perforación minera en Chile, con tarifas y contacto.', link:'https://www.mmn.cl/top-empresas-de-perforacion-minera-en-chile-tarifas-y-contacto/'},
+    {tipo:'Servicio', titulo:'InfoMine SupplyMine · Proveedores mineros', empresa:'InfoMine Chile', detalle:'Directorio por categorías de proveedores de bienes y servicios a la minería.', link:'http://chile.infomine.com/suppliers/categories.asp'},
+    {tipo:'Servicio', titulo:'División Minera · Proveedores de servicios', empresa:'División Minera', detalle:'Directorio de empresas proveedoras de servicios a la minería.', link:'https://divisionminera.cl/proveedores/'},
+  ];
   const norm=s=>(s||'').toString().trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
 
   let listings=[], filtered=[], page=0, filter='todos', paused=false, rotTimer=null;
@@ -133,30 +144,19 @@
     $('clockDate').textContent=n.toLocaleDateString('es-CL',{timeZone:TZ,weekday:'long',day:'2-digit',month:'long'})+' · hora Chile';
   }
 
-  // --- helpers de feed ---
-  function limpia(title){ title=(title||'').trim(); const i=title.lastIndexOf(' - ');
-    if(i>0) return {t:title.slice(0,i).trim(), s:title.slice(i+3).trim()};
-    return {t:title, s:''}; }
-  function fechaCorta(t0){ if(!t0) return ''; const d=new Date(t0), diff=(Date.now()-t0)/86400000;
-    if(diff<1) return 'hoy'; if(diff<2) return 'ayer';
-    return d.toLocaleDateString('es-CL',{day:'2-digit',month:'short'}); }
-  async function fetchOne(q){ const ctl=new AbortController(); const to=setTimeout(()=>ctl.abort(),9000);
-    try{ const r=await fetch(apiUrl(q),{cache:'no-store',signal:ctl.signal}); const j=await r.json(); clearTimeout(to);
-      if(j&&j.status==='ok'&&Array.isArray(j.items)) return j.items;
-    }catch(e){ clearTimeout(to); } return []; }
-
   function card(it){
     const isJob=it.tipo==='Trabajo';
     const c = isJob ? '#cf9b6f' : '#7fbfd1';
     const ic = isJob ? 'hard-hat' : 'wrench';
-    const btn = isJob ? 'Ver oferta y postular' : 'Ver servicio';
+    const btn = isJob ? 'Ver ofertas y postular' : 'Ver servicios / Contactar';
     return `<div class="card-job glass-strong rounded-2xl p-5 flex flex-col gap-2.5 relative overflow-hidden transition" style="border-color:${c}22">
       <div class="flex items-center justify-between gap-2">
         <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full inline-flex items-center gap-1.5" style="background:${c}1f;border:1px solid ${c}44;color:${c}"><i data-lucide="${ic}" class="w-3.5 h-3.5"></i> ${it.tipo}</span>
-        ${it.fecha?`<span class="text-[11px] text-stone-500">${it.fecha}</span>`:''}
+        <span class="text-[10px] text-stone-500 uppercase tracking-wider">${isJob?'Postulación':'Proveedor'}</span>
       </div>
-      <h3 class="text-[18px] font-bold leading-tight flex-1" style="display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">${it.titulo}</h3>
-      ${it.fuente?`<p class="flex items-center gap-1.5 text-sm text-stone-400 truncate"><i data-lucide="newspaper" class="w-4 h-4 text-stone-500 shrink-0"></i> ${it.fuente}</p>`:''}
+      <h3 class="text-[18px] font-bold leading-tight">${it.titulo}</h3>
+      ${it.empresa?`<p class="flex items-center gap-1.5 text-sm text-stone-300 truncate"><i data-lucide="building-2" class="w-4 h-4 text-stone-500 shrink-0"></i> ${it.empresa}</p>`:''}
+      ${it.detalle?`<p class="text-[13px] text-stone-400 leading-snug flex-1" style="display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">${it.detalle}</p>`:'<div class="flex-1"></div>'}
       <a href="${it.link}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-semibold rounded-lg px-3 py-2 w-fit active:scale-95 transition" style="color:${c};background:${c}14;border:1px solid ${c}33"><i data-lucide="external-link" class="w-4 h-4"></i> ${btn}</a>
     </div>`;
   }
@@ -187,27 +187,7 @@
     r.addEventListener('click',function(ev){ var b=ev.target.closest('button'); if(!b) return; var a=b.getAttribute('data-act');
       if(a==='next') next(); else if(a==='prev') prev(); else { togglePause(); disp=!disp; ic.innerHTML=disp?PLAY:PAUSE; } }); })();
 
-  async function fetchFeeds(){
-    const cats=[['Trabajo', T_QUERIES], ['Servicio', S_QUERIES]];
-    const seen=new Set(); const all=[];
-    for(const [tipo, qs] of cats){
-      const results=await Promise.all(qs.map(fetchOne));
-      for(const items of results){ for(const it of items){
-        const c=limpia(it.title||''); if(!c.t || c.t.length<=18) continue;
-        const key=c.t.toLowerCase().replace(/\s+/g,' ').slice(0,55);
-        if(seen.has(key)) continue; seen.add(key);
-        const t0=it.pubDate?Date.parse(it.pubDate):Date.now();
-        all.push({tipo, titulo:c.t, fuente:c.s, link:it.link||'#', fecha:fechaCorta(t0), t0});
-      }}
-    }
-    all.sort((a,b)=>b.t0-a.t0);
-    return all.slice(0, MAX);
-  }
-  async function load(){
-    try{ const fresh=await fetchFeeds(); if(fresh && fresh.length) listings=fresh; }catch(e){}
-    applyFilter(); render(); schedule();
-    clearTimeout(load._t); load._t=setTimeout(load, REFRESH_MS);
-  }
+  function load(){ listings=DATA.slice(); applyFilter(); render(); schedule(); }
 
   function fitStageInit(){ function f(){ const w=innerWidth||1600,h=innerHeight||900; $('stage').style.setProperty('--s',Math.min(w/1600,h/900)||1); } addEventListener('resize',f); addEventListener('load',f); f(); }
   fitStageInit(); drawIcons(); tick(); setInterval(tick,1000); load();
