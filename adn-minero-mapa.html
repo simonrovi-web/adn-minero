@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ADN Minero · Mapa Minero de Chile</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ height:100%; margin:0; font-family:'Inter', ui-sans-serif, system-ui, sans-serif; background:#141110; color:#f4ece5; overflow:hidden; }
+    #map{ position:fixed; inset:0; z-index:0; background:#141110; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.82), rgba(26,21,18,0.72)); backdrop-filter:blur(14px) saturate(130%); -webkit-backdrop-filter:blur(14px) saturate(130%); border:1px solid rgba(196,168,148,0.16); box-shadow:0 8px 30px rgba(0,0,0,0.5); }
+    #topbar{ position:fixed; top:14px; left:14px; right:14px; z-index:1000; display:flex; align-items:center; justify-content:space-between; gap:12px; border-radius:16px; padding:10px 16px; pointer-events:auto; }
+    #legend{ position:fixed; left:14px; bottom:14px; z-index:1000; border-radius:14px; padding:12px 14px; font-size:12px; }
+    #legend h4{ margin:0 0 8px; font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:#c9b7a5; font-weight:700; }
+    .lg-row{ display:flex; align-items:center; gap:8px; margin:5px 0; cursor:pointer; user-select:none; opacity:.95; }
+    .lg-row.off{ opacity:.35; }
+    .lg-dot{ width:13px; height:13px; border-radius:50%; box-shadow:0 0 6px currentColor; border:2px solid rgba(255,255,255,.85); }
+    .count{ position:fixed; right:14px; bottom:14px; z-index:1000; border-radius:12px; padding:8px 12px; font-size:12px; color:#e6d4c4; }
+    .metric-icon{ filter:drop-shadow(0 0 8px currentColor); }
+    .leaflet-popup-content-wrapper{ background:#241d18; color:#f4ece5; border-radius:14px; border:1px solid rgba(196,168,148,.22); box-shadow:0 10px 34px rgba(0,0,0,.6); }
+    .leaflet-popup-tip{ background:#241d18; border:1px solid rgba(196,168,148,.22); }
+    .leaflet-popup-content{ margin:12px 14px; font-size:13px; line-height:1.5; }
+    .leaflet-container a.leaflet-popup-close-button{ color:#c9b7a5; }
+    .pop-t{ font-size:15px; font-weight:800; margin-bottom:2px; }
+    .pop-m{ display:inline-block; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; padding:2px 8px; border-radius:999px; margin-top:6px; }
+    .pop-r{ color:#c9b7a5; font-size:12px; margin-top:4px; display:flex; align-items:center; gap:5px; }
+    .leaflet-bar a{ background:#2b2520; color:#e6d4c4; border-color:rgba(196,168,148,.2); }
+    .leaflet-bar a:hover{ background:#3a3129; }
+    @media (max-width:640px){
+      #topbar{ flex-direction:column; align-items:flex-start; gap:6px; padding:10px 14px; }
+      #topbar .clockwrap{ display:none; }
+      #legend{ font-size:11px; padding:10px 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <div id="topbar" class="glass">
+    <div style="display:flex;align-items:center;gap:12px;min-width:0">
+      <div style="height:42px;width:42px;border-radius:12px;display:grid;place-items:center;background:rgba(181,115,79,.15);border:1px solid rgba(196,140,100,.3);flex:0 0 auto"><i data-lucide="map" class="metric-icon" style="width:24px;height:24px;color:var(--copper)"></i></div>
+      <div style="min-width:0">
+        <p style="margin:0;font-size:19px;font-weight:800;line-height:1.05;display:flex;align-items:center;gap:8px">Mapa Minero de Chile <span class="fi fi-cl" style="font-size:.8em;border-radius:3px"></span></p>
+        <p style="margin:2px 0 0;font-size:11px;color:#c9b7a5">ADN Minero · principales faenas mineras del país</p>
+      </div>
+    </div>
+    <div class="clockwrap" style="text-align:right;flex:0 0 auto">
+      <p id="clock" style="margin:0;font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1">--:--</p>
+      <p style="margin:2px 0 0;font-size:10px;color:#c9b7a5">hora Chile</p>
+    </div>
+  </div>
+
+  <div id="legend" class="glass">
+    <h4>Filtrar por mineral</h4>
+    <div id="legendRows"></div>
+  </div>
+
+  <div id="count" class="glass"><span id="countTxt">—</span></div>
+
+<script>
+  const TZ='America/Santiago';
+  const MIN={
+    cobre:  {label:'Cobre',  color:'#cf9b6f'},
+    oro:    {label:'Oro',    color:'#f5c542'},
+    hierro: {label:'Hierro', color:'#e0715a'},
+    litio:  {label:'Litio',  color:'#5fd1bd'},
+    plata:  {label:'Plata',  color:'#c7d2e0'}
+  };
+  const FAENAS=[
+    {n:'Escondida', e:'BHP', m:'cobre', r:'Antofagasta', lat:-24.27, lon:-69.07},
+    {n:'Collahuasi', e:'Collahuasi', m:'cobre', r:'Tarapacá', lat:-20.98, lon:-68.68},
+    {n:'Chuquicamata', e:'Codelco', m:'cobre', r:'Antofagasta', lat:-22.29, lon:-68.90},
+    {n:'Radomiro Tomic', e:'Codelco', m:'cobre', r:'Antofagasta', lat:-22.28, lon:-68.92},
+    {n:'Ministro Hales', e:'Codelco', m:'cobre', r:'Antofagasta', lat:-22.05, lon:-68.92},
+    {n:'Gabriela Mistral', e:'Codelco', m:'cobre', r:'Antofagasta', lat:-24.30, lon:-69.20},
+    {n:'El Teniente', e:'Codelco', m:'cobre', r:"O'Higgins", lat:-34.08, lon:-70.36},
+    {n:'Andina', e:'Codelco', m:'cobre', r:'Valparaíso', lat:-33.05, lon:-70.28},
+    {n:'Salvador', e:'Codelco', m:'cobre', r:'Atacama', lat:-26.25, lon:-69.62},
+    {n:'Los Bronces', e:'Anglo American', m:'cobre', r:'Metropolitana', lat:-33.14, lon:-70.28},
+    {n:'El Soldado', e:'Anglo American', m:'cobre', r:'Valparaíso', lat:-32.66, lon:-71.00},
+    {n:'Spence', e:'BHP', m:'cobre', r:'Antofagasta', lat:-22.75, lon:-69.28},
+    {n:'Centinela', e:'Antofagasta Minerals', m:'cobre', r:'Antofagasta', lat:-23.05, lon:-69.02},
+    {n:'Antucoya', e:'Antofagasta Minerals', m:'cobre', r:'Antofagasta', lat:-22.35, lon:-69.90},
+    {n:'Los Pelambres', e:'Antofagasta Minerals', m:'cobre', r:'Coquimbo', lat:-31.75, lon:-70.49},
+    {n:'Zaldívar', e:'Antofagasta Minerals / Barrick', m:'cobre', r:'Antofagasta', lat:-24.20, lon:-69.05},
+    {n:'Candelaria', e:'Lundin Mining', m:'cobre', r:'Atacama', lat:-27.51, lon:-70.28},
+    {n:'Caserones', e:'Lundin Mining', m:'cobre', r:'Atacama', lat:-28.00, lon:-69.70},
+    {n:'El Abra', e:'Freeport / Codelco', m:'cobre', r:'Antofagasta', lat:-21.75, lon:-68.77},
+    {n:'Quebrada Blanca', e:'Teck', m:'cobre', r:'Tarapacá', lat:-20.99, lon:-68.75},
+    {n:'Sierra Gorda', e:'South32 / KGHM', m:'cobre', r:'Antofagasta', lat:-22.90, lon:-69.30},
+    {n:'Mantoverde', e:'Capstone', m:'cobre', r:'Atacama', lat:-27.00, lon:-70.70},
+    {n:'Lomas Bayas', e:'Glencore', m:'cobre', r:'Antofagasta', lat:-22.90, lon:-69.50},
+    {n:'Mantos Blancos', e:'Capstone', m:'cobre', r:'Antofagasta', lat:-23.52, lon:-70.13},
+    {n:'El Peñón', e:'Yamana / Pan American', m:'oro', r:'Antofagasta', lat:-24.40, lon:-69.35},
+    {n:'La Coipa', e:'Kinross', m:'oro', r:'Atacama', lat:-26.78, lon:-69.28},
+    {n:'Maricunga', e:'Maricunga', m:'oro', r:'Atacama', lat:-27.13, lon:-69.05},
+    {n:'Los Colorados', e:'CAP Minería', m:'hierro', r:'Atacama', lat:-28.30, lon:-70.60},
+    {n:'El Romeral', e:'CAP Minería', m:'hierro', r:'Coquimbo', lat:-29.70, lon:-71.28},
+    {n:'Salar de Atacama', e:'SQM / Albemarle', m:'litio', r:'Antofagasta', lat:-23.50, lon:-68.20}
+  ];
+
+  const map=L.map('map',{ zoomControl:true, attributionControl:true }).setView([-27.5,-70.2], 5);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+    attribution:'&copy; OpenStreetMap &copy; CARTO', subdomains:'abcd', maxZoom:19
+  }).addTo(map);
+
+  const active=new Set(Object.keys(MIN));
+  const layers={};
+  Object.keys(MIN).forEach(k=>layers[k]=L.layerGroup().addTo(map));
+
+  function marker(f){
+    const c=MIN[f.m].color;
+    const ic=L.divIcon({className:'', html:`<span style="display:block;width:15px;height:15px;border-radius:50%;background:${c};border:2px solid #fff;box-shadow:0 0 8px ${c},0 1px 4px rgba(0,0,0,.6)"></span>`, iconSize:[15,15], iconAnchor:[7,7]});
+    const mk=L.marker([f.lat,f.lon],{icon:ic});
+    mk.bindPopup(`<div class="pop-t">${f.n}</div>
+      <div class="pop-r"><span>🏢</span> ${f.e}</div>
+      <div class="pop-r"><span>📍</span> Región de ${f.r}</div>
+      <span class="pop-m" style="color:${c};background:${c}22;border:1px solid ${c}55">${MIN[f.m].label}</span>`);
+    return mk;
+  }
+  FAENAS.forEach(f=>{ if(MIN[f.m]) marker(f).addTo(layers[f.m]); });
+
+  function refreshCount(){
+    const total=FAENAS.filter(f=>active.has(f.m)).length;
+    document.getElementById('countTxt').textContent=`${total} faenas en el mapa`;
+  }
+
+  // Leyenda / filtros
+  const rows=document.getElementById('legendRows');
+  Object.keys(MIN).forEach(k=>{
+    const count=FAENAS.filter(f=>f.m===k).length;
+    if(!count) return;
+    const el=document.createElement('div');
+    el.className='lg-row'; el.dataset.k=k;
+    el.innerHTML=`<span class="lg-dot" style="color:${MIN[k].color};background:${MIN[k].color}"></span> ${MIN[k].label} <span style="color:#8a8079;margin-left:auto;padding-left:10px">${count}</span>`;
+    el.addEventListener('click',()=>{
+      if(active.has(k)){ active.delete(k); map.removeLayer(layers[k]); el.classList.add('off'); }
+      else{ active.add(k); layers[k].addTo(map); el.classList.remove('off'); }
+      refreshCount();
+    });
+    rows.appendChild(el);
+  });
+  refreshCount();
+
+  function tick(){ document.getElementById('clock').textContent=new Date().toLocaleTimeString('es-CL',{timeZone:TZ,hour:'2-digit',minute:'2-digit',hour12:false}); }
+  tick(); setInterval(tick,1000);
+  window.lucide && lucide.createIcons();
+</script>
+</body>
+</html>
