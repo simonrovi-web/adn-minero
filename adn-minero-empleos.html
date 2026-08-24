@@ -114,26 +114,26 @@
   const drawIcons=()=>window.lucide&&lucide.createIcons();
   const DATA=[
     // ---- TRABAJOS (postulaciones · ofertas vigentes) ----
-    {tipo:'Trabajo', titulo:'Codelco · Trabaja en Codelco', empresa:'Codelco', detalle:'Ofertas vigentes de la mayor minera estatal del cobre. Postula en su portal oficial.', link:'https://www.codelco.com/trabaja-en-codelco'},
-    {tipo:'Trabajo', titulo:'BHP · Careers en Chile (Escondida)', empresa:'BHP · Minera Escondida', detalle:'Vacantes en Escondida y Pampa Norte, más programas graduate y trainee.', link:'https://www.bhp.com/es/careers/global-careers/careers-in-chile'},
-    {tipo:'Trabajo', titulo:'Collahuasi · Trabaja con nosotros', empresa:'Collahuasi', detalle:'Reclutamiento y oportunidades en una de las mayores mineras de cobre del país.', link:'https://www.collahuasi.cl/trabaja-con-nosotros/'},
-    {tipo:'Trabajo', titulo:'Anglo American Chile · Oportunidades laborales', empresa:'Anglo American', detalle:'Vacantes vigentes en Los Bronces, El Soldado y demás operaciones en Chile.', link:'https://chile.angloamerican.com/es-es/empleo/opportunidades-laborales'},
-    {tipo:'Trabajo', titulo:'Antofagasta Minerals · Trabaja con nosotros', empresa:'Antofagasta Minerals', detalle:'Portal de empleo de Los Pelambres, Centinela, Antucoya y Zaldívar.', link:'https://www.aminerals.cl/trabaja-con-nosotros'},
-    {tipo:'Trabajo', titulo:'Minera Centinela · Trabaja con nosotros', empresa:'Minera Centinela', detalle:'Vacantes en la operación Centinela, Región de Antofagasta.', link:'https://web.mineracentinela.cl/trabaja-con-nosotros'},
-    {tipo:'Trabajo', titulo:'Computrabajo · Ofertas de minería', empresa:'Computrabajo', detalle:'Cientos de ofertas de trabajo minero en todo Chile, actualizadas a diario.', link:'https://cl.computrabajo.com/trabajo-de-minera'},
-    {tipo:'Trabajo', titulo:'Indeed · Empleos de minería en Chile', empresa:'Indeed', detalle:'Buscador de empleos mineros de múltiples empresas, actualizado a diario.', link:'https://cl.indeed.com/q-mineria-empleos.html'},
-    {tipo:'Trabajo', titulo:'Trabajos en Minera · Reclutamiento minero', empresa:'trabajosenminera.com', detalle:'Bolsa de empleo especializada en la minería chilena.', link:'https://trabajosenminera.com/'},
+    {tipo:'Trabajo', cat:'Empresa minera', titulo:'Codelco · Trabaja en Codelco', empresa:'Codelco', detalle:'Ofertas vigentes de la mayor minera estatal del cobre. Postula en su portal oficial.', link:'https://www.codelco.com/trabaja-en-codelco'},
+    {tipo:'Trabajo', cat:'Empresa minera', titulo:'BHP · Careers en Chile (Escondida)', empresa:'BHP · Minera Escondida', detalle:'Vacantes en Escondida y Pampa Norte, más programas graduate y trainee.', link:'https://www.bhp.com/es/careers/global-careers/careers-in-chile'},
+    {tipo:'Trabajo', cat:'Empresa minera', titulo:'Collahuasi · Trabaja con nosotros', empresa:'Collahuasi', detalle:'Reclutamiento y oportunidades en una de las mayores mineras de cobre del país.', link:'https://www.collahuasi.cl/trabaja-con-nosotros/'},
+    {tipo:'Trabajo', cat:'Empresa minera', titulo:'Anglo American Chile · Oportunidades laborales', empresa:'Anglo American', detalle:'Vacantes vigentes en Los Bronces, El Soldado y demás operaciones en Chile.', link:'https://chile.angloamerican.com/es-es/empleo/opportunidades-laborales'},
+    {tipo:'Trabajo', cat:'Empresa minera', titulo:'Antofagasta Minerals · Trabaja con nosotros', empresa:'Antofagasta Minerals', detalle:'Portal de empleo de Los Pelambres, Centinela, Antucoya y Zaldívar.', link:'https://www.aminerals.cl/trabaja-con-nosotros'},
+    {tipo:'Trabajo', cat:'Empresa minera', titulo:'Minera Centinela · Trabaja con nosotros', empresa:'Minera Centinela', detalle:'Vacantes en la operación Centinela, Región de Antofagasta.', link:'https://web.mineracentinela.cl/trabaja-con-nosotros'},
+    {tipo:'Trabajo', cat:'Portal de empleo', titulo:'Computrabajo · Ofertas de minería', empresa:'Computrabajo', detalle:'Cientos de ofertas de trabajo minero en todo Chile, actualizadas a diario.', link:'https://cl.computrabajo.com/trabajo-de-minera'},
+    {tipo:'Trabajo', cat:'Portal de empleo', titulo:'Indeed · Empleos de minería en Chile', empresa:'Indeed', detalle:'Buscador de empleos mineros de múltiples empresas, actualizado a diario.', link:'https://cl.indeed.com/q-mineria-empleos.html'},
+    {tipo:'Trabajo', cat:'Portal de empleo', titulo:'Trabajos en Minera · Reclutamiento minero', empresa:'trabajosenminera.com', detalle:'Bolsa de empleo especializada en la minería chilena.', link:'https://trabajosenminera.com/'},
     // ---- SERVICIOS (empresas proveedoras a la minería) ----
-    {tipo:'Servicio', titulo:'Finning · Arriendo de equipos CAT', empresa:'Finning', detalle:'Arriendo de maquinaria, plataformas, generadores y compresores para minería.', link:'https://www.finning.com/es_CL/services/rental.html'},
-    {tipo:'Servicio', titulo:'Komatsu Arrienda · Maquinaria pesada', empresa:'Komatsu Chile', detalle:'Arriendo de excavadoras, cargadores, bulldozers y motoniveladoras. 10 sucursales.', link:'https://www.komatsulatinoamerica.com/chile/arriendo/'},
-    {tipo:'Servicio', titulo:'Rinco · Arriendo de maquinaria y equipos', empresa:'Rinco', detalle:'Arriendo de maquinaria para minería y construcción, en Santiago y regiones.', link:'http://www.rinco.cl/'},
-    {tipo:'Servicio', titulo:'Minero Markets · Maquinaria minera', empresa:'Minero Markets', detalle:'Arriendo, venta y financiamiento de equipos y maquinaria minera.', link:'https://mineromarkets.cl/'},
-    {tipo:'Servicio', titulo:'Enaex · Explosivos y tronadura', empresa:'Enaex', detalle:'Servicios integrales de fragmentación de roca y tronadura a cielo abierto.', link:'https://www.enaex.com/cl/es/servicios-a-cielo-abierto/'},
-    {tipo:'Servicio', titulo:'Aggreko · Arriendo de energía', empresa:'Aggreko', detalle:'Arriendo de generadores y soluciones de energía para faenas mineras.', link:'https://www.aggreko.com/es-cl/sectors/mining'},
-    {tipo:'Servicio', titulo:'Epiroc · Equipos y servicios de perforación', empresa:'Epiroc Chile', detalle:'Equipos de perforación y tronadura, con servicio técnico y opciones autónomas.', link:'https://www.epiroc.com/es-cl'},
-    {tipo:'Servicio', titulo:'Empresas de perforación minera · Directorio', empresa:'Maquinaria Pesada MMN', detalle:'Listado de empresas de perforación minera en Chile, con tarifas y contacto.', link:'https://www.mmn.cl/top-empresas-de-perforacion-minera-en-chile-tarifas-y-contacto/'},
-    {tipo:'Servicio', titulo:'InfoMine SupplyMine · Proveedores mineros', empresa:'InfoMine Chile', detalle:'Directorio por categorías de proveedores de bienes y servicios a la minería.', link:'http://chile.infomine.com/suppliers/categories.asp'},
-    {tipo:'Servicio', titulo:'División Minera · Proveedores de servicios', empresa:'División Minera', detalle:'Directorio de empresas proveedoras de servicios a la minería.', link:'https://divisionminera.cl/proveedores/'},
+    {tipo:'Servicio', cat:'Arriendo de equipos', titulo:'Finning · Arriendo de equipos CAT', empresa:'Finning', detalle:'Arriendo de maquinaria, plataformas, generadores y compresores para minería.', link:'https://www.finning.com/es_CL/services/rental.html'},
+    {tipo:'Servicio', cat:'Arriendo de equipos', titulo:'Komatsu Arrienda · Maquinaria pesada', empresa:'Komatsu Chile', detalle:'Arriendo de excavadoras, cargadores, bulldozers y motoniveladoras. 10 sucursales.', link:'https://www.komatsulatinoamerica.com/chile/arriendo/'},
+    {tipo:'Servicio', cat:'Arriendo de equipos', titulo:'Rinco · Arriendo de maquinaria y equipos', empresa:'Rinco', detalle:'Arriendo de maquinaria para minería y construcción, en Santiago y regiones.', link:'http://www.rinco.cl/'},
+    {tipo:'Servicio', cat:'Maquinaria', titulo:'Minero Markets · Maquinaria minera', empresa:'Minero Markets', detalle:'Arriendo, venta y financiamiento de equipos y maquinaria minera.', link:'https://mineromarkets.cl/'},
+    {tipo:'Servicio', cat:'Explosivos y tronadura', titulo:'Enaex · Explosivos y tronadura', empresa:'Enaex', detalle:'Servicios integrales de fragmentación de roca y tronadura a cielo abierto.', link:'https://www.enaex.com/cl/es/servicios-a-cielo-abierto/'},
+    {tipo:'Servicio', cat:'Energía', titulo:'Aggreko · Arriendo de energía', empresa:'Aggreko', detalle:'Arriendo de generadores y soluciones de energía para faenas mineras.', link:'https://www.aggreko.com/es-cl/sectors/mining'},
+    {tipo:'Servicio', cat:'Perforación', titulo:'Epiroc · Equipos y servicios de perforación', empresa:'Epiroc Chile', detalle:'Equipos de perforación y tronadura, con servicio técnico y opciones autónomas.', link:'https://www.epiroc.com/es-cl'},
+    {tipo:'Servicio', cat:'Perforación · directorio', titulo:'Empresas de perforación minera · Directorio', empresa:'Maquinaria Pesada MMN', detalle:'Listado de empresas de perforación minera en Chile, con tarifas y contacto.', link:'https://www.mmn.cl/top-empresas-de-perforacion-minera-en-chile-tarifas-y-contacto/'},
+    {tipo:'Servicio', cat:'Directorio de proveedores', titulo:'InfoMine SupplyMine · Proveedores mineros', empresa:'InfoMine Chile', detalle:'Directorio por categorías de proveedores de bienes y servicios a la minería.', link:'http://chile.infomine.com/suppliers/categories.asp'},
+    {tipo:'Servicio', cat:'Directorio de proveedores', titulo:'División Minera · Proveedores de servicios', empresa:'División Minera', detalle:'Directorio de empresas proveedoras de servicios a la minería.', link:'https://divisionminera.cl/proveedores/'},
   ];
   const norm=s=>(s||'').toString().trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
 
@@ -151,8 +151,8 @@
     const btn = isJob ? 'Ver ofertas y postular' : 'Ver servicios / Contactar';
     return `<div class="card-job glass-strong rounded-2xl p-5 flex flex-col gap-2.5 relative overflow-hidden transition" style="border-color:${c}22">
       <div class="flex items-center justify-between gap-2">
-        <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full inline-flex items-center gap-1.5" style="background:${c}1f;border:1px solid ${c}44;color:${c}"><i data-lucide="${ic}" class="w-3.5 h-3.5"></i> ${it.tipo}</span>
-        <span class="text-[10px] text-stone-500 uppercase tracking-wider">${isJob?'Postulación':'Proveedor'}</span>
+        <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full inline-flex items-center gap-1.5" style="background:${c}1f;border:1px solid ${c}44;color:${c}"><i data-lucide="${ic}" class="w-3.5 h-3.5"></i> ${isJob?'Postulación':'Proveedor'}</span>
+        ${it.cat?`<span class="text-[10px] font-semibold px-2 py-0.5 rounded-full text-stone-300" style="background:${c}14;border:1px solid ${c}2e">${it.cat}</span>`:''}
       </div>
       <h3 class="text-[18px] font-bold leading-tight">${it.titulo}</h3>
       ${it.empresa?`<p class="flex items-center gap-1.5 text-sm text-stone-300 truncate"><i data-lucide="building-2" class="w-4 h-4 text-stone-500 shrink-0"></i> ${it.empresa}</p>`:''}
@@ -187,7 +187,14 @@
     r.addEventListener('click',function(ev){ var b=ev.target.closest('button'); if(!b) return; var a=b.getAttribute('data-act');
       if(a==='next') next(); else if(a==='prev') prev(); else { togglePause(); disp=!disp; ic.innerHTML=disp?PLAY:PAUSE; } }); })();
 
-  function load(){ listings=DATA.slice(); applyFilter(); render(); schedule(); }
+  function updateTabCounts(){
+    const t=listings.filter(x=>x.tipo==='Trabajo').length, s=listings.filter(x=>x.tipo==='Servicio').length;
+    const bt=document.querySelector('[data-tab="todos"]'), b1=document.querySelector('[data-tab="trabajo"]'), b2=document.querySelector('[data-tab="servicio"]');
+    if(bt) bt.textContent='Todos · '+listings.length;
+    if(b1) b1.textContent='Trabajos · '+t;
+    if(b2) b2.textContent='Servicios · '+s;
+  }
+  function load(){ listings=DATA.slice(); updateTabCounts(); applyFilter(); render(); schedule(); }
 
   function fitStageInit(){ function f(){ const w=innerWidth||1600,h=innerHeight||900; $('stage').style.setProperty('--s',Math.min(w/1600,h/900)||1); } addEventListener('resize',f); addEventListener('load',f); f(); }
   fitStageInit(); drawIcons(); tick(); setInterval(tick,1000); load();
