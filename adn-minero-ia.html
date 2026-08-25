@@ -41,6 +41,11 @@
     .typing span:nth-child(2){ animation-delay:.2s } .typing span:nth-child(3){ animation-delay:.4s }
     @keyframes bl{ 0%,60%,100%{ opacity:.25; transform:translateY(0) } 30%{ opacity:1; transform:translateY(-3px) } }
     a.src{ color:#e8c9a6; text-decoration:underline; text-underline-offset:2px; }
+    .acts{ display:flex; gap:6px; margin:6px 4px 0; }
+    .act{ display:inline-flex; align-items:center; gap:5px; font-size:11px; color:#c9b7a5; background:rgba(48,41,35,.5); border:1px solid rgba(196,168,148,.2); border-radius:999px; padding:4px 9px; cursor:pointer; transition:all .15s; }
+    .act:hover{ color:#f4ece5; border-color:rgba(207,155,111,.5); }
+    .act.ok{ color:#a7d18a; border-color:rgba(167,209,138,.5); }
+    .act svg{ width:13px; height:13px; }
   </style>
 </head>
 <body>
@@ -107,11 +112,35 @@
     row.className = role==='user' ? 'u-row' : 'a-row';
     row.innerHTML = role==='user'
       ? `<div class="bub u">${escapeHtml(text)}</div>`
-      : `<div class="who"><i data-lucide="sparkles" style="width:13px;height:13px;color:#cf9b6f"></i> ADN Minero IA</div><div class="bub a"></div>`;
+      : `<div class="who"><i data-lucide="sparkles" style="width:13px;height:13px;color:#cf9b6f"></i> ADN Minero IA</div><div class="bub a"></div><div class="acts hidden"></div>`;
     chat.appendChild(row);
     icons();
     chat.scrollTop=chat.scrollHeight;
     return role==='user' ? null : row.querySelector('.bub.a');
+  }
+
+  // Barra de acciones (copiar / WhatsApp) bajo una respuesta ya terminada
+  function finalizeAssistant(bub, text){
+    if(!text) return;
+    const acts=bub.parentElement.querySelector('.acts');
+    if(!acts) return;
+    acts.classList.remove('hidden');
+    acts.innerHTML=`<button class="act" data-a="copy"><i data-lucide="copy"></i> Copiar</button>
+      <button class="act" data-a="wa"><i data-lucide="message-circle"></i> WhatsApp</button>`;
+    const firma=' — vía ADN Minero IA · https://simonrovi-web.github.io/adn-minero/';
+    acts.querySelector('[data-a="copy"]').addEventListener('click', async (e)=>{
+      const b=e.currentTarget;
+      try{ await navigator.clipboard.writeText(text); }catch(err){
+        const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select();
+        try{ document.execCommand('copy'); }catch(_){} ta.remove();
+      }
+      b.classList.add('ok'); b.innerHTML='<i data-lucide="check"></i> Copiado'; icons();
+      setTimeout(()=>{ b.classList.remove('ok'); b.innerHTML='<i data-lucide="copy"></i> Copiar'; icons(); }, 1800);
+    });
+    acts.querySelector('[data-a="wa"]').addEventListener('click', ()=>{
+      window.open('https://wa.me/?text='+encodeURIComponent(text+firma), '_blank', 'noopener');
+    });
+    icons();
   }
 
   function escapeHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
@@ -123,8 +152,21 @@
   function welcome(){
     chat.innerHTML='';
     const bub=addBubble('assistant','');
-    bub.textContent='¡Hola! Soy la IA de ADN Minero. Pregúntame sobre la minería de Chile: el cobre, las faenas y empresas, el royalty y el aporte fiscal, seguridad, o para qué sirve cada panel. Recuerda que no tengo datos en vivo: para el dato del día, abre el panel correspondiente. 👷⛏️';
+    bub.textContent='¡Hola! Soy la IA de ADN Minero. Pregúntame sobre la minería de Chile: el cobre, las faenas y empresas, el royalty y el aporte fiscal, seguridad, o para qué sirve cada panel. También puedo darte los datos de hoy —precio del cobre, dólar, UF, UTM, bitcoin— y titulares mineros recientes. 👷⛏️';
     renderChips();
+  }
+
+  // ---- Historial persistente (localStorage) ----
+  const HKEY='adn_ia_hist';
+  function saveHistory(){ try{ localStorage.setItem(HKEY, JSON.stringify(history.slice(-20))); }catch(e){} }
+  function loadHistory(){ try{ return JSON.parse(localStorage.getItem(HKEY)||'[]'); }catch(e){ return []; } }
+  function renderHistory(h){
+    chat.innerHTML='';
+    for(const m of h){
+      if(m.role==='user'){ addBubble('user', m.content); }
+      else if(m.role==='assistant'){ const b=addBubble('assistant',''); b.textContent=m.content; finalizeAssistant(b, m.content); }
+    }
+    chat.scrollTop=chat.scrollHeight;
   }
 
   function renderChips(){
@@ -183,6 +225,8 @@
       }
       if(!acc) bub.textContent='(sin respuesta)';
       history.push({role:'assistant', content:acc||''});
+      if(acc) finalizeAssistant(bub, acc);
+      saveHistory();
     }catch(err){
       bub.textContent='No se pudo conectar con la IA. Revisa tu conexión e intenta otra vez.';
     }finally{
@@ -196,10 +240,13 @@
   input.addEventListener('input', autogrow);
   input.addEventListener('keydown', e=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); send(); } });
   sendBtn.addEventListener('click', send);
-  $('clear').addEventListener('click', ()=>{ history=[]; welcome(); });
+  $('clear').addEventListener('click', ()=>{ history=[]; try{ localStorage.removeItem(HKEY); }catch(e){} welcome(); });
 
   if(!configured) $('setup').classList.remove('hidden');
-  welcome(); icons();
+  const saved=loadHistory();
+  if(saved.length){ history=saved; renderHistory(saved); }
+  else { welcome(); }
+  icons();
 </script>
 </body>
 </html>
