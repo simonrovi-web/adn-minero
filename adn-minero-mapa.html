@@ -35,6 +35,7 @@
     .leaflet-bar a:hover{ background:#3a3129; }
     .leaflet-tooltip.region-tip{ background:#241d18; color:#f0e2d3; border:1px solid rgba(196,168,148,.32); box-shadow:0 6px 20px rgba(0,0,0,.5); font-size:12px; font-weight:600; padding:4px 9px; border-radius:8px; }
     .leaflet-tooltip.region-tip::before{ display:none; }
+    .region-label{ color:#efd9bd; font-size:10px; font-weight:700; letter-spacing:.02em; white-space:nowrap; text-shadow:0 1px 3px #000, 0 0 6px #000, 0 0 2px #000; pointer-events:none; transform:translate(-50%,-50%); opacity:.9; }
     @media (max-width:640px){
       #topbar{ flex-direction:column; align-items:flex-start; gap:6px; padding:10px 14px; }
       #topbar .clockwrap{ display:none; }
@@ -127,6 +128,35 @@
         lyr.on('mouseout',()=>lyr.setStyle(RG_BASE));
       }
     }).addTo(map);
+  }
+
+  // Etiquetas fijas con el nombre de cada región
+  let labelsLayer=null;
+  function bboxArea(r){ let a=1e9,b=1e9,c=-1e9,d=-1e9; for(const p of r){ if(p[0]<a)a=p[0];if(p[0]>c)c=p[0];if(p[1]<b)b=p[1];if(p[1]>d)d=p[1]; } return (c-a)*(d-b); }
+  function centroid(feat){
+    const g=feat.geometry;
+    const polys = g.type==='Polygon' ? [g.coordinates] : g.coordinates;
+    let best=null, bestA=-1;
+    for(const poly of polys){ const r=poly[0]; const ar=bboxArea(r); if(ar>bestA){ bestA=ar; best=r; } }
+    let sx=0, sy=0; for(const p of best){ sx+=p[0]; sy+=p[1]; }
+    return [sy/best.length, sx/best.length]; // [lat, lon]
+  }
+  function shortName(n){
+    let s=n.replace(/^Regi[oó]n\s+(del\s+|de\s+)?/i,'');
+    s=s.replace(/^Metropolitana de Santiago$/i,'Metropolitana');
+    s=s.replace(/\s+del\s+Gral.*$/i,'');
+    s=s.replace(/\s+y\s+Ant[aá]rtica.*$/i,'');
+    s=s.replace(/^Libertador\s+Bernardo\s+/i,'');
+    return s;
+  }
+  if(regionesLayer){
+    labelsLayer=L.layerGroup();
+    window.REGIONES_CL.features.forEach(f=>{
+      const [lat,lon]=centroid(f);
+      const ic=L.divIcon({className:'region-label', html:shortName(f.properties.n), iconSize:[0,0]});
+      L.marker([lat,lon],{icon:ic, interactive:false, keyboard:false}).addTo(labelsLayer);
+    });
+    labelsLayer.addTo(map);
   }
 
   const active=new Set(Object.keys(MIN));
@@ -227,8 +257,8 @@
     rgRow.innerHTML=`<span class="lg-dot" style="background:transparent;border:2px solid #cf9b6f;box-shadow:none"></span> Regiones <span style="color:#8a8079;margin-left:auto;padding-left:10px">16</span>`;
     rgRow.addEventListener('click',()=>{
       regionesOn=!regionesOn;
-      if(regionesOn){ regionesLayer.addTo(map); rgRow.classList.remove('off'); }
-      else{ map.removeLayer(regionesLayer); rgRow.classList.add('off'); }
+      if(regionesOn){ regionesLayer.addTo(map); if(labelsLayer) labelsLayer.addTo(map); rgRow.classList.remove('off'); }
+      else{ map.removeLayer(regionesLayer); if(labelsLayer) map.removeLayer(labelsLayer); rgRow.classList.add('off'); }
     });
     rows.appendChild(rgRow);
   }
