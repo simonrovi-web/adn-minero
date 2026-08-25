@@ -33,6 +33,8 @@
     .pop-r{ color:#c9b7a5; font-size:12px; margin-top:4px; display:flex; align-items:center; gap:5px; }
     .leaflet-bar a{ background:#2b2520; color:#e6d4c4; border-color:rgba(196,168,148,.2); }
     .leaflet-bar a:hover{ background:#3a3129; }
+    .leaflet-tooltip.region-tip{ background:#241d18; color:#f0e2d3; border:1px solid rgba(196,168,148,.32); box-shadow:0 6px 20px rgba(0,0,0,.5); font-size:12px; font-weight:600; padding:4px 9px; border-radius:8px; }
+    .leaflet-tooltip.region-tip::before{ display:none; }
     @media (max-width:640px){
       #topbar{ flex-direction:column; align-items:flex-start; gap:6px; padding:10px 14px; }
       #topbar .clockwrap{ display:none; }
@@ -64,6 +66,7 @@
 
   <div id="count" class="glass"><span id="countTxt">—</span></div>
 
+<script src="regiones-cl.js"></script>
 <script>
   const TZ='America/Santiago';
   const MIN={
@@ -111,6 +114,21 @@
     attribution:'&copy; OpenStreetMap &copy; CARTO', subdomains:'abcd', maxZoom:19
   }).addTo(map);
 
+  // ===== Contorno de las regiones de Chile (dibujo decorativo) =====
+  let regionesLayer=null, regionesOn=true;
+  const RG_BASE={ color:'#cf9b6f', weight:1, opacity:.45, fillColor:'#cf9b6f', fillOpacity:.05 };
+  const RG_HOVER={ color:'#f0d7b6', weight:1.8, opacity:.85, fillColor:'#cf9b6f', fillOpacity:.14 };
+  if(window.REGIONES_CL){
+    regionesLayer=L.geoJSON(window.REGIONES_CL,{
+      style:()=>RG_BASE,
+      onEachFeature:(feat,lyr)=>{
+        if(feat.properties&&feat.properties.n) lyr.bindTooltip(feat.properties.n,{sticky:true,className:'region-tip'});
+        lyr.on('mouseover',()=>lyr.setStyle(RG_HOVER));
+        lyr.on('mouseout',()=>lyr.setStyle(RG_BASE));
+      }
+    }).addTo(map);
+  }
+
   const active=new Set(Object.keys(MIN));
   const layers={};
   Object.keys(MIN).forEach(k=>layers[k]=L.layerGroup().addTo(map));
@@ -148,7 +166,9 @@
     {n:'Enaex',                  cat:'Explosivos y tronadura',r:'Mejillones',  lat:-23.099, lon:-70.449, link:'https://www.enaex.com/cl/es/servicios-a-cielo-abierto/'},
     {n:'Rinco',                  cat:'Arriendo de maquinaria',r:'Santiago',    lat:-33.365, lon:-70.730, link:'http://www.rinco.cl/'},
     {n:'Minero Markets',         cat:'Maquinaria minera',     r:'Santiago',    lat:-33.450, lon:-70.655, link:'https://mineromarkets.cl/'},
-    {n:'Aggreko',                cat:'Energía (arriendo)',    r:'Santiago',    lat:-33.440, lon:-70.780, link:'https://www.aggreko.com/es-cl/sectors/mining'}
+    {n:'Aggreko',                cat:'Energía (arriendo)',    r:'Santiago',    lat:-33.440, lon:-70.780, link:'https://www.aggreko.com/es-cl/sectors/mining'},
+    {n:'Metso',                  cat:'Procesamiento / plantas',r:'Antofagasta',lat:-23.660, lon:-70.392, link:'https://www.metso.com/'},
+    {n:'Liebherr Chile',         cat:'Equipos mineros / grúas',r:'Santiago',   lat:-33.402, lon:-70.582, link:'https://www.liebherr.com/es-cl/'}
   ];
   const serviciosLayer=L.layerGroup().addTo(map);
   let serviciosOn=true;
@@ -200,12 +220,37 @@
   });
   rows.appendChild(svRow);
 
+  // Toggle de Regiones (dibujo)
+  if(regionesLayer){
+    const rgRow=document.createElement('div');
+    rgRow.className='lg-row';
+    rgRow.innerHTML=`<span class="lg-dot" style="background:transparent;border:2px solid #cf9b6f;box-shadow:none"></span> Regiones <span style="color:#8a8079;margin-left:auto;padding-left:10px">16</span>`;
+    rgRow.addEventListener('click',()=>{
+      regionesOn=!regionesOn;
+      if(regionesOn){ regionesLayer.addTo(map); rgRow.classList.remove('off'); }
+      else{ map.removeLayer(regionesLayer); rgRow.classList.add('off'); }
+    });
+    rows.appendChild(rgRow);
+  }
+
   // Enlace al panel completo de Trabajos y Servicios
   const link=document.createElement('a');
   link.href='adn-minero-empleos.html';
   link.style.cssText='display:flex;align-items:center;gap:6px;margin-top:10px;font-size:11px;color:#e8c9a6;text-decoration:none';
   link.innerHTML='<i data-lucide="briefcase" style="width:13px;height:13px"></i> Ver Trabajos y Servicios →';
   rows.appendChild(link);
+
+  // Portales de empleo online (sin ubicación física)
+  const PORTALES=[
+    {n:'Computrabajo', url:'https://cl.computrabajo.com/trabajo-de-minera'},
+    {n:'Indeed', url:'https://cl.indeed.com/q-mineria-empleos.html'},
+    {n:'Trabajos en Minera', url:'https://trabajosenminera.com/'}
+  ];
+  const pWrap=document.createElement('div');
+  pWrap.style.cssText='margin-top:10px;padding-top:8px;border-top:1px solid rgba(196,168,148,.16)';
+  pWrap.innerHTML='<div style="font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#8a8079;margin-bottom:5px;display:flex;align-items:center;gap:5px"><i data-lucide="globe" style="width:12px;height:12px"></i> Portales de empleo (online)</div>'+
+    PORTALES.map(p=>`<a href="${p.url}" target="_blank" rel="noopener" style="display:block;font-size:11px;color:#c9b7a5;text-decoration:none;padding:2px 0">• ${p.n} ↗</a>`).join('');
+  rows.appendChild(pWrap);
 
   refreshCount();
 
