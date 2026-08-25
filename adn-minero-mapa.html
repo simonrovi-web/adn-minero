@@ -48,7 +48,7 @@
       <div style="height:42px;width:42px;border-radius:12px;display:grid;place-items:center;background:rgba(181,115,79,.15);border:1px solid rgba(196,140,100,.3);flex:0 0 auto"><i data-lucide="map" class="metric-icon" style="width:24px;height:24px;color:var(--copper)"></i></div>
       <div style="min-width:0">
         <p style="margin:0;font-size:19px;font-weight:800;line-height:1.05;display:flex;align-items:center;gap:8px">Mapa Minero de Chile <span class="fi fi-cl" style="font-size:.8em;border-radius:3px"></span></p>
-        <p style="margin:2px 0 0;font-size:11px;color:#c9b7a5">ADN Minero · principales faenas mineras del país</p>
+        <p style="margin:2px 0 0;font-size:11px;color:#c9b7a5">ADN Minero · faenas, trabajos y servicios de la minería</p>
       </div>
     </div>
     <div class="clockwrap" style="text-align:right;flex:0 0 auto">
@@ -58,7 +58,7 @@
   </div>
 
   <div id="legend" class="glass">
-    <h4>Filtrar por mineral</h4>
+    <h4>Filtrar por mineral / servicios</h4>
     <div id="legendRows"></div>
   </div>
 
@@ -115,21 +115,60 @@
   const layers={};
   Object.keys(MIN).forEach(k=>layers[k]=L.layerGroup().addTo(map));
 
+  // Portales de empleo por empresa (para el enlace "Trabaja aquí" en cada faena)
+  const CAREERS=[
+    { re:/Codelco/i,               url:'https://www.codelco.com/trabaja-en-codelco' },
+    { re:/BHP/i,                   url:'https://www.bhp.com/es/careers/global-careers/careers-in-chile' },
+    { re:/Collahuasi/i,            url:'https://www.collahuasi.cl/trabaja-con-nosotros/' },
+    { re:/Anglo American/i,        url:'https://chile.angloamerican.com/es-es/empleo/opportunidades-laborales' },
+    { re:/Antofagasta Minerals/i,  url:'https://www.aminerals.cl/trabaja-con-nosotros' }
+  ];
+  const careerFor=e=>{ const m=CAREERS.find(c=>c.re.test(e||'')); return m?m.url:null; };
+
   function marker(f){
     const c=MIN[f.m].color;
     const ic=L.divIcon({className:'', html:`<span style="display:block;width:15px;height:15px;border-radius:50%;background:${c};border:2px solid #fff;box-shadow:0 0 8px ${c},0 1px 4px rgba(0,0,0,.6)"></span>`, iconSize:[15,15], iconAnchor:[7,7]});
     const mk=L.marker([f.lat,f.lon],{icon:ic});
+    const job=careerFor(f.e);
     mk.bindPopup(`<div class="pop-t">${f.n}</div>
       <div class="pop-r"><span>🏢</span> ${f.e}</div>
       <div class="pop-r"><span>📍</span> Región de ${f.r}</div>
-      <span class="pop-m" style="color:${c};background:${c}22;border:1px solid ${c}55">${MIN[f.m].label}</span>`);
+      <span class="pop-m" style="color:${c};background:${c}22;border:1px solid ${c}55">${MIN[f.m].label}</span>
+      ${job?`<div style="margin-top:8px"><a class="src" href="${job}" target="_blank" rel="noopener">👷 Trabaja aquí · postular →</a></div>`:''}`);
     return mk;
   }
   FAENAS.forEach(f=>{ if(MIN[f.m]) marker(f).addTo(layers[f.m]); });
 
+  // ===== Capa de SERVICIOS / PROVEEDORES (empresas que prestan servicios a la minería) =====
+  const SERV_COLOR='#67c1d6';
+  const SERVICIOS=[
+    {n:'Finning (arriendo CAT)', cat:'Arriendo de equipos',   r:'Antofagasta', lat:-23.652, lon:-70.398, link:'https://www.finning.com/es_CL/services/rental.html'},
+    {n:'Komatsu Chile',          cat:'Arriendo de equipos',   r:'Antofagasta', lat:-23.673, lon:-70.395, link:'https://www.komatsulatinoamerica.com/chile/arriendo/'},
+    {n:'Epiroc Chile',           cat:'Perforación',           r:'Calama',      lat:-22.456, lon:-68.929, link:'https://www.epiroc.com/es-cl'},
+    {n:'Enaex',                  cat:'Explosivos y tronadura',r:'Mejillones',  lat:-23.099, lon:-70.449, link:'https://www.enaex.com/cl/es/servicios-a-cielo-abierto/'},
+    {n:'Rinco',                  cat:'Arriendo de maquinaria',r:'Santiago',    lat:-33.365, lon:-70.730, link:'http://www.rinco.cl/'},
+    {n:'Minero Markets',         cat:'Maquinaria minera',     r:'Santiago',    lat:-33.450, lon:-70.655, link:'https://mineromarkets.cl/'},
+    {n:'Aggreko',                cat:'Energía (arriendo)',    r:'Santiago',    lat:-33.440, lon:-70.780, link:'https://www.aggreko.com/es-cl/sectors/mining'}
+  ];
+  const serviciosLayer=L.layerGroup().addTo(map);
+  let serviciosOn=true;
+  function servMarker(s){
+    const c=SERV_COLOR;
+    const ic=L.divIcon({className:'', html:`<span style="display:block;width:15px;height:15px;border-radius:4px;background:${c};border:2px solid #fff;box-shadow:0 0 8px ${c},0 1px 4px rgba(0,0,0,.6)"></span>`, iconSize:[15,15], iconAnchor:[7,7]});
+    const mk=L.marker([s.lat,s.lon],{icon:ic});
+    mk.bindPopup(`<div class="pop-t">🔧 ${s.n}</div>
+      <div class="pop-r"><span>🧰</span> ${s.cat}</div>
+      <div class="pop-r"><span>📍</span> ${s.r} · cobertura nacional (referencial)</div>
+      <span class="pop-m" style="color:${c};background:${c}22;border:1px solid ${c}55">Servicio</span>
+      <div style="margin-top:8px"><a class="src" href="${s.link}" target="_blank" rel="noopener">Ver servicios / Contactar →</a></div>`);
+    return mk;
+  }
+  SERVICIOS.forEach(s=>servMarker(s).addTo(serviciosLayer));
+
   function refreshCount(){
     const total=FAENAS.filter(f=>active.has(f.m)).length;
-    document.getElementById('countTxt').textContent=`${total} faenas en el mapa`;
+    const sv=serviciosOn?SERVICIOS.length:0;
+    document.getElementById('countTxt').textContent=`${total} faenas` + (sv?` + ${sv} servicios`:'') + ` en el mapa`;
   }
 
   // Leyenda / filtros
@@ -147,6 +186,27 @@
     });
     rows.appendChild(el);
   });
+
+  // Separador + filtro de Servicios
+  const sep=document.createElement('div'); sep.style.cssText='height:1px;background:rgba(196,168,148,.16);margin:9px 0 7px'; rows.appendChild(sep);
+  const svRow=document.createElement('div');
+  svRow.className='lg-row';
+  svRow.innerHTML=`<span class="lg-dot" style="border-radius:3px;color:${SERV_COLOR};background:${SERV_COLOR}"></span> Servicios <span style="color:#8a8079;margin-left:auto;padding-left:10px">${SERVICIOS.length}</span>`;
+  svRow.addEventListener('click',()=>{
+    serviciosOn=!serviciosOn;
+    if(serviciosOn){ serviciosLayer.addTo(map); svRow.classList.remove('off'); }
+    else{ map.removeLayer(serviciosLayer); svRow.classList.add('off'); }
+    refreshCount();
+  });
+  rows.appendChild(svRow);
+
+  // Enlace al panel completo de Trabajos y Servicios
+  const link=document.createElement('a');
+  link.href='adn-minero-empleos.html';
+  link.style.cssText='display:flex;align-items:center;gap:6px;margin-top:10px;font-size:11px;color:#e8c9a6;text-decoration:none';
+  link.innerHTML='<i data-lucide="briefcase" style="width:13px;height:13px"></i> Ver Trabajos y Servicios →';
+  rows.appendChild(link);
+
   refreshCount();
 
   function tick(){ document.getElementById('clock').textContent=new Date().toLocaleTimeString('es-CL',{timeZone:TZ,hour:'2-digit',minute:'2-digit',hour12:false}); }
