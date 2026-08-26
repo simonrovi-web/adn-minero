@@ -251,11 +251,46 @@
   }
   PUERTOS.forEach(p=>portMarker(p).addTo(puertosLayer));
 
+  // ===== Capa de EDUCACIÓN (universidades e institutos con carreras mineras) =====
+  const EDU_COLOR='#b98cd9';
+  const EDUCACION=[
+    {n:'Universidad de Chile', r:'Metropolitana', lat:-33.457, lon:-70.663, link:'https://ingenieria.uchile.cl/'},
+    {n:'Pontificia U. Católica', r:'Metropolitana', lat:-33.499, lon:-70.614, link:'https://www.ing.uc.cl/'},
+    {n:'Universidad de Santiago (USACH)', r:'Metropolitana', lat:-33.451, lon:-70.686, link:'https://www.usach.cl/'},
+    {n:'AIEP', r:'Metropolitana', lat:-33.432, lon:-70.633, link:'https://www.aiep.cl/'},
+    {n:'DUOC UC', r:'Metropolitana', lat:-33.447, lon:-70.647, link:'https://www.duoc.cl/'},
+    {n:'U. Técnica F. Santa María', r:'Valparaíso', lat:-33.034, lon:-71.596, link:'https://www.usm.cl/'},
+    {n:'Universidad de La Serena', r:'Coquimbo', lat:-29.909, lon:-71.252, link:'https://www.userena.cl/'},
+    {n:'Universidad de Atacama', r:'Atacama', lat:-27.366, lon:-70.332, link:'https://www.uda.cl/'},
+    {n:'Universidad Católica del Norte', r:'Antofagasta', lat:-23.685, lon:-70.412, link:'https://www.ucn.cl/'},
+    {n:'Universidad de Antofagasta', r:'Antofagasta', lat:-23.632, lon:-70.394, link:'https://www.uantof.cl/'},
+    {n:'INACAP (sede Antofagasta)', r:'Antofagasta', lat:-23.660, lon:-70.398, link:'https://www.inacap.cl/'},
+    {n:'Santo Tomás (sede Antofagasta)', r:'Antofagasta', lat:-23.650, lon:-70.402, link:'https://www.santotomas.cl/'},
+    {n:'Universidad de Concepción', r:'Biobío', lat:-36.829, lon:-73.036, link:'https://www.udec.cl/'}
+  ];
+  const eduLayer=L.layerGroup().addTo(map);
+  let eduOn=true;
+  function eduMarker(e){
+    const c=EDU_COLOR;
+    const ic=L.divIcon({className:'', html:`<span style="display:grid;place-items:center;width:19px;height:19px;border-radius:50%;background:#2b1f3a;border:2px solid ${c};color:#e6d6f7;font-size:10px;box-shadow:0 0 8px ${c},0 1px 4px rgba(0,0,0,.6)">🎓</span>`, iconSize:[19,19], iconAnchor:[9,9]});
+    const mk=L.marker([e.lat,e.lon],{icon:ic});
+    mk.bindPopup(`<div class="pop-t">🎓 ${e.n}</div>
+      <div class="pop-r"><span>📚</span> Carreras mineras</div>
+      <div class="pop-r"><span>📍</span> Región ${e.r}</div>
+      <span class="pop-m" style="color:${c};background:${c}22;border:1px solid ${c}55">Educación</span>
+      <div style="margin-top:8px"><a class="src" href="${e.link}" target="_blank" rel="noopener">Ver institución →</a></div>
+      <div style="margin-top:4px"><a class="src" href="adn-minero-educacion.html" target="_blank" rel="noopener">Ver carreras y becas →</a></div>
+      ${gmapsLink(e.lat,e.lon)}`);
+    return mk;
+  }
+  EDUCACION.forEach(e=>eduMarker(e).addTo(eduLayer));
+
   function refreshCount(){
     const total=FAENAS.filter(f=>active.has(f.m)).length;
     const sv=serviciosOn?SERVICIOS.length:0;
     const pu=puertosOn?PUERTOS.length:0;
-    let extra=''; if(sv) extra+=` + ${sv} servicios`; if(pu) extra+=` + ${pu} puertos`;
+    const ed=eduOn?EDUCACION.length:0;
+    let extra=''; if(sv) extra+=` + ${sv} servicios`; if(pu) extra+=` + ${pu} puertos`; if(ed) extra+=` + ${ed} educación`;
     document.getElementById('countTxt').textContent=`${total} faenas${extra} en el mapa`;
   }
 
@@ -299,6 +334,18 @@
     refreshCount();
   });
   rows.appendChild(puRow);
+
+  // Filtro de Educación
+  const edRow=document.createElement('div');
+  edRow.className='lg-row';
+  edRow.innerHTML=`<span class="lg-dot" style="display:grid;place-items:center;color:#2b1f3a;background:${EDU_COLOR};font-size:9px">🎓</span> Educación <span style="color:#8a8079;margin-left:auto;padding-left:10px">${EDUCACION.length}</span>`;
+  edRow.addEventListener('click',()=>{
+    eduOn=!eduOn;
+    if(eduOn){ eduLayer.addTo(map); edRow.classList.remove('off'); }
+    else{ map.removeLayer(eduLayer); edRow.classList.add('off'); }
+    refreshCount();
+  });
+  rows.appendChild(edRow);
 
   // Toggle de Regiones (dibujo)
   if(regionesLayer){
