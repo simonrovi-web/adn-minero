@@ -70,6 +70,8 @@
 <script src="regiones-cl.js"></script>
 <script>
   const TZ='America/Santiago';
+  const gmaps=(lat,lon)=>'https://www.google.com/maps/search/?api=1&query='+lat+','+lon;
+  const gmapsLink=(lat,lon)=>`<div style="margin-top:6px"><a class="src" href="${gmaps(lat,lon)}" target="_blank" rel="noopener">📍 Ver en Google Maps →</a></div>`;
   const MIN={
     cobre:  {label:'Cobre',  color:'#cf9b6f'},
     oro:    {label:'Oro',    color:'#f5c542'},
@@ -182,7 +184,8 @@
       <div class="pop-r"><span>🏢</span> ${f.e}</div>
       <div class="pop-r"><span>📍</span> Región de ${f.r}</div>
       <span class="pop-m" style="color:${c};background:${c}22;border:1px solid ${c}55">${MIN[f.m].label}</span>
-      ${job?`<div style="margin-top:8px"><a class="src" href="${job}" target="_blank" rel="noopener">👷 Trabaja aquí · postular →</a></div>`:''}`);
+      ${job?`<div style="margin-top:8px"><a class="src" href="${job}" target="_blank" rel="noopener">👷 Trabaja aquí · postular →</a></div>`:''}
+      ${gmapsLink(f.lat,f.lon)}`);
     return mk;
   }
   FAENAS.forEach(f=>{ if(MIN[f.m]) marker(f).addTo(layers[f.m]); });
@@ -210,7 +213,8 @@
       <div class="pop-r"><span>🧰</span> ${s.cat}</div>
       <div class="pop-r"><span>📍</span> ${s.r} · cobertura nacional (referencial)</div>
       <span class="pop-m" style="color:${c};background:${c}22;border:1px solid ${c}55">Servicio</span>
-      <div style="margin-top:8px"><a class="src" href="${s.link}" target="_blank" rel="noopener">Ver servicios / Contactar →</a></div>`);
+      <div style="margin-top:8px"><a class="src" href="${s.link}" target="_blank" rel="noopener">Ver servicios / Contactar →</a></div>
+      ${gmapsLink(s.lat,s.lon)}`);
     return mk;
   }
   SERVICIOS.forEach(s=>servMarker(s).addTo(serviciosLayer));
@@ -241,7 +245,8 @@
       <div class="pop-r"><span>📦</span> ${p.carga}</div>
       <div class="pop-r"><span>📍</span> Región de ${p.r}</div>
       <span class="pop-m" style="color:${c};background:${c}22;border:1px solid ${c}55">Puerto minero</span>
-      <div style="margin-top:8px"><a class="src" href="adn-minero-mar.html" target="_blank" rel="noopener">Ver estado del mar →</a></div>`);
+      <div style="margin-top:8px"><a class="src" href="adn-minero-mar.html" target="_blank" rel="noopener">Ver estado del mar →</a></div>
+      ${gmapsLink(p.lat,p.lon)}`);
     return mk;
   }
   PUERTOS.forEach(p=>portMarker(p).addTo(puertosLayer));
