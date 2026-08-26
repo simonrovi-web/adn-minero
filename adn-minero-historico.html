@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Histórico</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', ui-sans-serif, system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(181,115,79,0.16), transparent 60%),
+      radial-gradient(1000px 600px at 100% 0%, rgba(120,108,100,0.10), transparent 55%),
+      #141110; }
+    .wrap{ max-width:1000px; margin:0 auto; padding:16px 16px 40px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); backdrop-filter:blur(14px) saturate(130%); -webkit-backdrop-filter:blur(14px) saturate(130%); border:1px solid rgba(196,168,148,0.14); }
+    .metric-icon{ filter:drop-shadow(0 0 8px currentColor); }
+    select{ background:#241d18; color:#f4ece5; }
+    .rng{ font-size:13px; font-weight:700; padding:6px 14px; border-radius:999px; cursor:pointer; color:#c9b7a5; background:transparent; border:1px solid rgba(196,168,148,.2); }
+    .rng.on{ color:#2a1c12; background:linear-gradient(135deg,#f0d7b6,#cf9b6f 55%,#b5734f); border-color:rgba(240,215,182,.6); }
+    .ind-btn{ font-size:13px; font-weight:600; padding:6px 12px; border-radius:12px; cursor:pointer; color:#c9b7a5; background:rgba(48,41,35,.5); border:1px solid rgba(196,168,148,.18); white-space:nowrap; transition:all .15s; }
+    .ind-btn:hover{ color:#f4ece5; }
+    .ind-btn.on{ color:#2a1c12; font-weight:700; }
+    .sk{ background:linear-gradient(90deg, rgba(255,255,255,.05), rgba(255,255,255,.1), rgba(255,255,255,.05)); background-size:200% 100%; animation:sh 1.4s infinite; border-radius:10px; }
+    @keyframes sh{ 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+    a.lnk{ color:#e8c9a6; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- HEADER -->
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(181,115,79,.15);border:1px solid rgba(196,140,100,.3)"><i data-lucide="line-chart" class="metric-icon" style="width:26px;height:26px;color:var(--copper)"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#c9a888;font-weight:700">Histórico · ADN Minero <span class="fi fi-cl" style="border-radius:3px"></span></p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Cómo han evolucionado el cobre y los indicadores en el tiempo</p>
+      </div>
+    </header>
+
+    <!-- INDICADORES -->
+    <div id="inds" class="flex flex-wrap gap-2 mt-4"></div>
+
+    <!-- CHART CARD -->
+    <div class="glass rounded-2xl p-5 mt-4">
+      <div class="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p id="cTitle" class="text-lg font-bold">—</p>
+          <p class="text-3xl font-extrabold mt-0.5"><span id="cVal">—</span> <span id="cChg" class="text-base font-bold align-middle"></span></p>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <button class="rng on" data-r="30">30 días</button>
+          <button class="rng" data-r="year">Este año</button>
+        </div>
+      </div>
+      <div id="chartBox" class="mt-4"><div class="sk" style="height:300px"></div></div>
+      <div id="stats" class="grid grid-cols-3 gap-3 mt-4"></div>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6">Fuente: <a href="https://mindicador.cl" target="_blank" rel="noopener" class="lnk">mindicador.cl</a> (Banco Central / SII) · valores referenciales · <a href="index.html" class="lnk">Inicio</a></p>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const IND=[
+    {k:'libra_cobre', lab:'Cobre', c:'#cf9b6f', u:'US$', fmt:v=>'US$'+v.toFixed(2), sub:'/libra'},
+    {k:'dolar',       lab:'Dólar', c:'#a7d18a', u:'$',   fmt:v=>'$'+Math.round(v).toLocaleString('es-CL'), sub:''},
+    {k:'uf',          lab:'UF',    c:'#7fbfd1', u:'$',   fmt:v=>'$'+Math.round(v).toLocaleString('es-CL'), sub:''},
+    {k:'utm',         lab:'UTM',   c:'#d6a94f', u:'$',   fmt:v=>'$'+Math.round(v).toLocaleString('es-CL'), sub:''},
+    {k:'euro',        lab:'Euro',  c:'#c7a2e0', u:'$',   fmt:v=>'$'+Math.round(v).toLocaleString('es-CL'), sub:''},
+    {k:'ipc',         lab:'IPC',   c:'#e0a35a', u:'%',   fmt:v=>v.toFixed(1)+'%', sub:'mensual'},
+    {k:'bitcoin',     lab:'Bitcoin', c:'#f5c542', u:'US$', fmt:v=>'US$'+Math.round(v).toLocaleString('en-US'), sub:''}
+  ];
+  let cur=IND[0], range='30';
+
+  function renderInds(){
+    $('inds').innerHTML=IND.map(i=>`<button class="ind-btn ${i.k===cur.k?'on':''}" data-k="${i.k}" style="${i.k===cur.k?`background:${i.c};border-color:${i.c}`:''}">${i.lab}</button>`).join('');
+  }
+
+  function fmtDate(ts){ return new Date(ts).toLocaleDateString('es-CL',{day:'2-digit',month:'short'}); }
+
+  function chart(pts, col){
+    if(pts.length<2){ return '<p class="text-stone-500 text-sm text-center py-10">Sin datos suficientes para graficar.</p>'; }
+    const W=1000,H=300,pl=6,pr=6,pt=16,pb=26;
+    const vals=pts.map(p=>p.v); let mn=Math.min(...vals),mx=Math.max(...vals); const span=(mx-mn)||Math.abs(mn)||1;
+    const x=i=> pl + (i/(pts.length-1))*(W-pl-pr);
+    const y=v=> pt + (1-(v-mn)/span)*(H-pt-pb);
+    const d=pts.map((p,i)=>`${i?'L':'M'}${x(i).toFixed(1)},${y(p.v).toFixed(1)}`).join(' ');
+    const area=d+` L${x(pts.length-1).toFixed(1)},${H-pb} L${x(0).toFixed(1)},${H-pb} Z`;
+    const iMin=vals.indexOf(mn), iMax=vals.indexOf(mx), iLast=pts.length-1;
+    const gl=[0.25,0.5,0.75].map(g=>`<line x1="0" x2="${W}" y1="${(pt+g*(H-pt-pb)).toFixed(0)}" y2="${(pt+g*(H-pt-pb)).toFixed(0)}" stroke="rgba(255,255,255,.06)" />`).join('');
+    const dot=(i,c,r)=>`<circle cx="${x(i).toFixed(1)}" cy="${y(vals[i]).toFixed(1)}" r="${r}" fill="${c}" stroke="#141110" stroke-width="2"/>`;
+    return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="width:100%;height:300px;display:block">
+      <defs><linearGradient id="ar" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity="0.28"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs>
+      ${gl}
+      <path d="${area}" fill="url(#ar)"/>
+      <path d="${d}" fill="none" stroke="${col}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+      ${dot(iMin,'#e0715a',3)}${dot(iMax,'#a7d18a',3)}${dot(iLast,col,4.5)}
+    </svg>
+    <div class="flex justify-between text-[11px] text-stone-500 mt-1 px-1"><span>${fmtDate(pts[0].t)}</span><span>${fmtDate(pts[iLast].t)}</span></div>`;
+  }
+
+  async function load(){
+    renderInds();
+    $('cTitle').textContent = cur.lab + (cur.sub?' · '+cur.sub:'');
+    $('chartBox').innerHTML='<div class="sk" style="height:300px"></div>';
+    $('stats').innerHTML=''; $('cVal').textContent='—'; $('cChg').textContent='';
+    try{
+      const url = range==='year' ? `https://mindicador.cl/api/${cur.k}/${new Date().getFullYear()}` : `https://mindicador.cl/api/${cur.k}`;
+      const ctrl=new AbortController(); const to=setTimeout(()=>ctrl.abort(), 12000);
+      let j; try{ j=await (await fetch(url,{signal:ctrl.signal})).json(); } finally { clearTimeout(to); }
+      let serie=(j.serie||[]).filter(p=>typeof p.valor==='number');
+      // orden oldest -> newest
+      const pts=serie.map(p=>({t:new Date(p.fecha).getTime(), v:p.valor})).sort((a,b)=>a.t-b.t);
+      if(!pts.length){ $('chartBox').innerHTML='<p class="text-stone-500 text-sm text-center py-10">Sin datos.</p>'; return; }
+      $('chartBox').innerHTML=chart(pts, cur.c);
+      const vals=pts.map(p=>p.v), last=vals[vals.length-1], first=vals[0], mn=Math.min(...vals), mx=Math.max(...vals);
+      $('cVal').textContent=cur.fmt(last);
+      const chg=first? ((last-first)/Math.abs(first))*100 : 0;
+      const up=chg>=0;
+      $('cChg').innerHTML=`<span style="color:${up?'#a7d18a':'#e0715a'}">${up?'▲':'▼'} ${Math.abs(chg).toFixed(1)}% <span class="text-stone-500 font-normal text-sm">en el período</span></span>`;
+      const st=(lab,val,col)=>`<div class="rounded-xl px-3 py-2.5 text-center" style="background:${col}12;border:1px solid ${col}26"><p class="text-[11px] text-stone-400">${lab}</p><p class="text-lg font-bold mt-0.5" style="color:${col}">${cur.fmt(val)}</p></div>`;
+      $('stats').innerHTML = st('Mínimo',mn,'#e0715a') + st('Máximo',mx,'#a7d18a') + st('Actual',last,cur.c);
+      drawIcons();
+    }catch(e){ $('chartBox').innerHTML='<p class="text-stone-500 text-sm text-center py-10">No se pudo cargar la serie. Reintenta.</p>'; }
+  }
+
+  $('inds').addEventListener('click', e=>{ const b=e.target.closest('.ind-btn'); if(!b) return; cur=IND.find(i=>i.k===b.dataset.k)||IND[0]; load(); });
+  document.querySelectorAll('.rng').forEach(b=>b.addEventListener('click', ()=>{ range=b.dataset.r; document.querySelectorAll('.rng').forEach(x=>x.classList.toggle('on', x===b)); load(); }));
+  drawIcons(); load();
+</script>
+</body>
+</html>
