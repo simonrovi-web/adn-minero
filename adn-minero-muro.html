@@ -30,6 +30,11 @@
     .act:hover{ color:#f0d7b6; border-color:rgba(207,155,111,.45); }
     .act.done{ color:#a7d18a; }
     .act.del:hover{ color:#f88; border-color:rgba(255,120,120,.5); }
+    .act.like:hover{ color:#f0a0a0; border-color:rgba(240,160,160,.45); }
+    .act.like.liked{ color:#f0a0a0; border-color:rgba(240,160,160,.5); }
+    .act.like.liked svg{ fill:currentColor; }
+    #newBanner{ position:fixed; bottom:86px; left:50%; transform:translateX(-50%); z-index:50; background:linear-gradient(135deg,#f0d7b6,#cf9b6f 55%,#b5734f); color:#2a1c12; border:0; border-radius:999px; padding:8px 16px; font-size:13px; font-weight:700; box-shadow:0 8px 24px rgba(181,115,79,.5); cursor:pointer; display:none; align-items:center; gap:6px; }
+    #newBanner.show{ display:flex; }
   </style>
 </head>
 <body>
@@ -73,6 +78,7 @@
 
     <!-- LISTA -->
     <div id="list"></div>
+    <button id="newBanner"><i data-lucide="arrow-up" style="width:14px;height:14px"></i> <span id="newTxt">mensajes nuevos</span></button>
 
     <p class="shrink-0 pb-2 text-center" style="font-size:11px;color:#8a8079;line-height:1.5">
       Los mensajes son de sus autores. ADN Minero es un servicio independiente de divulgación y modera el contenido. No compartas datos personales.
@@ -109,6 +115,7 @@
         </div>
         <p class="text-[15px] text-stone-100 mt-1 leading-snug" style="white-space:pre-wrap;word-wrap:break-word">${esc(m.texto)}</p>
         <div class="flex items-center gap-2 mt-2">
+          <button class="act like ${isLiked(m.id)?'liked':''}" data-a="like" data-id="${m.id}"><i data-lucide="heart" style="width:12px;height:12px"></i> <span class="likec">${m.likes||0}</span></button>
           <button class="act" data-a="report" data-id="${m.id}"><i data-lucide="flag" style="width:12px;height:12px"></i> Reportar</button>
           ${ADMIN?`<button class="act del" data-a="del" data-id="${m.id}"><i data-lucide="trash-2" style="width:12px;height:12px"></i> Borrar</button>`:''}
         </div>
@@ -116,13 +123,40 @@
     icons();
   }
 
+  // ---- Me gusta (dedup local + servidor) ----
+  const LKEY='adn_muro_liked';
+  function getLiked(){ try{ return new Set(JSON.parse(localStorage.getItem(LKEY)||'[]')); }catch(e){ return new Set(); } }
+  function isLiked(id){ return getLiked().has(Number(id)); }
+  function addLiked(id){ const s=getLiked(); s.add(Number(id)); try{ localStorage.setItem(LKEY, JSON.stringify([...s])); }catch(e){} }
+  async function likear(id, btn){
+    if(isLiked(id)) return;
+    btn.classList.add('liked'); addLiked(id);
+    const span=btn.querySelector('.likec'); if(span) span.textContent=(parseInt(span.textContent,10)||0)+1;
+    icons();
+    try{ const r=await fetch(WORKER_URL+'/like',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:Number(id)})}); const j=await r.json(); if(span && j && typeof j.likes==='number') span.textContent=j.likes; }catch(e){}
+  }
+
+  // ---- Carga y aviso de mensajes nuevos ----
+  let topSeenId=0, pending=null;
+  async function fetchMsgs(){ const r=await fetch(WORKER_URL); return (await r.json()).messages||[]; }
+  function applyRender(msgs){ render(msgs); topSeenId = msgs.length?msgs[0].id:0; hideBanner(); }
+  function showBanner(n){ $('newTxt').textContent = n===1?'1 mensaje nuevo':(n+' mensajes nuevos'); $('newBanner').classList.add('show'); icons(); }
+  function hideBanner(){ $('newBanner').classList.remove('show'); pending=null; }
   async function load(){
     if(!configured){ $('setup').classList.remove('hidden'); return; }
+    try{ applyRender(await fetchMsgs()); }
+    catch(e){ $('list').innerHTML='<p class="text-center text-stone-500 mt-6">No se pudo cargar el muro. Reintenta.</p>'; }
+  }
+  async function poll(){
+    if(!configured) return;
     try{
-      const r=await fetch(WORKER_URL);
-      const j=await r.json();
-      render(j.messages||[]);
-    }catch(e){ $('list').innerHTML='<p class="text-center text-stone-500 mt-6">No se pudo cargar el muro. Reintenta.</p>'; }
+      const msgs=await fetchMsgs();
+      const newest = msgs.length?msgs[0].id:0;
+      if(newest>topSeenId){
+        if($('list').scrollTop < 60){ applyRender(msgs); }
+        else { pending=msgs; showBanner(msgs.filter(m=>m.id>topSeenId).length); }
+      }
+    }catch(e){}
   }
 
   async function publicar(){
@@ -156,12 +190,13 @@
   $('send').addEventListener('click', publicar);
   $('reload').addEventListener('click', load);
   $('list').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return; const a=b.dataset.a, id=b.dataset.id;
-    if(a==='report') reportar(id,b); else if(a==='del') borrar(id, b.closest('.msg')); });
+    if(a==='like') likear(id,b); else if(a==='report') reportar(id,b); else if(a==='del') borrar(id, b.closest('.msg')); });
+  $('newBanner').addEventListener('click', ()=>{ if(pending) applyRender(pending); $('list').scrollTop=0; hideBanner(); });
 
   window.addEventListener('hashchange', load);
   if(!configured) $('setup').classList.remove('hidden');
   icons(); load();
-  setInterval(load, 30000);
+  setInterval(poll, 20000);
 </script>
 </body>
 </html>
