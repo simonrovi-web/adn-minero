@@ -179,6 +179,7 @@
       <div class="mt-2.5 inline-flex items-center gap-2 w-fit px-2.5 py-1 rounded-full text-[12px] font-bold" style="color:${c};background:${c}18;border:1px solid ${c}3a">${lbl}</div>
       <p class="text-[12px] mt-2 leading-snug" style="color:${c}">${ev===null?'No se pudo obtener información':ev.motivo}</p>
       ${rows}
+      <a href="https://www.google.com/maps/search/?api=1&query=${fa.lat},${fa.lon}" target="_blank" rel="noopener" class="mt-2.5 inline-flex items-center gap-1 w-fit text-[11px] font-semibold" style="color:#cf9b6f"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> Ver en Google Maps</a>
     </div>`;
   }
 
