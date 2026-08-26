@@ -215,10 +215,43 @@
   }
   SERVICIOS.forEach(s=>servMarker(s).addTo(serviciosLayer));
 
+  // ===== Capa de PUERTOS MINEROS (embarque de concentrado, hierro, sales) =====
+  const PORT_COLOR='#5fb3a1';
+  const PUERTOS=[
+    {n:'Puerto Angamos · Mejillones', r:'Antofagasta', carga:'Concentrado de cobre', lat:-23.100, lon:-70.443},
+    {n:'Puerto de Antofagasta',        r:'Antofagasta', carga:'Carga minera general', lat:-23.650, lon:-70.400},
+    {n:'Puerto Tocopilla',             r:'Antofagasta', carga:'Concentrado e insumos', lat:-22.090, lon:-70.200},
+    {n:'Terminal Tal-Tal · Las Luces', r:'Antofagasta', carga:'Cobre', lat:-25.410, lon:-70.490},
+    {n:'Puerto Patillos · Patache',    r:'Tarapacá',    carga:'Sales y yodo (SQM)', lat:-20.750, lon:-70.180},
+    {n:'Puerto de Iquique',            r:'Tarapacá',    carga:'Carga minera general', lat:-20.210, lon:-70.152},
+    {n:'Puerto Barquito · Chañaral',   r:'Atacama',     carga:'Cobre (El Salvador)', lat:-26.350, lon:-70.620},
+    {n:'Puerto Caldera · Punta Padrones', r:'Atacama',  carga:'Concentrado (Candelaria)', lat:-27.060, lon:-70.820},
+    {n:'Puerto Guacolda II · Huasco',  r:'Atacama',     carga:'Hierro (CAP)', lat:-28.470, lon:-71.220},
+    {n:'Punta Chungo · Los Vilos',     r:'Coquimbo',    carga:'Concentrado (Los Pelambres)', lat:-31.920, lon:-71.510},
+    {n:'Puerto de Coquimbo',           r:'Coquimbo',    carga:'Carga minera general', lat:-29.950, lon:-71.340},
+    {n:'Puerto Ventanas',              r:'Valparaíso',  carga:'Cobre y graneles', lat:-32.750, lon:-71.480}
+  ];
+  const puertosLayer=L.layerGroup().addTo(map);
+  let puertosOn=true;
+  function portMarker(p){
+    const c=PORT_COLOR;
+    const ic=L.divIcon({className:'', html:`<span style="display:grid;place-items:center;width:19px;height:19px;border-radius:50%;background:#0e2f2b;border:2px solid ${c};color:#a8e6d8;font-size:11px;box-shadow:0 0 8px ${c},0 1px 4px rgba(0,0,0,.6)">⚓</span>`, iconSize:[19,19], iconAnchor:[9,9]});
+    const mk=L.marker([p.lat,p.lon],{icon:ic});
+    mk.bindPopup(`<div class="pop-t">⚓ ${p.n}</div>
+      <div class="pop-r"><span>📦</span> ${p.carga}</div>
+      <div class="pop-r"><span>📍</span> Región de ${p.r}</div>
+      <span class="pop-m" style="color:${c};background:${c}22;border:1px solid ${c}55">Puerto minero</span>
+      <div style="margin-top:8px"><a class="src" href="adn-minero-mar.html" target="_blank" rel="noopener">Ver estado del mar →</a></div>`);
+    return mk;
+  }
+  PUERTOS.forEach(p=>portMarker(p).addTo(puertosLayer));
+
   function refreshCount(){
     const total=FAENAS.filter(f=>active.has(f.m)).length;
     const sv=serviciosOn?SERVICIOS.length:0;
-    document.getElementById('countTxt').textContent=`${total} faenas` + (sv?` + ${sv} servicios`:'') + ` en el mapa`;
+    const pu=puertosOn?PUERTOS.length:0;
+    let extra=''; if(sv) extra+=` + ${sv} servicios`; if(pu) extra+=` + ${pu} puertos`;
+    document.getElementById('countTxt').textContent=`${total} faenas${extra} en el mapa`;
   }
 
   // Leyenda / filtros
@@ -249,6 +282,18 @@
     refreshCount();
   });
   rows.appendChild(svRow);
+
+  // Filtro de Puertos
+  const puRow=document.createElement('div');
+  puRow.className='lg-row';
+  puRow.innerHTML=`<span class="lg-dot" style="display:grid;place-items:center;color:#0e2f2b;background:${PORT_COLOR};font-size:9px">⚓</span> Puertos <span style="color:#8a8079;margin-left:auto;padding-left:10px">${PUERTOS.length}</span>`;
+  puRow.addEventListener('click',()=>{
+    puertosOn=!puertosOn;
+    if(puertosOn){ puertosLayer.addTo(map); puRow.classList.remove('off'); }
+    else{ map.removeLayer(puertosLayer); puRow.classList.add('off'); }
+    refreshCount();
+  });
+  rows.appendChild(puRow);
 
   // Toggle de Regiones (dibujo)
   if(regionesLayer){
