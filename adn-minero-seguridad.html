@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Seguridad</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    :root{ --copper:#cf9b6f; --alert:#e05a3f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', ui-sans-serif, system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(224,90,63,0.14), transparent 60%),
+      radial-gradient(1000px 600px at 100% 0%, rgba(181,115,79,0.10), transparent 55%),
+      #141110; }
+    .wrap{ max-width:820px; margin:0 auto; padding:16px 16px 40px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); backdrop-filter:blur(14px) saturate(130%); -webkit-backdrop-filter:blur(14px) saturate(130%); border:1px solid rgba(196,168,148,0.14); }
+    .metric-icon{ filter:drop-shadow(0 0 8px currentColor); }
+    a.lnk{ color:#e8c9a6; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(224,90,63,.15);border:1px solid rgba(224,90,63,.3)"><i data-lucide="shield-check" class="metric-icon" style="width:26px;height:26px;color:var(--alert)"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#e0a090;font-weight:700">Seguridad Minera · ADN Minero</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Volver a casa sano y salvo es la meta N.º 1</p>
+      </div>
+    </header>
+
+    <!-- EMERGENCIAS -->
+    <section class="glass rounded-2xl p-5 mt-4" style="border-color:rgba(224,90,63,.3)">
+      <h2 class="text-sm font-bold flex items-center gap-2 mb-3" style="color:#f0a898"><i data-lucide="phone-call" class="w-4 h-4"></i> Teléfonos de emergencia en Chile</h2>
+      <div id="emergencias" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5"></div>
+      <p class="text-[11px] text-stone-500 mt-3">Llama al que corresponda según la emergencia. Si dudas, marca <b>131 (SAMU)</b> o <b>133 (Carabineros)</b>.</p>
+    </section>
+
+    <!-- REGLAS QUE SALVAN VIDAS -->
+    <section class="mt-5">
+      <h2 class="text-lg font-extrabold flex items-center gap-2"><i data-lucide="heart-pulse" class="w-5 h-5" style="color:var(--alert)"></i> Reglas que salvan vidas</h2>
+      <p class="text-stone-400 text-sm mt-1">Hábitos simples que evitan la mayoría de los accidentes graves.</p>
+      <div id="reglas" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4"></div>
+    </section>
+
+    <!-- EPP -->
+    <section class="glass rounded-2xl p-5 mt-5">
+      <h2 class="text-sm font-bold text-stone-300 flex items-center gap-2 mb-3"><i data-lucide="hard-hat" class="w-4 h-4" style="color:var(--copper)"></i> El EPP: tu segunda piel</h2>
+      <p class="text-sm text-stone-300 mb-3">El <b>Equipo de Protección Personal</b> es obligatorio. Cada elemento protege una parte de tu cuerpo:</p>
+      <div id="epp" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5"></div>
+    </section>
+
+    <!-- DERECHOS -->
+    <section class="glass rounded-2xl p-5 mt-4">
+      <h2 class="text-sm font-bold text-stone-300 flex items-center gap-2 mb-3"><i data-lucide="scale" class="w-4 h-4" style="color:#a7d18a"></i> Tus derechos como trabajador</h2>
+      <div id="derechos" class="flex flex-col gap-2.5"></div>
+    </section>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Contenido informativo de divulgación; no reemplaza los reglamentos de tu faena, al Sernageomin ni a la mutualidad. Ante una emergencia real, contacta a los servicios oficiales. ADN Minero es un servicio independiente · <a href="index.html" class="lnk">Inicio</a></p>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+
+  const EMERG=[
+    {n:'131', l:'SAMU / Ambulancia', ic:'ambulance', c:'#e05a3f'},
+    {n:'132', l:'Bomberos', ic:'flame', c:'#e0a35a'},
+    {n:'133', l:'Carabineros', ic:'shield', c:'#7fbfd1'},
+    {n:'137', l:'Rescate Marítimo', ic:'anchor', c:'#5fb3a1'}
+  ];
+  $('emergencias').innerHTML=EMERG.map(e=>`
+    <a href="tel:${e.n}" class="rounded-xl p-3 text-center block active:scale-95 transition" style="background:${e.c}14;border:1px solid ${e.c}3a">
+      <i data-lucide="${e.ic}" class="w-5 h-5 mx-auto" style="color:${e.c}"></i>
+      <p class="text-2xl font-extrabold mt-1" style="color:${e.c}">${e.n}</p>
+      <p class="text-[11px] text-stone-400 leading-tight">${e.l}</p>
+    </a>`).join('');
+
+  const REGLAS=[
+    {ic:'battery-charging', t:'Bloqueo y etiquetado', d:'Antes de intervenir una máquina, corta y bloquea su energía. Nunca confíes en que "está apagada".'},
+    {ic:'mountain', t:'Cuidado con la altura', d:'En faenas sobre 3.000 m, respeta la aclimatación. El mal agudo de montaña (puna) es real y peligroso.'},
+    {ic:'truck', t:'Respeta a los equipos pesados', d:'Un camión minero no te ve ni frena rápido. Mantén distancia y contacto visual con el operador.'},
+    {ic:'triangle-alert', t:'Reporta condiciones inseguras', d:'Si ves un riesgo, avisa de inmediato. Un reporte a tiempo evita una tragedia.'},
+    {ic:'wind', t:'Gases y ventilación', d:'En espacios cerrados o subterráneos, verifica la ventilación y los detectores de gases antes de entrar.'},
+    {ic:'hand', t:'Manos y puntos de atrape', d:'Aléjate de partes en movimiento. La mayoría de las lesiones son en manos y dedos.'}
+  ];
+  $('reglas').innerHTML=REGLAS.map(r=>`
+    <div class="glass rounded-2xl p-4 flex items-start gap-3">
+      <div class="h-10 w-10 rounded-xl grid place-items-center shrink-0" style="background:rgba(224,90,63,.12);border:1px solid rgba(224,90,63,.28)"><i data-lucide="${r.ic}" class="w-5 h-5" style="color:#e0715a"></i></div>
+      <div><p class="text-sm font-bold">${r.t}</p><p class="text-[12px] text-stone-400 leading-snug mt-0.5">${r.d}</p></div>
+    </div>`).join('');
+
+  const EPP=[
+    {ic:'hard-hat', t:'Casco', d:'protege la cabeza'},
+    {ic:'glasses', t:'Antiparras', d:'protegen los ojos'},
+    {ic:'ear', t:'Protección auditiva', d:'contra el ruido'},
+    {ic:'wind', t:'Respirador', d:'contra polvo y gases'},
+    {ic:'shirt', t:'Ropa reflectante', d:'para que te vean'},
+    {ic:'footprints', t:'Botas de seguridad', d:'con punta de acero'}
+  ];
+  $('epp').innerHTML=EPP.map(e=>`
+    <div class="rounded-xl p-3 text-center" style="background:rgba(207,155,111,.08);border:1px solid rgba(207,155,111,.2)">
+      <i data-lucide="${e.ic}" class="w-6 h-6 mx-auto" style="color:#e8c9a6"></i>
+      <p class="text-sm font-semibold mt-1.5">${e.t}</p>
+      <p class="text-[11px] text-stone-500">${e.d}</p>
+    </div>`).join('');
+
+  const DER=[
+    {t:'Derecho a saber', d:'Tu empleador debe informarte los riesgos de tu trabajo y cómo protegerte (Ley 16.744).'},
+    {t:'Derecho a rechazar', d:'Puedes negarte a realizar una tarea si tu vida corre peligro inminente, sin represalias.'},
+    {t:'Capacitación gratuita', d:'Tienes derecho a recibir formación en prevención de riesgos, sin costo para ti.'},
+    {t:'Seguro contra accidentes', d:'La Ley 16.744 cubre accidentes del trabajo y enfermedades profesionales a través de tu mutualidad.'}
+  ];
+  $('derechos').innerHTML=DER.map(d=>`
+    <div class="flex items-start gap-3 rounded-xl px-3 py-2.5" style="background:rgba(167,209,138,.06);border:1px solid rgba(167,209,138,.18)">
+      <i data-lucide="check-circle" class="w-5 h-5 shrink-0 mt-0.5" style="color:#a7d18a"></i>
+      <div><p class="text-sm font-bold">${d.t}</p><p class="text-[12px] text-stone-400 leading-snug">${d.d}</p></div>
+    </div>`).join('');
+
+  drawIcons();
+</script>
+</body>
+</html>

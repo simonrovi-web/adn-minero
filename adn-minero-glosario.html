@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Glosario</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', ui-sans-serif, system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(181,115,79,0.16), transparent 60%),
+      radial-gradient(1000px 600px at 100% 0%, rgba(120,108,100,0.10), transparent 55%),
+      #141110; }
+    .wrap{ max-width:820px; margin:0 auto; padding:16px 16px 40px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); backdrop-filter:blur(14px) saturate(130%); -webkit-backdrop-filter:blur(14px) saturate(130%); border:1px solid rgba(196,168,148,0.14); }
+    .metric-icon{ filter:drop-shadow(0 0 8px currentColor); }
+    .chip{ font-size:11px; font-weight:600; padding:3px 9px; border-radius:999px; display:inline-flex; align-items:center; gap:5px; cursor:pointer; }
+    input{ background:#241d18; color:#f4ece5; }
+    a.lnk{ color:#e8c9a6; }
+    mark{ background:rgba(207,155,111,.35); color:#fbebd8; border-radius:3px; padding:0 2px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(181,115,79,.15);border:1px solid rgba(196,140,100,.3)"><i data-lucide="book-open" class="metric-icon" style="width:26px;height:26px;color:var(--copper)"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#c9a888;font-weight:700">Glosario Minero · ADN Minero</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">El lenguaje de la minería, explicado simple</p>
+      </div>
+    </header>
+
+    <!-- BUSCADOR -->
+    <div class="relative mt-4">
+      <i data-lucide="search" class="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-stone-500"></i>
+      <input id="q" type="search" inputmode="search" placeholder="Busca un término… (ej: relave, cátodo, ley)" class="w-full rounded-2xl pl-12 pr-4 py-3.5 text-sm font-medium outline-none border" style="border-color:rgba(196,168,148,.25)" />
+    </div>
+
+    <!-- FILTROS -->
+    <div id="cats" class="flex flex-wrap gap-2 mt-3"></div>
+
+    <p id="count" class="text-[11px] text-stone-500 mt-3"></p>
+
+    <!-- LISTA -->
+    <div id="list" class="flex flex-col gap-2.5 mt-2"></div>
+    <p id="noRes" class="hidden text-center text-stone-500 mt-10">No encontramos ese término. Prueba con otra palabra.</p>
+
+    <p class="text-center text-[11px] text-stone-500 mt-8 leading-relaxed">Definiciones de divulgación, explicadas en lenguaje simple. ADN Minero es un servicio independiente · <a href="adn-minero-ia.html" class="lnk">Pregúntale a la IA</a> · <a href="index.html" class="lnk">Inicio</a></p>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const norm=s=>(s||'').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+
+  const CATS={proceso:'#7fbfd1', lugar:'#cf9b6f', material:'#a7d18a', economia:'#d6a94f', ambiente:'#5fb3a1'};
+  const CATLBL={proceso:'Procesos', lugar:'Lugares', material:'Materiales', economia:'Economía', ambiente:'Ambiente'};
+
+  const TERMS=[
+    {t:'Ley de mineral', c:'material', d:'El porcentaje de metal útil que tiene una roca. Una ley de cobre de 0,7% significa que de cada 100 kilos de roca, 700 gramos son cobre. Mientras más alta la ley, más rico el yacimiento.'},
+    {t:'Rajo abierto', c:'lugar', d:'Mina a cielo abierto: un enorme hoyo en forma de escalones (bancos) desde donde se extrae el mineral con camiones gigantes. Chuquicamata y Escondida son rajos.'},
+    {t:'Mina subterránea', c:'lugar', d:'Explotación bajo tierra mediante túneles y galerías. El Teniente es la mina subterránea de cobre más grande del mundo.'},
+    {t:'Faena', c:'lugar', d:'Nombre general para una operación o instalación minera: la mina, la planta y todo el complejo donde se trabaja.'},
+    {t:'Yacimiento', c:'lugar', d:'La concentración natural de mineral en la tierra que hace rentable extraerlo.'},
+    {t:'Pórfido cuprífero', c:'material', d:'El tipo de yacimiento de cobre más común en Chile: grandes volúmenes de roca con cobre diseminado en baja ley. La base de la minería chilena.'},
+    {t:'Estéril', c:'material', d:'La roca sin valor que hay que remover para llegar al mineral. También se le llama lastre.'},
+    {t:'Mineral de sulfuro', c:'material', d:'Mineral donde el cobre está unido al azufre. Se procesa por flotación y fundición. Es la mayor parte del cobre chileno.'},
+    {t:'Mineral de óxido', c:'material', d:'Mineral donde el cobre está oxidado. Se procesa por lixiviación y SX-EW, sin fundición.'},
+    {t:'Chancado', c:'proceso', d:'La primera etapa: triturar la roca en pedazos más chicos con máquinas llamadas chancadores.'},
+    {t:'Molienda', c:'proceso', d:'Moler la roca ya chancada hasta dejarla como arena o polvo fino, para liberar las partículas de metal.'},
+    {t:'Flotación', c:'proceso', d:'Proceso donde el mineral molido se mezcla con agua y reactivos; las partículas de cobre se pegan a burbujas y suben, separándose de la roca.'},
+    {t:'Concentrado', c:'material', d:'El producto de la flotación: un polvo húmedo con alta concentración de cobre (~30%). Es lo que se exporta o se funde.'},
+    {t:'Lixiviación', c:'proceso', d:'Rociar el mineral de óxido con una solución ácida que disuelve el cobre. El líquido resultante se procesa para recuperar el metal.'},
+    {t:'SX-EW', c:'proceso', d:'Extracción por Solventes y Electro-obtención: proceso que purifica el cobre de la lixiviación y lo deposita en láminas mediante electricidad.'},
+    {t:'Cátodo', c:'material', d:'Lámina de cobre casi puro (99,99%) producida por electro-obtención o refinación. Es el producto final de mayor valor.'},
+    {t:'Ánodo', c:'material', d:'Placa de cobre impuro (~99%) que sale de la fundición y luego se refina para obtener cátodos.'},
+    {t:'Cobre blíster', c:'material', d:'Cobre en bruto de la fundición (~99%), con superficie llena de ampollas. Paso previo al ánodo.'},
+    {t:'Fundición', c:'proceso', d:'Instalación que derrite el concentrado a altas temperaturas para separar el cobre del azufre y el hierro.'},
+    {t:'Refinería', c:'proceso', d:'Planta que purifica el cobre hasta dejarlo en cátodos de 99,99%, listos para la industria.'},
+    {t:'Concentradora', c:'lugar', d:'La planta donde se chanca, muele y flota el mineral para producir concentrado.'},
+    {t:'Relave', c:'ambiente', d:'El material de desecho, mezcla de roca molida y agua, que queda después de la flotación. Se almacena en tranques.'},
+    {t:'Tranque de relaves', c:'ambiente', d:'Gran depósito, como una represa, donde se guardan de forma controlada los relaves. Su seguridad es clave para el ambiente.'},
+    {t:'Ripio', c:'ambiente', d:'El material que queda después de lixiviar el mineral de óxido.'},
+    {t:'Salmuera', c:'material', d:'Agua muy salada bajo los salares, rica en litio y potasio. Se bombea y evapora al sol para extraer el litio.'},
+    {t:'Piscina de evaporación', c:'proceso', d:'Grandes estanques donde la salmuera se seca al sol para concentrar el litio. Se ven de colores desde el aire.'},
+    {t:'Carbonato de litio', c:'material', d:'El polvo blanco final del proceso del litio, materia prima de las baterías.'},
+    {t:'Royalty minero', c:'economia', d:'Impuesto especial que pagan las mineras al Estado por explotar un recurso natural que es de todos los chilenos.'},
+    {t:'Cochilco', c:'economia', d:'Comisión Chilena del Cobre: organismo estatal que asesora y fiscaliza la minería y publica sus estadísticas oficiales.'},
+    {t:'Sernageomin', c:'economia', d:'Servicio Nacional de Geología y Minería: fiscaliza la seguridad minera y el cumplimiento de las normas.'},
+    {t:'Codelco', c:'economia', d:'Corporación Nacional del Cobre: la empresa estatal chilena, la mayor productora de cobre del mundo.'},
+    {t:'Enami', c:'economia', d:'Empresa Nacional de Minería: apoya y compra la producción de la pequeña y mediana minería.'},
+    {t:'Pequeña minería', c:'economia', d:'Faenas de menor escala, muchas veces familiares o de pirquineros, apoyadas por Enami.'},
+    {t:'Pirquinero', c:'lugar', d:'Minero artesanal que trabaja de forma independiente una pequeña mina, muy propio de la tradición chilena.'},
+    {t:'Concentrado de molibdeno', c:'material', d:'Subproducto valioso del cobre; Chile es uno de los mayores productores de molibdeno del mundo.'},
+    {t:'Huella hídrica', c:'ambiente', d:'La cantidad de agua que usa una faena. Cada vez más minas usan agua de mar desalinizada para cuidar el recurso.'},
+    {t:'Desalinización', c:'ambiente', d:'Quitarle la sal al agua de mar para usarla en los procesos mineros, reduciendo el uso de agua dulce.'},
+    {t:'Extracción directa (DLE)', c:'ambiente', d:'Nuevas tecnologías para sacar litio de la salmuera usando mucha menos agua y espacio que las piscinas.'}
+  ];
+
+  let activeCat='todos', query='';
+
+  function render(){
+    const nq=norm(query);
+    const filtered=TERMS.filter(x=>{
+      const okCat = activeCat==='todos' || x.c===activeCat;
+      const okQ = !nq || norm(x.t).includes(nq) || norm(x.d).includes(nq);
+      return okCat && okQ;
+    }).sort((a,b)=>a.t.localeCompare(b.t,'es'));
+    $('count').textContent = `${filtered.length} término${filtered.length===1?'':'s'}${activeCat!=='todos'?' · '+CATLBL[activeCat]:''}`;
+    $('noRes').classList.toggle('hidden', filtered.length>0);
+    const hi=(txt)=>{ if(!nq) return txt; try{ return txt.replace(new RegExp('('+query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','ig'),'<mark>$1</mark>'); }catch(e){ return txt; } };
+    $('list').innerHTML=filtered.map(x=>{
+      const col=CATS[x.c]||'#cf9b6f';
+      return `<div class="glass rounded-2xl p-4">
+        <div class="flex items-center gap-2 flex-wrap">
+          <h3 class="text-base font-bold" style="color:#f4ece5">${hi(x.t)}</h3>
+          <span class="chip" style="background:${col}18;border:1px solid ${col}44;color:${col}">${CATLBL[x.c]}</span>
+        </div>
+        <p class="text-sm text-stone-300 leading-relaxed mt-1.5">${hi(x.d)}</p>
+      </div>`;
+    }).join('');
+    drawIcons();
+  }
+
+  // categorías
+  const allCats=['todos',...Object.keys(CATS)];
+  $('cats').innerHTML=allCats.map(c=>{
+    const col=c==='todos'?'#e8c9a6':CATS[c];
+    const lbl=c==='todos'?'Todos':CATLBL[c];
+    return `<button data-c="${c}" class="chip catbtn" style="background:${col}14;border:1px solid ${col}3a;color:${col}">${lbl}</button>`;
+  }).join('');
+  $('cats').addEventListener('click',e=>{
+    const b=e.target.closest('.catbtn'); if(!b) return;
+    activeCat=b.dataset.c;
+    document.querySelectorAll('.catbtn').forEach(x=>x.style.filter='');
+    b.style.filter='brightness(1.5)';
+    render();
+  });
+  $('q').addEventListener('input',e=>{ query=e.target.value; render(); });
+
+  drawIcons(); render();
+</script>
+</body>
+</html>

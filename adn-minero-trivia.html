@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Trivia</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', ui-sans-serif, system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(214,169,79,0.16), transparent 60%),
+      radial-gradient(1000px 600px at 100% 0%, rgba(181,115,79,0.10), transparent 55%),
+      #141110; }
+    .wrap{ max-width:600px; margin:0 auto; padding:16px 16px 40px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); backdrop-filter:blur(14px) saturate(130%); -webkit-backdrop-filter:blur(14px) saturate(130%); border:1px solid rgba(196,168,148,0.14); }
+    .metric-icon{ filter:drop-shadow(0 0 8px currentColor); }
+    a.lnk{ color:#e8c9a6; }
+    .opt{ width:100%; text-align:left; border:1px solid rgba(196,168,148,.2); transition:all .15s; }
+    .opt:not(:disabled):hover{ background:rgba(255,255,255,.05); border-color:rgba(196,168,148,.4); }
+    .opt:disabled{ cursor:default; }
+    .ok{ background:rgba(122,191,154,.16)!important; border-color:#7abf9a!important; }
+    .bad{ background:rgba(224,90,63,.16)!important; border-color:#e05a3f!important; }
+    .bar{ height:8px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; }
+    .bar>span{ display:block; height:100%; background:linear-gradient(90deg,#f0d7b6,#cf9b6f); transition:width .3s; }
+    .big{ background:linear-gradient(135deg,#f0d7b6,#cf9b6f 55%,#b5734f); color:#2a1c12; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="text-center mt-2">
+      <div class="inline-grid place-items-center h-16 w-16 rounded-2xl mx-auto" style="background:rgba(214,169,79,.15);border:1px solid rgba(214,169,79,.3)"><i data-lucide="gamepad-2" class="metric-icon" style="width:32px;height:32px;color:#d6a94f"></i></div>
+      <h1 class="text-2xl font-extrabold mt-4 flex items-center justify-center gap-2">Trivia Minera <span class="fi fi-cl" style="border-radius:4px"></span></h1>
+      <p class="text-stone-400 text-sm mt-2">¿Cuánto sabes de la minería de Chile? Pon a prueba tu ADN minero.</p>
+      <p id="best" class="text-[12px] text-stone-500 mt-2"></p>
+    </header>
+
+    <!-- INICIO -->
+    <div id="start" class="glass rounded-2xl p-6 mt-6 text-center">
+      <p class="text-sm text-stone-300">10 preguntas · sin apuro · aprendes en cada respuesta.</p>
+      <button id="btnStart" class="big w-full rounded-2xl py-4 mt-4 font-bold text-[16px] flex items-center justify-center gap-2 active:scale-95 transition"><i data-lucide="play" style="width:20px;height:20px"></i> Comenzar</button>
+    </div>
+
+    <!-- JUEGO -->
+    <div id="game" class="hidden">
+      <div class="flex items-center justify-between text-[12px] text-stone-400 mt-4 mb-2">
+        <span id="prog">Pregunta 1 de 10</span>
+        <span id="score" class="font-bold text-[#e8c9a6]">0 pts</span>
+      </div>
+      <div class="bar mb-4"><span id="barFill" style="width:0%"></span></div>
+
+      <div class="glass rounded-2xl p-5">
+        <p id="qText" class="text-lg font-bold leading-snug"></p>
+        <div id="opts" class="flex flex-col gap-2.5 mt-4"></div>
+        <div id="feedback" class="hidden mt-4 rounded-xl p-3 text-sm"></div>
+        <button id="btnNext" class="hidden big w-full rounded-xl py-3 mt-4 font-bold flex items-center justify-center gap-2 active:scale-95 transition">Siguiente <i data-lucide="arrow-right" style="width:18px;height:18px"></i></button>
+      </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div id="result" class="hidden glass rounded-2xl p-6 mt-6 text-center">
+      <div id="rEmoji" style="font-size:3rem"></div>
+      <h2 id="rTitle" class="text-2xl font-extrabold mt-2"></h2>
+      <p id="rScore" class="text-4xl font-extrabold mt-3" style="color:#e8c9a6"></p>
+      <p id="rMsg" class="text-sm text-stone-300 mt-2"></p>
+      <button id="btnRetry" class="big w-full rounded-2xl py-4 mt-5 font-bold flex items-center justify-center gap-2 active:scale-95 transition"><i data-lucide="rotate-ccw" style="width:20px;height:20px"></i> Jugar de nuevo</button>
+      <a href="adn-minero-glosario.html" class="block mt-3 text-[13px] lnk">📖 ¿Dudas? Repasa en el Glosario Minero</a>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-8 leading-relaxed">Juego de divulgación. Las respuestas se basan en datos públicos del sector. ADN Minero es un servicio independiente · <a href="index.html" class="lnk">Inicio</a></p>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+
+  const QUESTIONS=[
+    {q:'¿Qué metal es el principal producto minero de Chile?', o:['Oro','Cobre','Litio','Hierro'], a:1, e:'Chile es el mayor productor de cobre del mundo: cerca de una cuarta parte del total mundial.'},
+    {q:'¿Cómo se llama la empresa estatal chilena del cobre?', o:['SQM','Enami','Codelco','BHP'], a:2, e:'Codelco (Corporación Nacional del Cobre) es la mayor productora de cobre del planeta.'},
+    {q:'¿En qué año se nacionalizó el cobre en Chile?', o:['1958','1971','1990','2005'], a:1, e:'El 11 de julio de 1971, por eso ese día se conmemora la Nacionalización del Cobre.'},
+    {q:'¿Cuál es la mina de cobre subterránea más grande del mundo?', o:['Escondida','Chuquicamata','El Teniente','Collahuasi'], a:2, e:'El Teniente, de Codelco, en la Región de O’Higgins.'},
+    {q:'¿De dónde se extrae el litio en Chile?', o:['De rocas en la cordillera','De la salmuera de los salares','Del fondo del mar','De minas subterráneas'], a:1, e:'Se bombea la salmuera bajo los salares y se evapora al sol. El Salar de Atacama es el principal.'},
+    {q:'¿Qué es la "ley" de un mineral?', o:['Una norma de seguridad','El porcentaje de metal útil en la roca','El precio del metal','El peso del mineral'], a:1, e:'Una ley de cobre de 0,7% significa 700 gramos de cobre por cada 100 kilos de roca.'},
+    {q:'¿Cómo se llama el desecho de la flotación que se guarda en tranques?', o:['Ripio','Estéril','Relave','Concentrado'], a:2, e:'El relave es roca molida con agua; se almacena de forma controlada en tranques.'},
+    {q:'¿Qué producto final de cobre tiene 99,99% de pureza?', o:['El concentrado','El cátodo','El blíster','El ánodo'], a:1, e:'El cátodo es la lámina de cobre casi puro, el producto de mayor valor.'},
+    {q:'¿Qué región concentra la mayor parte de la minería del cobre?', o:['Metropolitana','Antofagasta','Biobío','Los Lagos'], a:1, e:'La Región de Antofagasta alberga faenas como Escondida, Chuquicamata y Spence.'},
+    {q:'¿Cuántos mineros fueron rescatados de la mina San José en 2010?', o:['12','24','33','40'], a:2, e:'Los 33 mineros fueron rescatados tras 69 días bajo tierra, en Atacama. Una hazaña que dio la vuelta al mundo.'},
+    {q:'¿Qué organismo estatal fiscaliza la seguridad minera en Chile?', o:['Cochilco','Sernageomin','SII','Enami'], a:1, e:'El Sernageomin (Servicio Nacional de Geología y Minería) vela por la seguridad de las faenas.'},
+    {q:'¿Para qué se usa principalmente el litio hoy?', o:['Joyería','Baterías recargables','Construcción','Combustible'], a:1, e:'El litio es clave para las baterías de autos eléctricos, celulares y almacenamiento de energía.'},
+    {q:'¿Qué recurso escaso cuidan las mineras usando agua de mar?', o:['El petróleo','El agua dulce','La electricidad','El aire'], a:1, e:'Muchas faenas desalinizan agua de mar para no gastar agua dulce en el desierto.'},
+    {q:'Antes del cobre, ¿qué mineral marcó la economía chilena en el siglo XIX?', o:['El salitre','El carbón','El oro','El estaño'], a:0, e:'El salitre (nitrato) fue el gran auge del norte antes del cobre, en las oficinas salitreras.'},
+    {q:'¿Qué proceso separa el cobre de la roca usando burbujas?', o:['Molienda','Flotación','Fundición','Chancado'], a:1, e:'En la flotación, las partículas de cobre se pegan a burbujas de aire y suben a la superficie.'}
+  ];
+
+  const KEY='adn_trivia_best';
+  const getBest=()=>{ try{ return parseInt(localStorage.getItem(KEY)||'0',10); }catch(e){ return 0; } };
+  function showBest(){ const b=getBest(); $('best').textContent = b>0 ? `🏆 Tu mejor puntaje: ${b}/${QUESTIONS.length*10}` : ''; }
+
+  let pool=[], idx=0, score=0, answered=false;
+
+  function shuffle(a){ return a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(p=>p[1]); }
+
+  function start(){
+    pool=shuffle(QUESTIONS).slice(0,10);
+    idx=0; score=0;
+    $('start').classList.add('hidden'); $('result').classList.add('hidden'); $('game').classList.remove('hidden');
+    renderQ();
+  }
+
+  function renderQ(){
+    answered=false;
+    const q=pool[idx];
+    $('prog').textContent=`Pregunta ${idx+1} de ${pool.length}`;
+    $('score').textContent=`${score} pts`;
+    $('barFill').style.width=`${(idx/pool.length)*100}%`;
+    $('qText').textContent=q.q;
+    $('feedback').classList.add('hidden');
+    $('btnNext').classList.add('hidden');
+    $('opts').innerHTML=q.o.map((o,i)=>`<button data-i="${i}" class="opt rounded-xl px-4 py-3 text-sm font-semibold">${o}</button>`).join('');
+    drawIcons();
+  }
+
+  function answer(i){
+    if(answered) return; answered=true;
+    const q=pool[idx];
+    const btns=[...$('opts').querySelectorAll('.opt')];
+    btns.forEach(b=>b.disabled=true);
+    btns[q.a].classList.add('ok');
+    if(i===q.a){ score+=10; $('score').textContent=`${score} pts`; }
+    else { btns[i].classList.add('bad'); }
+    const fb=$('feedback');
+    fb.classList.remove('hidden');
+    const good=i===q.a;
+    fb.style.background = good?'rgba(122,191,154,.12)':'rgba(224,90,63,.10)';
+    fb.style.border = good?'1px solid rgba(122,191,154,.3)':'1px solid rgba(224,90,63,.3)';
+    fb.innerHTML=`<b style="color:${good?'#a7d18a':'#e0a35a'}">${good?'¡Correcto! ✅':'Casi… ❌'}</b> ${q.e}`;
+    $('btnNext').textContent=idx+1<pool.length?'Siguiente':'Ver resultado';
+    $('btnNext').classList.remove('hidden');
+    if(idx+1>=pool.length){ $('btnNext').innerHTML='Ver resultado <i data-lucide="flag" style="width:18px;height:18px"></i>'; }
+    else { $('btnNext').innerHTML='Siguiente <i data-lucide="arrow-right" style="width:18px;height:18px"></i>'; }
+    drawIcons();
+  }
+
+  function next(){
+    if(idx+1<pool.length){ idx++; renderQ(); }
+    else finish();
+  }
+
+  function finish(){
+    $('game').classList.add('hidden');
+    $('barFill').style.width='100%';
+    const total=pool.length*10;
+    const prev=getBest();
+    if(score>prev){ try{ localStorage.setItem(KEY,String(score)); }catch(e){} }
+    const pct=score/total;
+    let emoji,title,msg;
+    if(pct>=0.9){ emoji='🏆'; title='¡Eres un experto!'; msg='ADN minero puro. Chile necesita gente como tú.'; }
+    else if(pct>=0.6){ emoji='⛏️'; title='¡Muy bien!'; msg='Sabes harto de minería. Sigue afinando esos detalles.'; }
+    else if(pct>=0.4){ emoji='👷'; title='¡Vas por buen camino!'; msg='Buena base. Repasa el Glosario y vuelve a intentarlo.'; }
+    else { emoji='📚'; title='¡A seguir aprendiendo!'; msg='La minería tiene mucho que descubrir. ¡No te rindas!'; }
+    $('rEmoji').textContent=emoji;
+    $('rTitle').textContent=title;
+    $('rScore').textContent=`${score} / ${total}`;
+    $('rMsg').textContent=msg + (score>prev&&prev>0?' 🎉 ¡Nuevo récord!':'');
+    $('result').classList.remove('hidden');
+    showBest();
+    drawIcons();
+  }
+
+  $('btnStart').addEventListener('click',start);
+  $('btnRetry').addEventListener('click',start);
+  $('btnNext').addEventListener('click',next);
+  $('opts').addEventListener('click',e=>{ const b=e.target.closest('.opt'); if(b) answer(parseInt(b.dataset.i,10)); });
+
+  showBest(); drawIcons();
+</script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Historia</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', ui-sans-serif, system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(201,168,136,0.15), transparent 60%),
+      radial-gradient(1000px 600px at 100% 0%, rgba(181,115,79,0.10), transparent 55%),
+      #141110; }
+    .wrap{ max-width:760px; margin:0 auto; padding:16px 16px 40px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); backdrop-filter:blur(14px) saturate(130%); -webkit-backdrop-filter:blur(14px) saturate(130%); border:1px solid rgba(196,168,148,0.14); }
+    .metric-icon{ filter:drop-shadow(0 0 8px currentColor); }
+    a.lnk{ color:#e8c9a6; }
+    .tl{ position:relative; padding-left:44px; }
+    .tl::before{ content:''; position:absolute; left:19px; top:6px; bottom:6px; width:2px; background:linear-gradient(#cf9b6f,#7a5a44 80%,transparent); }
+    .dot{ position:absolute; left:10px; top:4px; width:20px; height:20px; border-radius:50%; display:grid; place-items:center; background:#241d18; border:2px solid var(--copper); }
+    .dot i{ width:11px; height:11px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="text-center mt-2">
+      <div class="inline-grid place-items-center h-16 w-16 rounded-2xl mx-auto" style="background:rgba(201,168,136,.15);border:1px solid rgba(201,168,136,.3)"><i data-lucide="scroll-text" class="metric-icon" style="width:32px;height:32px;color:#c9a888"></i></div>
+      <h1 class="text-2xl sm:text-3xl font-extrabold mt-4 flex items-center justify-center gap-2">Historia de la Minería <span class="fi fi-cl" style="border-radius:4px"></span></h1>
+      <p class="text-stone-400 text-sm mt-2 max-w-lg mx-auto">Del salitre al litio: los hitos que hicieron de Chile un país minero. Una historia de trabajo, lucha y orgullo.</p>
+    </header>
+
+    <div id="tl" class="tl mt-8"></div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-8 leading-relaxed">Reseña histórica de divulgación con fechas de referencia. ADN Minero es un servicio independiente · <a href="adn-minero-glosario.html" class="lnk">Glosario</a> · <a href="index.html" class="lnk">Inicio</a></p>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+
+  const HITOS=[
+    {y:'Pre-1500', t:'Minería originaria', ic:'gem', d:'Mucho antes de la Colonia, pueblos como los atacameños y diaguitas ya trabajaban el cobre, el oro y la turquesa para herramientas y adornos.'},
+    {y:'Siglo XIX', t:'La era del salitre', ic:'sun', d:'El "oro blanco" del desierto. Las oficinas salitreras del norte hicieron rica a la economía chilena y atrajeron a miles de trabajadores (pampinos).'},
+    {y:'1879', t:'Guerra del Pacífico', ic:'flag', d:'El conflicto por las riquezas del salitre. Chile incorpora Antofagasta y Tarapacá, hoy corazón de su minería.'},
+    {y:'1904', t:'Nace el cobre moderno', ic:'pickaxe', d:'Comienza la gran minería del cobre. Pronto Chuquicamata se convertiría en el rajo abierto más grande del mundo.'},
+    {y:'1915', t:'Chuquicamata a gran escala', ic:'mountain', d:'Capitales extranjeros inician la explotación industrial de "Chuqui", símbolo del cobre chileno por más de un siglo.'},
+    {y:'1925', t:'Cae el salitre', ic:'trending-down', d:'La invención del salitre sintético en el mundo hunde a la industria chilena. El cobre toma la posta como principal riqueza.'},
+    {y:'1966', t:'Chilenización del cobre', ic:'handshake', d:'El Estado, bajo el gobierno de Frei Montalva, compra parte de las grandes mineras extranjeras: primer paso hacia el control nacional.'},
+    {y:'1971', t:'Nacionalización del cobre', ic:'landmark', d:'El 11 de julio, con apoyo unánime del Congreso, Chile nacionaliza el cobre. Se lo conoce como el "sueldo de Chile".'},
+    {y:'1976', t:'Nace Codelco', ic:'building-2', d:'Se crea la Corporación Nacional del Cobre para administrar las minas nacionalizadas. Hoy es la mayor productora de cobre del mundo.'},
+    {y:'1990', t:'Boom de la inversión', ic:'trending-up', d:'Con nuevas leyes, llega inversión privada masiva. Escondida, La Escondida y otras faenas disparan la producción de Chile.'},
+    {y:'2010', t:'El rescate de los 33', ic:'heart-handshake', d:'Tras 69 días atrapados en la mina San José (Atacama), los 33 mineros son rescatados con vida. El mundo entero lo siguió en vivo.'},
+    {y:'2023', t:'Estrategia del Litio', ic:'battery-charging', d:'Chile lanza su Estrategia Nacional del Litio, apostando por el mineral clave de la transición energética. Empieza una nueva era.'}
+  ];
+
+  $('tl').innerHTML=HITOS.map(h=>`
+    <div class="relative pb-6">
+      <div class="dot"><i data-lucide="${h.ic}" style="color:var(--copper)"></i></div>
+      <div class="glass rounded-2xl p-4">
+        <div class="flex items-center gap-2 flex-wrap">
+          <span class="text-[11px] font-bold px-2.5 py-1 rounded-full" style="background:rgba(207,155,111,.16);color:#e8c9a6;border:1px solid rgba(207,155,111,.35)">${h.y}</span>
+          <h3 class="text-base font-bold">${h.t}</h3>
+        </div>
+        <p class="text-sm text-stone-300 leading-relaxed mt-2">${h.d}</p>
+      </div>
+    </div>`).join('');
+
+  drawIcons();
+</script>
+</body>
+</html>

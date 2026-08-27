@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Medio Ambiente</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    :root{ --copper:#cf9b6f; --green:#7fbf9a; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', ui-sans-serif, system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(127,191,154,0.14), transparent 60%),
+      radial-gradient(1000px 600px at 100% 0%, rgba(181,115,79,0.10), transparent 55%),
+      #141110; }
+    .wrap{ max-width:900px; margin:0 auto; padding:16px 16px 40px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); backdrop-filter:blur(14px) saturate(130%); -webkit-backdrop-filter:blur(14px) saturate(130%); border:1px solid rgba(196,168,148,0.14); }
+    .metric-icon{ filter:drop-shadow(0 0 8px currentColor); }
+    a.lnk{ color:#e8c9a6; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(127,191,154,.15);border:1px solid rgba(127,191,154,.3)"><i data-lucide="leaf" class="metric-icon" style="width:26px;height:26px;color:var(--green)"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#9ccbae;font-weight:700">Minería y Medio Ambiente · ADN Minero</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Los desafíos de una minería más limpia</p>
+      </div>
+    </header>
+
+    <div class="mt-5">
+      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Hacia una minería sostenible 🌱</h1>
+      <p class="text-stone-400 text-sm mt-2 max-w-2xl">La minería mueve la economía de Chile, pero también deja huella. Estos son sus grandes desafíos ambientales y lo que la industria está haciendo para reducirlos.</p>
+    </div>
+
+    <!-- DESAFÍOS -->
+    <div id="temas" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5"></div>
+
+    <!-- LA PARADOJA VERDE -->
+    <section class="glass rounded-2xl p-5 mt-4" style="border-color:rgba(127,191,154,.28)">
+      <h2 class="text-sm font-bold flex items-center gap-2 mb-2" style="color:#9ccbae"><i data-lucide="recycle" class="w-4 h-4"></i> La paradoja verde</h2>
+      <p class="text-sm text-stone-300 leading-relaxed">El mundo necesita <b>más cobre y litio que nunca</b> para autos eléctricos, paneles solares y baterías. Es decir: <b>sin minería no hay transición energética</b>. El desafío es producir esos minerales de la forma más limpia posible. Chile, con sol y mar de sobra, tiene todo para liderar esa minería verde.</p>
+    </section>
+
+    <!-- BUENAS PRÁCTICAS -->
+    <section class="mt-5">
+      <h2 class="text-lg font-extrabold flex items-center gap-2"><i data-lucide="sprout" class="w-5 h-5" style="color:var(--green)"></i> Lo que ya se está haciendo</h2>
+      <div id="practicas" class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4"></div>
+    </section>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Contenido de divulgación; busca informar de forma equilibrada, sin reemplazar estudios técnicos ni fiscalizaciones oficiales (SMA, Sernageomin). ADN Minero es un servicio independiente · <a href="index.html" class="lnk">Inicio</a></p>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+
+  const TEMAS=[
+    {ic:'droplets', c:'#7fbfd1', t:'El agua', d:'El desierto donde está el cobre es de los más secos del mundo. La minería compite por el agua con las comunidades, por eso el uso responsable es clave.'},
+    {ic:'layers', c:'#e0a35a', t:'Los relaves', d:'Cada tonelada de cobre deja toneladas de relaves. Almacenarlos de forma segura, sin filtraciones ni colapsos, es una prioridad ambiental.'},
+    {ic:'factory', c:'#c9a888', t:'Emisiones', d:'Las fundiciones y los camiones emiten gases y material particulado. Reducir la huella de carbono es un compromiso creciente del sector.'},
+    {ic:'mountain-snow', c:'#a7c7e0', t:'Glaciares y biodiversidad', d:'Muchas faenas están en zonas frágiles de cordillera. Proteger glaciares, salares y su vida es parte del desafío.'}
+  ];
+  $('temas').innerHTML=TEMAS.map(t=>`
+    <div class="glass rounded-2xl p-5">
+      <div class="flex items-center gap-3 mb-2">
+        <div class="h-10 w-10 rounded-xl grid place-items-center shrink-0" style="background:${t.c}16;border:1px solid ${t.c}30"><i data-lucide="${t.ic}" class="w-5 h-5" style="color:${t.c}"></i></div>
+        <h3 class="text-base font-bold">${t.t}</h3>
+      </div>
+      <p class="text-sm text-stone-300 leading-relaxed">${t.d}</p>
+    </div>`).join('');
+
+  const PRACT=[
+    {ic:'waves', t:'Agua de mar', d:'Plantas desalinizadoras que evitan usar agua dulce del desierto.'},
+    {ic:'sun', t:'Energía solar', d:'Faenas alimentadas con energía renovable del norte de Chile.'},
+    {ic:'truck', t:'Camiones eléctricos', d:'Reemplazo gradual de maquinaria diésel por eléctrica.'},
+    {ic:'recycle', t:'Reúso de agua', d:'Recircular el agua de los procesos una y otra vez.'},
+    {ic:'battery-charging', t:'Extracción directa', d:'Sacar litio usando mucha menos agua que las piscinas.'},
+    {ic:'trees', t:'Cierre de faenas', d:'Planes para restaurar el terreno cuando la mina termina.'}
+  ];
+  $('practicas').innerHTML=PRACT.map(p=>`
+    <div class="rounded-xl p-4" style="background:rgba(127,191,154,.07);border:1px solid rgba(127,191,154,.2)">
+      <i data-lucide="${p.ic}" class="w-6 h-6" style="color:var(--green)"></i>
+      <p class="text-sm font-bold mt-2">${p.t}</p>
+      <p class="text-[12px] text-stone-400 leading-snug mt-0.5">${p.d}</p>
+    </div>`).join('');
+
+  drawIcons();
+</script>
+</body>
+</html>
