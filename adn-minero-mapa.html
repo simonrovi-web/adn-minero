@@ -175,17 +175,94 @@
   ];
   const careerFor=e=>{ const m=CAREERS.find(c=>c.re.test(e||'')); return m?m.url:null; };
 
+  // ===== FICHA DE FAENA (clima en vivo + sismos) =====
+  const $F=id=>document.getElementById(id);
+  const drawI=()=>window.lucide&&lucide.createIcons();
+  const MINIC={cobre:'coins',oro:'gem',hierro:'circle-dot',litio:'battery-charging',plata:'gem'};
+  const havF=(a,b,c,d)=>{ const R=6371,r=Math.PI/180,dLat=(c-a)*r,dLon=(d-b)*r,x=Math.sin(dLat/2)**2+Math.cos(a*r)*Math.cos(c*r)*Math.sin(dLon/2)**2; return 2*R*Math.asin(Math.sqrt(x)); };
+  document.head.insertAdjacentHTML('beforeend', `<style>
+    #ovF{position:fixed;inset:0;z-index:3000;display:none;overflow-y:auto;-webkit-overflow-scrolling:touch;background:rgba(10,8,7,.82);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+    #ovF.on{display:block;animation:ovFin .25s ease both} @keyframes ovFin{from{opacity:0}to{opacity:1}}
+    #ovF *{box-sizing:border-box}
+    #ovF .sheet{max-width:560px;margin:0 auto;min-height:100%;padding:16px 16px 40px;color:#f4ece5;font-family:'Inter',ui-sans-serif,system-ui,sans-serif}
+    #ovF .panel{animation:ovFup .3s cubic-bezier(.2,.7,.3,1) both} @keyframes ovFup{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+    #ovFclose{position:sticky;top:8px;margin-left:auto;display:grid;place-items:center;width:42px;height:42px;border-radius:999px;cursor:pointer;background:linear-gradient(160deg,rgba(48,41,35,.95),rgba(28,23,19,.9));border:1px solid rgba(196,168,148,.25);color:#e8c9a6;box-shadow:0 6px 18px rgba(0,0,0,.5)}
+    #ovF .fhead{text-align:center}
+    #ovF .ficon{display:grid;place-items:center;height:64px;width:64px;border-radius:18px;margin:0 auto}
+    #ovF h2{font-size:26px;font-weight:800;margin:12px 0 0}
+    #ovF .badges{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:8px;font-size:14px;color:#c9b7a5}
+    #ovF .badges .mb{padding:4px 11px;border-radius:999px;font-weight:800}
+    #ovF .fglass{background:linear-gradient(160deg,rgba(43,37,32,.92),rgba(26,21,18,.82));border:1px solid rgba(196,168,148,.16);border-radius:16px;padding:16px;margin-top:16px}
+    #ovF .sec-h{font-size:14px;font-weight:800;display:flex;align-items:center;gap:8px;color:#e8ddd2;margin:0}
+    #ovF .fclima{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+    @media(max-width:520px){#ovF .fclima{grid-template-columns:repeat(2,1fr)}}
+    #ovF .tile{border-radius:12px;padding:12px 8px;text-align:center}
+    #ovF .tile i{display:block;margin:0 auto}
+    #ovF .tile .v{font-size:22px;font-weight:800;margin:4px 0 0}
+    #ovF .tile .l{font-size:11px;color:#a99e92;margin-top:2px}
+    #ovF .slist{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+    #ovF .srow{display:flex;align-items:center;gap:12px;border-radius:12px;padding:8px 12px}
+    #ovF .srow .sm{font-size:20px;font-weight:800;min-width:44px}
+    #ovF .acts{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+    #ovF .btn{border-radius:12px;padding:13px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;cursor:pointer;border:0;width:100%;font-family:inherit;font-size:15px}
+    #ovF .btn:active{transform:scale(.97)}
+    #ovF .sk{background:linear-gradient(90deg,rgba(255,255,255,.05),rgba(255,255,255,.1),rgba(255,255,255,.05));background-size:200% 100%;animation:shF 1.4s infinite;border-radius:10px}
+    @keyframes shF{0%{background-position:200% 0}100%{background-position:-200% 0}}
+  </style>`);
+  document.body.insertAdjacentHTML('beforeend','<div id="ovF"><div class="sheet"><button id="ovFclose" aria-label="Cerrar"><i data-lucide="x" style="width:22px;height:22px"></i></button><div id="ovFp" class="panel"></div></div></div>');
+
+  function openFaena(f){
+    const c=MIN[f.m].color, job=careerFor(f.e);
+    const box=(ic,val,lab,col)=>`<div class="tile" style="background:${col}14;border:1px solid ${col}2e"><i data-lucide="${ic}" style="width:22px;height:22px;color:${col}"></i><p class="v">${val}</p><p class="l">${lab}</p></div>`;
+    $F('ovFp').innerHTML=`
+      <div class="fhead">
+        <div class="ficon" style="background:${c}1e;border:1px solid ${c}4d"><i data-lucide="${MINIC[f.m]||'pickaxe'}" style="width:30px;height:30px;color:${c}"></i></div>
+        <h2>${f.n}</h2>
+        <div class="badges">
+          <span class="mb" style="color:${c};background:${c}22;border:1px solid ${c}55">${MIN[f.m].label}</span>
+          <span>🏢 ${f.e}</span><span>📍 Región de ${f.r}</span>
+        </div>
+      </div>
+      <div class="fglass">
+        <p class="sec-h"><i data-lucide="cloud-sun" style="width:16px;height:16px;color:#7fbfd1"></i> Clima ahora</p>
+        <div id="fClima" class="fclima"><div class="sk" style="height:80px"></div><div class="sk" style="height:80px"></div><div class="sk" style="height:80px"></div><div class="sk" style="height:80px"></div></div>
+      </div>
+      <div class="fglass">
+        <p class="sec-h"><i data-lucide="activity" style="width:16px;height:16px;color:#e05a3f"></i> Sismos cercanos <span style="font-size:11px;font-weight:400;color:#8a8079">· 7 días · &lt;250 km</span></p>
+        <div id="fSismos" class="slist"><div class="sk" style="height:46px"></div><div class="sk" style="height:46px"></div></div>
+      </div>
+      <div class="acts">
+        <a href="${gmaps(f.lat,f.lon)}" target="_blank" rel="noopener" class="btn" style="background:#cf9b6f1e;border:1px solid #cf9b6f4d;color:#e8c9a6"><i data-lucide="map-pin" style="width:18px;height:18px"></i> Ver en Google Maps</a>
+        ${job?`<a href="${job}" target="_blank" rel="noopener" class="btn" style="background:#a7d18a1e;border:1px solid #a7d18a4d;color:#c6e6b0"><i data-lucide="hard-hat" style="width:18px;height:18px"></i> Trabaja aquí · postular</a>`:''}
+        <button onclick="closeFaena()" class="btn" style="background:rgba(255,255,255,.04);border:1px solid rgba(196,168,148,.18);color:#c9b7a5"><i data-lucide="arrow-left" style="width:18px;height:18px"></i> Volver al mapa</button>
+      </div>`;
+    $F('ovF').classList.add('on'); document.body.style.overflow='hidden'; $F('ovF').scrollTop=0; drawI();
+    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${f.lat}&longitude=${f.lon}&current=temperature_2m,wind_speed_10m,wind_gusts_10m,uv_index&wind_speed_unit=kmh&timezone=America%2FSantiago`)
+      .then(r=>r.json()).then(j=>{ const w=j.current, el=$F('fClima'); if(!el) return;
+        el.innerHTML=box('thermometer',Math.round(w.temperature_2m)+'°','Temp','#e0a35a')+box('wind',Math.round(w.wind_speed_10m),'Viento km/h','#7fbfd1')+box('gauge',Math.round(w.wind_gusts_10m),'Ráfagas','#a7d18a')+box('sun',Math.round(w.uv_index),'UV','#f5c542'); drawI(); })
+      .catch(()=>{ const el=$F('fClima'); if(el) el.innerHTML='<p style="font-size:13px;color:#8a8079;grid-column:1/-1">No se pudo cargar el clima.</p>'; });
+    const start=new Date(Date.now()-7*864e5).toISOString().slice(0,10);
+    fetch(`https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=${start}&minmagnitude=3&minlatitude=${f.lat-3}&maxlatitude=${f.lat+3}&minlongitude=${f.lon-3}&maxlongitude=${f.lon+3}`)
+      .then(r=>r.json()).then(j=>{ const el=$F('fSismos'); if(!el) return;
+        const list=(j.features||[]).map(x=>({m:x.properties.mag,t:x.properties.time,lat:x.geometry.coordinates[1],lon:x.geometry.coordinates[0]})).map(x=>({...x,d:havF(f.lat,f.lon,x.lat,x.lon)})).filter(x=>x.d<=250).sort((a,b)=>b.t-a.t).slice(0,4);
+        if(!list.length){ el.innerHTML='<p style="font-size:13px;display:flex;align-items:center;gap:8px;color:#a99e92"><i data-lucide="check-circle" style="width:16px;height:16px;color:#7abf9a"></i> Sin sismos relevantes cerca en los últimos 7 días.</p>'; drawI(); return; }
+        el.innerHTML=list.map(x=>{ const col=x.m>=5?'#e05a3f':x.m>=4?'#e0a35a':'#a7d18a', h=Math.round((Date.now()-x.t)/36e5); return `<div class="srow" style="background:${col}12;border:1px solid ${col}2e"><span class="sm" style="color:${col}">${x.m.toFixed(1)}</span><div style="font-size:13px"><p style="font-weight:600;margin:0">a ${Math.round(x.d)} km</p><p style="font-size:11px;color:#a99e92;margin:0">${h<24?'hace '+h+' h':'hace '+Math.round(h/24)+' d'}</p></div></div>`; }).join(''); drawI(); })
+      .catch(()=>{ const el=$F('fSismos'); if(el) el.innerHTML='<p style="font-size:13px;color:#8a8079">No se pudieron cargar los sismos.</p>'; });
+    try{ history.pushState({f:1},''); }catch(e){}
+  }
+  function closeFaena(){ $F('ovF').classList.remove('on'); document.body.style.overflow=''; }
+  window.closeFaena=closeFaena; window.openFaena=openFaena;
+  $F('ovFclose').addEventListener('click', closeFaena);
+  $F('ovF').addEventListener('click', e=>{ if(e.target.id==='ovF') closeFaena(); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape'&&$F('ovF').classList.contains('on')) closeFaena(); });
+  window.addEventListener('popstate', ()=>{ if($F('ovF').classList.contains('on')) closeFaena(); });
+
   function marker(f){
     const c=MIN[f.m].color;
     const ic=L.divIcon({className:'', html:`<span style="display:block;width:15px;height:15px;border-radius:50%;background:${c};border:2px solid #fff;box-shadow:0 0 8px ${c},0 1px 4px rgba(0,0,0,.6)"></span>`, iconSize:[15,15], iconAnchor:[7,7]});
     const mk=L.marker([f.lat,f.lon],{icon:ic});
     const job=careerFor(f.e);
-    mk.bindPopup(`<div class="pop-t">${f.n}</div>
-      <div class="pop-r"><span>🏢</span> ${f.e}</div>
-      <div class="pop-r"><span>📍</span> Región de ${f.r}</div>
-      <span class="pop-m" style="color:${c};background:${c}22;border:1px solid ${c}55">${MIN[f.m].label}</span>
-      ${job?`<div style="margin-top:8px"><a class="src" href="${job}" target="_blank" rel="noopener">👷 Trabaja aquí · postular →</a></div>`:''}
-      ${gmapsLink(f.lat,f.lon)}`);
+    mk.on('click', ()=>openFaena(f));
     return mk;
   }
   FAENAS.forEach(f=>{ if(MIN[f.m]) marker(f).addTo(layers[f.m]); });
