@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · TV</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', ui-sans-serif, system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(224,90,63,0.14), transparent 60%),
+      radial-gradient(1000px 600px at 100% 0%, rgba(181,115,79,0.10), transparent 55%),
+      #141110; }
+    .wrap{ max-width:920px; margin:0 auto; padding:16px 16px 40px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); backdrop-filter:blur(14px) saturate(130%); -webkit-backdrop-filter:blur(14px) saturate(130%); border:1px solid rgba(196,168,148,0.14); }
+    .metric-icon{ filter:drop-shadow(0 0 8px currentColor); }
+    a.lnk{ color:#e8c9a6; }
+    .frame{ position:relative; width:100%; aspect-ratio:16/9; border-radius:16px; overflow:hidden; background:#000; border:1px solid rgba(196,168,148,.18); box-shadow:0 12px 40px rgba(0,0,0,.5); }
+    .frame iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+    .live-badge{ display:inline-flex; align-items:center; gap:7px; font-size:12px; font-weight:800; letter-spacing:.03em; padding:5px 12px; border-radius:999px; background:#e0303022; color:#ff6a5a; border:1px solid #e0303055; }
+    .live-dot{ width:9px; height:9px; border-radius:50%; background:#ff4433; box-shadow:0 0 0 0 rgba(255,68,51,.6); animation:pulse 1.6s infinite; }
+    @keyframes pulse{ 0%{box-shadow:0 0 0 0 rgba(255,68,51,.55)} 70%{box-shadow:0 0 0 10px rgba(255,68,51,0)} 100%{box-shadow:0 0 0 0 rgba(255,68,51,0)} }
+    .btn{ display:inline-flex; align-items:center; gap:8px; font-weight:700; border-radius:12px; padding:11px 16px; text-decoration:none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(224,90,63,.14);border:1px solid rgba(224,90,63,.32)"><i data-lucide="tv" class="metric-icon" style="width:26px;height:26px;color:#e0715a"></i></div>
+      <div class="min-w-0 flex-1">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#e0a89a;font-weight:700">ADN Minero TV <span class="fi fi-cl" style="border-radius:3px"></span></p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">La transmisión en vivo de la minería de Chile</p>
+      </div>
+      <span id="badge"></span>
+    </header>
+
+    <!-- ESTADO / TÍTULO -->
+    <div class="mt-4 flex items-center justify-between gap-3 flex-wrap">
+      <h1 id="estado" class="text-lg sm:text-xl font-extrabold flex items-center gap-2"><i data-lucide="loader" class="w-5 h-5 animate-spin text-stone-400"></i> Buscando transmisión…</h1>
+      <a href="https://www.youtube.com/@ADNMinero?sub_confirmation=1" target="_blank" rel="noopener" class="btn" style="background:#e0303018;border:1px solid #e0303044;color:#ff8577"><i data-lucide="youtube" style="width:18px;height:18px"></i> Suscribirse</a>
+    </div>
+
+    <!-- REPRODUCTOR / FALLBACK -->
+    <div id="stage" class="mt-4"></div>
+
+    <p id="sub" class="text-center text-[13px] text-stone-400 mt-4"></p>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">
+      El video se reproduce desde YouTube. Si estamos en vivo, aparece aquí automáticamente. · <a href="adn-minero-alertas.html" class="lnk">Alertas</a> · <a href="index.html" class="lnk">Inicio</a>
+    </p>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const icons=()=>window.lucide&&lucide.createIcons();
+  const CHANNEL='UCe3J26HArZLiRaShu7ogHag';
+  const UPLOADS='UUe3J26HArZLiRaShu7ogHag';          // playlist "subidas" del canal
+  const CH_URL='https://www.youtube.com/@ADNMinero';
+  const WORKER='https://adn-muro.simonrovi.workers.dev'; // endpoint /yt/live (detección en vivo)
+
+  const liveEmbed = v => v
+    ? `https://www.youtube.com/embed/${v}?autoplay=1&rel=0&modestbranding=1`
+    : `https://www.youtube.com/embed/live_stream?channel=${CHANNEL}&autoplay=1&rel=0`;
+
+  function showLive(videoId, title){
+    $('badge').innerHTML=`<span class="live-badge"><span class="live-dot"></span> EN VIVO</span>`;
+    $('estado').innerHTML=`<i data-lucide="radio" class="w-5 h-5" style="color:#ff6a5a"></i> ${title?title:'Transmisión en vivo'}`;
+    $('stage').innerHTML=`<div class="frame"><iframe src="${liveEmbed(videoId)}" title="ADN Minero TV en vivo" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`;
+    $('sub').innerHTML=`Estás viendo la transmisión en directo de ADN Minero. ¿Se ve cortado? <a href="${CH_URL}/live" target="_blank" rel="noopener" class="lnk">Ábrelo en YouTube →</a>`;
+    icons();
+  }
+
+  function showOffline(){
+    $('badge').innerHTML=`<span class="text-[12px] font-bold px-3 py-1.5 rounded-full" style="background:rgba(255,255,255,.05);border:1px solid rgba(196,168,148,.2);color:#c9b7a5">● Sin transmisión</span>`;
+    $('estado').innerHTML=`<i data-lucide="tv" class="w-5 h-5 text-stone-400"></i> Ahora no estamos en vivo`;
+    $('stage').innerHTML=`
+      <div class="glass rounded-2xl p-5 text-center">
+        <div class="inline-grid place-items-center h-16 w-16 rounded-2xl mx-auto" style="background:rgba(224,90,63,.12);border:1px solid rgba(224,90,63,.28)"><i data-lucide="video-off" style="width:30px;height:30px;color:#e0715a"></i></div>
+        <p class="text-base font-bold mt-3">La transmisión aparecerá aquí en cuanto empiece 📡</p>
+        <p class="text-sm text-stone-400 mt-1 max-w-md mx-auto">Suscríbete y activa la campanita para no perderte el próximo directo de ADN Minero.</p>
+        <div class="flex items-center justify-center gap-2 flex-wrap mt-4">
+          <a href="${CH_URL}?sub_confirmation=1" target="_blank" rel="noopener" class="btn" style="background:#e0303018;border:1px solid #e0303044;color:#ff8577"><i data-lucide="youtube" style="width:18px;height:18px"></i> Ir al canal</a>
+          <a href="${CH_URL}/videos" target="_blank" rel="noopener" class="btn" style="background:rgba(255,255,255,.05);border:1px solid rgba(196,168,148,.2);color:#e6d4c4"><i data-lucide="clapperboard" style="width:18px;height:18px"></i> Ver videos</a>
+          <a href="adn-minero-alertas.html" class="btn" style="background:#cf9b6f18;border:1px solid #cf9b6f44;color:#e8c9a6"><i data-lucide="bell" style="width:18px;height:18px"></i> Activar alertas</a>
+        </div>
+      </div>`;
+    $('sub').textContent='';
+    icons();
+  }
+
+  // detección de "en vivo" vía Worker; si falla, usamos el embed de canal que se autogestiona
+  async function check(){
+    try{
+      const r=await fetch(`${WORKER}/yt/live?channel=${CHANNEL}`,{cache:'no-store'});
+      if(!r.ok) throw 0;
+      const j=await r.json();
+      if(j.live){ showLive(j.videoId, j.title); }
+      else { showOffline(); }
+    }catch(e){
+      // sin detección: mostrar el embed de transmisión del canal (YouTube decide en vivo/offline)
+      $('badge').innerHTML='';
+      $('estado').innerHTML=`<i data-lucide="tv" class="w-5 h-5" style="color:#e0715a"></i> Canal ADN Minero`;
+      $('stage').innerHTML=`<div class="frame"><iframe src="${liveEmbed(null)}" title="ADN Minero TV" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`;
+      $('sub').innerHTML=`Si el canal está transmitiendo, se verá arriba. · <a href="${CH_URL}" target="_blank" rel="noopener" class="lnk">Ver el canal →</a>`;
+      icons();
+    }
+  }
+
+  icons(); check();
+  setInterval(check, 60000); // revisa cada minuto
+</script>
+</body>
+</html>

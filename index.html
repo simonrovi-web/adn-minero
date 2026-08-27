@@ -51,7 +51,7 @@
       <p class="text-base sm:text-lg text-[#cf9b6f] font-semibold mt-2 sm:mt-3">Un aporte de ADN Minero a la minería de Chile</p>
       <p class="hidden sm:block text-stone-400 max-w-2xl mx-auto mt-4 leading-relaxed">Tableros con información en tiempo real y datos tomados de fuentes públicas oficiales sobre la industria que mueve al país. Servicio independiente, gratis y para todos. Haz clic en cualquiera para abrirlo en pantalla completa.</p>
       <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mt-4 sm:mt-6 text-xs">
-        <span class="glass rounded-full px-4 py-1.5 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4 text-[#cf9b6f]"></i> 29 paneles</span>
+        <span class="glass rounded-full px-4 py-1.5 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4 text-[#cf9b6f]"></i> 30 paneles</span>
         <span class="glass rounded-full px-4 py-1.5 flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-emerald-400"></span> Datos en vivo</span>
         <span class="glass rounded-full px-4 py-1.5 flex items-center gap-2"><i data-lucide="badge-check" class="w-4 h-4 text-[#cf9b6f]"></i> Fuentes oficiales</span>
       </div>
@@ -162,6 +162,7 @@
 
   <script>
     const VIVO = [
+      { t:'ADN Minero TV',          f:'adn-minero-tv.html',               i:'tv',         c:'#e0715a', badge:'TV', badgeCls:'bg-[#e05a3f]/18 text-[#ff8577] border border-[#e05a3f]/40', d:'Nuestra transmisión en vivo por YouTube. Cuando el canal está al aire, la ves aquí mismo; si no, te avisamos cuándo volvemos.' },
       { t:'ADN Minero IA',          f:'adn-minero-ia.html',               i:'sparkles',   c:'#e8c9a6', badge:'IA', badgeCls:'bg-[#cf9b6f]/20 text-[#f0d7b6] border border-[#cf9b6f]/40', d:'Asistente con inteligencia artificial: pregúntale sobre la minería de Chile, los procesos, el royalty, las empresas o para qué sirve cada panel.' },
       { t:'Noticias Mineras',       f:'adn-minero-prensa.html',           i:'newspaper',  c:'#cf9b6f', v:true, d:'Titulares de la minería de Chile en vivo, con rotación automática y locución. Fuente: Google Noticias.' },
       { t:'Trabajos y Servicios',   f:'adn-minero-empleos.html',          i:'briefcase',  c:'#a7d18a', badge:'nuevo', badgeCls:'bg-amber-500/15 text-amber-300 border border-amber-400/30', d:'Ofertas de empleo minero y servicios/proveedores, en un tablero con pestañas Trabajos y Servicios.' },
@@ -234,7 +235,24 @@
       if (favItems.length) document.getElementById('grid-fav').innerHTML = favItems.map(p=>card(p, VIVO.includes(p))).join('');
       window.lucide && lucide.createIcons();
       applyFilter();
+      applyTvLive();
     }
+
+    // ===== ADN Minero TV: indicador "EN VIVO" en la tarjeta =====
+    const TV_CH='UCe3J26HArZLiRaShu7ogHag', TV_WK='https://adn-muro.simonrovi.workers.dev';
+    let TV_LIVE=false;
+    (function(){ const s=document.createElement('style'); s.textContent='@keyframes pulseP{0%{box-shadow:0 0 0 0 rgba(255,68,51,.5)}70%{box-shadow:0 0 0 6px rgba(255,68,51,0)}100%{box-shadow:0 0 0 0 rgba(255,68,51,0)}}'; document.head.appendChild(s); })();
+    function applyTvLive(){
+      document.querySelectorAll('a[href$="adn-minero-tv.html"]').forEach(a=>{
+        const badge=a.querySelector('span.rounded-full');
+        if(TV_LIVE){
+          a.style.boxShadow='0 0 0 1px rgba(224,48,48,.45), 0 0 24px rgba(224,48,48,.32)';
+          if(badge){ badge.className='text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full inline-flex items-center gap-1'; badge.style.cssText='background:#e0303022;color:#ff6a5a;border:1px solid #e0303066'; badge.innerHTML='<span style="width:7px;height:7px;border-radius:50%;background:#ff4433;display:inline-block;animation:pulseP 1.4s infinite"></span> EN VIVO'; }
+        } else { a.style.boxShadow=''; }
+      });
+    }
+    async function pollTv(){ try{ const j=await (await fetch(TV_WK+'/yt/live?channel='+TV_CH,{cache:'no-store'})).json(); TV_LIVE=!!j.live; }catch(e){ TV_LIVE=false; } applyTvLive(); }
+    pollTv(); setInterval(pollTv, 60000);
 
     function toggleSection(secId, gridId){
       const grid = document.getElementById(gridId);
