@@ -63,6 +63,7 @@
       <div class="glass rounded-2xl flex items-center gap-2 px-4 py-2.5">
         <i data-lucide="search" class="w-5 h-5 text-[#cf9b6f] shrink-0"></i>
         <input id="q" type="search" inputmode="search" autocomplete="off" placeholder="Buscar panel… (cobre, sismos, empleo, clima)" class="bg-transparent outline-none w-full text-sm text-stone-100 placeholder:text-stone-500" />
+        <button id="qmic" class="text-[#cf9b6f] hover:text-[#f0d7b6] transition shrink-0" aria-label="Buscar por voz" title="Buscar por voz"><i data-lucide="mic" class="w-5 h-5"></i></button>
         <button id="qx" class="hidden text-stone-500 hover:text-stone-300" aria-label="Limpiar"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
     </div>
@@ -206,6 +207,15 @@
       localStorage.setItem('adn_favs', JSON.stringify([...s]));
       renderAll();
     }
+    function sharePanel(ev, f){
+      ev.preventDefault(); ev.stopPropagation();
+      const p = ALL.find(x=>x.f===f) || {};
+      const url = new URL(f, location.href).href;
+      const title = 'ADN Minero' + (p.t ? ' · ' + p.t : '');
+      const text = (p.t ? p.t + ' — ' : '') + 'mira este panel de ADN Minero ⛏️';
+      if (navigator.share) { navigator.share({ title, text, url }).catch(()=>{}); }
+      else { window.open('https://wa.me/?text=' + encodeURIComponent(text + ' ' + url), '_blank', 'noopener'); }
+    }
 
     function card(p, vivo){
       const fav = isFav(p.f);
@@ -215,7 +225,10 @@
         <div class="flex items-start justify-between">
           <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:${p.c}22;border:1px solid ${p.c}40"><i data-lucide="${p.i}" class="w-6 h-6 metric-icon" style="color:${p.c}"></i></div>
           <div class="flex flex-col items-end gap-1 shrink-0">
-            <button type="button" onclick="toggleFav(event,'${p.f}')" class="-mt-1 -mr-1 p-1.5 rounded-lg hover:bg-white/10 transition" aria-label="${fav?'Quitar de Mis paneles':'Guardar en Mis paneles'}" title="${fav?'Quitar de Mis paneles':'Guardar en Mis paneles'}"><i data-lucide="star" class="w-5 h-5 ${fav?'text-amber-300':'text-stone-500'}" style="${fav?'fill:currentColor':''}"></i></button>
+            <div class="flex items-center gap-0.5 -mt-1 -mr-1">
+              <button type="button" onclick="sharePanel(event,'${p.f}')" class="p-1.5 rounded-lg hover:bg-white/10 transition" aria-label="Compartir panel" title="Compartir"><i data-lucide="share-2" class="w-5 h-5 text-stone-500"></i></button>
+              <button type="button" onclick="toggleFav(event,'${p.f}')" class="p-1.5 rounded-lg hover:bg-white/10 transition" aria-label="${fav?'Quitar de Mis paneles':'Guardar en Mis paneles'}" title="${fav?'Quitar de Mis paneles':'Guardar en Mis paneles'}"><i data-lucide="star" class="w-5 h-5 ${fav?'text-amber-300':'text-stone-500'}" style="${fav?'fill:currentColor':''}"></i></button>
+            </div>
             <span class="text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full ${p.badgeCls||(vivo?'bg-emerald-500/15 text-emerald-300 border border-emerald-400/20':'bg-amber-500/12 text-amber-300 border border-amber-400/20')}">${p.badge||(vivo?'en vivo':'datos')}</span>
             ${p.v?`<span class="voice-chip text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full flex items-center gap-1"><span class="vdot"></span><i data-lucide="mic" class="w-3 h-3"></i> con voz</span>`:''}
           </div>
@@ -278,6 +291,46 @@
     document.getElementById('q').addEventListener('input', applyFilter);
     document.getElementById('qx').addEventListener('click', ()=>{ document.getElementById('q').value=''; applyFilter(); document.getElementById('q').focus(); });
     renderAll();
+
+    // ===== Búsqueda por voz =====
+    (function(){
+      const mic=document.getElementById('qmic'); if(!mic) return;
+      const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+      if(!SR){ mic.style.display='none'; return; }
+      let rec=null, on=false;
+      mic.addEventListener('click', ()=>{
+        if(on&&rec){ try{rec.stop();}catch(e){} return; }
+        rec=new SR(); rec.lang='es-CL'; rec.interimResults=true; rec.maxAlternatives=1;
+        rec.onstart=()=>{ on=true; mic.classList.add('text-red-400'); mic.classList.remove('text-[#cf9b6f]'); };
+        rec.onend=()=>{ on=false; mic.classList.remove('text-red-400'); mic.classList.add('text-[#cf9b6f]'); };
+        rec.onerror=()=>{ on=false; mic.classList.remove('text-red-400'); mic.classList.add('text-[#cf9b6f]'); };
+        rec.onresult=e=>{ const t=[...e.results].map(r=>r[0].transcript).join(''); const q=document.getElementById('q'); q.value=t; applyFilter(); };
+        try{ rec.start(); }catch(e){}
+      });
+    })();
+
+    // ===== Onboarding (primera vez) =====
+    (function(){
+      try{ if(localStorage.getItem('adn_onboarded')==='1') return; }catch(e){ return; }
+      const st=document.createElement('style'); st.textContent='@keyframes onbup{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}'; document.head.appendChild(st);
+      const row=(e,h)=>`<div style="display:flex;gap:10px;align-items:flex-start"><span style="font-size:1.1rem">${e}</span><p style="font-size:.86rem;color:#d8c8b8;margin:0;line-height:1.4">${h}</p></div>`;
+      document.body.insertAdjacentHTML('beforeend', `<div id="onb" style="position:fixed;inset:0;z-index:4000;display:grid;place-items:center;background:rgba(10,8,7,.82);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:20px">
+        <div class="glass" style="max-width:420px;width:100%;border-radius:20px;padding:24px;text-align:center;animation:onbup .3s ease both">
+          <div style="font-size:2.4rem">👷⛏️</div>
+          <h3 style="font-size:1.3rem;font-weight:800;margin:8px 0 2px">¡Bienvenido a ADN Minero!</h3>
+          <p style="font-size:.9rem;color:#c9b7a5;margin:0">Toda la minería de Chile en un solo lugar.</p>
+          <div style="text-align:left;margin:18px 0;display:flex;flex-direction:column;gap:11px">
+            ${row('🔎','<b>Busca</b> cualquier panel — o dicta con el micrófono 🎤.')}
+            ${row('⭐','<b>Guarda</b> tus favoritos con la estrella y compártelos.')}
+            ${row('🔴','Mira <b>ADN Minero TV</b> en vivo y activa las <b>Alertas</b>.')}
+          </div>
+          <button id="onbok" style="width:100%;border-radius:14px;padding:14px;font-weight:800;border:0;cursor:pointer;background:linear-gradient(135deg,#f0d7b6,#cf9b6f 55%,#b5734f);color:#2a1c12;font-size:1rem">¡Empezar! 🚀</button>
+        </div></div>`);
+      window.lucide && lucide.createIcons();
+      const close=()=>{ try{ localStorage.setItem('adn_onboarded','1'); }catch(e){} const o=document.getElementById('onb'); if(o) o.remove(); };
+      document.getElementById('onbok').addEventListener('click', close);
+      document.getElementById('onb').addEventListener('click', e=>{ if(e.target.id==='onb') close(); });
+    })();
   </script>
 <script>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}</script>
 </body>

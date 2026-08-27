@@ -45,6 +45,7 @@
     <div id="start" class="glass rounded-2xl p-6 mt-6 text-center">
       <p class="text-sm text-stone-300">Banco de <b class="text-[#e8c9a6]">100 preguntas</b> · 10 al azar por partida · ¡cada juego es distinto!</p>
       <button id="btnStart" class="big w-full rounded-2xl py-4 mt-4 font-bold text-[16px] flex items-center justify-center gap-2 active:scale-95 transition"><i data-lucide="play" style="width:20px;height:20px"></i> Comenzar</button>
+      <div id="logros" class="mt-4"></div>
     </div>
 
     <!-- JUEGO -->
@@ -206,6 +207,39 @@
   ];
 
   const KEY='adn_trivia_best';
+  // ===== progreso: partidas, racha y logros =====
+  const gi=(k,d)=>{ try{ return parseInt(localStorage.getItem(k)||d,10); }catch(e){ return +d; } };
+  const dstr=(off)=>{ const d=new Date(); if(off) d.setDate(d.getDate()+off); return d.toLocaleDateString('en-CA',{timeZone:'America/Santiago'}); };
+  function recordGame(sc, tot){
+    try{
+      localStorage.setItem('adn_trivia_games', gi('adn_trivia_games','0')+1);
+      const today=dstr(0), last=localStorage.getItem('adn_trivia_lastday')||'';
+      if(last!==today){
+        let streak=gi('adn_trivia_streak','0');
+        streak=(last===dstr(-1))? streak+1 : 1;
+        localStorage.setItem('adn_trivia_streak', streak);
+        localStorage.setItem('adn_trivia_lastday', today);
+        localStorage.setItem('adn_trivia_beststreak', Math.max(gi('adn_trivia_beststreak','0'), streak));
+      }
+      if(sc>=tot) localStorage.setItem('adn_trivia_perfect','1');
+    }catch(e){}
+  }
+  const MEDALS=[
+    {ic:'🎮', t:'1ª partida', ok:s=>s.games>=1},
+    {ic:'⭐', t:'5 partidas', ok:s=>s.games>=5},
+    {ic:'💎', t:'10 partidas', ok:s=>s.games>=10},
+    {ic:'🔥', t:'Racha de 3', ok:s=>s.beststreak>=3},
+    {ic:'🧠', t:'Experto 80+', ok:s=>s.best>=80},
+    {ic:'🏆', t:'Perfecto', ok:s=>s.perfect}
+  ];
+  function renderLogros(){
+    const el=$('logros'); if(!el) return;
+    const s={ games:gi('adn_trivia_games','0'), streak:gi('adn_trivia_streak','0'), beststreak:gi('adn_trivia_beststreak','0'), best:getBest(), perfect:localStorage.getItem('adn_trivia_perfect')==='1' };
+    if(s.games<=0){ el.innerHTML='<p class="text-[12px] text-stone-500">Juega tu primera partida para ganar medallas 🏅</p>'; return; }
+    const stat=(v,l)=>`<div class="text-center"><p class="text-xl font-extrabold" style="color:#e8c9a6">${v}</p><p class="text-[10px] uppercase tracking-wide text-stone-500">${l}</p></div>`;
+    const medals=MEDALS.map(m=>{ const g=m.ok(s); return `<span title="${m.t}" class="text-[11px] font-semibold px-2 py-1 rounded-full inline-flex items-center gap-1" style="background:${g?'rgba(207,155,111,.16)':'rgba(255,255,255,.03)'};border:1px solid ${g?'rgba(207,155,111,.4)':'rgba(196,168,148,.14)'};color:${g?'#e8c9a6':'#6b6259'};${g?'':'opacity:.55'}">${m.ic} ${m.t}</span>`; }).join('');
+    el.innerHTML=`<div class="flex items-center justify-center gap-7">${stat(s.games,'partidas')}${stat('🔥 '+s.streak,'racha')}${stat(s.best,'récord')}</div><div class="flex flex-wrap gap-1.5 justify-center mt-3">${medals}</div>`;
+  }
   const getBest=()=>{ try{ return parseInt(localStorage.getItem(KEY)||'0',10); }catch(e){ return 0; } };
   function showBest(){ const b=getBest(); $('best').textContent = b>0 ? `🏆 Tu mejor puntaje: ${b}/${QUESTIONS.length*10}` : ''; }
 
@@ -283,6 +317,7 @@
     const total=pool.length*10;
     const prev=getBest();
     if(score>prev){ try{ localStorage.setItem(KEY,String(score)); }catch(e){} }
+    recordGame(score, total); renderLogros();
     const pct=score/total;
     let emoji,title,msg;
     if(pct>=0.9){ emoji='🏆'; title='¡Eres un experto!'; msg='ADN minero puro. Chile necesita gente como tú.'; }
@@ -305,7 +340,7 @@
   $('opts').addEventListener('click',e=>{ const b=e.target.closest('.opt'); if(b) answer(parseInt(b.dataset.i,10)); });
   $('muteBtn').addEventListener('click', toggleMute);
 
-  showBest(); updMute(); drawIcons();
+  showBest(); updMute(); renderLogros(); drawIcons();
 </script>
 </body>
 </html>
