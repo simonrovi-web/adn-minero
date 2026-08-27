@@ -169,13 +169,14 @@
 
   function card(it){
     const s=STYLE[it.tipo]||STYLE.Carrera;
-    return `<div class="card-edu glass-strong rounded-2xl p-5 flex flex-col gap-2.5 relative overflow-hidden transition" style="border-color:${s.c}22">
+    return `<div class="card-edu glass-strong rounded-2xl p-5 flex flex-col gap-2.5 relative overflow-hidden transition" data-t="${(it.titulo||'').replace(/"/g,'&#34;')}" style="border-color:${s.c}22;cursor:pointer">
       <div class="flex items-center justify-between gap-2">
         <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full inline-flex items-center gap-1.5" style="background:${s.c}1f;border:1px solid ${s.c}44;color:${s.c}"><i data-lucide="${s.ic}" class="w-3.5 h-3.5"></i> ${s.tag}</span>
         ${it.cat?`<span class="text-[10px] font-semibold px-2 py-0.5 rounded-full text-stone-300" style="background:${s.c}14;border:1px solid ${s.c}2e">${it.cat}</span>`:''}
       </div>
       <h3 class="text-[18px] font-bold leading-tight">${it.titulo}</h3>
       ${it.detalle?`<p class="text-[13px] text-stone-400 leading-snug flex-1" style="display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">${it.detalle}</p>`:'<div class="flex-1"></div>'}
+      <p class="text-[11px] font-semibold flex items-center gap-1" style="color:${s.c}">Ver ficha completa <i data-lucide="arrow-right" class="w-3 h-3"></i></p>
       <div class="flex items-center gap-2 flex-wrap">
         <a href="${it.link}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-semibold rounded-lg px-3 py-2 w-fit active:scale-95 transition" style="color:${s.c};background:${s.c}14;border:1px solid ${s.c}33"><i data-lucide="external-link" class="w-4 h-4"></i> ${s.btn}</a>
         ${it.tipo==='Institucion'?`<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(it.titulo+' Chile')}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-[12px] font-semibold rounded-lg px-2.5 py-2 w-fit active:scale-95 transition text-stone-300" style="background:rgba(207,155,111,.1);border:1px solid rgba(207,155,111,.28)"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-[#cf9b6f]"></i> Maps</a>`:''}
@@ -219,6 +220,65 @@
     set('[data-tab="beca"]','Becas · '+n('Beca'));
   }
   function load(){ listings=DATA.slice(); updateTabCounts(); applyFilter(); render(); schedule(); }
+
+  // ===== FICHA DETALLE (tocar una tarjeta) =====
+  const EXTRA={
+    'Ingeniería Civil de Minas':{campo:'Planificación y dirección de operaciones en la gran minería, consultoras y el Estado.',demanda:92,sueldo:'Alto — de las carreras mejor pagadas de Chile.',ramos:['Explotación de minas','Geomecánica','Planificación minera','Economía minera']},
+    'Ingeniería en Minas (Ejecución)':{campo:'Supervisión de operaciones en terreno y jefaturas de turno en faena.',demanda:85,sueldo:'Alto.',ramos:['Operaciones mineras','Equipos y flota','Ventilación','Seguridad']},
+    'Geología':{campo:'Exploración, modelamiento de recursos, minería e investigación.',demanda:80,sueldo:'Alto.',ramos:['Mineralogía','Yacimientos','Geología estructural','Sondajes']},
+    'Ingeniería Civil Metalúrgica':{campo:'Plantas concentradoras, fundiciones y refinerías de cobre.',demanda:82,sueldo:'Alto.',ramos:['Flotación','Hidrometalurgia','Pirometalurgia','Control de procesos']},
+    'Ingeniería en Prevención de Riesgos':{campo:'Departamentos de seguridad y salud ocupacional en faenas.',demanda:88,sueldo:'Medio-alto.',ramos:['Higiene ocupacional','Normativa','Emergencias','Ergonomía']},
+    'Técnico en Minería / Explotación Minera':{campo:'Operación y supervisión directa de faenas de extracción.',demanda:90,sueldo:'Medio-alto para técnico.',ramos:['Perforación','Tronadura','Carguío y transporte']},
+    'Técnico en Mantención de Maquinaria Minera':{campo:'Mantención de camiones, palas y equipos pesados.',demanda:95,sueldo:'Medio-alto; muy demandado.',ramos:['Mecánica','Hidráulica','Electricidad','Diagnóstico']},
+    'Técnico en Geología / Geomensura':{campo:'Apoyo a la exploración y a la topografía minera.',demanda:78,sueldo:'Medio.',ramos:['Topografía','Muestreo','Sondajes','Cartografía']},
+    'Técnico en Procesamiento de Minerales':{campo:'Operación de plantas concentradoras y metalurgia extractiva.',demanda:80,sueldo:'Medio-alto.',ramos:['Molienda','Flotación','Espesamiento','Control de calidad']},
+    'Operador de Equipos Mineros':{campo:'Conducción de camiones de extracción (CAEX) y maquinaria pesada.',demanda:93,sueldo:'Bueno para su nivel; alta demanda.',ramos:['Manejo de CAEX','Seguridad','Mantención básica']}
+  };
+  // inyectar estilos y overlay (fuera del #stage escalado)
+  document.head.insertAdjacentHTML('beforeend', `<style>
+    #ovE{position:fixed;inset:0;z-index:2000;display:none;overflow-y:auto;-webkit-overflow-scrolling:touch;background:rgba(10,8,7,.74);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+    #ovE.on{display:block;animation:ovEin .25s ease both} @keyframes ovEin{from{opacity:0}to{opacity:1}}
+    #ovE .sheet{max-width:680px;margin:0 auto;min-height:100%;padding:16px 16px 48px;color:#f4ece5}
+    #ovE .panel{animation:ovEup .3s cubic-bezier(.2,.7,.3,1) both} @keyframes ovEup{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+    #ovEclose{position:sticky;top:8px;margin-left:auto;z-index:5;display:grid;place-items:center;width:42px;height:42px;border-radius:999px;cursor:pointer;background:linear-gradient(160deg,rgba(48,41,35,.95),rgba(28,23,19,.9));border:1px solid rgba(196,168,148,.25);color:#e8c9a6;box-shadow:0 6px 18px rgba(0,0,0,.5)}
+    #ovE .dtrack{height:14px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden}
+    #ovE .dbar{height:100%;border-radius:999px;width:0;transition:width 1s cubic-bezier(.2,.7,.3,1)}
+  </style>`);
+  document.body.insertAdjacentHTML('beforeend', '<div id="ovE"><div class="sheet"><button id="ovEclose" aria-label="Cerrar"><i data-lucide="x" style="width:22px;height:22px"></i></button><div id="ovEp" class="panel"></div></div></div>');
+
+  function openEdu(t){
+    const it=DATA.find(x=>x.titulo===t); if(!it) return;
+    const s=STYLE[it.tipo]||STYLE.Carrera; const ex=EXTRA[t];
+    let html=`
+      <div class="text-center">
+        <div class="inline-grid place-items-center h-16 w-16 rounded-2xl mx-auto" style="background:${s.c}1e;border:1px solid ${s.c}4d"><i data-lucide="${s.ic}" style="width:30px;height:30px;color:${s.c}"></i></div>
+        ${it.cat?`<span class="inline-block text-[12px] font-bold px-3 py-1 rounded-full mt-3" style="background:${s.c}22;color:${s.c};border:1px solid ${s.c}55">${it.cat}</span>`:''}
+        <h2 class="text-2xl sm:text-3xl font-extrabold mt-2">${it.titulo}</h2>
+        <p class="text-[12px] mt-1" style="color:${s.c}">${s.tag}</p>
+      </div>
+      <div class="glass rounded-2xl p-5 mt-5"><p class="text-[15px] leading-relaxed" style="color:#e8ddd2">${it.detalle||''}</p></div>`;
+    if(ex){
+      html+=`<div class="glass rounded-2xl p-4 mt-4"><p class="text-sm font-bold flex items-center gap-2"><i data-lucide="briefcase" class="w-4 h-4" style="color:${s.c}"></i> Dónde trabajarás</p><p class="text-[14px] mt-1" style="color:#d8c8b8">${ex.campo}</p></div>`;
+      html+=`<div class="glass rounded-2xl p-4 mt-4"><p class="text-sm font-bold flex items-center gap-2 mb-2"><i data-lucide="bar-chart-3" class="w-4 h-4" style="color:${s.c}"></i> Demanda en la minería <span class="text-[11px] font-normal text-stone-500">referencial</span></p><div class="dtrack"><div class="dbar" data-w="${ex.demanda}%" style="background:linear-gradient(90deg,${s.c},#b5734f)"></div></div><p class="text-[12px] text-stone-400 mt-2">${ex.demanda>=90?'Muy alta':ex.demanda>=80?'Alta':'Media-alta'} · 💰 Sueldo: ${ex.sueldo}</p></div>`;
+      html+=`<div class="glass rounded-2xl p-4 mt-4"><p class="text-sm font-bold flex items-center gap-2 mb-2"><i data-lucide="list-checks" class="w-4 h-4" style="color:${s.c}"></i> Algunos ramos / áreas</p><div class="flex flex-wrap gap-2">${ex.ramos.map(r=>`<span class="text-[12px] font-semibold px-2.5 py-1 rounded-full" style="background:${s.c}16;border:1px solid ${s.c}33;color:${s.c}">${r}</span>`).join('')}</div></div>`;
+    } else {
+      html+=`<div class="glass rounded-2xl p-4 mt-4"><p class="text-sm" style="color:#d8c8b8"><b style="color:${s.c}">${s.tag}.</b> Toca el botón para ir al sitio oficial y ver requisitos, programas y postulación.</p></div>`;
+    }
+    html+=`<a href="${it.link}" target="_blank" rel="noopener" class="w-full rounded-2xl py-3.5 mt-4 font-bold flex items-center justify-center gap-2 active:scale-95 transition" style="background:${s.c}1e;border:1px solid ${s.c}4d;color:${s.c}"><i data-lucide="external-link" style="width:18px;height:18px"></i> ${s.btn}</a>`;
+    if(it.tipo==='Institucion') html+=`<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(it.titulo+' Chile')}" target="_blank" rel="noopener" class="w-full rounded-2xl py-3 mt-3 font-bold flex items-center justify-center gap-2 text-stone-300" style="background:rgba(207,155,111,.1);border:1px solid rgba(207,155,111,.28)"><i data-lucide="map-pin" style="width:18px;height:18px" class="text-[#cf9b6f]"></i> Ver en Google Maps</a>`;
+    html+=`<button onclick="closeEdu()" class="w-full rounded-2xl py-3 mt-3 font-bold flex items-center justify-center gap-2 active:scale-95 transition text-stone-300" style="background:rgba(255,255,255,.04);border:1px solid rgba(196,168,148,.18)"><i data-lucide="arrow-left" style="width:18px;height:18px"></i> Volver</button>`;
+    $('ovEp').innerHTML=html; $('ovE').classList.add('on'); document.body.style.overflow='hidden'; $('ovE').scrollTop=0;
+    clearTimeout(rotTimer); drawIcons();
+    if(ex) requestAnimationFrame(()=>requestAnimationFrame(()=>document.querySelectorAll('#ovEp .dbar').forEach(b=>b.style.width=b.dataset.w)));
+    try{ history.pushState({e:1},''); }catch(e){}
+  }
+  function closeEdu(){ $('ovE').classList.remove('on'); document.body.style.overflow=''; if(!paused) schedule(); }
+  window.closeEdu=closeEdu;
+  $('grid').addEventListener('click', e=>{ if(e.target.closest('a')) return; const c=e.target.closest('.card-edu'); if(c&&c.dataset.t) openEdu(c.dataset.t); });
+  $('ovEclose').addEventListener('click', closeEdu);
+  $('ovE').addEventListener('click', e=>{ if(e.target.id==='ovE') closeEdu(); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape'&&$('ovE').classList.contains('on')) closeEdu(); });
+  window.addEventListener('popstate', ()=>{ if($('ovE').classList.contains('on')) closeEdu(); });
 
   function fitStageInit(){ function f(){ const w=innerWidth||1600,h=innerHeight||900; $('stage').style.setProperty('--s',Math.min(w/1600,h/900)||1); } addEventListener('resize',f); addEventListener('load',f); f(); }
   fitStageInit(); drawIcons(); tick(); setInterval(tick,1000); load();
