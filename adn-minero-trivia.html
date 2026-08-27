@@ -51,7 +51,10 @@
     <div id="game" class="hidden">
       <div class="flex items-center justify-between text-[12px] text-stone-400 mt-4 mb-2">
         <span id="prog">Pregunta 1 de 10</span>
-        <span id="score" class="font-bold text-[#e8c9a6]">0 pts</span>
+        <div class="flex items-center gap-3">
+          <button id="muteBtn" title="Activar o silenciar sonidos" class="text-stone-400 hover:text-stone-200 active:scale-90 transition"><i id="muteIcon" data-lucide="volume-2" style="width:16px;height:16px"></i></button>
+          <span id="score" class="font-bold text-[#e8c9a6]">0 pts</span>
+        </div>
       </div>
       <div class="bar mb-4"><span id="barFill" style="width:0%"></span></div>
 
@@ -206,6 +209,23 @@
   const getBest=()=>{ try{ return parseInt(localStorage.getItem(KEY)||'0',10); }catch(e){ return 0; } };
   function showBest(){ const b=getBest(); $('best').textContent = b>0 ? `🏆 Tu mejor puntaje: ${b}/${QUESTIONS.length*10}` : ''; }
 
+  // ===== sonidos (generados con Web Audio, sin archivos externos) =====
+  let SND=true; try{ SND=(localStorage.getItem('adn_trivia_snd')||'1')!=='0'; }catch(e){}
+  let _actx=null;
+  function AC(){ try{ _actx=_actx||new (window.AudioContext||window.webkitAudioContext)(); if(_actx.state==='suspended')_actx.resume(); }catch(e){} return _actx; }
+  function beep(freq,t0,dur,type,vol){ const c=AC(); if(!c) return;
+    const o=c.createOscillator(), g=c.createGain(); o.type=type||'sine'; o.frequency.value=freq;
+    o.connect(g); g.connect(c.destination); const t=c.currentTime+t0;
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vol||0.18,t+0.015);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur); o.start(t); o.stop(t+dur+0.03); }
+  function sfx(ok){ if(!SND) return; try{
+    if(ok){ beep(660,0,0.12,'sine',0.20); beep(880,0.10,0.14,'sine',0.20); beep(1320,0.20,0.20,'triangle',0.15); }
+    else { beep(210,0,0.18,'sawtooth',0.16); beep(150,0.15,0.26,'sawtooth',0.16); }
+  }catch(e){} }
+  function fanfare(){ if(!SND) return; try{ [523,659,784,1047].forEach((f,k)=>beep(f,k*0.13,0.22,'triangle',0.15)); }catch(e){} }
+  function updMute(){ const el=$('muteIcon'); if(el){ el.setAttribute('data-lucide', SND?'volume-2':'volume-x'); drawIcons(); } if($('muteBtn')) $('muteBtn').title=SND?'Silenciar sonidos':'Activar sonidos'; }
+  function toggleMute(){ SND=!SND; try{ localStorage.setItem('adn_trivia_snd', SND?'1':'0'); }catch(e){} updMute(); if(SND) beep(880,0,0.1,'sine',0.15); }
+
   let pool=[], idx=0, score=0, answered=false;
 
   function shuffle(a){ return a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(p=>p[1]); }
@@ -241,6 +261,7 @@
     const fb=$('feedback');
     fb.classList.remove('hidden');
     const good=i===q.a;
+    sfx(good);
     fb.style.background = good?'rgba(122,191,154,.12)':'rgba(224,90,63,.10)';
     fb.style.border = good?'1px solid rgba(122,191,154,.3)':'1px solid rgba(224,90,63,.3)';
     fb.innerHTML=`<b style="color:${good?'#a7d18a':'#e0a35a'}">${good?'¡Correcto! ✅':'Casi… ❌'}</b> ${q.e}`;
@@ -273,6 +294,7 @@
     $('rScore').textContent=`${score} / ${total}`;
     $('rMsg').textContent=msg + (score>prev&&prev>0?' 🎉 ¡Nuevo récord!':'');
     $('result').classList.remove('hidden');
+    if(pct>=0.6) fanfare();
     showBest();
     drawIcons();
   }
@@ -281,8 +303,9 @@
   $('btnRetry').addEventListener('click',start);
   $('btnNext').addEventListener('click',next);
   $('opts').addEventListener('click',e=>{ const b=e.target.closest('.opt'); if(b) answer(parseInt(b.dataset.i,10)); });
+  $('muteBtn').addEventListener('click', toggleMute);
 
-  showBest(); drawIcons();
+  showBest(); updMute(); drawIcons();
 </script>
 </body>
 </html>
