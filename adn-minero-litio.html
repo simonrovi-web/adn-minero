@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Litio</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    :root{ --copper:#cf9b6f; --litio:#5fd1bd; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', ui-sans-serif, system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(95,209,189,0.14), transparent 60%),
+      radial-gradient(1000px 600px at 100% 0%, rgba(181,115,79,0.10), transparent 55%),
+      #141110; }
+    .wrap{ max-width:1040px; margin:0 auto; padding:16px 16px 40px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); backdrop-filter:blur(14px) saturate(130%); -webkit-backdrop-filter:blur(14px) saturate(130%); border:1px solid rgba(196,168,148,0.14); }
+    .metric-icon{ filter:drop-shadow(0 0 8px currentColor); }
+    .chip{ font-size:12px; font-weight:600; padding:4px 11px; border-radius:999px; display:inline-flex; align-items:center; gap:6px; }
+    a.lnk{ color:#e8c9a6; }
+    #mapa{ height:300px; border-radius:14px; overflow:hidden; }
+    .leaflet-popup-content-wrapper,.leaflet-popup-tip{ background:#241d18; color:#f4ece5; border:1px solid rgba(196,168,148,.22); }
+    .leaflet-popup-content{ margin:12px 14px; }
+    .leaflet-bar a{ background:#2b2520; color:#e6d4c4; border-color:rgba(196,168,148,.2); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- HEADER -->
+    <header class="glass rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(95,209,189,.14);border:1px solid rgba(95,209,189,.3)"><i data-lucide="battery-charging" class="metric-icon" style="width:26px;height:26px;color:var(--litio)"></i></div>
+        <div class="min-w-0">
+          <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8fd6c8;font-weight:700">El oro blanco · ADN Minero</p>
+          <p style="margin:0;font-size:11px;color:#9c8f83">Todo sobre el litio chileno en un solo lugar</p>
+        </div>
+      </div>
+      <span class="fi fi-cl self-start sm:self-auto" style="border-radius:4px;width:34px;height:24px"></span>
+    </header>
+
+    <!-- TÍTULO -->
+    <div class="mt-5">
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight flex items-center gap-3">Litio de Chile <span style="font-size:1.6rem">🔋</span></h1>
+      <p class="text-stone-400 text-sm mt-2 max-w-2xl">El mineral que mueve al mundo hacia la energía limpia. Chile tiene las mayores reservas del planeta y es uno de sus principales productores. Te lo explicamos simple.</p>
+    </div>
+
+    <!-- CIFRAS CLAVE -->
+    <div id="cifras" class="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-5"></div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-5">
+
+      <!-- ¿QUÉ ES? -->
+      <section class="glass rounded-2xl p-5">
+        <h2 class="text-sm font-bold text-stone-300 flex items-center gap-2 mb-3"><i data-lucide="help-circle" class="w-4 h-4" style="color:var(--litio)"></i> ¿Qué es el litio?</h2>
+        <p class="text-sm text-stone-300 leading-relaxed">Es el <b>metal más liviano</b> que existe. En Chile no se saca de una roca, sino de la <b>salmuera</b> bajo los salares del desierto: se bombea, se deja evaporar al sol en grandes piscinas y queda el <b>carbonato de litio</b>, un polvo blanco.</p>
+        <p class="text-sm text-stone-300 leading-relaxed mt-3">Ese polvo es la materia prima de las <b>baterías recargables</b> de celulares, notebooks, autos eléctricos y sistemas que guardan energía solar. Sin litio, no hay transición energética.</p>
+      </section>
+
+      <!-- USOS -->
+      <section class="glass rounded-2xl p-5">
+        <h2 class="text-sm font-bold text-stone-300 flex items-center gap-2 mb-3"><i data-lucide="zap" class="w-4 h-4" style="color:var(--litio)"></i> ¿Para qué se usa?</h2>
+        <div id="usos" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+      </section>
+
+    </div>
+
+    <!-- MAPA DE SALARES -->
+    <section class="glass rounded-2xl p-5 mt-4">
+      <h2 class="text-sm font-bold text-stone-300 flex items-center gap-2 mb-3"><i data-lucide="map-pin" class="w-4 h-4" style="color:var(--litio)"></i> Salares del litio en Chile</h2>
+      <div id="mapa"></div>
+      <div id="salares" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-3"></div>
+    </section>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
+
+      <!-- EMPRESAS -->
+      <section class="glass rounded-2xl p-5">
+        <h2 class="text-sm font-bold text-stone-300 flex items-center gap-2 mb-3"><i data-lucide="building-2" class="w-4 h-4" style="color:var(--litio)"></i> ¿Quiénes lo producen?</h2>
+        <div id="empresas" class="flex flex-col gap-2.5"></div>
+      </section>
+
+      <!-- ESTRATEGIA NACIONAL -->
+      <section class="glass rounded-2xl p-5">
+        <h2 class="text-sm font-bold text-stone-300 flex items-center gap-2 mb-3"><i data-lucide="landmark" class="w-4 h-4" style="color:var(--litio)"></i> Estrategia Nacional del Litio</h2>
+        <p class="text-sm text-stone-300 leading-relaxed">Anunciada en <b>2023</b>, busca que el Estado tenga un rol central en el negocio del litio, considerado <b>recurso estratégico</b> de Chile.</p>
+        <div class="flex flex-col gap-2 mt-3">
+          <div class="flex items-start gap-2.5 text-sm text-stone-300"><i data-lucide="handshake" class="w-4 h-4 shrink-0 mt-0.5" style="color:var(--litio)"></i><span>Alianza público-privada <b>Codelco–SQM</b> para el Salar de Atacama.</span></div>
+          <div class="flex items-start gap-2.5 text-sm text-stone-300"><i data-lucide="factory" class="w-4 h-4 shrink-0 mt-0.5" style="color:var(--litio)"></i><span><b>Codelco</b> y <b>Enami</b> lideran nuevos salares (Maricunga, Pedernales).</span></div>
+          <div class="flex items-start gap-2.5 text-sm text-stone-300"><i data-lucide="leaf" class="w-4 h-4 shrink-0 mt-0.5" style="color:var(--litio)"></i><span>Impulso a tecnologías de <b>extracción directa</b>, que usan menos agua.</span></div>
+          <div class="flex items-start gap-2.5 text-sm text-stone-300"><i data-lucide="users" class="w-4 h-4 shrink-0 mt-0.5" style="color:var(--litio)"></i><span>Participación de <b>comunidades</b> y cuidado de los salares.</span></div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- CONTEXTO DE PRECIO -->
+    <section class="glass rounded-2xl p-5 mt-4">
+      <h2 class="text-sm font-bold text-stone-300 flex items-center gap-2 mb-3"><i data-lucide="trending-up" class="w-4 h-4" style="color:var(--litio)"></i> El precio del litio, en simple</h2>
+      <p class="text-sm text-stone-300 leading-relaxed">El litio vivió un <b>boom histórico en 2021–2022</b>, cuando la demanda de autos eléctricos disparó su precio a niveles récord. Luego, entre <b>2023 y 2024</b>, los precios <b>cayeron con fuerza</b> al aumentar la oferta mundial. Es un mercado <b>muy volátil</b>: se mueve con la velocidad de la electromovilidad.</p>
+      <p class="text-[11px] text-stone-500 mt-3">ℹ️ El litio no se transa como el cobre en una bolsa pública única; su precio es de referencia y varía según contratos. Por eso mostramos el contexto y no un valor "en vivo".</p>
+    </section>
+
+    <!-- NOTICIAS -->
+    <section class="glass rounded-2xl p-5 mt-4">
+      <h2 class="text-sm font-bold text-stone-300 flex items-center gap-2 mb-3"><i data-lucide="newspaper" class="w-4 h-4" style="color:var(--litio)"></i> Noticias del litio</h2>
+      <div id="noticias" class="flex flex-col gap-2"></div>
+    </section>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Contenido de divulgación con datos de fuentes públicas. Cifras referenciales. ADN Minero es un servicio independiente · <a href="adn-minero-mapa.html" class="lnk">Mapa Minero</a> · <a href="index.html" class="lnk">Inicio</a></p>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const LIT='#5fd1bd';
+
+  // CIFRAS CLAVE
+  const CIFRAS=[
+    {ic:'trophy', val:'N.º 1', lab:'Reservas del mundo', col:'#f5c542', sub:'~1/3 del total'},
+    {ic:'factory', val:'N.º 2', lab:'Productor mundial', col:LIT, sub:'tras Australia'},
+    {ic:'sun', val:'Salares', lab:'Extracción solar', col:'#e0a35a', sub:'bajo el desierto'},
+    {ic:'triangle', val:'Triángulo', lab:'Chile·Argentina·Bolivia', col:'#7fbfd1', sub:'del litio'}
+  ];
+  $('cifras').innerHTML=CIFRAS.map(c=>`
+    <div class="glass rounded-2xl p-4 text-center">
+      <i data-lucide="${c.ic}" class="w-6 h-6 mx-auto metric-icon" style="color:${c.col}"></i>
+      <p class="text-2xl font-extrabold mt-2" style="color:${c.col}">${c.val}</p>
+      <p class="text-[12px] text-stone-300 font-semibold mt-0.5">${c.lab}</p>
+      <p class="text-[11px] text-stone-500">${c.sub}</p>
+    </div>`).join('');
+
+  // USOS
+  const USOS=[
+    {ic:'car', t:'Autos eléctricos', d:'la batería de un EV lleva litio'},
+    {ic:'smartphone', t:'Celulares y notebooks', d:'baterías recargables'},
+    {ic:'battery-full', t:'Almacenar energía', d:'guardar la solar y eólica'},
+    {ic:'flask-conical', t:'Vidrios y cerámicas', d:'los hace más resistentes'},
+    {ic:'cog', t:'Grasas lubricantes', d:'industria y maquinaria'},
+    {ic:'pill', t:'Medicina', d:'fármacos para la salud mental'}
+  ];
+  $('usos').innerHTML=USOS.map(u=>`
+    <div class="flex items-start gap-2.5 rounded-xl px-3 py-2" style="background:${LIT}0f;border:1px solid ${LIT}24">
+      <i data-lucide="${u.ic}" class="w-5 h-5 shrink-0 mt-0.5" style="color:${LIT}"></i>
+      <div><p class="text-sm font-semibold leading-tight">${u.t}</p><p class="text-[11px] text-stone-400">${u.d}</p></div>
+    </div>`).join('');
+
+  // SALARES
+  const SALARES=[
+    {n:'Salar de Atacama', r:'Antofagasta', lat:-23.50, lon:-68.20, e:'SQM · Albemarle', estado:'En producción', d:'El corazón del litio chileno. Uno de los más ricos y baratos de extraer del mundo.'},
+    {n:'Salar de Maricunga', r:'Atacama', lat:-26.98, lon:-69.05, e:'Codelco · Enami', estado:'En desarrollo', d:'El segundo salar en importancia, clave para el futuro de la producción nacional.'},
+    {n:'Salar de Pedernales', r:'Atacama', lat:-25.95, lon:-69.24, e:'Codelco', estado:'Proyecto', d:'Proyecto liderado por Codelco dentro de la Estrategia Nacional del Litio.'},
+    {n:'Salar de Aguas Calientes', r:'Antofagasta', lat:-23.15, lon:-67.40, e:'En estudio', estado:'Exploración', d:'Uno de los salares en evaluación para futura actividad.'}
+  ];
+  const EST_COL={'En producción':'#a7d18a','En desarrollo':'#e0a35a','Proyecto':'#7fbfd1','Exploración':'#c7a0e0'};
+  const gmaps=(la,lo)=>`https://www.google.com/maps/search/?api=1&query=${la},${lo}`;
+
+  $('salares').innerHTML=SALARES.map(s=>{
+    const c=EST_COL[s.estado]||LIT;
+    return `<div class="rounded-xl p-3" style="background:rgba(255,255,255,.02);border:1px solid rgba(196,168,148,.12)">
+      <div class="flex items-center justify-between gap-2">
+        <p class="text-sm font-bold">${s.n}</p>
+        <span class="chip" style="background:${c}18;border:1px solid ${c}44;color:${c}">${s.estado}</span>
+      </div>
+      <p class="text-[11px] text-stone-400 mt-1">Región de ${s.r} · ${s.e}</p>
+      <p class="text-[12px] text-stone-300 mt-1.5 leading-snug">${s.d}</p>
+      <a href="${gmaps(s.lat,s.lon)}" target="_blank" rel="noopener" class="chip mt-2" style="background:#cf9b6f18;border:1px solid #cf9b6f44;color:#e8c9a6"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> Google Maps</a>
+    </div>`;
+  }).join('');
+
+  // MAPA
+  const map=L.map('mapa',{zoomControl:true,attributionControl:false}).setView([-24.6,-68.6],6);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{subdomains:'abcd',maxZoom:19}).addTo(map);
+  SALARES.forEach(s=>{
+    const c=EST_COL[s.estado]||LIT;
+    L.marker([s.lat,s.lon],{icon:L.divIcon({className:'',html:`<span style="display:block;width:16px;height:16px;border-radius:50%;background:${LIT};border:2px solid #fff;box-shadow:0 0 8px ${LIT}"></span>`,iconSize:[16,16],iconAnchor:[8,8]})})
+      .addTo(map)
+      .bindPopup(`<b>${s.n}</b><br><span style="color:${c};font-weight:600">${s.estado}</span> · ${s.e}<br><a href="${gmaps(s.lat,s.lon)}" target="_blank" rel="noopener" style="color:#e8c9a6">Ver en Google Maps ↗</a>`);
+  });
+  setTimeout(()=>map.invalidateSize(),200);
+
+  // EMPRESAS
+  const EMPRESAS=[
+    {n:'SQM', d:'Empresa chilena, el mayor productor de litio del país (Salar de Atacama).', url:'https://www.sqmlitio.com/'},
+    {n:'Albemarle', d:'Compañía estadounidense que también opera en el Salar de Atacama.', url:'https://www.albemarle.com/es'},
+    {n:'Codelco', d:'La estatal del cobre lidera hoy la nueva era del litio chileno.', url:'https://www.codelco.com/'},
+    {n:'Enami', d:'Empresa Nacional de Minería, impulsa proyectos como Salar de Maricunga.', url:'https://www.enami.cl/'}
+  ];
+  $('empresas').innerHTML=EMPRESAS.map(e=>`
+    <a href="${e.url}" target="_blank" rel="noopener" class="rounded-xl px-3 py-2.5 block hover:bg-white/5 transition" style="border:1px solid rgba(196,168,148,.12)">
+      <div class="flex items-center justify-between">
+        <p class="text-sm font-bold" style="color:${LIT}">${e.n}</p>
+        <i data-lucide="external-link" class="w-3.5 h-3.5 text-stone-500"></i>
+      </div>
+      <p class="text-[12px] text-stone-400 mt-0.5 leading-snug">${e.d}</p>
+    </a>`).join('');
+
+  // NOTICIAS
+  (async()=>{
+    $('noticias').innerHTML='<p class="text-stone-500 text-sm">Cargando noticias…</p>';
+    try{
+      const rss='https://news.google.com/rss/search?q='+encodeURIComponent('litio Chile')+'&hl=es-419&gl=CL&ceid=CL:es-419';
+      const j=await (await fetch('https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(rss))).json();
+      const items=(j.items||[]).slice(0,6);
+      if(!items.length){ $('noticias').innerHTML='<p class="text-stone-400 text-sm">Sin noticias recientes.</p>'; return; }
+      $('noticias').innerHTML=items.map(it=>{
+        const t=(it.title||'').split(' - '); const fuente=t.length>1?t.pop():'';
+        return `<a href="${it.link}" target="_blank" rel="noopener" class="rounded-xl px-3 py-2 block hover:bg-white/5 transition" style="border:1px solid rgba(196,168,148,.12)">
+          <p class="text-sm font-semibold leading-snug">${t.join(' - ')}</p>
+          <p class="text-[11px] text-stone-500 mt-0.5 flex items-center gap-1"><i data-lucide="external-link" class="w-3 h-3"></i> ${fuente||'Google Noticias'}</p></a>`;
+      }).join('');
+      drawIcons();
+    }catch(e){ $('noticias').innerHTML='<p class="text-stone-500 text-sm">No se pudieron cargar noticias.</p>'; }
+  })();
+
+  drawIcons();
+</script>
+</body>
+</html>
