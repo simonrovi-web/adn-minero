@@ -25,6 +25,29 @@
     .tl::before{ content:''; position:absolute; left:19px; top:6px; bottom:6px; width:2px; background:linear-gradient(#cf9b6f,#7a5a44 80%,transparent); }
     .dot{ position:absolute; left:10px; top:4px; width:20px; height:20px; border-radius:50%; display:grid; place-items:center; background:#241d18; border:2px solid var(--copper); }
     .dot i{ width:11px; height:11px; }
+    .hcard{ cursor:pointer; transition:transform .15s ease, border-color .25s ease, box-shadow .25s ease; }
+    .hcard:hover{ transform:translateY(-2px); border-color:rgba(207,155,111,.5); box-shadow:0 8px 26px rgba(0,0,0,.4); }
+    .hcard:active{ transform:scale(.99); }
+
+    /* ===== overlay de detalle ===== */
+    #ov{ position:fixed; inset:0; z-index:1000; display:none; overflow-y:auto; -webkit-overflow-scrolling:touch;
+      background:rgba(10,8,7,.72); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); }
+    #ov.on{ display:block; animation:ovin .25s ease both; }
+    @keyframes ovin{ from{opacity:0} to{opacity:1} }
+    .sheet{ max-width:720px; margin:0 auto; min-height:100%; padding:16px 16px 48px; }
+    .panel{ animation:up .3s cubic-bezier(.2,.7,.3,1) both; }
+    @keyframes up{ from{opacity:0; transform:translateY(18px)} to{opacity:1; transform:none} }
+    .closeb{ position:sticky; top:8px; margin-left:auto; z-index:5; display:grid; place-items:center; width:42px;height:42px;border-radius:999px; cursor:pointer;
+      background:linear-gradient(160deg,rgba(48,41,35,.95),rgba(28,23,19,.9)); border:1px solid rgba(196,168,148,.25); color:#e8c9a6; box-shadow:0 6px 18px rgba(0,0,0,.5); }
+    .closeb:active{ transform:scale(.92); }
+    .chip{ font-size:12px; font-weight:600; padding:4px 10px; border-radius:8px; }
+    .bar{ transition:height 1s cubic-bezier(.2,.7,.3,1), y 1s cubic-bezier(.2,.7,.3,1); }
+    input[type=range]{ -webkit-appearance:none; appearance:none; width:100%; height:8px; border-radius:999px; background:linear-gradient(90deg,#cf9b6f,#7a5a44); outline:none; }
+    input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:26px;height:26px;border-radius:50%; background:linear-gradient(135deg,#f0d7b6,#cf9b6f); border:2px solid #2a1c12; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.5); }
+    input[type=range]::-moz-range-thumb{ width:26px;height:26px;border-radius:50%; background:#e0b487; border:2px solid #2a1c12; cursor:pointer; }
+    .mat{ cursor:pointer; transition:transform .12s, border-color .2s; }
+    .mat:hover{ transform:translateY(-2px); }
+    .mat.on{ border-color:rgba(207,155,111,.6)!important; background:rgba(207,155,111,.12)!important; }
   </style>
 </head>
 <body>
@@ -33,7 +56,7 @@
     <header class="text-center mt-2">
       <div class="inline-grid place-items-center h-16 w-16 rounded-2xl mx-auto" style="background:rgba(201,168,136,.15);border:1px solid rgba(201,168,136,.3)"><i data-lucide="scroll-text" class="metric-icon" style="width:32px;height:32px;color:#c9a888"></i></div>
       <h1 class="text-2xl sm:text-3xl font-extrabold mt-4 flex items-center justify-center gap-2">Historia de la Minería <span class="fi fi-cl" style="border-radius:4px"></span></h1>
-      <p class="text-stone-400 text-sm mt-2 max-w-lg mx-auto">Del salitre al litio: los hitos que hicieron de Chile un país minero. Una historia de trabajo, lucha y orgullo.</p>
+      <p class="text-stone-400 text-sm mt-2 max-w-lg mx-auto">Del salitre al litio: los hitos que hicieron de Chile un país minero. <b class="text-stone-300">Toca cualquier hito</b> para ver más, con datos y gráficas.</p>
     </header>
 
     <div id="tl" class="tl mt-8"></div>
@@ -41,36 +64,192 @@
     <p class="text-center text-[11px] text-stone-500 mt-8 leading-relaxed">Reseña histórica de divulgación con fechas de referencia. ADN Minero es un servicio independiente · <a href="adn-minero-glosario.html" class="lnk">Glosario</a> · <a href="index.html" class="lnk">Inicio</a></p>
   </div>
 
+  <!-- OVERLAY DE DETALLE -->
+  <div id="ov"><div class="sheet"><button class="closeb" id="closeb" aria-label="Cerrar"><i data-lucide="x" style="width:22px;height:22px"></i></button><div id="panel" class="panel"></div></div></div>
+
 <script>
   const $=id=>document.getElementById(id);
   const drawIcons=()=>window.lucide&&lucide.createIcons();
 
   const HITOS=[
-    {y:'Pre-1500', t:'Minería originaria', ic:'gem', d:'Mucho antes de la Colonia, pueblos como los atacameños y diaguitas ya trabajaban el cobre, el oro y la turquesa para herramientas y adornos.'},
-    {y:'Siglo XIX', t:'La era del salitre', ic:'sun', d:'El "oro blanco" del desierto. Las oficinas salitreras del norte hicieron rica a la economía chilena y atrajeron a miles de trabajadores (pampinos).'},
-    {y:'1879', t:'Guerra del Pacífico', ic:'flag', d:'El conflicto por las riquezas del salitre. Chile incorpora Antofagasta y Tarapacá, hoy corazón de su minería.'},
-    {y:'1904', t:'Nace el cobre moderno', ic:'pickaxe', d:'Comienza la gran minería del cobre. Pronto Chuquicamata se convertiría en el rajo abierto más grande del mundo.'},
-    {y:'1915', t:'Chuquicamata a gran escala', ic:'mountain', d:'Capitales extranjeros inician la explotación industrial de "Chuqui", símbolo del cobre chileno por más de un siglo.'},
-    {y:'1925', t:'Cae el salitre', ic:'trending-down', d:'La invención del salitre sintético en el mundo hunde a la industria chilena. El cobre toma la posta como principal riqueza.'},
-    {y:'1966', t:'Chilenización del cobre', ic:'handshake', d:'El Estado, bajo el gobierno de Frei Montalva, compra parte de las grandes mineras extranjeras: primer paso hacia el control nacional.'},
-    {y:'1971', t:'Nacionalización del cobre', ic:'landmark', d:'El 11 de julio, con apoyo unánime del Congreso, Chile nacionaliza el cobre. Se lo conoce como el "sueldo de Chile".'},
-    {y:'1976', t:'Nace Codelco', ic:'building-2', d:'Se crea la Corporación Nacional del Cobre para administrar las minas nacionalizadas. Hoy es la mayor productora de cobre del mundo.'},
-    {y:'1990', t:'Boom de la inversión', ic:'trending-up', d:'Con nuevas leyes, llega inversión privada masiva. Escondida, La Escondida y otras faenas disparan la producción de Chile.'},
-    {y:'2010', t:'El rescate de los 33', ic:'heart-handshake', d:'Tras 69 días atrapados en la mina San José (Atacama), los 33 mineros son rescatados con vida. El mundo entero lo siguió en vivo.'},
-    {y:'2023', t:'Estrategia del Litio', ic:'battery-charging', d:'Chile lanza su Estrategia Nacional del Litio, apostando por el mineral clave de la transición energética. Empieza una nueva era.'}
+    {y:'Pre-1500', t:'Minería originaria', ic:'gem', c:'#a3e0d0', d:'Los pueblos atacameños y diaguitas ya trabajaban el cobre, el oro y la turquesa mucho antes de la Colonia.',
+      long:'En el norte de Chile, culturas como la <b>atacameña</b> (San Pedro de Atacama), la <b>diaguita</b> y la cultura <b>El Molle</b> extraían y trabajaban metales miles de años antes de la llegada de los españoles. Usaban cobre nativo, oro y minerales como la turquesa y el lapislázuli para herramientas, cuchillos, adornos y objetos ceremoniales. Se conservan vestigios de minas prehispánicas, como la <b>mina San Bartolo</b>, una de las más antiguas de América.',
+      datos:[{k:'Época',v:'~1500 a.C. en adelante'},{k:'Pueblos',v:'Atacameños · diaguitas · El Molle'},{k:'Uso',v:'Adornos, herramientas y ritos'}],
+      inter:'materiales'},
+
+    {y:'Siglo XIX', t:'La era del salitre', ic:'sun', c:'#e0c07a', d:'El "oro blanco" del desierto hizo rica la economía chilena y atrajo a miles de pampinos.',
+      long:'Durante el siglo XIX y comienzos del XX, el <b>salitre</b> (nitrato) fue la principal riqueza de Chile. Se extraía en las <b>oficinas salitreras</b> de la pampa de Tarapacá y Antofagasta, donde vivían y trabajaban miles de obreros llamados <b>pampinos</b>. El salitre se usaba como fertilizante y para explosivos, y llegó a aportar la mayor parte de los ingresos del Estado.',
+      datos:[{k:'Producto',v:'Salitre (nitrato)'},{k:'Trabajadores',v:'Pampinos'},{k:'Uso',v:'Fertilizante y explosivos'}],
+      chart:{title:'Peso del salitre en las exportaciones de Chile', unit:'% aprox.', bars:[{l:'1880',v:55},{l:'1900',v:70},{l:'1910',v:72},{l:'1920',v:50},{l:'1930',v:18}]}},
+
+    {y:'1879', t:'Guerra del Pacífico', ic:'flag', c:'#e0715a', d:'El conflicto por el salitre. Chile incorpora Antofagasta y Tarapacá, hoy corazón de su minería.',
+      long:'Entre <b>1879 y 1883</b>, Chile se enfrentó a Perú y Bolivia por el control de los ricos territorios salitreros del norte. Como resultado, Chile incorporó las regiones de <b>Antofagasta y Tarapacá</b>, que hoy concentran gran parte de la minería de cobre y litio del país.',
+      datos:[{k:'Años',v:'1879–1883'},{k:'Actores',v:'Chile · Perú · Bolivia'},{k:'Motivo',v:'El salitre'},{k:'Resultado',v:'Antofagasta y Tarapacá'}]},
+
+    {y:'1904', t:'Nace el cobre moderno', ic:'pickaxe', c:'#cf9b6f', d:'Empieza la gran minería industrial del cobre en Chile.',
+      long:'A comienzos del siglo XX empieza la minería <b>industrial</b> del cobre. En 1904–1905, el estadounidense <b>William Braden</b> inicia la explotación de <b>El Teniente</b>, y poco después se desarrollan Chuquicamata y Potrerillos. El cobre pasa de una actividad artesanal a una gran industria mecanizada.',
+      datos:[{k:'Pionero',v:'William Braden'},{k:'Faena',v:'El Teniente'},{k:'Cambio',v:'De artesanal a industrial'}]},
+
+    {y:'1915', t:'Chuquicamata a gran escala', ic:'mountain', c:'#c9a888', d:'"Chuqui" inicia su explotación industrial y será el rajo abierto más grande del mundo.',
+      long:'En <b>1915</b>, capitales estadounidenses (grupo Guggenheim) inician la explotación industrial de <b>Chuquicamata</b>. "Chuqui" se convertiría en el <b>rajo abierto más grande del mundo</b> y en un símbolo del cobre chileno por más de un siglo. Junto a la mina creció un campamento con miles de familias.',
+      datos:[{k:'Inicio industrial',v:'1915'},{k:'Tipo',v:'Rajo abierto'},{k:'Récord',v:'El mayor rajo del mundo'}]},
+
+    {y:'1925', t:'Cae el salitre', ic:'trending-down', c:'#b98a6a', d:'El salitre sintético hunde a la industria chilena. El cobre toma la posta.',
+      long:'Durante la Primera Guerra Mundial, Alemania desarrolló el <b>salitre sintético</b> (proceso Haber-Bosch). Al terminar la guerra, el nitrato artificial, más barato, hundió a la industria salitrera chilena. Muchas oficinas cerraron y quedaron como <b>pueblos fantasma</b>. El cobre tomó el relevo como principal riqueza del país.',
+      datos:[{k:'Causa',v:'Salitre sintético'},{k:'Consecuencia',v:'Cierre de oficinas'},{k:'Relevo',v:'El cobre'}]},
+
+    {y:'1966', t:'Chilenización del cobre', ic:'handshake', c:'#a7d18a', d:'El Estado, con Frei Montalva, compra parte de las mineras extranjeras.',
+      long:'El gobierno de <b>Eduardo Frei Montalva</b> impulsó la "chilenización": el Estado compró el <b>51%</b> de las grandes mineras del cobre en manos extranjeras (como El Teniente). Fue el primer gran paso hacia el control nacional del recurso, que culminaría con la nacionalización de 1971.',
+      datos:[{k:'Gobierno',v:'Frei Montalva'},{k:'Medida',v:'Estado compra 51%'},{k:'Año',v:'1966'}]},
+
+    {y:'1971', t:'Nacionalización del cobre', ic:'landmark', c:'#e8c9a6', d:'El 11 de julio, el Congreso aprueba por unanimidad nacionalizar el cobre.',
+      long:'El <b>11 de julio de 1971</b>, bajo el gobierno de <b>Salvador Allende</b>, el Congreso Nacional aprobó <b>por unanimidad</b> la nacionalización del cobre. El Estado tomó el control total de la Gran Minería del Cobre. Allende llamó al cobre <b>"el sueldo de Chile"</b>. Desde 2016, cada 11 de julio se conmemora el Día de la Dignidad Nacional.',
+      datos:[{k:'Fecha',v:'11 de julio de 1971'},{k:'Presidente',v:'Salvador Allende'},{k:'Votación',v:'Unánime en el Congreso'},{k:'Apodo',v:'"El sueldo de Chile"'}]},
+
+    {y:'1976', t:'Nace Codelco', ic:'building-2', c:'#cf9b6f', d:'Se crea la Corporación Nacional del Cobre, hoy la mayor productora del mundo.',
+      long:'En <b>1976</b> se creó <b>Codelco</b> (Corporación Nacional del Cobre) para administrar las minas nacionalizadas. Hoy es la <b>mayor productora de cobre del mundo</b> y una de las principales fuentes de ingresos del Estado, con divisiones históricas como El Teniente, Chuquicamata, Andina, Salvador, Ministro Hales y Radomiro Tomic.',
+      datos:[{k:'Creación',v:'1976'},{k:'Ranking',v:'N°1 mundial en cobre'},{k:'Dueño',v:'El Estado de Chile'}]},
+
+    {y:'1990', t:'Boom de la inversión', ic:'trending-up', c:'#86b98f', d:'Llega inversión privada masiva. Escondida y otras faenas disparan la producción.',
+      long:'Con el retorno a la democracia y un marco legal estable, llegó una ola de <b>inversión extranjera</b>. En 1990 entra en operación <b>Escondida</b> (hoy la mayor mina de cobre del mundo), y le siguen Collahuasi, Los Pelambres, Candelaria y muchas otras. La producción de cobre de Chile se multiplicó varias veces.',
+      datos:[{k:'Hito',v:'Escondida (1990)'},{k:'Efecto',v:'Producción se multiplica'},{k:'Origen',v:'Inversión privada'}],
+      chart:{title:'Producción de cobre de Chile', unit:'millones de toneladas (aprox.)', bars:[{l:'1990',v:1.6},{l:'2000',v:4.6},{l:'2010',v:5.4},{l:'2020',v:5.7}]}},
+
+    {y:'2010', t:'El rescate de los 33', ic:'heart-handshake', c:'#7fbfd1', d:'Tras 69 días atrapados en la mina San José, los 33 son rescatados con vida.',
+      long:'El <b>5 de agosto de 2010</b>, un derrumbe dejó atrapados a <b>33 mineros</b> a unos 700 metros de profundidad en la mina San José, cerca de Copiapó. Tras 17 días sin noticias apareció la célebre nota: <i>"Estamos bien en el refugio los 33"</i>. El <b>13 de octubre</b>, después de <b>69 días</b>, fueron rescatados uno a uno en la cápsula <b>Fénix</b>. El mundo entero lo siguió en vivo.',
+      datos:[{k:'Fechas',v:'5 ago – 13 oct 2010'},{k:'Profundidad',v:'~700 metros'},{k:'Días atrapados',v:'69'},{k:'Cápsula',v:'Fénix'}],
+      inter:'dias33'},
+
+    {y:'2023', t:'Estrategia del Litio', ic:'battery-charging', c:'#5fd1bd', d:'Chile apuesta por el litio, mineral clave de la transición energética.',
+      long:'En <b>2023</b>, Chile presentó su <b>Estrategia Nacional del Litio</b>, buscando que el Estado tenga un rol central en este mineral estratégico para las baterías y la transición energética. Contempla una alianza público-privada <b>Codelco–SQM</b> en el Salar de Atacama y nuevos proyectos liderados por Codelco y Enami.',
+      datos:[{k:'Año',v:'2023'},{k:'Recurso',v:'Litio (estratégico)'},{k:'Alianza',v:'Codelco–SQM'}],
+      chart:{title:'Reservas de litio en el mundo', unit:'% aprox. del total', bars:[{l:'Chile',v:36},{l:'Australia',v:22},{l:'Argentina',v:10},{l:'China',v:8},{l:'Otros',v:24}]}}
   ];
 
-  $('tl').innerHTML=HITOS.map(h=>`
+  // ── línea de tiempo ──
+  $('tl').innerHTML=HITOS.map((h,i)=>`
     <div class="relative pb-6">
-      <div class="dot"><i data-lucide="${h.ic}" style="color:var(--copper)"></i></div>
-      <div class="glass rounded-2xl p-4">
+      <div class="dot" style="border-color:${h.c}"><i data-lucide="${h.ic}" style="color:${h.c}"></i></div>
+      <div class="glass hcard rounded-2xl p-4" data-i="${i}" role="button" tabindex="0">
         <div class="flex items-center gap-2 flex-wrap">
-          <span class="text-[11px] font-bold px-2.5 py-1 rounded-full" style="background:rgba(207,155,111,.16);color:#e8c9a6;border:1px solid rgba(207,155,111,.35)">${h.y}</span>
+          <span class="text-[11px] font-bold px-2.5 py-1 rounded-full" style="background:${h.c}22;color:${h.c};border:1px solid ${h.c}55">${h.y}</span>
           <h3 class="text-base font-bold">${h.t}</h3>
         </div>
         <p class="text-sm text-stone-300 leading-relaxed mt-2">${h.d}</p>
+        <p class="text-[12px] font-semibold mt-2 flex items-center gap-1" style="color:${h.c}">Ver más <i data-lucide="arrow-right" style="width:14px;height:14px"></i></p>
       </div>
     </div>`).join('');
+
+  // ── gráfica de barras animada ──
+  function chartSVG(ch, col){
+    const max=Math.max(...ch.bars.map(b=>b.v))*1.12;
+    const W=Math.max(300, ch.bars.length*84), H=200, pad=30, bw=44, gap=(W-pad*2-bw*ch.bars.length)/(ch.bars.length-1||1);
+    let bars='', labels='';
+    ch.bars.forEach((b,i)=>{
+      const x=pad+i*(bw+gap), full=(H-pad-24)*(b.v/max), y=H-24-full;
+      bars+=`<rect class="bar" x="${x}" y="${H-24}" width="${bw}" height="0" rx="6" fill="${col}" data-y="${y.toFixed(1)}" data-h="${full.toFixed(1)}"></rect>`;
+      bars+=`<text x="${x+bw/2}" y="${y-6}" text-anchor="middle" fill="#f4ece5" font-size="14" font-weight="800" opacity="0" class="val" data-o="1">${b.v}</text>`;
+      labels+=`<text x="${x+bw/2}" y="${H-6}" text-anchor="middle" fill="#a99e92" font-size="12">${b.l}</text>`;
+    });
+    return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:${W}px;display:block;margin:0 auto">${bars}${labels}</svg>`;
+  }
+  function animBars(){
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      document.querySelectorAll('#panel rect.bar').forEach(r=>{ r.setAttribute('y', r.dataset.y); r.setAttribute('height', r.dataset.h); });
+      setTimeout(()=>document.querySelectorAll('#panel text.val').forEach(t=>{ t.style.transition='opacity .5s ease'; t.style.opacity=t.dataset.o; }), 650);
+    }));
+  }
+
+  // ── interactivo: materiales (minería originaria) ──
+  const MAT={ Cobre:{ic:'coins',c:'#e0955f',u:'Se martillaba en frío para hacer cuchillos, anzuelos y adornos.'},
+              Oro:{ic:'gem',c:'#f5c542',u:'Reservado a objetos ceremoniales y símbolos de poder.'},
+              Turquesa:{ic:'sparkles',c:'#5fd1bd',u:'Piedra azul-verde usada en collares y mosaicos.'},
+              Lapislázuli:{ic:'diamond',c:'#5b8def',u:'Piedra azul intensa, muy valorada; Chile es gran productor.'} };
+  function interMateriales(){
+    const keys=Object.keys(MAT);
+    return `<div class="glass rounded-2xl p-4 mt-4">
+      <p class="text-sm font-bold text-stone-200 mb-1 flex items-center gap-2"><i data-lucide="hand-metal" class="w-4 h-4" style="color:#a3e0d0"></i> ¿Qué trabajaban? <span class="text-[11px] font-normal text-stone-500">toca cada uno</span></p>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2" id="matGrid">
+        ${keys.map((k,i)=>`<div class="mat rounded-xl p-3 text-center" data-k="${k}" style="background:rgba(255,255,255,.03);border:1px solid rgba(196,168,148,.16)">
+          <i data-lucide="${MAT[k].ic}" class="w-6 h-6 mx-auto" style="color:${MAT[k].c}"></i>
+          <p class="text-[12px] font-bold mt-1">${k}</p></div>`).join('')}
+      </div>
+      <p id="matOut" class="text-sm text-stone-300 mt-3 min-h-[40px] rounded-xl p-3" style="background:rgba(163,224,208,.08);border:1px solid rgba(163,224,208,.2)">Toca un material para descubrir cómo lo usaban.</p>
+    </div>`;
+  }
+  function wireMateriales(){
+    const g=$('matGrid'); if(!g) return;
+    g.addEventListener('click',e=>{ const c=e.target.closest('.mat'); if(!c) return;
+      g.querySelectorAll('.mat').forEach(x=>x.classList.remove('on')); c.classList.add('on');
+      const m=MAT[c.dataset.k]; $('matOut').innerHTML=`<b style="color:${m.c}">${c.dataset.k}:</b> ${m.u}`;
+    });
+  }
+
+  // ── interactivo: los 69 días (rescate de los 33) ──
+  function inter33(){
+    return `<div class="glass rounded-2xl p-4 mt-4">
+      <p class="text-sm font-bold text-stone-200 mb-1 flex items-center gap-2"><i data-lucide="calendar-clock" class="w-4 h-4" style="color:#7fbfd1"></i> Vive los 69 días <span class="text-[11px] font-normal text-stone-500">mueve el deslizador</span></p>
+      <div class="flex items-baseline gap-2 mt-2"><span class="text-4xl font-extrabold" style="color:#7fbfd1" id="d33n">1</span><span class="text-stone-400 text-sm">de 69 días</span></div>
+      <input type="range" min="1" max="69" value="1" id="d33" class="mt-3" />
+      <p id="d33t" class="text-sm text-stone-200 mt-3 rounded-xl p-3 min-h-[54px]" style="background:rgba(127,191,209,.08);border:1px solid rgba(127,191,209,.22)"></p>
+    </div>`;
+  }
+  function wire33(){
+    const s=$('d33'); if(!s) return;
+    const upd=()=>{ const d=+s.value; $('d33n').textContent=d;
+      let t;
+      if(d===1) t='📅 <b>5 de agosto:</b> un derrumbe sella la mina San José. 33 hombres quedan atrapados a ~700 m.';
+      else if(d<17) t='🕯️ <b>Día '+d+':</b> búsqueda a ciegas. Nadie sabe aún si están vivos. La familia acampa en el "Campamento Esperanza".';
+      else if(d===17) t='✉️ <b>Día 17 (22 de ago):</b> ¡aparece la nota! <i>"Estamos bien en el refugio los 33"</i>. ¡Están vivos!';
+      else if(d<69) t='⛏️ <b>Día '+d+':</b> el mundo se moviliza. Se perfora un túnel de rescate mientras los 33 resisten bajo tierra.';
+      else t='🎉 <b>Día 69 (13 de oct):</b> ¡rescate! Uno a uno suben en la cápsula <b>Fénix</b>. Los 33 vuelven a casa.';
+      $('d33t').innerHTML=t;
+    };
+    s.addEventListener('input',upd); upd();
+  }
+
+  // ── abrir / cerrar detalle ──
+  function openDetail(i){
+    const h=HITOS[i];
+    let html=`
+      <div class="text-center">
+        <div class="inline-grid place-items-center h-16 w-16 rounded-2xl mx-auto" style="background:${h.c}1e;border:1px solid ${h.c}4d"><i data-lucide="${h.ic}" class="metric-icon" style="width:32px;height:32px;color:${h.c}"></i></div>
+        <span class="inline-block text-[12px] font-bold px-3 py-1 rounded-full mt-3" style="background:${h.c}22;color:${h.c};border:1px solid ${h.c}55">${h.y}</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold mt-2">${h.t}</h2>
+      </div>
+      <div class="glass rounded-2xl p-5 mt-5">
+        <p class="text-[15px] text-stone-200 leading-relaxed">${h.long}</p>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 mt-4">
+        ${h.datos.map(dd=>`<div class="glass rounded-xl p-3"><p class="text-[11px] uppercase tracking-wide text-stone-500">${dd.k}</p><p class="text-sm font-bold mt-0.5" style="color:${h.c}">${dd.v}</p></div>`).join('')}
+      </div>`;
+    if(h.chart){ html+=`<div class="glass rounded-2xl p-4 mt-4">
+      <p class="text-sm font-bold text-stone-200">${h.chart.title}</p>
+      <p class="text-[11px] text-stone-500 mb-2">${h.chart.unit}</p>
+      ${chartSVG(h.chart,h.c)}
+      <p class="text-[10px] text-stone-600 mt-1 text-center">Valores referenciales de divulgación.</p></div>`; }
+    if(h.inter==='materiales') html+=interMateriales();
+    if(h.inter==='dias33') html+=inter33();
+    html+=`<button onclick="closeDetail()" class="w-full rounded-2xl py-3.5 mt-5 font-bold flex items-center justify-center gap-2 active:scale-95 transition" style="background:${h.c}1e;border:1px solid ${h.c}4d;color:${h.c}"><i data-lucide="arrow-left" style="width:18px;height:18px"></i> Volver a la línea de tiempo</button>`;
+    $('panel').innerHTML=html;
+    $('ov').classList.add('on');
+    document.body.style.overflow='hidden';
+    $('ov').scrollTop=0;
+    drawIcons();
+    if(h.chart) animBars();
+    if(h.inter==='materiales') wireMateriales();
+    if(h.inter==='dias33') wire33();
+    try{ history.pushState({d:1},''); }catch(e){}
+  }
+  function closeDetail(){ $('ov').classList.remove('on'); document.body.style.overflow=''; }
+  window.closeDetail=closeDetail;
+
+  $('tl').addEventListener('click', e=>{ const c=e.target.closest('.hcard'); if(c) openDetail(+c.dataset.i); });
+  $('tl').addEventListener('keydown', e=>{ if((e.key==='Enter'||e.key===' ')){ const c=e.target.closest('.hcard'); if(c){ e.preventDefault(); openDetail(+c.dataset.i); } } });
+  $('closeb').addEventListener('click', closeDetail);
+  $('ov').addEventListener('click', e=>{ if(e.target.id==='ov') closeDetail(); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeDetail(); });
+  window.addEventListener('popstate', ()=>{ if($('ov').classList.contains('on')) closeDetail(); });
 
   drawIcons();
 </script>
