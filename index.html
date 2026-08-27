@@ -85,25 +85,11 @@
       <div id="grid-fav" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
     </section>
 
-    <!-- EN TIEMPO REAL -->
-    <section id="sec-vivo" class="mt-10 sm:mt-12">
-      <div class="flex items-center gap-3 mb-5">
-        <span class="h-2.5 w-2.5 rounded-full bg-emerald-400"></span>
-        <h2 class="text-xl font-bold">En tiempo real</h2>
-        <span class="text-xs text-stone-500">se actualizan solos</span>
-      </div>
-      <div id="grid-vivo" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
-    </section>
+    <!-- CHIPS DE CATEGORÍA (filtro rápido) -->
+    <div id="cats" class="flex flex-wrap gap-2 justify-center mt-7"></div>
 
-    <!-- DATOS Y DIVULGACIÓN -->
-    <section id="sec-datos" class="mt-12">
-      <div class="flex items-center gap-3 mb-5">
-        <span class="h-2.5 w-2.5 rounded-full bg-amber-400"></span>
-        <h2 class="text-xl font-bold">Datos y divulgación</h2>
-        <span class="text-xs text-stone-500">cifras oficiales del sector</span>
-      </div>
-      <div id="grid-datos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
-    </section>
+    <!-- SECCIONES POR CATEGORÍA (se generan solas) -->
+    <div id="sections" class="mt-2"></div>
 
     <!-- SIN RESULTADOS -->
     <p id="noRes" class="hidden text-center text-stone-500 mt-12">No encontramos paneles con «<span id="noResQ" class="text-stone-300"></span>». Prueba con otra palabra.</p>
@@ -206,6 +192,31 @@
 
     const norm = s => (s||'').toString().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
     const ALL = [...VIVO, ...DATOS];
+
+    // ===== Categorías para navegar fácil =====
+    const CATS = [
+      { k:'vivo',      lbl:'En vivo',              sub:'se actualizan solos',      dot:'#e0715a' },
+      { k:'asistente', lbl:'Asistente y comunidad', sub:'pregunta y participa',    dot:'#e8c9a6' },
+      { k:'explora',   lbl:'Explora Chile',        sub:'mapa, faenas y empresas',  dot:'#cf9b6f' },
+      { k:'minerales', lbl:'Minerales de Chile',   sub:'cobre, litio y estrategia', dot:'#5fd1bd' },
+      { k:'trabajo',   lbl:'Trabajo y estudio',    sub:'empleo, carreras y herramientas', dot:'#a7d18a' },
+      { k:'aprende',   lbl:'Aprende de minería',   sub:'historia, juegos y seguridad', dot:'#d6a94f' },
+      { k:'economia',  lbl:'Economía y cifras',    sub:'producción, aporte e inversión', dot:'#7fbf9a' },
+      { k:'comparte',  lbl:'Comparte',             sub:'lleva ADN Minero a más gente', dot:'#cf9b6f' }
+    ];
+    const CAT_OF = {
+      'adn-minero-tv.html':'vivo','adn-minero-prensa.html':'vivo','adn-minero-semaforo.html':'vivo','adn-minero-alertas.html':'vivo','adn-minero-panel.html':'vivo','adn-minero-commodities.html':'vivo','adn-minero-sismos.html':'vivo','adn-minero-mar.html':'vivo','adn-minero-indicadores.html':'vivo',
+      'adn-minero-ia.html':'asistente','adn-minero-muro.html':'asistente',
+      'adn-minero-mapa.html':'explora','adn-minero-faena.html':'explora','adn-minero-empresas.html':'explora',
+      'adn-minero-litio.html':'minerales','adn-minero-geopolitica.html':'minerales','adn-minero-estrategia.html':'minerales','adn-minero-cobre-transicion.html':'minerales','adn-minero-chile-mundo.html':'minerales',
+      'adn-minero-empleos.html':'trabajo','adn-minero-calculadora.html':'trabajo','adn-minero-mujer.html':'trabajo','adn-minero-educacion.html':'trabajo',
+      'adn-minero-efemerides.html':'aprende','adn-minero-glosario.html':'aprende','adn-minero-trivia.html':'aprende','adn-minero-seguridad.html':'aprende','adn-minero-normativa.html':'aprende','adn-minero-historia.html':'aprende','adn-minero-ambiente.html':'aprende',
+      'adn-minero-historico.html':'economia','adn-minero-produccion.html':'economia','adn-minero-cartera.html':'economia','adn-minero-aporte-fiscal.html':'economia','adn-minero-royalty.html':'economia','adn-minero-cuenta-publica.html':'economia',
+      'adn-minero-promo.html':'comparte'
+    };
+    const catOf = f => CAT_OF[(f||'').replace(/^.*\//,'')] || 'aprende';
+    let activeCat = 'todas';
+
     const getFavs = () => { try { return JSON.parse(localStorage.getItem('adn_favs')||'[]'); } catch(e){ return []; } };
     const isFav = f => getFavs().includes(f);
     function toggleFav(ev, f){
@@ -228,7 +239,7 @@
     function card(p, vivo){
       const fav = isFav(p.f);
       const text = norm(p.t + ' ' + p.d);
-      return `<div class="pcard relative" data-text="${text}">
+      return `<div class="pcard relative" data-text="${text}" data-cat="${catOf(p.f)}">
         <a href="${p.f}" class="card glass rounded-2xl p-5 relative overflow-hidden block h-full" style="--accent:${p.c}">
         <div class="flex items-start justify-between">
           <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:${p.c}22;border:1px solid ${p.c}40"><i data-lucide="${p.i}" class="w-6 h-6 metric-icon" style="color:${p.c}"></i></div>
@@ -248,13 +259,33 @@
     }
 
     function renderAll(){
-      document.getElementById('grid-vivo').innerHTML = VIVO.map(p=>card(p,true)).join('');
-      document.getElementById('grid-datos').innerHTML = DATOS.map(p=>card(p,false)).join('');
+      // Secciones por categoría
+      document.getElementById('sections').innerHTML = CATS.map(cat=>{
+        const items = ALL.filter(p=>catOf(p.f)===cat.k);
+        if(!items.length) return '';
+        return `<section class="cat-sec mt-10" id="sec-${cat.k}" data-cat="${cat.k}">
+          <div class="flex items-center gap-3 mb-5">
+            <span class="h-2.5 w-2.5 rounded-full shrink-0" style="background:${cat.dot}"></span>
+            <h2 class="text-xl font-bold">${cat.lbl}</h2>
+            <span class="text-xs text-stone-500">${cat.sub}</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">${items.map(p=>card(p, VIVO.includes(p))).join('')}</div>
+        </section>`;
+      }).join('');
+      // Favoritos
       const favItems = getFavs().map(f=>ALL.find(p=>p.f===f)).filter(Boolean);
       if (favItems.length) document.getElementById('grid-fav').innerHTML = favItems.map(p=>card(p, VIVO.includes(p))).join('');
+      renderCats();
       window.lucide && lucide.createIcons();
       applyFilter();
       applyTvLive();
+    }
+
+    // ===== Chips de categoría =====
+    function renderCats(){
+      const el=document.getElementById('cats'); if(!el) return;
+      const chip=(k,lbl,dot)=>{ const on=activeCat===k; return `<button type="button" data-cat="${k}" class="catchip text-xs font-semibold px-3.5 py-1.5 rounded-full transition active:scale-95" style="background:${dot}${on?'2a':'12'};border:1px solid ${dot}${on?'80':'2e'};color:${on?'#fff':'#c9b7a5'}">${lbl}</button>`; };
+      el.innerHTML = chip('todas','✦ Todas','#cf9b6f') + CATS.filter(c=>ALL.some(p=>catOf(p.f)===c.k)).map(c=>chip(c.k,c.lbl,c.dot)).join('');
     }
 
     // ===== ADN Minero TV: indicador "EN VIVO" en la tarjeta =====
@@ -273,31 +304,38 @@
     async function pollTv(){ try{ const j=await (await fetch(TV_WK+'/yt/live?channel='+TV_CH,{cache:'no-store'})).json(); TV_LIVE=!!j.live; }catch(e){ TV_LIVE=false; } applyTvLive(); }
     pollTv(); setInterval(pollTv, 60000);
 
-    function toggleSection(secId, gridId){
-      const grid = document.getElementById(gridId);
-      const any = grid.querySelector('.pcard:not(.hidden)');
-      document.getElementById(secId).classList.toggle('hidden', !any);
-    }
-
     function applyFilter(){
       const q = norm((document.getElementById('q').value||'').trim());
       document.getElementById('qx').classList.toggle('hidden', !q);
       const favCount = getFavs().length;
-      document.getElementById('sec-fav').classList.toggle('hidden', !!q || favCount===0);
+      // Favoritos: solo cuando no hay búsqueda ni categoría activa
+      document.getElementById('sec-fav').classList.toggle('hidden', !!q || activeCat!=='todas' || favCount===0);
       let any = false;
-      document.querySelectorAll('#grid-vivo .pcard, #grid-datos .pcard').forEach(el=>{
-        const show = !q || el.dataset.text.includes(q);
+      document.querySelectorAll('#sections .pcard').forEach(el=>{
+        const okText = !q || el.dataset.text.includes(q);
+        const okCat  = activeCat==='todas' || el.dataset.cat===activeCat;
+        const show = okText && okCat;
         el.classList.toggle('hidden', !show);
         if (show) any = true;
       });
-      toggleSection('sec-vivo','grid-vivo');
-      toggleSection('sec-datos','grid-datos');
-      document.getElementById('noRes').classList.toggle('hidden', !(q && !any));
-      document.getElementById('noResQ').textContent = (document.getElementById('q').value||'').trim();
+      // Oculta las secciones sin tarjetas visibles
+      document.querySelectorAll('#sections .cat-sec').forEach(sec=>{
+        sec.classList.toggle('hidden', !sec.querySelector('.pcard:not(.hidden)'));
+      });
+      document.getElementById('noRes').classList.toggle('hidden', any);
+      document.getElementById('noResQ').textContent = (document.getElementById('q').value||'').trim() || (activeCat!=='todas' ? (CATS.find(c=>c.k===activeCat)||{}).lbl : '');
     }
 
     document.getElementById('q').addEventListener('input', applyFilter);
     document.getElementById('qx').addEventListener('click', ()=>{ document.getElementById('q').value=''; applyFilter(); document.getElementById('q').focus(); });
+    document.getElementById('cats').addEventListener('click', e=>{
+      const b=e.target.closest('.catchip'); if(!b) return;
+      activeCat = (activeCat===b.dataset.cat) ? 'todas' : b.dataset.cat;
+      renderCats();
+      applyFilter();
+      const sec = activeCat!=='todas' && document.getElementById('sec-'+activeCat);
+      if(sec) sec.scrollIntoView({behavior:'smooth',block:'start'});
+    });
     renderAll();
 
     // ===== Búsqueda por voz =====
