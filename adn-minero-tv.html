@@ -72,8 +72,12 @@
   function showLive(videoId, title){
     $('badge').innerHTML=`<span class="live-badge"><span class="live-dot"></span> EN VIVO</span>`;
     $('estado').innerHTML=`<i data-lucide="radio" class="w-5 h-5" style="color:#ff6a5a"></i> ${title?title:'Transmisión en vivo'}`;
-    $('stage').innerHTML=`<div class="frame"><iframe src="${liveEmbed(videoId)}" title="ADN Minero TV en vivo" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`;
-    $('sub').innerHTML=`Estás viendo la transmisión en directo de ADN Minero. ¿Se ve cortado? <a href="${CH_URL}/live" target="_blank" rel="noopener" class="lnk">Ábrelo en YouTube →</a>`;
+    const watch = videoId ? `https://www.youtube.com/watch?v=${videoId}` : `${CH_URL}/live`;
+    $('stage').innerHTML=`<div class="frame"><iframe src="${liveEmbed(videoId)}" title="ADN Minero TV en vivo" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
+      <div class="flex items-center justify-center gap-2 flex-wrap mt-3">
+        <a href="${watch}" target="_blank" rel="noopener" class="btn" style="background:#e0303018;border:1px solid #e0303044;color:#ff8577"><i data-lucide="youtube" style="width:18px;height:18px"></i> Ver en YouTube</a>
+      </div>`;
+    $('sub').innerHTML=`Estás viendo la transmisión en directo de ADN Minero. ¿Ves "video no disponible"? Es porque falta activar <b>"Permitir insertar"</b> en YouTube — mientras tanto, <a href="${watch}" target="_blank" rel="noopener" class="lnk">míralo en YouTube →</a>`;
     icons();
   }
 
