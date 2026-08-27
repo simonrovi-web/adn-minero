@@ -112,6 +112,7 @@
   const ROTATE_MS=13000, PAGE=6;
   const $=id=>document.getElementById(id);
   const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const jq=q=>'https://www.google.com/search?q='+encodeURIComponent(q);
   const DATA=[
     // ---- TRABAJOS (postulaciones · ofertas vigentes) ----
     {tipo:'Trabajo', cat:'Empresa minera', titulo:'Codelco · Trabaja en Codelco', empresa:'Codelco', detalle:'Ofertas vigentes de la mayor minera estatal del cobre. Postula en su portal oficial.', link:'https://www.codelco.com/trabaja-en-codelco'},
@@ -123,6 +124,51 @@
     {tipo:'Trabajo', cat:'Portal de empleo', titulo:'Computrabajo · Ofertas de minería', empresa:'Computrabajo', detalle:'Cientos de ofertas de trabajo minero en todo Chile, actualizadas a diario.', link:'https://cl.computrabajo.com/trabajo-de-minera'},
     {tipo:'Trabajo', cat:'Portal de empleo', titulo:'Indeed · Empleos de minería en Chile', empresa:'Indeed', detalle:'Buscador de empleos mineros de múltiples empresas, actualizado a diario.', link:'https://cl.indeed.com/q-mineria-empleos.html'},
     {tipo:'Trabajo', cat:'Portal de empleo', titulo:'Trabajos en Minera · Reclutamiento minero', empresa:'trabajosenminera.com', detalle:'Bolsa de empleo especializada en la minería chilena.', link:'https://trabajosenminera.com/'},
+    // --- más empresas mineras (portal oficial de empleo) ---
+    {tipo:'Trabajo', cat:'Empresa minera', titulo:'Teck (Quebrada Blanca) · Empleos', empresa:'Teck', detalle:'Vacantes en Quebrada Blanca y las operaciones de Teck en Chile.', link:jq('Teck careers Chile Quebrada Blanca empleo')},
+    {tipo:'Trabajo', cat:'Empresa minera', titulo:'Lundin Mining · Trabaja con nosotros', empresa:'Lundin Mining', detalle:'Oportunidades en Candelaria y Caserones, Región de Atacama.', link:jq('Lundin Mining Chile careers empleo Candelaria')},
+    {tipo:'Trabajo', cat:'Empresa minera', titulo:'Glencore Chile · Empleos', empresa:'Glencore', detalle:'Vacantes en Lomas Bayas y la fundición Altonorte.', link:jq('Glencore Chile empleo trabaja Lomas Bayas Altonorte')},
+    {tipo:'Trabajo', cat:'Empresa minera', titulo:'Sierra Gorda SCM · Trabaja con nosotros', empresa:'Sierra Gorda SCM', detalle:'Oportunidades en la operación Sierra Gorda (Antofagasta).', link:jq('Sierra Gorda SCM trabaja con nosotros empleo')},
+    {tipo:'Trabajo', cat:'Empresa minera', titulo:'Capstone Copper · Empleos', empresa:'Capstone Copper', detalle:'Vacantes en Mantoverde y Mantos Blancos.', link:jq('Capstone Copper Chile careers empleo Mantoverde')},
+    {tipo:'Trabajo', cat:'Empresa minera', titulo:'Minera El Abra (Freeport) · Empleos', empresa:'Freeport-McMoRan', detalle:'Oportunidades en El Abra, Región de Antofagasta.', link:jq('Freeport El Abra Chile empleo careers')},
+    {tipo:'Trabajo', cat:'Empresa minera', titulo:'Kinross Chile · Trabaja con nosotros', empresa:'Kinross', detalle:'Vacantes en La Coipa y proyectos de oro en Atacama.', link:jq('Kinross Chile careers empleo La Coipa')},
+    {tipo:'Trabajo', cat:'Empresa minera', titulo:'Barrick (Zaldívar) · Empleos', empresa:'Barrick', detalle:'Oportunidades en Zaldívar y operaciones de Barrick.', link:jq('Barrick Chile careers empleo Zaldivar')},
+    {tipo:'Trabajo', cat:'Minera · litio', titulo:'SQM · Trabaja en SQM', empresa:'SQM', detalle:'Vacantes en litio, yodo y nutrición vegetal (Salar de Atacama).', link:jq('SQM trabaja con nosotros empleo Chile litio')},
+    {tipo:'Trabajo', cat:'Minera · litio', titulo:'Albemarle · Empleos (litio)', empresa:'Albemarle', detalle:'Oportunidades en la operación de litio del Salar de Atacama.', link:jq('Albemarle Chile careers empleo litio')},
+    {tipo:'Trabajo', cat:'Minera · hierro', titulo:'CAP Minería · Trabaja con nosotros', empresa:'CAP Minería', detalle:'Vacantes en la minería del hierro (Atacama y Coquimbo).', link:jq('CAP Mineria trabaja con nosotros empleo')},
+    {tipo:'Trabajo', cat:'Empresa estatal', titulo:'Enami · Trabaja con nosotros', empresa:'Enami', detalle:'Empleos en la Empresa Nacional de Minería y sus plantas.', link:jq('Enami trabaja con nosotros empleo Chile')},
+    {tipo:'Trabajo', cat:'Empresa minera', titulo:'South32 · Empleos', empresa:'South32', detalle:'Oportunidades en operaciones y proyectos de South32.', link:jq('South32 Chile careers empleo')},
+    {tipo:'Trabajo', cat:'Empresa minera', titulo:'Pan American Silver (El Peñón) · Empleos', empresa:'Pan American Silver', detalle:'Vacantes en El Peñón, oro y plata (Antofagasta).', link:jq('Pan American Silver Chile careers empleo El Peñon')},
+    // --- prácticas y programas trainee ---
+    {tipo:'Trabajo', cat:'Prácticas y trainee', titulo:'Codelco · Prácticas y memorias', empresa:'Codelco', detalle:'Programas de práctica profesional y memorias para estudiantes.', link:jq('Codelco practicas memorias programa estudiantes')},
+    {tipo:'Trabajo', cat:'Prácticas y trainee', titulo:'BHP · Graduate y Aprendices', empresa:'BHP', detalle:'Programas graduate, trainee y de aprendices para iniciar carrera minera.', link:jq('BHP graduate apprentice programa Chile')},
+    // --- empresas contratistas / EPC que contratan mucho ---
+    {tipo:'Trabajo', cat:'Contratista', titulo:'Finning · Empleos', empresa:'Finning', detalle:'Mecánicos, técnicos y operadores para equipos Caterpillar en faena.', link:jq('Finning Chile careers empleo trabaja')},
+    {tipo:'Trabajo', cat:'Contratista', titulo:'Komatsu Chile · Empleos', empresa:'Komatsu', detalle:'Técnicos y operadores de maquinaria minera Komatsu.', link:jq('Komatsu Chile empleo trabaja con nosotros')},
+    {tipo:'Trabajo', cat:'Contratista', titulo:'Bechtel · Proyectos mineros', empresa:'Bechtel', detalle:'Construcción y montaje de grandes proyectos mineros.', link:jq('Bechtel careers Chile mining empleo')},
+    {tipo:'Trabajo', cat:'Contratista', titulo:'Fluor Chile · Empleos', empresa:'Fluor', detalle:'Ingeniería y construcción para proyectos mineros e industriales.', link:jq('Fluor Chile careers empleo')},
+    {tipo:'Trabajo', cat:'Contratista', titulo:'Ausenco · Empleos', empresa:'Ausenco', detalle:'Ingeniería, proyectos y servicios para la minería.', link:jq('Ausenco careers Chile empleo')},
+    {tipo:'Trabajo', cat:'Contratista', titulo:'SalfaCorp / Salfa · Empleos', empresa:'SalfaCorp', detalle:'Construcción y montajes industriales para minería.', link:jq('SalfaCorp Salfa empleo trabaja Chile mineria')},
+    {tipo:'Trabajo', cat:'Contratista', titulo:'Besalco · Empleos', empresa:'Besalco', detalle:'Obras civiles y movimiento de tierra para faenas mineras.', link:jq('Besalco empleo trabaja con nosotros Chile')},
+    {tipo:'Trabajo', cat:'Contratista', titulo:'Sigdo Koppers (SK) · Empleos', empresa:'Sigdo Koppers', detalle:'Montaje industrial, servicios y arriendo para minería.', link:jq('Sigdo Koppers SK empleo trabaja Chile')},
+    {tipo:'Trabajo', cat:'Proveedor', titulo:'Metso · Empleos', empresa:'Metso', detalle:'Técnicos y especialistas en plantas y procesamiento de minerales.', link:jq('Metso careers Chile empleo')},
+    {tipo:'Trabajo', cat:'Proveedor', titulo:'Epiroc · Empleos', empresa:'Epiroc', detalle:'Servicio técnico y operación de equipos de perforación.', link:jq('Epiroc careers Chile empleo')},
+    {tipo:'Trabajo', cat:'Proveedor', titulo:'Sandvik · Empleos', empresa:'Sandvik', detalle:'Equipos y servicios de minería y perforación de roca.', link:jq('Sandvik careers Chile empleo mineria')},
+    {tipo:'Trabajo', cat:'Proveedor', titulo:'Enaex · Empleos', empresa:'Enaex', detalle:'Operadores y técnicos de tronadura y explosivos.', link:jq('Enaex empleo trabaja con nosotros Chile')},
+    {tipo:'Trabajo', cat:'Proveedor', titulo:'Aggreko · Empleos', empresa:'Aggreko', detalle:'Técnicos de energía y generación para faenas mineras.', link:jq('Aggreko Chile careers empleo mining')},
+    // --- bolsas de empleo / portales (búsqueda de minería) ---
+    {tipo:'Trabajo', cat:'Portal de empleo', titulo:'LinkedIn Jobs · Minería en Chile', empresa:'LinkedIn', detalle:'Miles de vacantes mineras y contacto directo con reclutadores.', link:'https://www.linkedin.com/jobs/search/?keywords=miner%C3%ADa&location=Chile'},
+    {tipo:'Trabajo', cat:'Portal de empleo', titulo:'Laborum · Empleos', empresa:'Laborum', detalle:'Bolsa de empleo con ofertas mineras; busca "minería".', link:'https://www.laborum.cl/'},
+    {tipo:'Trabajo', cat:'Portal de empleo', titulo:'Trabajando.com · Minería', empresa:'Trabajando.com', detalle:'Ofertas mineras; busca "minería" por región.', link:'https://www.trabajando.cl/'},
+    {tipo:'Trabajo', cat:'Portal de empleo', titulo:'Chiletrabajos · Minería', empresa:'Chiletrabajos', detalle:'Portal chileno con avisos de trabajo minero.', link:'https://www.chiletrabajos.cl/'},
+    {tipo:'Trabajo', cat:'Portal de empleo', titulo:'Jooble · Empleos de minería', empresa:'Jooble', detalle:'Buscador que reúne ofertas mineras de muchos sitios.', link:'https://cl.jooble.org/empleos-miner%C3%ADa'},
+    {tipo:'Trabajo', cat:'Portal de empleo', titulo:'Talent.com · Minería en Chile', empresa:'Talent.com', detalle:'Metabuscador de empleos mineros, actualizado a diario.', link:'https://cl.talent.com/jobs?k=miner%C3%ADa&l=Chile'},
+    {tipo:'Trabajo', cat:'Portal de empleo', titulo:'Buscojobs · Minería', empresa:'Buscojobs', detalle:'Avisos de empleo minero en Chile.', link:'https://www.buscojobs.cl/'},
+    {tipo:'Trabajo', cat:'Portal de empleo', titulo:'Opción Empleo · Minería', empresa:'OpcionEmpleo', detalle:'Buscador de ofertas mineras de todo el país.', link:'https://www.opcionempleo.cl/empleos-mineria.html'},
+    {tipo:'Trabajo', cat:'Estado · gratis', titulo:'Bolsa Nacional de Empleo (BNE)', empresa:'BNE · SENCE', detalle:'Bolsa oficial y gratuita del Estado, con ofertas mineras.', link:'https://www.bne.cl/'},
+    {tipo:'Trabajo', cat:'Sector', titulo:'Portal Minero · Empleos', empresa:'Portal Minero', detalle:'Noticias y avisos de empleo del sector minero.', link:'https://www.portalminero.com/'},
+    {tipo:'Trabajo', cat:'Formación y talento', titulo:'CCM · Consejo de Competencias Mineras', empresa:'Fundación Chile · CCM', detalle:'Perfiles, competencias y rutas para trabajar en minería.', link:'https://www.ccm.cl/'},
+    {tipo:'Trabajo', cat:'Municipal', titulo:'OMIL · Oficinas Municipales de Empleo', empresa:'OMIL', detalle:'Intermediación laboral gratuita en tu comuna, muchas en zonas mineras.', link:jq('OMIL empleo comuna minera Chile bolsa de trabajo')},
     // ---- SERVICIOS (empresas proveedoras a la minería) ----
     {tipo:'Servicio', cat:'Arriendo de equipos', titulo:'Finning · Arriendo de equipos CAT', empresa:'Finning', detalle:'Arriendo de maquinaria, plataformas, generadores y compresores para minería.', link:'https://www.finning.com/es_CL/services/rental.html'},
     {tipo:'Servicio', cat:'Arriendo de equipos', titulo:'Komatsu Arrienda · Maquinaria pesada', empresa:'Komatsu Chile', detalle:'Arriendo de excavadoras, cargadores, bulldozers y motoniveladoras. 10 sucursales.', link:'https://www.komatsulatinoamerica.com/chile/arriendo/'},
