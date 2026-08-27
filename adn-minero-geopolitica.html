@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Geopolítica</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    :root{ --copper:#cf9b6f; --blue:#7fb0d9; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', ui-sans-serif, system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(127,176,217,0.13), transparent 60%),
+      radial-gradient(1000px 600px at 100% 0%, rgba(181,115,79,0.11), transparent 55%),
+      #141110; }
+    .wrap{ max-width:880px; margin:0 auto; padding:16px 16px 40px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); backdrop-filter:blur(14px) saturate(130%); -webkit-backdrop-filter:blur(14px) saturate(130%); border:1px solid rgba(196,168,148,0.14); }
+    .metric-icon{ filter:drop-shadow(0 0 8px currentColor); }
+    a.lnk{ color:#e8c9a6; }
+    .bar{ transition:height 1.1s cubic-bezier(.2,.7,.3,1), y 1.1s cubic-bezier(.2,.7,.3,1); }
+    .val{ transition:opacity .5s ease .5s; }
+    .sec-h{ font-size:1.05rem; font-weight:800; display:flex; align-items:center; gap:8px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(127,176,217,.14);border:1px solid rgba(127,176,217,.32)"><i data-lucide="globe-2" class="metric-icon" style="width:26px;height:26px;color:var(--blue)"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#a7c6de;font-weight:700">Geopolítica y minerales · ADN Minero</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Por qué las decisiones de Chile importan al mundo</p>
+      </div>
+    </header>
+
+    <div class="mt-5">
+      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight flex items-center gap-3">Chile en el tablero mundial <span class="fi fi-cl" style="border-radius:4px"></span></h1>
+      <p class="text-stone-400 text-sm mt-2 max-w-2xl">El cobre y el litio de Chile son piezas clave de la <b class="text-stone-300">transición energética</b> y de la disputa global por los minerales del futuro. Entender esto ayuda a decidir hacia dónde queremos ir como país.</p>
+    </div>
+
+    <!-- RANKINGS -->
+    <div id="rank" class="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-5"></div>
+
+    <!-- POR QUÉ IMPORTA -->
+    <section class="glass rounded-2xl p-5 mt-5">
+      <h2 class="sec-h"><i data-lucide="zap" class="w-5 h-5" style="color:#a7d18a"></i> ¿Por qué el mundo nos necesita?</h2>
+      <p class="text-sm text-stone-300 leading-relaxed mt-2">La descarbonización mueve al planeta hacia autos eléctricos, paneles solares y redes eléctricas nuevas. Todo eso necesita <b>mucho más cobre</b> y <b>litio para baterías</b>. Chile tiene ambos en abundancia: por eso es un proveedor <b>estratégico</b> para las grandes potencias.</p>
+      <p class="text-[13px] font-bold text-stone-300 mt-4 mb-1">Cobre en un auto (kg aprox.)</p>
+      <div id="chartEV"></div>
+      <p class="text-[11px] text-stone-500 mt-1 text-center">Un auto eléctrico usa varias veces más cobre que uno a bencina. Valores referenciales.</p>
+    </section>
+
+    <!-- QUIÉN COMPRA -->
+    <section class="glass rounded-2xl p-5 mt-4">
+      <h2 class="sec-h"><i data-lucide="ship" class="w-5 h-5" style="color:var(--copper)"></i> ¿A quién le vendemos el cobre?</h2>
+      <p class="text-sm text-stone-300 leading-relaxed mt-2">La mayor parte del cobre chileno se exporta a <b>Asia</b>, con <b>China</b> como principal comprador. Esa concentración da mercado seguro, pero también genera un debate: ¿cuánto conviene depender de un solo destino?</p>
+      <div id="chartDest" class="mt-3"></div>
+      <p class="text-[11px] text-stone-500 mt-1 text-center">Destinos del cobre chileno (participación aprox., referencial).</p>
+    </section>
+
+    <!-- TRIÁNGULO DEL LITIO -->
+    <section class="glass rounded-2xl p-5 mt-4">
+      <h2 class="sec-h"><i data-lucide="triangle" class="w-5 h-5" style="color:#5fd1bd"></i> El "triángulo del litio"</h2>
+      <p class="text-sm text-stone-300 leading-relaxed mt-2">Entre <b>Chile, Argentina y Bolivia</b> se concentra cerca de la mitad de los recursos de litio del mundo. Esto pone a Sudamérica —y a Chile en particular— en el centro de la carrera por las baterías. Cómo se organice esa riqueza es una decisión geopolítica de fondo.</p>
+      <div class="grid grid-cols-3 gap-2.5 mt-3">
+        <div class="rounded-xl p-3 text-center" style="background:rgba(95,209,189,.10);border:1px solid rgba(95,209,189,.3)"><span class="fi fi-cl" style="border-radius:3px"></span><p class="text-sm font-bold mt-1">Chile</p><p class="text-[11px] text-stone-400">mayores reservas</p></div>
+        <div class="rounded-xl p-3 text-center" style="background:rgba(127,176,217,.10);border:1px solid rgba(127,176,217,.3)"><span class="fi fi-ar" style="border-radius:3px"></span><p class="text-sm font-bold mt-1">Argentina</p><p class="text-[11px] text-stone-400">producción en alza</p></div>
+        <div class="rounded-xl p-3 text-center" style="background:rgba(214,169,79,.10);border:1px solid rgba(214,169,79,.3)"><span class="fi fi-bo" style="border-radius:3px"></span><p class="text-sm font-bold mt-1">Bolivia</p><p class="text-[11px] text-stone-400">grandes recursos</p></div>
+      </div>
+    </section>
+
+    <!-- LA DISPUTA -->
+    <section class="glass rounded-2xl p-5 mt-4">
+      <h2 class="sec-h"><i data-lucide="swords" class="w-5 h-5" style="color:#e0a35a"></i> La disputa por los minerales críticos</h2>
+      <p class="text-sm text-stone-300 leading-relaxed mt-2">Estados Unidos, la Unión Europea y China compiten por <b>asegurar el suministro</b> de cobre y litio para sus industrias. Un dato clave: hoy gran parte del <b>refinado del litio</b> ocurre en China. Chile produce la materia prima, pero el valor agregado (refinar, fabricar baterías) suele quedar afuera.</p>
+      <div id="actores" class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mt-3"></div>
+    </section>
+
+    <!-- NUESTRA DIRECCIÓN -->
+    <section class="glass rounded-2xl p-5 mt-4" style="border-color:rgba(127,176,217,.28)">
+      <h2 class="sec-h"><i data-lucide="compass" class="w-5 h-5" style="color:var(--blue)"></i> Nuestra dirección como país</h2>
+      <p class="text-sm text-stone-300 leading-relaxed mt-2">Tener los minerales no basta: lo que se discute es <b>cómo aprovecharlos</b>. Estas son las grandes decisiones sobre la mesa (temas de debate, no posturas):</p>
+      <div id="dir" class="flex flex-col gap-2.5 mt-3"></div>
+    </section>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Contenido de divulgación con cifras referenciales de fuentes públicas; busca informar, no tomar posición política. ADN Minero es un servicio independiente · <a href="adn-minero-litio.html" class="lnk">Litio</a> · <a href="adn-minero-chile-mundo.html" class="lnk">Chile en el Mundo</a> · <a href="index.html" class="lnk">Inicio</a></p>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+
+  // RANKINGS
+  const RANK=[
+    {ic:'trophy', val:'N.º 1', lab:'Cobre del mundo', sub:'reservas y producción', c:'#cf9b6f'},
+    {ic:'battery-charging', val:'N.º 1', lab:'Reservas de litio', sub:'~1/3 del planeta', c:'#5fd1bd'},
+    {ic:'medal', val:'N.º 1', lab:'Renio del mundo', sub:'metal muy escaso', c:'#e0a35a'},
+    {ic:'factory', val:'Top 3', lab:'Molibdeno mundial', sub:'subproducto del cobre', c:'#a7d18a'}
+  ];
+  $('rank').innerHTML=RANK.map(r=>`
+    <div class="glass rounded-2xl p-4 text-center">
+      <i data-lucide="${r.ic}" class="w-6 h-6 mx-auto metric-icon" style="color:${r.c}"></i>
+      <p class="text-2xl font-extrabold mt-2" style="color:${r.c}">${r.val}</p>
+      <p class="text-[12px] text-stone-300 font-semibold mt-0.5">${r.lab}</p>
+      <p class="text-[11px] text-stone-500">${r.sub}</p>
+    </div>`).join('');
+
+  // ACTORES
+  const ACT=[
+    {fl:'us', n:'Estados Unidos', d:'Busca asegurar minerales críticos y reducir su dependencia de China.'},
+    {fl:'eu', n:'Unión Europea', d:'Ley de Materias Primas Críticas: quiere fuentes confiables de litio y cobre.'},
+    {fl:'cn', n:'China', d:'Gran comprador del cobre chileno y líder mundial en refinar litio y baterías.'}
+  ];
+  $('actores').innerHTML=ACT.map(a=>`
+    <div class="rounded-xl p-3" style="background:rgba(255,255,255,.03);border:1px solid rgba(196,168,148,.14)">
+      <p class="text-sm font-bold flex items-center gap-2"><span class="fi fi-${a.fl}" style="border-radius:3px"></span> ${a.n}</p>
+      <p class="text-[12px] text-stone-400 leading-snug mt-1">${a.d}</p>
+    </div>`).join('');
+
+  // DIRECCIÓN (temas de debate)
+  const DIR=[
+    {ic:'gem', t:'Agregar valor', d:'¿Exportar solo la materia prima o refinar y fabricar (por ejemplo, baterías) para crear más empleos e ingresos en Chile?'},
+    {ic:'landmark', t:'Rol del Estado', d:'La Estrategia Nacional del Litio le da un papel central al Estado (Codelco/Enami) junto a privados. ¿Cuánto control público sobre un recurso estratégico?'},
+    {ic:'droplets', t:'Agua y comunidades', d:'La minería usa agua en el desierto y convive con comunidades y salares. ¿Cómo crecer cuidando el entorno y a la gente?'},
+    {ic:'globe', t:'Con quién asociarse', d:'Depender de un solo comprador o diversificar socios (EE.UU., Europa, Asia). La política exterior también es política minera.'},
+    {ic:'leaf', t:'Minería sostenible', d:'Agua de mar, energías limpias y menor huella: requisitos que hoy exigen los mercados más valiosos.'}
+  ];
+  $('dir').innerHTML=DIR.map(x=>`
+    <div class="flex items-start gap-3 rounded-xl px-3 py-2.5" style="background:rgba(127,176,217,.06);border:1px solid rgba(127,176,217,.18)">
+      <i data-lucide="${x.ic}" class="w-5 h-5 shrink-0 mt-0.5" style="color:#a7c6de"></i>
+      <div><p class="text-sm font-bold">${x.t}</p><p class="text-[13px] text-stone-300 leading-snug mt-0.5">${x.d}</p></div>
+    </div>`).join('');
+
+  // ===== gráficas de barras animadas =====
+  function chart(el, bars, unit){
+    const max=Math.max(...bars.map(b=>b.v))*1.16;
+    const n=bars.length, W=Math.max(300, n*88), H=210, pad=28, bw=n<=2?90:46, gap=(W-pad*2-bw*n)/(n-1||1);
+    let svg='';
+    bars.forEach((b,i)=>{
+      const x=pad+i*(bw+gap), full=(H-pad-26)*(b.v/max), y=H-26-full, col=b.c||'#cf9b6f';
+      svg+=`<rect class="bar" x="${x}" y="${H-26}" width="${bw}" height="0" rx="6" fill="${col}" data-y="${y.toFixed(1)}" data-h="${full.toFixed(1)}"></rect>`;
+      svg+=`<text class="val" x="${x+bw/2}" y="${y-6}" text-anchor="middle" fill="#f4ece5" font-size="14" font-weight="800" opacity="0">${b.v}${unit||''}</text>`;
+      svg+=`<text x="${x+bw/2}" y="${H-8}" text-anchor="middle" fill="#a99e92" font-size="12">${b.l}</text>`;
+    });
+    $(el).innerHTML=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:${W}px;display:block;margin:0 auto">${svg}</svg>`;
+  }
+  chart('chartEV', [{l:'Bencinero',v:23,c:'#8a8079'},{l:'Eléctrico',v:83,c:'#a7d18a'}], ' kg');
+  chart('chartDest', [{l:'China',v:54,c:'#e0715a'},{l:'Japón',v:10,c:'#cf9b6f'},{l:'Corea',v:8,c:'#e0a35a'},{l:'Europa',v:13,c:'#7fb0d9'},{l:'Otros',v:15,c:'#a7d18a'}], '%');
+  function animate(){
+    document.querySelectorAll('rect.bar').forEach(r=>{ r.setAttribute('y', r.dataset.y); r.setAttribute('height', r.dataset.h); });
+    setTimeout(()=>document.querySelectorAll('text.val').forEach(t=>t.style.opacity='1'), 550);
+  }
+
+  drawIcons();
+  requestAnimationFrame(()=>requestAnimationFrame(animate));
+  setTimeout(animate, 500); // respaldo si rAF se retrasa
+</script>
+</body>
+</html>
