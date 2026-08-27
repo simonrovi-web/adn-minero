@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Normativa de Seguridad</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    :root{ --copper:#cf9b6f; --blue:#7fbfd1; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', ui-sans-serif, system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(127,191,209,0.12), transparent 60%),
+      radial-gradient(1000px 600px at 100% 0%, rgba(181,115,79,0.12), transparent 55%),
+      #141110; }
+    .wrap{ max-width:880px; margin:0 auto; padding:16px 16px 40px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); backdrop-filter:blur(14px) saturate(130%); -webkit-backdrop-filter:blur(14px) saturate(130%); border:1px solid rgba(196,168,148,0.14); }
+    .metric-icon{ filter:drop-shadow(0 0 8px currentColor); }
+    a.lnk{ color:#e8c9a6; }
+    .chip{ font-size:11px; font-weight:700; padding:3px 9px; border-radius:6px; display:inline-flex; align-items:center; gap:5px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(127,191,209,.14);border:1px solid rgba(127,191,209,.3)"><i data-lucide="book-marked" class="metric-icon" style="width:26px;height:26px;color:var(--blue)"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#a7cfdd;font-weight:700">Normativa de Seguridad · ADN Minero</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Las reglas que toda faena debe cumplir en Chile</p>
+      </div>
+    </header>
+
+    <div class="mt-5">
+      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">¿Qué exige la ley en una faena? ⚖️</h1>
+      <p class="text-stone-400 text-sm mt-2 max-w-2xl">La seguridad minera en Chile no es opcional: está regulada por ley. Aquí te explicamos, en simple, el marco legal que protege a quienes trabajan en la minería.</p>
+    </div>
+
+    <!-- MARCO LEGAL -->
+    <section class="mt-6">
+      <h2 class="text-lg font-extrabold flex items-center gap-2"><i data-lucide="scale" class="w-5 h-5" style="color:var(--blue)"></i> El marco legal</h2>
+      <p class="text-stone-400 text-sm mt-1">Las principales normas que rigen la seguridad en la minería chilena.</p>
+      <div id="leyes" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4"></div>
+    </section>
+
+    <!-- OBLIGACIONES -->
+    <section class="glass rounded-2xl p-5 mt-5">
+      <h2 class="text-sm font-bold text-stone-300 flex items-center gap-2 mb-1"><i data-lucide="clipboard-check" class="w-4 h-4" style="color:var(--copper)"></i> Lo que toda faena debe tener</h2>
+      <p class="text-[12px] text-stone-500 mb-3">Obligaciones que la empresa debe cumplir con sus trabajadores.</p>
+      <div id="oblig" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+    </section>
+
+    <!-- FISCALIZACIÓN -->
+    <section class="mt-5">
+      <h2 class="text-lg font-extrabold flex items-center gap-2"><i data-lucide="shield" class="w-5 h-5" style="color:var(--blue)"></i> ¿Quién fiscaliza?</h2>
+      <div id="fisca" class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4"></div>
+    </section>
+
+    <!-- ANTE UN ACCIDENTE -->
+    <section class="glass rounded-2xl p-5 mt-5" style="border-color:rgba(224,90,63,.28)">
+      <h2 class="text-sm font-bold flex items-center gap-2 mb-2" style="color:#f0a898"><i data-lucide="siren" class="w-4 h-4"></i> Ante un accidente grave o fatal</h2>
+      <p class="text-sm text-stone-300 leading-relaxed">Por ley, la empresa debe <b>suspender de inmediato</b> las faenas en el área, <b>no alterar el sitio</b> del accidente y <b>notificar sin demora</b> a Sernageomin y a la autoridad de salud. El trabajador o quien presencie el hecho también puede denunciarlo.</p>
+      <p class="text-[12px] text-stone-400 mt-3">👉 Para la parte práctica (primeros auxilios, teléfonos, EPP) revisa el panel <a href="adn-minero-seguridad.html" class="lnk font-semibold">Seguridad Minera</a>.</p>
+    </section>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Contenido informativo de divulgación; resume normas de forma simple y <b>no constituye asesoría legal</b>. Ante dudas, consulta las fuentes oficiales: Sernageomin, la Dirección del Trabajo y la Biblioteca del Congreso Nacional (BCN). ADN Minero es un servicio independiente · <a href="index.html" class="lnk">Inicio</a></p>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+
+  const LEYES=[
+    {tag:'DS 132', c:'#cf9b6f', t:'Reglamento de Seguridad Minera', d:'La norma madre de la minería (Ministerio de Minería, 2004). Fija las reglas de seguridad para toda faena: desde el rajo y la mina subterránea hasta las plantas.'},
+    {tag:'Ley 16.744', c:'#a7d18a', t:'Seguro contra accidentes', d:'Obliga a un seguro social que cubre accidentes del trabajo y enfermedades profesionales. Financia la atención, licencias y pensiones a través de las mutualidades.'},
+    {tag:'DS 594', c:'#7fbfd1', t:'Condiciones sanitarias básicas', d:'Del Ministerio de Salud. Regula las condiciones mínimas del lugar de trabajo: agua, baños, ventilación y límites de exposición a polvo, ruido y agentes químicos.'},
+    {tag:'DS 40', c:'#d6a94f', t:'Prevención de riesgos', d:'Establece el "Derecho a Saber", los reglamentos internos, y la obligación de tener departamentos de prevención con expertos según el tamaño de la empresa.'},
+    {tag:'Gran altitud', c:'#c7a0e0', t:'Trabajo en altura geográfica', d:'Normas de salud específicas para faenas sobre los 3.000 m: exámenes, aclimatación y control de la exposición a la altura (hipobaria).'},
+    {tag:'Código del Trabajo', c:'#e0a35a', t:'Deber de protección', d:'El empleador está obligado por ley a proteger eficazmente la vida y salud de sus trabajadores, entregando los medios y condiciones para un trabajo seguro.'}
+  ];
+  $('leyes').innerHTML=LEYES.map(l=>`
+    <div class="glass rounded-2xl p-4">
+      <div class="flex items-center gap-2 flex-wrap mb-1.5">
+        <span class="chip" style="background:${l.c}1e;border:1px solid ${l.c}4a;color:${l.c}">${l.tag}</span>
+        <h3 class="text-[15px] font-bold">${l.t}</h3>
+      </div>
+      <p class="text-[13px] text-stone-300 leading-relaxed">${l.d}</p>
+    </div>`).join('');
+
+  const OBLIG=[
+    {ic:'file-text', t:'Reglamento Interno', d:'de orden, higiene y seguridad, con las reglas de la faena.'},
+    {ic:'users', t:'Comité Paritario', d:'de trabajadores y empresa, en faenas con 25+ personas.'},
+    {ic:'user-check', t:'Experto en prevención', d:'y un departamento de prevención de riesgos según el tamaño.'},
+    {ic:'graduation-cap', t:'Derecho a Saber', d:'informar y capacitar a cada trabajador sobre sus riesgos.'},
+    {ic:'hard-hat', t:'EPP gratuito', d:'entregar los elementos de protección sin costo para el trabajador.'},
+    {ic:'route', t:'Plan de emergencia', d:'con vías de evacuación, simulacros y respuesta ante accidentes.'},
+    {ic:'activity', t:'Monitoreo de riesgos', d:'medir polvo (sílice), ruido, gases y otros agentes dañinos.'},
+    {ic:'clipboard-list', t:'Registro de accidentes', d:'llevar registro y notificar los accidentes a la autoridad.'}
+  ];
+  $('oblig').innerHTML=OBLIG.map(o=>`
+    <div class="flex items-start gap-3 rounded-xl px-3 py-2.5" style="background:rgba(207,155,111,.06);border:1px solid rgba(207,155,111,.18)">
+      <i data-lucide="${o.ic}" class="w-5 h-5 shrink-0 mt-0.5" style="color:#e8c9a6"></i>
+      <div><p class="text-sm font-bold">${o.t}</p><p class="text-[12px] text-stone-400 leading-snug">${o.d}</p></div>
+    </div>`).join('');
+
+  const FISCA=[
+    {ic:'landmark', t:'Sernageomin', d:'Fiscaliza la seguridad minera, investiga accidentes y puede paralizar faenas inseguras.', c:'#7fbfd1'},
+    {ic:'briefcase', t:'Dirección del Trabajo', d:'Vela por el cumplimiento de los derechos laborales y las condiciones de trabajo.', c:'#a7d18a'},
+    {ic:'heart-pulse', t:'Mutualidades / SUSESO', d:'Atienden a los accidentados, previenen riesgos y fiscalizan el seguro de la Ley 16.744.', c:'#e0715a'}
+  ];
+  $('fisca').innerHTML=FISCA.map(f=>`
+    <div class="glass rounded-2xl p-4 text-center">
+      <div class="h-11 w-11 rounded-xl grid place-items-center mx-auto" style="background:${f.c}16;border:1px solid ${f.c}30"><i data-lucide="${f.ic}" class="w-5 h-5" style="color:${f.c}"></i></div>
+      <p class="text-sm font-bold mt-2">${f.t}</p>
+      <p class="text-[12px] text-stone-400 leading-snug mt-1">${f.d}</p>
+    </div>`).join('');
+
+  drawIcons();
+</script>
+</body>
+</html>
