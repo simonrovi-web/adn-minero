@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Calculadora</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', ui-sans-serif, system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(181,115,79,0.15), transparent 60%),
+      radial-gradient(1000px 600px at 100% 0%, rgba(120,108,100,0.10), transparent 55%),
+      #141110; }
+    .wrap{ max-width:620px; margin:0 auto; padding:16px 16px 40px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); backdrop-filter:blur(14px) saturate(130%); -webkit-backdrop-filter:blur(14px) saturate(130%); border:1px solid rgba(196,168,148,0.14); }
+    .metric-icon{ filter:drop-shadow(0 0 8px currentColor); }
+    a.lnk{ color:#e8c9a6; }
+    input,select{ background:#241d18; color:#f4ece5; border:1px solid rgba(196,168,148,.25); border-radius:12px; padding:11px 12px; font-size:15px; outline:none; width:100%; }
+    input:focus,select:focus{ border-color:rgba(207,155,111,.6); }
+    label{ font-size:12px; color:#c9b7a5; font-weight:600; }
+    .sec-h{ font-size:1rem; font-weight:800; display:flex; align-items:center; gap:8px; }
+    .out{ font-variant-numeric:tabular-nums; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(181,115,79,.15);border:1px solid rgba(196,140,100,.3)"><i data-lucide="calculator" class="metric-icon" style="width:26px;height:26px;color:var(--copper)"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#c9a888;font-weight:700">Calculadora Minera · ADN Minero</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Convierte unidades, leyes y valores en segundos</p>
+      </div>
+    </header>
+
+    <!-- CONVERSOR DE PESO -->
+    <section class="glass rounded-2xl p-5 mt-4">
+      <h2 class="sec-h"><i data-lucide="scale" class="w-5 h-5" style="color:#cf9b6f"></i> Conversor de peso</h2>
+      <div class="grid grid-cols-3 gap-2 mt-3">
+        <div class="col-span-2"><label>Cantidad</label><input id="wq" type="number" inputmode="decimal" value="1" /></div>
+        <div><label>Unidad</label>
+          <select id="wu">
+            <option value="g">Gramo (g)</option>
+            <option value="kg" selected>Kilo (kg)</option>
+            <option value="lb">Libra (lb)</option>
+            <option value="t">Tonelada (t)</option>
+            <option value="ozt">Onza troy (ozt)</option>
+          </select>
+        </div>
+      </div>
+      <div id="wout" class="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-3"></div>
+      <p class="text-[11px] text-stone-500 mt-2">1 onza troy = 31,1035 g · 1 libra = 453,592 g · 1 t = 1.000 kg.</p>
+    </section>
+
+    <!-- LEY -> METAL FINO -->
+    <section class="glass rounded-2xl p-5 mt-4">
+      <h2 class="sec-h"><i data-lucide="percent" class="w-5 h-5" style="color:#a7d18a"></i> Ley de mineral → metal fino</h2>
+      <p class="text-[12px] text-stone-400 mt-1">Cuánto metal puro hay en una cantidad de mineral, según su ley.</p>
+      <div class="grid grid-cols-2 gap-2 mt-3">
+        <div><label>Mineral (toneladas)</label><input id="lt" type="number" inputmode="decimal" value="1000" /></div>
+        <div><label>Ley (%)</label><input id="ll" type="number" inputmode="decimal" value="0.7" step="0.01" /></div>
+      </div>
+      <div class="rounded-xl p-4 mt-3 text-center" style="background:rgba(167,209,138,.10);border:1px solid rgba(167,209,138,.28)">
+        <p class="text-[12px] text-stone-400">Metal fino contenido</p>
+        <p id="lout" class="text-2xl font-extrabold out" style="color:#a7d18a">—</p>
+        <p id="lout2" class="text-[12px] text-stone-400"></p>
+      </div>
+      <p class="text-[11px] text-stone-500 mt-2">Ejemplo: 1.000 t con ley 0,7% = 7 t de cobre fino contenido (sin descontar recuperación de planta).</p>
+    </section>
+
+    <!-- VALOR DEL COBRE -->
+    <section class="glass rounded-2xl p-5 mt-4">
+      <h2 class="sec-h"><i data-lucide="coins" class="w-5 h-5" style="color:#e0955f"></i> Valor del cobre <span id="pxbadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full ml-1" style="background:rgba(167,209,138,.15);color:#a7d18a;border:1px solid rgba(167,209,138,.3)">en vivo</span></h2>
+      <p class="text-[12px] text-stone-400 mt-1">Cuánto vale una cantidad de cobre fino al precio de hoy.</p>
+      <div class="grid grid-cols-2 gap-2 mt-3">
+        <div><label>Cobre fino (toneladas)</label><input id="ct" type="number" inputmode="decimal" value="1" /></div>
+        <div><label>Precio (US$/libra)</label><input id="cp" type="number" inputmode="decimal" step="0.01" /></div>
+      </div>
+      <div class="grid grid-cols-2 gap-2 mt-3">
+        <div class="rounded-xl p-3 text-center" style="background:rgba(224,149,95,.10);border:1px solid rgba(224,149,95,.28)"><p class="text-[11px] text-stone-400">Valor en dólares</p><p id="cusd" class="text-xl font-extrabold out" style="color:#e0955f">—</p></div>
+        <div class="rounded-xl p-3 text-center" style="background:rgba(127,191,154,.10);border:1px solid rgba(127,191,154,.28)"><p class="text-[11px] text-stone-400">Valor en pesos (CLP)</p><p id="cclp" class="text-xl font-extrabold out" style="color:#7fbf9a">—</p></div>
+      </div>
+      <p id="pxinfo" class="text-[11px] text-stone-500 mt-2">1 tonelada = 2.204,62 libras. Precio y dólar de Mindicador.cl.</p>
+    </section>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Herramienta referencial de divulgación. No considera recuperación metalúrgica ni costos. ADN Minero es un servicio independiente · <a href="adn-minero-glosario.html" class="lnk">Glosario</a> · <a href="index.html" class="lnk">Inicio</a></p>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const G={ g:1, kg:1000, lb:453.59237, t:1000000, ozt:31.1034768 };
+  const ULBL={ g:'gramos', kg:'kilos', lb:'libras', t:'toneladas', ozt:'onzas troy' };
+  const fmt=(n,d)=> isFinite(n) ? n.toLocaleString('es-CL',{minimumFractionDigits:0, maximumFractionDigits:d==null?2:d}) : '—';
+
+  function convPeso(){
+    const q=parseFloat($('wq').value), u=$('wu').value;
+    const grams=(isFinite(q)?q:0)*G[u];
+    $('wout').innerHTML=Object.keys(G).filter(k=>k!==u).map(k=>{
+      const v=grams/G[k];
+      return `<div class="rounded-xl p-2.5 text-center" style="background:rgba(255,255,255,.03);border:1px solid rgba(196,168,148,.14)"><p class="text-[10px] text-stone-500 uppercase">${ULBL[k]}</p><p class="text-sm font-bold out">${fmt(v, v<1?4:2)}</p></div>`;
+    }).join('');
+  }
+
+  function convLey(){
+    const t=parseFloat($('lt').value)||0, l=parseFloat($('ll').value)||0;
+    const fino=t*l/100; // toneladas de metal fino
+    $('lout').textContent=fmt(fino, fino<1?3:2)+' t';
+    $('lout2').textContent='= '+fmt(fino*1000, 0)+' kg de metal fino';
+  }
+
+  let PX=null, USD=null;
+  function convValor(){
+    const t=parseFloat($('ct').value)||0, p=parseFloat($('cp').value)||0;
+    const lbs=t*2204.62262;
+    const usd=lbs*p;
+    $('cusd').textContent = p? 'US$ '+fmt(usd,0) : '—';
+    $('cclp').textContent = (p&&USD)? '$ '+fmt(usd*USD,0) : (p? '—' : '—');
+  }
+
+  ['wq','wu'].forEach(id=>$(id).addEventListener('input', convPeso));
+  ['lt','ll'].forEach(id=>$(id).addEventListener('input', convLey));
+  ['ct','cp'].forEach(id=>$(id).addEventListener('input', convValor));
+
+  // precio en vivo del cobre y dólar
+  (async()=>{
+    try{
+      const r=await fetch('https://mindicador.cl/api'); const j=await r.json();
+      PX = j.libra_cobre && j.libra_cobre.valor;   // US$/libra
+      USD = j.dolar && j.dolar.valor;               // CLP por US$
+      if(PX){ $('cp').value = PX.toFixed(3); $('pxinfo').innerHTML='Cobre: <b>US$ '+PX.toFixed(3)+'/lb</b> · Dólar: <b>$'+fmt(USD,0)+'</b> · fuente Mindicador.cl'; }
+    }catch(e){ $('pxbadge').textContent='manual'; $('pxbadge').style.cssText='background:rgba(224,163,90,.15);color:#e0a35a;border:1px solid rgba(224,163,90,.3)'; $('pxinfo').textContent='No se pudo cargar el precio; ingrésalo manualmente (US$/lb).'; }
+    convValor();
+  })();
+
+  drawIcons(); convPeso(); convLey(); convValor();
+</script>
+</body>
+</html>

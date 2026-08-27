@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Empresas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', ui-sans-serif, system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(181,115,79,0.15), transparent 60%),
+      radial-gradient(1000px 600px at 100% 0%, rgba(120,108,100,0.10), transparent 55%),
+      #141110; }
+    .wrap{ max-width:900px; margin:0 auto; padding:16px 16px 40px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); backdrop-filter:blur(14px) saturate(130%); -webkit-backdrop-filter:blur(14px) saturate(130%); border:1px solid rgba(196,168,148,0.14); }
+    .metric-icon{ filter:drop-shadow(0 0 8px currentColor); }
+    a.lnk{ color:#e8c9a6; }
+    .emp{ cursor:pointer; transition:transform .15s ease, border-color .25s ease, box-shadow .25s ease; }
+    .emp:hover{ transform:translateY(-2px); box-shadow:0 8px 26px rgba(0,0,0,.4); }
+    .chip{ font-size:11px; font-weight:600; padding:3px 9px; border-radius:999px; }
+    #ov{ position:fixed; inset:0; z-index:1000; display:none; overflow-y:auto; -webkit-overflow-scrolling:touch; background:rgba(10,8,7,.74); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); }
+    #ov.on{ display:block; animation:ovin .25s ease both; } @keyframes ovin{ from{opacity:0} to{opacity:1} }
+    .sheet{ max-width:640px; margin:0 auto; min-height:100%; padding:16px 16px 48px; }
+    .panel{ animation:up .3s cubic-bezier(.2,.7,.3,1) both; } @keyframes up{ from{opacity:0; transform:translateY(18px)} to{opacity:1; transform:none} }
+    .closeb{ position:sticky; top:8px; margin-left:auto; display:grid; place-items:center; width:42px;height:42px;border-radius:999px; cursor:pointer; background:linear-gradient(160deg,rgba(48,41,35,.95),rgba(28,23,19,.9)); border:1px solid rgba(196,168,148,.25); color:#e8c9a6; box-shadow:0 6px 18px rgba(0,0,0,.5); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(181,115,79,.15);border:1px solid rgba(196,140,100,.3)"><i data-lucide="building-2" class="metric-icon" style="width:26px;height:26px;color:var(--copper)"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#c9a888;font-weight:700">Empresas Mineras · ADN Minero</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Quiénes producen los minerales de Chile</p>
+      </div>
+    </header>
+
+    <div class="mt-4 flex items-center justify-between flex-wrap gap-2">
+      <h1 class="text-xl sm:text-2xl font-extrabold">Las grandes de la minería <span class="fi fi-cl" style="border-radius:4px"></span></h1>
+      <div id="filtros" class="flex flex-wrap gap-2"></div>
+    </div>
+
+    <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4"></div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-8 leading-relaxed">Fichas de divulgación con datos públicos de referencia. <b>Toca una empresa</b> para ver más. ADN Minero es un servicio independiente · <a href="adn-minero-mapa.html" class="lnk">Mapa</a> · <a href="index.html" class="lnk">Inicio</a></p>
+  </div>
+
+  <div id="ov"><div class="sheet"><button class="closeb" id="closeb" aria-label="Cerrar"><i data-lucide="x" style="width:22px;height:22px"></i></button><div id="panel" class="panel"></div></div></div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const MC={cobre:'#cf9b6f', litio:'#5fd1bd', oro:'#f5c542', hierro:'#e0715a', varios:'#c9a888'};
+
+  const EMP=[
+    {n:'Codelco', tipo:'Estatal', pais:'cl', min:'cobre', reg:'Todo Chile', faenas:['El Teniente','Chuquicamata','Radomiro Tomic','Ministro Hales','Andina','Salvador','Gabriela Mistral'], dato:'La mayor productora de cobre del mundo.', desc:'Corporación Nacional del Cobre, creada en 1976. Es 100% del Estado de Chile y una de sus principales fuentes de ingresos. Opera las divisiones históricas del cobre chileno.', web:'https://www.codelco.com/', empleo:'https://www.codelco.com/trabaja-en-codelco'},
+    {n:'BHP', tipo:'Privada extranjera', pais:'au', min:'cobre', reg:'Antofagasta / Tarapacá', faenas:['Escondida','Spence','Cerro Colorado'], dato:'Opera Escondida, la mayor mina de cobre del mundo.', desc:'Gigante minero de origen australiano. En Chile opera Minera Escondida (junto a socios) y Pampa Norte. Escondida es la faena de cobre más grande del planeta por producción.', web:'https://www.bhp.com/es', empleo:'https://www.bhp.com/es/careers/global-careers/careers-in-chile'},
+    {n:'Antofagasta Minerals', tipo:'Privada chilena', pais:'cl', min:'cobre', reg:'Coquimbo / Antofagasta', faenas:['Los Pelambres','Centinela','Antucoya','Zaldívar'], dato:'El brazo minero del grupo Luksic.', desc:'Grupo minero chileno controlado por la familia Luksic, listado en la Bolsa de Londres. Uno de los mayores productores privados de cobre del país.', web:'https://www.aminerals.cl/', empleo:'https://www.aminerals.cl/trabaja-con-nosotros'},
+    {n:'Anglo American', tipo:'Privada extranjera', pais:'gb', min:'cobre', reg:'Metropolitana / Valparaíso', faenas:['Los Bronces','El Soldado','Collahuasi (socio)'], dato:'Faenas en la zona central y en el norte.', desc:'Multinacional británica con fuerte presencia en Chile. Opera Los Bronces y El Soldado, y es socia de Collahuasi, una de las mayores minas de cobre del país.', web:'https://chile.angloamerican.com/', empleo:'https://chile.angloamerican.com/es-es/empleo/opportunidades-laborales'},
+    {n:'Collahuasi', tipo:'Consorcio', pais:'cl', min:'cobre', reg:'Tarapacá', faenas:['Collahuasi'], dato:'Una de las mayores minas de cobre de Chile.', desc:'Compañía Minera Doña Inés de Collahuasi, en el altiplano de Tarapacá. Es un consorcio entre Anglo American y Glencore, con participación japonesa.', web:'https://www.collahuasi.cl/', empleo:'https://www.collahuasi.cl/trabaja-con-nosotros/'},
+    {n:'Teck', tipo:'Privada extranjera', pais:'ca', min:'cobre', reg:'Tarapacá', faenas:['Quebrada Blanca'], dato:'Impulsa Quebrada Blanca (QB).', desc:'Empresa canadiense de recursos. En Chile su proyecto insignia es Quebrada Blanca, una gran operación de cobre en Tarapacá.', web:'https://www.teck.com/', empleo:'https://www.teck.com/careers/'},
+    {n:'Lundin Mining', tipo:'Privada extranjera', pais:'ca', min:'cobre', reg:'Atacama', faenas:['Candelaria','Caserones'], dato:'Cobre en la Región de Atacama.', desc:'Minera canadiense diversificada. En Chile opera Candelaria y Caserones, ambas en la Región de Atacama.', web:'https://lundinmining.com/', empleo:'https://lundinmining.com/careers/'},
+    {n:'Glencore', tipo:'Privada extranjera', pais:'ch', min:'cobre', reg:'Antofagasta', faenas:['Lomas Bayas','Altonorte (fundición)'], dato:'Minería y fundición de cobre.', desc:'Gigante suizo de commodities. En Chile opera Lomas Bayas y la fundición Altonorte, además de ser socio de Collahuasi.', web:'https://www.glencore.com/', empleo:'https://www.glencore.com/careers'},
+    {n:'Freeport-McMoRan', tipo:'Privada extranjera', pais:'us', min:'cobre', reg:'Antofagasta', faenas:['El Abra (con Codelco)'], dato:'Socia de Codelco en El Abra.', desc:'Gran productora de cobre estadounidense. En Chile participa en El Abra, en sociedad con Codelco.', web:'https://www.fcx.com/', empleo:'https://jobs.fmjobs.com/'},
+    {n:'SQM', tipo:'Privada chilena', pais:'cl', min:'litio', reg:'Antofagasta', faenas:['Salar de Atacama'], dato:'Mayor productora de litio del país.', desc:'Sociedad Química y Minera de Chile. Líder mundial en litio, yodo y nutrición vegetal, con su corazón en el Salar de Atacama.', web:'https://www.sqm.com/', empleo:'https://www.sqm.com/'},
+    {n:'Albemarle', tipo:'Privada extranjera', pais:'us', min:'litio', reg:'Antofagasta', faenas:['Salar de Atacama','La Negra (planta)'], dato:'Litio en el Salar de Atacama.', desc:'Compañía química estadounidense, uno de los mayores productores de litio del mundo. Opera en el Salar de Atacama y su planta La Negra.', web:'https://www.albemarle.com/es', empleo:'https://careers.albemarle.com/'},
+    {n:'Enami', tipo:'Estatal', pais:'cl', min:'varios', reg:'Norte de Chile', faenas:['Plantas y fundición Paipote'], dato:'Apoya a la pequeña y mediana minería.', desc:'Empresa Nacional de Minería. Compra, procesa y funde el mineral de los pequeños y medianos mineros, y lidera nuevos proyectos de litio.', web:'https://www.enami.cl/', empleo:'https://www.enami.cl/'},
+    {n:'Capstone Copper', tipo:'Privada extranjera', pais:'ca', min:'cobre', reg:'Atacama / Antofagasta', faenas:['Mantoverde','Mantos Blancos'], dato:'Cobre en el norte de Chile.', desc:'Minera de cobre canadiense. En Chile opera Mantoverde (Atacama) y Mantos Blancos (Antofagasta).', web:'https://capstonecopper.com/', empleo:'https://capstonecopper.com/careers/'},
+    {n:'Kinross', tipo:'Privada extranjera', pais:'ca', min:'oro', reg:'Atacama', faenas:['La Coipa'], dato:'Oro en la Región de Atacama.', desc:'Minera de oro canadiense. En Chile opera La Coipa, en la alta cordillera de Atacama.', web:'https://www.kinross.com/', empleo:'https://www.kinross.com/careers/'},
+    {n:'CAP Minería', tipo:'Privada chilena', pais:'cl', min:'hierro', reg:'Atacama / Coquimbo', faenas:['Los Colorados','El Romeral'], dato:'La gran minera del hierro chileno.', desc:'Filial minera del Grupo CAP. Es la principal productora de hierro y pellets de Chile, con operaciones en Atacama y Coquimbo.', web:'https://www.capmineria.cl/', empleo:'https://www.capmineria.cl/'}
+  ];
+
+  let filtro='todos';
+  function fchip(k,lbl){ const on=filtro===k; const c=k==='todos'?'#e8c9a6':MC[k]; return `<button data-f="${k}" class="chip" style="background:${c}${on?'26':'12'};border:1px solid ${c}${on?'66':'30'};color:${c}">${lbl}</button>`; }
+  function renderFiltros(){ $('filtros').innerHTML=['todos','cobre','litio','oro','hierro'].map(k=>fchip(k, k==='todos'?'Todas':k[0].toUpperCase()+k.slice(1))).join(''); }
+
+  function render(){
+    const list=EMP.map((e,i)=>({e,i})).filter(({e})=> filtro==='todos'|| e.min===filtro);
+    $('grid').innerHTML=list.map(({e,i})=>{ const c=MC[e.min]||'#cf9b6f'; return `
+      <div class="emp glass rounded-2xl p-4" data-i="${i}" role="button" tabindex="0" style="border-color:${c}22">
+        <div class="flex items-center justify-between gap-2">
+          <h3 class="text-base font-bold flex items-center gap-2"><span class="fi fi-${e.pais}" style="border-radius:3px"></span> ${e.n}</h3>
+          <span class="chip" style="background:${c}18;border:1px solid ${c}44;color:${c}">${e.min}</span>
+        </div>
+        <p class="text-[12px] text-stone-400 mt-1">${e.tipo} · ${e.reg}</p>
+        <p class="text-[13px] text-stone-300 mt-2 leading-snug">${e.dato}</p>
+        <p class="text-[12px] font-semibold mt-2 flex items-center gap-1" style="color:${c}">Ver ficha <i data-lucide="arrow-right" style="width:14px;height:14px"></i></p>
+      </div>`; }).join('');
+    drawIcons();
+  }
+
+  function openEmp(i){
+    const e=EMP[i], c=MC[e.min]||'#cf9b6f';
+    $('panel').innerHTML=`
+      <div class="text-center">
+        <div class="inline-grid place-items-center h-16 w-16 rounded-2xl mx-auto" style="background:${c}1e;border:1px solid ${c}4d"><i data-lucide="building-2" class="metric-icon" style="width:30px;height:30px;color:${c}"></i></div>
+        <h2 class="text-2xl font-extrabold mt-3 flex items-center justify-center gap-2"><span class="fi fi-${e.pais}" style="border-radius:3px"></span> ${e.n}</h2>
+        <div class="flex items-center justify-center gap-2 flex-wrap mt-2 text-sm" style="color:#c9b7a5"><span class="chip" style="color:${c};background:${c}22;border:1px solid ${c}55">${e.min}</span><span>${e.tipo}</span><span>📍 ${e.reg}</span></div>
+      </div>
+      <div class="glass rounded-2xl p-5 mt-5"><p class="text-[15px] text-stone-200 leading-relaxed">${e.desc}</p></div>
+      <div class="glass rounded-2xl p-4 mt-4">
+        <p class="text-sm font-bold flex items-center gap-2 mb-2"><i data-lucide="hard-hat" class="w-4 h-4" style="color:${c}"></i> Faenas principales</p>
+        <div class="flex flex-wrap gap-2">${e.faenas.map(f=>`<span class="chip" style="background:${c}14;border:1px solid ${c}33;color:#e6d4c4">${f}</span>`).join('')}</div>
+      </div>
+      <div class="rounded-2xl p-4 mt-4" style="background:${c}12;border:1px solid ${c}33"><p class="text-sm font-bold flex items-center gap-2" style="color:${c}"><i data-lucide="star" class="w-4 h-4"></i> Dato clave</p><p class="text-[14px] text-stone-200 mt-1">${e.dato}</p></div>
+      <div class="grid grid-cols-1 gap-2.5 mt-4">
+        <a href="${e.empleo}" target="_blank" rel="noopener" class="rounded-xl py-3 font-bold flex items-center justify-center gap-2" style="background:#a7d18a1e;border:1px solid #a7d18a4d;color:#c6e6b0"><i data-lucide="briefcase" style="width:18px;height:18px"></i> Trabaja aquí</a>
+        <a href="${e.web}" target="_blank" rel="noopener" class="rounded-xl py-3 font-bold flex items-center justify-center gap-2" style="background:${c}1e;border:1px solid ${c}4d;color:${c}"><i data-lucide="external-link" style="width:18px;height:18px"></i> Sitio oficial</a>
+        <button onclick="closeEmp()" class="rounded-xl py-3 font-bold flex items-center justify-center gap-2 text-stone-300" style="background:rgba(255,255,255,.04);border:1px solid rgba(196,168,148,.18)"><i data-lucide="arrow-left" style="width:18px;height:18px"></i> Volver</button>
+      </div>`;
+    $('ov').classList.add('on'); document.body.style.overflow='hidden'; $('ov').scrollTop=0; drawIcons();
+    try{ history.pushState({e:1},''); }catch(e){}
+  }
+  function closeEmp(){ $('ov').classList.remove('on'); document.body.style.overflow=''; }
+  window.closeEmp=closeEmp;
+
+  $('grid').addEventListener('click', e=>{ const c=e.target.closest('.emp'); if(c) openEmp(+c.dataset.i); });
+  $('filtros').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return; filtro=b.dataset.f; renderFiltros(); render(); });
+  $('closeb').addEventListener('click', closeEmp);
+  $('ov').addEventListener('click', e=>{ if(e.target.id==='ov') closeEmp(); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeEmp(); });
+  window.addEventListener('popstate', ()=>{ if($('ov').classList.contains('on')) closeEmp(); });
+
+  renderFiltros(); render(); drawIcons();
+</script>
+</body>
+</html>

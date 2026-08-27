@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Un día como hoy</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', ui-sans-serif, system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(201,168,136,0.15), transparent 60%),
+      radial-gradient(1000px 600px at 100% 0%, rgba(181,115,79,0.10), transparent 55%),
+      #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 40px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); backdrop-filter:blur(14px) saturate(130%); -webkit-backdrop-filter:blur(14px) saturate(130%); border:1px solid rgba(196,168,148,0.14); }
+    .metric-icon{ filter:drop-shadow(0 0 8px currentColor); }
+    a.lnk{ color:#e8c9a6; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(201,168,136,.15);border:1px solid rgba(201,168,136,.3)"><i data-lucide="calendar-days" class="metric-icon" style="width:26px;height:26px;color:#c9a888"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#c9a888;font-weight:700">Un día como hoy · ADN Minero</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Efemérides y datos de la minería, cada día uno nuevo</p>
+      </div>
+    </header>
+
+    <p id="fecha" class="text-center text-sm text-stone-400 mt-5 capitalize"></p>
+
+    <!-- TARJETA PRINCIPAL -->
+    <section id="hoy" class="mt-2"></section>
+
+    <!-- PRÓXIMAS -->
+    <section class="glass rounded-2xl p-5 mt-4">
+      <p class="text-sm font-bold flex items-center gap-2 mb-2"><i data-lucide="flag" class="w-4 h-4 text-[#cf9b6f]"></i> Próximas efemérides mineras</p>
+      <div id="prox" class="flex flex-col gap-2"></div>
+    </section>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Fechas y datos de referencia de divulgación. ADN Minero es un servicio independiente · <a href="adn-minero-historia.html" class="lnk">Historia</a> · <a href="index.html" class="lnk">Inicio</a></p>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const TZ='America/Santiago';
+
+  // Efemérides con fecha (mes-día)
+  const EFE={
+    '04-20':{y:2023, ic:'battery-charging', c:'#5fd1bd', t:'Estrategia Nacional del Litio', d:'Chile presenta su Estrategia Nacional del Litio, dándole al Estado un rol central en este mineral estratégico para las baterías.'},
+    '07-11':{y:1971, ic:'landmark', c:'#e8c9a6', t:'Nacionalización del Cobre', d:'El Congreso aprueba por unanimidad nacionalizar el cobre. Se conmemora como el Día de la Dignidad Nacional. Allende lo llamó "el sueldo de Chile".'},
+    '08-05':{y:2010, ic:'alert-triangle', c:'#e0715a', t:'Derrumbe en la mina San José', d:'Un derrumbe deja atrapados a 33 mineros a unos 700 m de profundidad, cerca de Copiapó. Comienza una historia que dio la vuelta al mundo.'},
+    '08-10':{y:null, ic:'pickaxe', c:'#cf9b6f', t:'Día del Minero', d:'Chile celebra el Día del Minero, en honor a San Lorenzo, patrono de los mineros. Un homenaje a quienes trabajan bajo tierra y en la faena.'},
+    '08-22':{y:2010, ic:'mail', c:'#a7d18a', t:'"Estamos bien en el refugio los 33"', d:'Tras 17 días sin noticias, aparece la célebre nota que confirmó que los 33 mineros de la mina San José estaban vivos.'},
+    '10-13':{y:2010, ic:'heart-handshake', c:'#7fbfd1', t:'Rescate de los 33', d:'Después de 69 días atrapados, los 33 mineros son rescatados uno a uno en la cápsula Fénix. El mundo entero lo siguió en vivo.'}
+  };
+  const MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+
+  // Datos rotativos (uno por día cuando no hay efeméride con fecha)
+  const DATOS=[
+    'Chile es el mayor productor de cobre del mundo: cerca de una cuarta parte del total mundial.',
+    'El Teniente, de Codelco, es la mina de cobre subterránea más grande del planeta.',
+    'Chile tiene las mayores reservas de litio del mundo, en el Salar de Atacama.',
+    'El cobre es tan importante para el país que a menudo se le llama "el sueldo de Chile".',
+    'Un auto eléctrico usa varias veces más cobre que uno a bencina.',
+    'Chuquicamata fue por décadas uno de los rajos abiertos más grandes del mundo.',
+    'Chile también es el N.º1 mundial en renio, un metal muy escaso que sale junto al cobre.',
+    'El litio se extrae de la salmuera bajo los salares y se seca al sol en grandes piscinas.',
+    'La Región de Antofagasta concentra gran parte de la minería del cobre chileno.',
+    'El símbolo químico del cobre es Cu, del latín "cuprum".',
+    'Chile es uno de los mayores productores de molibdeno del mundo, subproducto del cobre.',
+    'El cátodo es la lámina de cobre casi puro (99,99%), el producto de mayor valor.',
+    'Muchas faenas usan agua de mar desalinizada para cuidar el agua dulce del desierto.',
+    'El desierto de Atacama, cuna de la minería del norte, es el más árido del mundo.',
+    'Antes del cobre, el salitre fue la gran riqueza de Chile en el siglo XIX.',
+    'La flotación separa el cobre de la roca haciendo que las partículas se peguen a burbujas.',
+    'El "triángulo del litio" —Chile, Argentina y Bolivia— reúne cerca de la mitad del litio mundial.',
+    'Codelco, la estatal creada en 1976, es la mayor productora de cobre del mundo.',
+    'El pirquinero es el minero artesanal, una figura muy tradicional de Chile.',
+    'La minería del norte funciona con mucha energía solar, de las más potentes del planeta.',
+    'El royalty minero aporta recursos a regiones y comunas de todo Chile.',
+    'Chile lidera el mundo en cobre y es segundo en producción de litio.',
+    'El cobre es un excelente conductor: por eso está en cables, motores y electrónica.',
+    'Los enormes camiones mineros (CAEX) pueden cargar cientos de toneladas por viaje.',
+    'La ley de un mineral indica cuánto metal útil tiene la roca (por ejemplo, 0,7% de cobre).',
+    'El Sernageomin es el organismo que vela por la seguridad de las faenas mineras.',
+    'El concentrado de cobre se exporta principalmente a Asia, con China como gran comprador.',
+    'La cordillera de los Andes alberga gran parte de las minas chilenas, a miles de metros de altura.',
+    'El litio es el metal más liviano que existe.',
+    'La transición energética necesita cada vez más cobre y litio: dos minerales en los que Chile es potencia.'
+  ];
+
+  function fmtFecha(d){ return `${d.getDate()} de ${MESES[d.getMonth()]} de ${d.getFullYear()}`; }
+  function dayOfYear(d){ const s=new Date(d.getFullYear(),0,0); return Math.floor((d-s)/86400000); }
+
+  const now=new Date(new Date().toLocaleString('en-US',{timeZone:TZ}));
+  $('fecha').textContent='Hoy es '+fmtFecha(now);
+  const key=String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
+
+  const ef=EFE[key];
+  if(ef){
+    $('hoy').innerHTML=`<div class="glass rounded-2xl p-6 text-center" style="border-color:${ef.c}33">
+      <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full" style="background:${ef.c}1e;color:${ef.c};border:1px solid ${ef.c}4d">Efeméride minera</span>
+      <div class="inline-grid place-items-center h-16 w-16 rounded-2xl mx-auto mt-3" style="background:${ef.c}18;border:1px solid ${ef.c}3a"><i data-lucide="${ef.ic}" class="metric-icon" style="width:32px;height:32px;color:${ef.c}"></i></div>
+      ${ef.y?`<p class="text-3xl font-extrabold mt-3" style="color:${ef.c}">${ef.y}</p>`:''}
+      <h2 class="text-xl font-bold mt-1">${ef.t}</h2>
+      <p class="text-sm text-stone-300 mt-2 max-w-md mx-auto leading-relaxed">${ef.d}</p>
+    </div>`;
+  } else {
+    const dato=DATOS[dayOfYear(now)%DATOS.length];
+    $('hoy').innerHTML=`<div class="glass rounded-2xl p-6 text-center">
+      <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full" style="background:rgba(207,155,111,.15);color:#e8c9a6;border:1px solid rgba(207,155,111,.35)">Dato minero del día</span>
+      <div class="inline-grid place-items-center h-16 w-16 rounded-2xl mx-auto mt-3" style="background:rgba(207,155,111,.14);border:1px solid rgba(207,155,111,.3)"><i data-lucide="lightbulb" class="metric-icon" style="width:32px;height:32px;color:#cf9b6f"></i></div>
+      <p class="text-lg font-bold mt-3 max-w-md mx-auto leading-snug">${dato}</p>
+      <p class="text-[12px] text-stone-500 mt-3">Vuelve mañana: cada día hay uno nuevo. 👷</p>
+    </div>`;
+  }
+
+  // próximas efemérides (ordenadas desde hoy)
+  const md=now.getMonth()*100+now.getDate();
+  const prox=Object.entries(EFE).map(([k,v])=>{ const [m,d]=k.split('-').map(Number); return {k,v,ord:(m*100+d), key:k}; })
+    .sort((a,b)=>{ const A=a.ord<md?a.ord+1200:a.ord, B=b.ord<md?b.ord+1200:b.ord; return A-B; }).slice(0,4);
+  $('prox').innerHTML=prox.map(({v,key})=>{ const [m,d]=key.split('-').map(Number);
+    return `<div class="flex items-center gap-3 rounded-xl px-3 py-2" style="background:rgba(255,255,255,.03);border:1px solid rgba(196,168,148,.12)">
+      <div class="text-center shrink-0" style="min-width:52px"><p class="text-lg font-extrabold leading-none" style="color:${v.c}">${d}</p><p class="text-[10px] uppercase text-stone-500">${MESES[m-1].slice(0,3)}</p></div>
+      <div><p class="text-sm font-bold">${v.t}</p><p class="text-[11px] text-stone-400">${v.y?'desde '+v.y:'cada año'}</p></div>
+    </div>`; }).join('');
+
+  drawIcons();
+</script>
+</body>
+</html>
