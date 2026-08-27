@@ -43,7 +43,7 @@
 
     <!-- INICIO -->
     <div id="start" class="glass rounded-2xl p-6 mt-6 text-center">
-      <p class="text-sm text-stone-300">10 preguntas · sin apuro · aprendes en cada respuesta.</p>
+      <p class="text-sm text-stone-300">Banco de <b class="text-[#e8c9a6]">100 preguntas</b> · 10 al azar por partida · ¡cada juego es distinto!</p>
       <button id="btnStart" class="big w-full rounded-2xl py-4 mt-4 font-bold text-[16px] flex items-center justify-center gap-2 active:scale-95 transition"><i data-lucide="play" style="width:20px;height:20px"></i> Comenzar</button>
     </div>
 
@@ -81,21 +81,125 @@
   const drawIcons=()=>window.lucide&&lucide.createIcons();
 
   const QUESTIONS=[
+    // ── Cobre y producción ──
     {q:'¿Qué metal es el principal producto minero de Chile?', o:['Oro','Cobre','Litio','Hierro'], a:1, e:'Chile es el mayor productor de cobre del mundo: cerca de una cuarta parte del total mundial.'},
-    {q:'¿Cómo se llama la empresa estatal chilena del cobre?', o:['SQM','Enami','Codelco','BHP'], a:2, e:'Codelco (Corporación Nacional del Cobre) es la mayor productora de cobre del planeta.'},
-    {q:'¿En qué año se nacionalizó el cobre en Chile?', o:['1958','1971','1990','2005'], a:1, e:'El 11 de julio de 1971, por eso ese día se conmemora la Nacionalización del Cobre.'},
-    {q:'¿Cuál es la mina de cobre subterránea más grande del mundo?', o:['Escondida','Chuquicamata','El Teniente','Collahuasi'], a:2, e:'El Teniente, de Codelco, en la Región de O’Higgins.'},
-    {q:'¿De dónde se extrae el litio en Chile?', o:['De rocas en la cordillera','De la salmuera de los salares','Del fondo del mar','De minas subterráneas'], a:1, e:'Se bombea la salmuera bajo los salares y se evapora al sol. El Salar de Atacama es el principal.'},
-    {q:'¿Qué es la "ley" de un mineral?', o:['Una norma de seguridad','El porcentaje de metal útil en la roca','El precio del metal','El peso del mineral'], a:1, e:'Una ley de cobre de 0,7% significa 700 gramos de cobre por cada 100 kilos de roca.'},
-    {q:'¿Cómo se llama el desecho de la flotación que se guarda en tranques?', o:['Ripio','Estéril','Relave','Concentrado'], a:2, e:'El relave es roca molida con agua; se almacena de forma controlada en tranques.'},
+    {q:'¿Cuál es el símbolo químico del cobre?', o:['Co','Cu','Cb','Cr'], a:1, e:'El cobre es "Cu", del latín cuprum.'},
+    {q:'¿Qué parte de la producción mundial de cobre aporta Chile, aprox.?', o:['Un 5%','Un cuarto (~25%)','La mitad','Casi todo'], a:1, e:'Chile aporta cerca de una cuarta parte del cobre del mundo.'},
+    {q:'¿Para qué se usa principalmente el cobre?', o:['Conducir electricidad','Hacer combustible','Fabricar vidrio','Producir plástico'], a:0, e:'El cobre es un excelente conductor: cables, motores y electrónica.'},
+    {q:'¿Qué subproducto valioso acompaña al cobre, del que Chile es gran productor?', o:['Uranio','Molibdeno','Platino','Níquel'], a:1, e:'Chile es uno de los mayores productores de molibdeno del mundo, sacado junto al cobre.'},
+    {q:'¿En qué unidad se cotiza el cobre en el mercado internacional?', o:['Euros por kilo','Dólares por libra','Pesos por tonelada','Gramos de oro'], a:1, e:'El precio del cobre se expresa en dólares (o centavos) por libra.'},
+    {q:'¿De qué color es característicamente el cobre?', o:['Plateado','Rojizo-anaranjado','Dorado','Azulado'], a:1, e:'El cobre tiene un característico tono rojizo-anaranjado.'},
+    {q:'¿Qué es la "ley" de un mineral?', o:['Una norma de seguridad','El porcentaje de metal útil en la roca','El precio del metal','El peso de la roca'], a:1, e:'Una ley de cobre de 0,7% significa 700 gramos de cobre por cada 100 kilos de roca.'},
     {q:'¿Qué producto final de cobre tiene 99,99% de pureza?', o:['El concentrado','El cátodo','El blíster','El ánodo'], a:1, e:'El cátodo es la lámina de cobre casi puro, el producto de mayor valor.'},
+    {q:'Chile es el N.º1 del mundo en cobre y también en…', o:['Renio','Estaño','Carbón','Aluminio'], a:0, e:'Chile lidera el mundo en cobre y en renio, un metal muy escaso.'},
+
+    // ── Empresas y faenas ──
+    {q:'¿Cómo se llama la empresa estatal chilena del cobre?', o:['SQM','Enami','Codelco','BHP'], a:2, e:'Codelco (Corporación Nacional del Cobre) es la mayor productora de cobre del planeta.'},
+    {q:'¿Qué empresa opera la mina Escondida?', o:['Codelco','BHP','Anglo American','Teck'], a:1, e:'Escondida, la mayor mina de cobre del mundo por producción, es operada por BHP.'},
+    {q:'¿Cuál es la mina de cobre subterránea más grande del mundo?', o:['Escondida','Chuquicamata','El Teniente','Collahuasi'], a:2, e:'El Teniente, de Codelco, es la mina subterránea de cobre más grande del mundo.'},
+    {q:'¿Qué empresa opera El Teniente?', o:['BHP','Codelco','Antofagasta Minerals','Lundin'], a:1, e:'El Teniente es una de las divisiones históricas de Codelco.'},
+    {q:'¿Qué grupo económico chileno controla Antofagasta Minerals?', o:['Grupo Luksic','Grupo Matte','Grupo Angelini','Grupo Paulmann'], a:0, e:'Antofagasta Minerals pertenece al grupo Luksic.'},
+    {q:'¿Qué empresa opera Los Pelambres?', o:['Codelco','Antofagasta Minerals','Teck','Glencore'], a:1, e:'Los Pelambres, en Coquimbo, es de Antofagasta Minerals.'},
+    {q:'¿Qué empresa opera Quebrada Blanca?', o:['Teck','BHP','Codelco','SQM'], a:0, e:'Quebrada Blanca, en Tarapacá, es operada por Teck.'},
+    {q:'¿Qué faena de Anglo American está cerca de Santiago?', o:['Los Bronces','Spence','Candelaria','El Abra'], a:0, e:'Los Bronces, en la cordillera de la zona central, es de Anglo American.'},
+    {q:'¿Qué empresa nacional apoya a la pequeña y mediana minería?', o:['Codelco','Enami','Cochilco','Sernageomin'], a:1, e:'Enami (Empresa Nacional de Minería) compra y apoya la producción de los pequeños mineros.'},
+    {q:'¿En qué año se creó Codelco?', o:['1971','1976','1990','2005'], a:1, e:'Codelco se creó en 1976 para administrar las minas nacionalizadas.'},
+
+    // ── Geografía ──
     {q:'¿Qué región concentra la mayor parte de la minería del cobre?', o:['Metropolitana','Antofagasta','Biobío','Los Lagos'], a:1, e:'La Región de Antofagasta alberga faenas como Escondida, Chuquicamata y Spence.'},
-    {q:'¿Cuántos mineros fueron rescatados de la mina San José en 2010?', o:['12','24','33','40'], a:2, e:'Los 33 mineros fueron rescatados tras 69 días bajo tierra, en Atacama. Una hazaña que dio la vuelta al mundo.'},
-    {q:'¿Qué organismo estatal fiscaliza la seguridad minera en Chile?', o:['Cochilco','Sernageomin','SII','Enami'], a:1, e:'El Sernageomin (Servicio Nacional de Geología y Minería) vela por la seguridad de las faenas.'},
-    {q:'¿Para qué se usa principalmente el litio hoy?', o:['Joyería','Baterías recargables','Construcción','Combustible'], a:1, e:'El litio es clave para las baterías de autos eléctricos, celulares y almacenamiento de energía.'},
+    {q:'¿En qué desierto se ubica gran parte de la minería chilena?', o:['Sahara','Atacama','Gobi','Kalahari'], a:1, e:'El desierto de Atacama, el más árido del mundo, concentra la gran minería del norte.'},
+    {q:'¿Qué ciudad está junto a la mina Chuquicamata?', o:['Iquique','Calama','Copiapó','Arica'], a:1, e:'Calama, en Antofagasta, es la ciudad vecina de "Chuqui".'},
+    {q:'¿En qué región está la mina Collahuasi?', o:['Tarapacá','Coquimbo','Maule','Aysén'], a:0, e:'Collahuasi se ubica en la Región de Tarapacá, en el altiplano.'},
+    {q:'¿En qué región ocurrió el rescate de los 33 mineros (mina San José)?', o:['Antofagasta','Atacama','Coquimbo','Valparaíso'], a:1, e:'La mina San José está cerca de Copiapó, Región de Atacama.'},
+    {q:'¿En qué cordillera se ubican muchas de las grandes faenas?', o:['Los Andes','Los Alpes','Las Rocosas','Los Pirineos'], a:0, e:'La cordillera de los Andes alberga gran parte de las minas chilenas.'},
+    {q:'Muchas faenas están a gran altura. ¿Cómo se llama el malestar por la altitud?', o:['Vértigo','Puna o soroche','Insolación','Hipotermia'], a:1, e:'La "puna" o soroche es el mal agudo de montaña, común sobre los 3.000 m.'},
+    {q:'¿Dónde está el Salar de Atacama?', o:['Región de Antofagasta','Región de Ñuble','Región de Los Ríos','Región de Magallanes'], a:0, e:'El Salar de Atacama, corazón del litio, está en Antofagasta.'},
+    {q:'¿Para qué sirven los puertos mineros como Mejillones?', o:['Pescar','Embarcar y exportar mineral','Generar agua','Turismo'], a:1, e:'Los puertos permiten embarcar el concentrado y los cátodos hacia el mundo.'},
+    {q:'El concentrado de cobre chileno se exporta principalmente a…', o:['Asia (sobre todo China)','África','Oceanía','La Antártida'], a:0, e:'Asia, y en especial China, es el principal destino del cobre chileno.'},
+
+    // ── Litio ──
+    {q:'¿De dónde se extrae el litio en Chile?', o:['De rocas en la cordillera','De la salmuera de los salares','Del fondo del mar','De minas de carbón'], a:1, e:'Se bombea la salmuera bajo los salares y se evapora al sol.'},
+    {q:'¿Cuál es el principal salar productor de litio en Chile?', o:['Salar de Maricunga','Salar de Atacama','Salar de Surire','Salar de Pedernales'], a:1, e:'El Salar de Atacama es el más rico y el principal productor.'},
+    {q:'¿Para qué se usa principalmente el litio hoy?', o:['Joyería','Baterías recargables','Construcción','Combustible'], a:1, e:'El litio es clave para baterías de autos eléctricos, celulares y almacenamiento de energía.'},
+    {q:'¿Qué lugar ocupa Chile en reservas de litio del mundo?', o:['El primero','El quinto','El décimo','No tiene litio'], a:0, e:'Chile tiene las mayores reservas de litio identificadas del planeta.'},
+    {q:'¿Qué método usa Chile para producir litio en el Salar de Atacama?', o:['Evaporación solar','Perforación petrolera','Minería subterránea','Dragado marino'], a:0, e:'La salmuera se seca al sol en grandes piscinas de evaporación.'},
+    {q:'¿Qué países forman el "triángulo del litio"?', o:['Chile, Argentina y Bolivia','Chile, Perú y Ecuador','Chile, Brasil y Uruguay','Chile, México y Colombia'], a:0, e:'Chile, Argentina y Bolivia concentran gran parte del litio mundial.'},
+    {q:'¿Cuál es el "polvo blanco" final del proceso del litio?', o:['Sal común','Carbonato de litio','Yeso','Cemento'], a:1, e:'El carbonato de litio es la materia prima de las baterías.'},
+    {q:'¿En qué año lanzó Chile su Estrategia Nacional del Litio?', o:['2010','2016','2023','2030'], a:2, e:'La Estrategia Nacional del Litio fue anunciada en 2023.'},
+    {q:'El litio es, entre los metales, el más…', o:['Pesado','Liviano','Duro','Caro'], a:1, e:'El litio es el metal más liviano que existe.'},
+    {q:'¿Qué dos empresas producen litio hoy en el Salar de Atacama?', o:['SQM y Albemarle','BHP y Teck','Codelco y Enami','Anglo y Glencore'], a:0, e:'SQM (chilena) y Albemarle (estadounidense) operan en el Salar de Atacama.'},
+
+    // ── Historia ──
+    {q:'¿En qué año se nacionalizó el cobre en Chile?', o:['1958','1971','1990','2005'], a:1, e:'El 11 de julio de 1971 se nacionalizó el cobre, con apoyo unánime del Congreso.'},
+    {q:'¿Qué presidente firmó la nacionalización del cobre en 1971?', o:['Eduardo Frei Montalva','Salvador Allende','Augusto Pinochet','Patricio Aylwin'], a:1, e:'La nacionalización se concretó bajo el gobierno de Salvador Allende.'},
+    {q:'¿Bajo qué gobierno se dio la "chilenización del cobre" (1966)?', o:['Frei Montalva','Allende','Alessandri','Ibáñez'], a:0, e:'Eduardo Frei Montalva impulsó la chilenización, comprando parte de las mineras extranjeras.'},
+    {q:'Antes del cobre, ¿qué mineral marcó la economía chilena del siglo XIX?', o:['El salitre','El carbón','El oro','El estaño'], a:0, e:'El salitre (nitrato) fue el gran auge del norte, en las oficinas salitreras.'},
+    {q:'¿Por qué recurso se libró en parte la Guerra del Pacífico?', o:['El petróleo','El salitre','El oro','El agua'], a:1, e:'El conflicto tuvo como trasfondo las riquezas del salitre del norte.'},
+    {q:'¿Cuántos mineros fueron rescatados de la mina San José en 2010?', o:['12','24','33','40'], a:2, e:'Los 33 mineros fueron rescatados tras 69 días bajo tierra.'},
+    {q:'¿Cuántos días estuvieron atrapados los 33 mineros?', o:['9 días','33 días','69 días','100 días'], a:2, e:'Estuvieron 69 días atrapados antes de ser rescatados con vida.'},
+    {q:'¿Cómo se llamaba a los trabajadores del salitre en el norte?', o:['Pirquineros','Pampinos','Pircas','Pallaqueros'], a:1, e:'Los "pampinos" trabajaban y vivían en las pampas salitreras.'},
+    {q:'Al cobre se le llama popularmente…', o:['El oro negro','El sueldo de Chile','La sal blanca','El metal rey'], a:1, e:'Por su aporte al país, al cobre se le conoce como "el sueldo de Chile".'},
+    {q:'Antes de la Colonia, ¿qué pueblos ya trabajaban el cobre en el norte?', o:['Mapuches','Atacameños y diaguitas','Selknam','Rapanui'], a:1, e:'Atacameños y diaguitas trabajaban el cobre y el oro para herramientas y adornos.'},
+
+    // ── Procesos ──
+    {q:'¿Cuál es la primera etapa: triturar la roca en trozos más chicos?', o:['Molienda','Chancado','Flotación','Fundición'], a:1, e:'El chancado tritura la roca con máquinas llamadas chancadores.'},
+    {q:'¿Qué etapa muele la roca hasta dejarla como arena fina?', o:['Molienda','Lixiviación','Refinación','Fundición'], a:0, e:'La molienda libera las partículas de metal dejando la roca como polvo.'},
+    {q:'¿Qué proceso separa el cobre de la roca usando burbujas?', o:['Molienda','Flotación','Fundición','Chancado'], a:1, e:'En la flotación, las partículas de cobre se pegan a burbujas de aire y suben.'},
+    {q:'¿Cómo se llama el producto húmedo con ~30% de cobre que sale de la flotación?', o:['Cátodo','Concentrado','Relave','Ripio'], a:1, e:'El concentrado es lo que luego se funde o se exporta.'},
+    {q:'¿Qué proceso rocía el mineral de óxido con ácido para disolver el cobre?', o:['Flotación','Lixiviación','Molienda','Fundición'], a:1, e:'La lixiviación disuelve el cobre; el líquido se procesa por SX-EW.'},
+    {q:'¿Qué significa "SX-EW"?', o:['Extracción por solventes y electroobtención','Sistema de extracción de agua','Sulfuro extra washing','Separación por vapor'], a:0, e:'Purifica el cobre de la lixiviación y lo deposita en láminas con electricidad.'},
+    {q:'¿Qué instalación derrite el concentrado a altas temperaturas?', o:['La refinería','La fundición','La concentradora','El tranque'], a:1, e:'La fundición separa el cobre del azufre y el hierro con calor.'},
+    {q:'¿Cómo se llama el material de desecho de la flotación?', o:['Ripio','Estéril','Relave','Concentrado'], a:2, e:'El relave, roca molida con agua, se guarda en tranques.'},
+    {q:'¿Dónde se almacenan de forma controlada los relaves?', o:['En el mar','En un tranque de relaves','En camiones','En el rajo'], a:1, e:'El tranque de relaves es un gran depósito, como una represa.'},
+    {q:'¿Cómo se le llama a la roca sin valor que hay que remover?', o:['Concentrado','Estéril o lastre','Cátodo','Ley'], a:1, e:'El estéril (o lastre) es la roca sin metal que cubre al mineral.'},
+
+    // ── Economía, royalty e instituciones ──
+    {q:'¿Qué impuesto especial pagan las mineras por explotar un recurso de todos?', o:['El IVA','El royalty minero','La patente','El arancel'], a:1, e:'El royalty grava la explotación de un recurso natural que es de los chilenos.'},
+    {q:'¿Qué organismo estatal asesora y publica las estadísticas del cobre?', o:['Sernageomin','Cochilco','SII','Banco Central'], a:1, e:'Cochilco es la Comisión Chilena del Cobre.'},
+    {q:'¿Qué organismo fiscaliza la seguridad minera en Chile?', o:['Cochilco','Sernageomin','La mutualidad','El SII'], a:1, e:'El Sernageomin fiscaliza la seguridad de las faenas.'},
+    {q:'¿Cómo se llama el minero artesanal que trabaja una pequeña mina por su cuenta?', o:['Pampino','Pirquinero','Barretero','Capataz'], a:1, e:'El pirquinero es una figura tradicional de la minería chilena.'},
+    {q:'El cobre representa aproximadamente qué parte de las exportaciones de Chile', o:['Un 5%','Cerca de la mitad','Casi el 100%','Nada'], a:1, e:'El cobre es cerca de la mitad de las exportaciones del país.'},
+    {q:'¿A quiénes se reparte parte de la recaudación del royalty minero?', o:['Solo a las mineras','A regiones y comunas de Chile','A otros países','A los bancos'], a:1, e:'El royalty aporta a gobiernos regionales y comunas de todo Chile.'},
+
+    // ── Seguridad y normativa ──
+    {q:'¿Cuál es el reglamento base de seguridad minera en Chile?', o:['DS 132','Ley del Tránsito','DS 594','Código Civil'], a:0, e:'El Decreto Supremo 132 es el Reglamento de Seguridad Minera.'},
+    {q:'¿Qué ley cubre los accidentes del trabajo y enfermedades profesionales?', o:['Ley 16.744','Ley 20.000','Ley 21.000','Ley 18.290'], a:0, e:'La Ley 16.744 crea el seguro social contra accidentes laborales.'},
+    {q:'¿Qué significa "EPP"?', o:['Equipo de Protección Personal','Empresa Pública de Producción','Examen Preventivo Personal','Escuela Profesional de Prevención'], a:0, e:'El EPP incluye casco, antiparras, botas y más.'},
+    {q:'¿Qué elemento del EPP protege la cabeza?', o:['Antiparras','El casco','Los guantes','El respirador'], a:1, e:'El casco es obligatorio en toda faena.'},
+    {q:'Antes de intervenir una máquina, ¿qué se debe hacer?', o:['Apurarse','Bloquear su energía','Pintarla','Fotografiarla'], a:1, e:'El bloqueo y etiquetado corta y asegura la energía antes de trabajar.'},
+    {q:'¿A qué número se llama en Chile por una ambulancia (SAMU)?', o:['131','133','132','137'], a:0, e:'El 131 es el SAMU. Bomberos 132 y Carabineros 133.'},
+    {q:'El "Derecho a Saber" obliga al empleador a…', o:['Pagar más','Informar los riesgos del trabajo','Dar vacaciones','Regalar EPP'], a:1, e:'Debe informar y capacitar a cada trabajador sobre sus riesgos.'},
+    {q:'En faenas de gran altitud, ¿qué debe hacer el trabajador?', o:['Correr','Aclimatarse y controlarse','Ayunar','Trabajar de noche'], a:1, e:'La aclimatación y los controles de salud reducen el riesgo por la altura.'},
+
+    // ── Medio ambiente ──
     {q:'¿Qué recurso escaso cuidan las mineras usando agua de mar?', o:['El petróleo','El agua dulce','La electricidad','El aire'], a:1, e:'Muchas faenas desalinizan agua de mar para no gastar agua dulce en el desierto.'},
-    {q:'Antes del cobre, ¿qué mineral marcó la economía chilena en el siglo XIX?', o:['El salitre','El carbón','El oro','El estaño'], a:0, e:'El salitre (nitrato) fue el gran auge del norte antes del cobre, en las oficinas salitreras.'},
-    {q:'¿Qué proceso separa el cobre de la roca usando burbujas?', o:['Molienda','Flotación','Fundición','Chancado'], a:1, e:'En la flotación, las partículas de cobre se pegan a burbujas de aire y suben a la superficie.'}
+    {q:'¿Cómo se llama el proceso de quitarle la sal al agua de mar?', o:['Filtración','Desalinización','Evaporación','Congelación'], a:1, e:'La desalinización permite usar agua de mar en los procesos mineros.'},
+    {q:'¿Qué energía renovable aprovechan muchas faenas del norte?', o:['Solar','Geotérmica de volcán','Mareomotriz','Nuclear'], a:0, e:'El norte tiene una de las mayores radiaciones solares del mundo.'},
+    {q:'¿Qué zonas frágiles de cordillera se busca proteger?', o:['Los glaciares','Los volcanes','Las playas','Los bosques tropicales'], a:0, e:'Proteger glaciares y salares es parte del desafío ambiental.'},
+    {q:'¿Por qué el mundo necesita cada vez más cobre?', o:['Para la transición energética','Para hacer plástico','Para el papel','Para el vidrio'], a:0, e:'Autos eléctricos, paneles solares y baterías requieren mucho cobre.'},
+    {q:'¿Qué depósito minero puede contaminar si no se maneja bien?', o:['El cátodo','El tranque de relaves','El concentrado','El casco'], a:1, e:'Un tranque mal gestionado puede filtrar o colapsar; su seguridad es clave.'},
+
+    // ── Minerales, procesos y datos varios ──
+    {q:'¿Qué mineral de cobre está unido al azufre?', o:['Óxido','Sulfuro','Silicato','Carbonato'], a:1, e:'Los sulfuros se procesan por flotación y fundición; son la mayor parte del cobre chileno.'},
+    {q:'¿En qué unidad se mide típicamente el oro?', o:['Libras','Onzas troy','Litros','Metros'], a:1, e:'El oro se pesa y cotiza en onzas troy.'},
+    {q:'¿Qué es un "rajo" en minería?', o:['Un túnel','Una mina a cielo abierto','Una planta','Un puerto'], a:1, e:'El rajo abierto es un gran hoyo escalonado desde donde se extrae el mineral.'},
+    {q:'¿Cómo se llaman los enormes camiones que mueven el mineral?', o:['Camiones de extracción (CAEX)','Micros','Grúas','Trenes'], a:0, e:'Los CAEX (camiones de alto tonelaje) cargan cientos de toneladas por viaje.'},
+    {q:'El cobre es un excelente conductor de…', o:['Sonido','Electricidad y calor','Luz solamente','Nada'], a:1, e:'Por eso el cobre es esencial en cables y motores.'},
+    {q:'¿Qué metales preciosos aparecen como subproducto en minas chilenas?', o:['Oro y plata','Hierro y zinc','Plomo y estaño','Aluminio y níquel'], a:0, e:'Muchas minas de cobre recuperan también oro y plata.'},
+    {q:'¿Qué lámpara usaban antiguamente los mineros bajo tierra?', o:['De carburo (llama)','De neón','De led','Solar'], a:0, e:'La lámpara de carburo daba luz y ayudaba a advertir la falta de aire.'},
+    {q:'Históricamente, ¿qué animal alertaba de gases peligrosos en las minas?', o:['El perro','El canario','El gato','El caballo'], a:1, e:'El canario, muy sensible a los gases, avisaba del peligro en las galerías.'},
+    {q:'¿Qué día se celebra el Día del Minero en Chile?', o:['1 de mayo','10 de agosto','18 de septiembre','21 de mayo'], a:1, e:'El 10 de agosto, día de San Lorenzo, patrono de los mineros.'},
+    {q:'¿Cuál es la mina que fue el rajo abierto más grande y emblemático de Chile?', o:['El Teniente','Chuquicamata','Andina','El Soldado'], a:1, e:'Chuquicamata fue por décadas uno de los rajos abiertos más grandes del mundo.'},
+    {q:'¿Qué se obtiene al final de una refinería de cobre?', o:['Concentrado','Cátodos de 99,99%','Relave','Salmuera'], a:1, e:'La refinería entrega cátodos de cobre casi puro, listos para la industria.'},
+    {q:'El proceso que va de sulfuro a metal pasa por flotación y luego…', o:['Lixiviación','Fundición','Evaporación','Desalinización'], a:1, e:'Los sulfuros: flotación → concentrado → fundición → refinación.'},
+    {q:'¿Qué institución elabora el Reglamento de Seguridad Minera?', o:['El Ministerio de Minería','El Ministerio de Educación','El Banco Central','La CMF'], a:0, e:'El Reglamento (DS 132) es del Ministerio de Minería.'},
+    {q:'¿Qué caracteriza al desierto de Atacama, donde está la minería?', o:['Es el más lluvioso','Es el más árido del mundo','Es una selva','Está bajo el mar'], a:1, e:'Su extrema sequedad hace del agua un recurso muy valioso para la minería.'},
+    {q:'¿Qué región es cuna de Los Pelambres?', o:['Coquimbo','Aysén','Ñuble','Arica'], a:0, e:'Los Pelambres está en la Región de Coquimbo.'},
+    {q:'¿Qué elemento del EPP protege los ojos?', o:['El casco','Las antiparras','Las botas','Los guantes'], a:1, e:'Las antiparras protegen los ojos del polvo y las partículas.'},
+    {q:'Además del cobre y el litio, ¿qué otro mineral produce Chile en cantidad?', o:['Hierro','Diamantes','Petróleo','Carbón en masa'], a:0, e:'Chile también produce hierro (por ejemplo, CAP Minería), oro y plata.'},
+    {q:'¿Qué división de Codelco está en la alta cordillera de Valparaíso?', o:['Andina','Salvador','Gabriela Mistral','Ministro Hales'], a:0, e:'La División Andina de Codelco opera en la cordillera de la Región de Valparaíso.'},
+    {q:'¿Qué instrumento registra la magnitud de los sismos, tan frecuentes en Chile?', o:['El termómetro','El sismógrafo','La brújula','El barómetro'], a:1, e:'El sismógrafo mide los movimientos telúricos; Chile es muy sísmico.'},
+    {q:'¿Qué documento reúne las reglas internas de seguridad de una faena?', o:['La boleta','El Reglamento Interno de Higiene y Seguridad','La escritura','El contrato de arriendo'], a:1, e:'Toda empresa debe tener un Reglamento Interno de Orden, Higiene y Seguridad.'}
   ];
 
   const KEY='adn_trivia_best';
