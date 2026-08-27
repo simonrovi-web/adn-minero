@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Estrategia</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    :root{ --copper:#cf9b6f; --grow:#7fbf9a; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', ui-sans-serif, system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(127,191,154,0.13), transparent 60%),
+      radial-gradient(1000px 600px at 100% 0%, rgba(181,115,79,0.11), transparent 55%),
+      #141110; }
+    .wrap{ max-width:900px; margin:0 auto; padding:16px 16px 40px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); backdrop-filter:blur(14px) saturate(130%); -webkit-backdrop-filter:blur(14px) saturate(130%); border:1px solid rgba(196,168,148,0.14); }
+    .metric-icon{ filter:drop-shadow(0 0 8px currentColor); }
+    a.lnk{ color:#e8c9a6; }
+    .eje{ cursor:pointer; transition:transform .15s ease, border-color .25s ease, box-shadow .25s ease; }
+    .eje:hover{ transform:translateY(-2px); box-shadow:0 8px 26px rgba(0,0,0,.4); }
+    .eje:active{ transform:scale(.99); }
+    #ov{ position:fixed; inset:0; z-index:1000; display:none; overflow-y:auto; -webkit-overflow-scrolling:touch; background:rgba(10,8,7,.74); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); }
+    #ov.on{ display:block; animation:ovin .25s ease both; }
+    @keyframes ovin{ from{opacity:0} to{opacity:1} }
+    .sheet{ max-width:680px; margin:0 auto; min-height:100%; padding:16px 16px 48px; }
+    .panel{ animation:up .3s cubic-bezier(.2,.7,.3,1) both; }
+    @keyframes up{ from{opacity:0; transform:translateY(18px)} to{opacity:1; transform:none} }
+    .closeb{ position:sticky; top:8px; margin-left:auto; display:grid; place-items:center; width:42px;height:42px;border-radius:999px; cursor:pointer; background:linear-gradient(160deg,rgba(48,41,35,.95),rgba(28,23,19,.9)); border:1px solid rgba(196,168,148,.25); color:#e8c9a6; box-shadow:0 6px 18px rgba(0,0,0,.5); }
+    .closeb:active{ transform:scale(.92); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(127,191,154,.14);border:1px solid rgba(127,191,154,.32)"><i data-lucide="rocket" class="metric-icon" style="width:26px;height:26px;color:var(--grow)"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#a6d3b8;font-weight:700">Estrategia minera · ADN Minero</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Cómo la minería puede desarrollar a Chile</p>
+      </div>
+    </header>
+
+    <div class="mt-5">
+      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight flex items-center gap-3">Minería para el desarrollo <span class="fi fi-cl" style="border-radius:4px"></span></h1>
+      <p class="text-stone-400 text-sm mt-2 max-w-2xl">Chile es potencia minera, pero el desafío es que esa riqueza se traduzca en <b class="text-stone-300">desarrollo para el país y su gente</b>. Estos son los grandes pilares de una estrategia minera. <b class="text-stone-300">Toca cada uno</b> para ver el detalle.</p>
+    </div>
+
+    <!-- MARCO -->
+    <section class="glass rounded-2xl p-4 mt-5 flex items-start gap-3" style="border-color:rgba(127,191,154,.28)">
+      <i data-lucide="map" class="w-5 h-5 shrink-0 mt-0.5" style="color:var(--grow)"></i>
+      <p class="text-[13px] text-stone-300 leading-relaxed">Chile ya tiene una hoja de ruta oficial: la <b>Política Nacional Minera 2050</b> del Ministerio de Minería, que apunta a una minería <b>sostenible, con valor agregado y buenos empleos</b> de aquí a mediados de siglo. Los pilares de abajo resumen esa mirada.</p>
+    </section>
+
+    <!-- EJES -->
+    <div id="ejes" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4"></div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-8 leading-relaxed">Contenido de divulgación con iniciativas y metas de referencia; busca informar, no tomar posición política. ADN Minero es un servicio independiente · <a href="adn-minero-geopolitica.html" class="lnk">Geopolítica</a> · <a href="adn-minero-royalty.html" class="lnk">¿Dónde va la plata?</a> · <a href="index.html" class="lnk">Inicio</a></p>
+  </div>
+
+  <!-- DETALLE -->
+  <div id="ov"><div class="sheet"><button class="closeb" id="closeb" aria-label="Cerrar"><i data-lucide="x" style="width:22px;height:22px"></i></button><div id="panel" class="panel"></div></div></div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+
+  const EJES=[
+    {ic:'gem', c:'#cf9b6f', t:'Agregar valor', r:'De materia prima a productos elaborados',
+      long:'Hoy Chile exporta sobre todo <b>materia prima</b> (concentrado y cátodos de cobre, carbonato de litio). Agregar valor significa <b>procesar y elaborar más dentro del país</b>: cobre de alta pureza, alambrón, y en el futuro insumos para baterías de litio.',
+      porque:'Cada etapa que se hace en Chile deja más <b>empleo, tecnología e ingresos</b> aquí, en lugar de regalar ese valor afuera.',
+      inits:['Estrategia Nacional del Litio (litio con valor)','Fomento a cátodos y alambrón de cobre','Encadenamientos productivos con Corfo'],
+      meta:'Que una parte creciente del cobre y el litio se procese y agregue valor en Chile.'},
+
+    {ic:'cpu', c:'#7fb0d9', t:'Innovación y minería 4.0', r:'Tecnología, datos y autonomía',
+      long:'La minería moderna usa <b>camiones autónomos, sensores, IA, gemelos digitales</b> y automatización de procesos. Chile puede no solo aplicarla, sino <b>crear y exportar</b> esa tecnología.',
+      porque:'Más <b>productividad y seguridad</b>, y la oportunidad de vender <b>tecnología minera</b> al mundo, no solo minerales.',
+      inits:['Programa Nacional de Minería Alta Ley (Corfo)','Proveedores tecnológicos de clase mundial','Pilotos de hidrógeno verde y camiones a batería'],
+      meta:'Convertir a Chile en un polo de innovación minera y exportador de know-how.'},
+
+    {ic:'graduation-cap', c:'#d6a94f', t:'Capital humano', r:'Talento, técnicos y más mujeres',
+      long:'Formar a las personas: <b>técnicos, operadores e ingenieros</b>, con foco en las nuevas competencias digitales. Incluye acercar la minería a los jóvenes y aumentar la <b>participación femenina</b>.',
+      porque:'Sin talento no hay minería moderna; y es una <b>vía real</b> para que más chilenos accedan a buenos empleos.',
+      inits:['Consejo de Competencias Mineras (CCM)','CFT estatales en regiones mineras','Programas para más mujeres en minería'],
+      meta:'Cerrar la brecha de talento y aumentar fuertemente la participación de mujeres.'},
+
+    {ic:'leaf', c:'#7fbf9a', t:'Sostenibilidad', r:'Agua de mar, energía limpia y bajo carbono',
+      long:'Minería más limpia: <b>agua de mar desalinizada</b> en vez de agua dulce, <b>energías renovables</b>, menor huella de carbono y <b>relaves más seguros</b> (e incluso reprocesarlos).',
+      porque:'Los mercados más valiosos exigen minería responsable; y así se cuida el <b>agua, el clima y los territorios</b>.',
+      inits:['Desalación y uso de agua de mar','Energía solar en el norte','Carbono neutralidad a 2050','Reprocesamiento y relaves seguros'],
+      meta:'Ser referente mundial de minería baja en carbono y cuidadosa del agua.'},
+
+    {ic:'home', c:'#e0a35a', t:'Comunidades y regiones', r:'Que el desarrollo llegue al territorio',
+      long:'Que la riqueza minera se traduzca en <b>desarrollo real</b> para las regiones y comunidades donde ocurre: mejores servicios, empleo local e infraestructura. Es también <b>descentralizar</b> el país.',
+      porque:'Hoy gran parte de la riqueza se genera en el norte pero no siempre se refleja en la <b>calidad de vida local</b>.',
+      inits:['Royalty que aporta a comunas y regiones','Empleo y proveedores locales','Diálogo temprano con comunidades'],
+      meta:'Que las regiones mineras estén entre las de mejor calidad de vida del país.'},
+
+    {ic:'battery-charging', c:'#5fd1bd', t:'Minerales del futuro', r:'Litio, cobre y la transición energética',
+      long:'Posicionar a Chile en los minerales que mueve la <b>transición energética</b>: cobre para la electromovilidad, litio para baterías, y explorar otros minerales críticos.',
+      porque:'El mundo va a necesitar <b>mucho más</b> de estos minerales; Chile puede liderar ese suministro por décadas.',
+      inits:['Estrategia Nacional del Litio','Exploración de nuevos yacimientos','Estudio de tierras raras y otros críticos'],
+      meta:'Ser proveedor confiable y de largo plazo de los minerales de la transición.'},
+
+    {ic:'scale', c:'#a7c6de', t:'Reglas claras', r:'Institucionalidad, royalty y certeza',
+      long:'Un marco <b>estable y predecible</b>: un royalty que financie el desarrollo, <b>permisos más ágiles</b> y certeza jurídica para invertir con confianza, con un Estado que fiscaliza bien.',
+      porque:'La inversión minera es de <b>largo plazo</b> (décadas); necesita reglas claras y un Estado eficiente.',
+      inits:['Royalty minero (ley de 2023)','Modernización de permisos','Fiscalización de Sernageomin y Cochilco'],
+      meta:'Equilibrio entre atraer inversión y que el país capte una parte justa.'},
+
+    {ic:'network', c:'#a7d18a', t:'Proveedores y encadenamientos', r:'Un ecosistema chileno que exporta',
+      long:'Desarrollar un ecosistema de <b>empresas chilenas</b> que provean bienes, servicios y tecnología a la minería, capaces de <b>exportar</b> lo que aprenden.',
+      porque:'Los proveedores generan <b>empleo calificado</b> y diversifican la economía más allá de vender el mineral en bruto.',
+      inits:['Programa Alta Ley (Corfo)','Clusters de proveedores mineros','Exportación de servicios y tecnología'],
+      meta:'Un cluster minero-tecnológico chileno reconocido en el mundo.'}
+  ];
+
+  $('ejes').innerHTML=EJES.map((e,i)=>`
+    <div class="eje glass rounded-2xl p-4" data-i="${i}" role="button" tabindex="0" style="border-color:${e.c}22">
+      <div class="flex items-start gap-3">
+        <div class="h-11 w-11 rounded-xl grid place-items-center shrink-0" style="background:${e.c}18;border:1px solid ${e.c}3a"><i data-lucide="${e.ic}" class="w-5 h-5" style="color:${e.c}"></i></div>
+        <div class="min-w-0">
+          <h3 class="text-base font-bold leading-tight">${e.t}</h3>
+          <p class="text-[12px] text-stone-400 mt-0.5">${e.r}</p>
+        </div>
+      </div>
+      <p class="text-[12px] font-semibold mt-3 flex items-center gap-1" style="color:${e.c}">Ver detalle <i data-lucide="arrow-right" style="width:14px;height:14px"></i></p>
+    </div>`).join('');
+
+  function openEje(i){
+    const e=EJES[i];
+    $('panel').innerHTML=`
+      <div class="text-center">
+        <div class="inline-grid place-items-center h-16 w-16 rounded-2xl mx-auto" style="background:${e.c}1e;border:1px solid ${e.c}4d"><i data-lucide="${e.ic}" class="metric-icon" style="width:30px;height:30px;color:${e.c}"></i></div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold mt-3">${e.t}</h2>
+        <p class="text-sm mt-1" style="color:${e.c}">${e.r}</p>
+      </div>
+      <div class="glass rounded-2xl p-5 mt-5"><p class="text-[15px] text-stone-200 leading-relaxed">${e.long}</p></div>
+      <div class="glass rounded-2xl p-4 mt-4">
+        <p class="text-sm font-bold flex items-center gap-2"><i data-lucide="help-circle" class="w-4 h-4" style="color:${e.c}"></i> ¿Por qué importa?</p>
+        <p class="text-[14px] text-stone-300 mt-1 leading-relaxed">${e.porque}</p>
+      </div>
+      <div class="glass rounded-2xl p-4 mt-4">
+        <p class="text-sm font-bold flex items-center gap-2 mb-2"><i data-lucide="list-checks" class="w-4 h-4" style="color:${e.c}"></i> Iniciativas y ejemplos</p>
+        <div class="flex flex-col gap-2">${e.inits.map(t=>`<div class="flex items-start gap-2.5 text-[14px] text-stone-300"><i data-lucide="check" class="w-4 h-4 shrink-0 mt-0.5" style="color:${e.c}"></i><span>${t}</span></div>`).join('')}</div>
+      </div>
+      <div class="rounded-2xl p-4 mt-4" style="background:${e.c}12;border:1px solid ${e.c}33">
+        <p class="text-sm font-bold flex items-center gap-2" style="color:${e.c}"><i data-lucide="target" class="w-4 h-4"></i> La meta</p>
+        <p class="text-[14px] text-stone-200 mt-1 leading-relaxed">${e.meta}</p>
+      </div>
+      <button onclick="closeEje()" class="w-full rounded-2xl py-3.5 mt-5 font-bold flex items-center justify-center gap-2 active:scale-95 transition" style="background:${e.c}1e;border:1px solid ${e.c}4d;color:${e.c}"><i data-lucide="arrow-left" style="width:18px;height:18px"></i> Volver a los pilares</button>`;
+    $('ov').classList.add('on'); document.body.style.overflow='hidden'; $('ov').scrollTop=0; drawIcons();
+    try{ history.pushState({e:1},''); }catch(e){}
+  }
+  function closeEje(){ $('ov').classList.remove('on'); document.body.style.overflow=''; }
+  window.closeEje=closeEje;
+
+  $('ejes').addEventListener('click', e=>{ const c=e.target.closest('.eje'); if(c) openEje(+c.dataset.i); });
+  $('ejes').addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ const c=e.target.closest('.eje'); if(c){ e.preventDefault(); openEje(+c.dataset.i); } } });
+  $('closeb').addEventListener('click', closeEje);
+  $('ov').addEventListener('click', e=>{ if(e.target.id==='ov') closeEje(); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeEje(); });
+  window.addEventListener('popstate', ()=>{ if($('ov').classList.contains('on')) closeEje(); });
+
+  drawIcons();
+</script>
+</body>
+</html>
