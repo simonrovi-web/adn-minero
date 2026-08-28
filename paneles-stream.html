@@ -77,11 +77,27 @@
   const SHOW_TAG = p.get('label') !== '0';
   if (!SHOW_TAG) document.getElementById('tag').style.display = 'none';
 
-  let LIST = PANELS;
-  const only = p.get('only');
-  if (only){ const w=only.split(',').map(s=>s.trim().toLowerCase()); const f=PANELS.filter(x=>w.some(k=>x[0].includes(k))); if(f.length) LIST=f; }
-  const skip = p.get('skip');
-  if (skip){ const w=skip.split(',').map(s=>s.trim().toLowerCase()); LIST=LIST.filter(x=>!w.some(k=>x[0].includes(k))); }
+  const findPanel = key => { key=(key||'').trim().toLowerCase(); return PANELS.find(x=>x[0].toLowerCase().includes(key)); };
+  let LIST = null;
+  // Secuencia personalizada: ?seq=prensa:5,aporte-fiscal:2,...  (minutos por panel; se puede repetir)
+  const seq = p.get('seq');
+  if (seq){
+    LIST = seq.split(',').map(tok=>{
+      const parts = tok.split(':'); const pnl = findPanel(parts[0]); if(!pnl) return null;
+      let sec = SECONDS; if(parts[1]){ const m=parseFloat(parts[1]); if(m>0) sec=Math.round(m*60); }
+      return { url:pnl[0], name:pnl[1], seconds:Math.max(10, sec) };
+    }).filter(Boolean);
+    if(!LIST.length) LIST=null;
+  }
+  // Modo por defecto (todos, duración fija) con filtros only/skip
+  if (!LIST){
+    let base = PANELS;
+    const only = p.get('only');
+    if (only){ const w=only.split(',').map(s=>s.trim().toLowerCase()); const f=PANELS.filter(x=>w.some(k=>x[0].includes(k))); if(f.length) base=f; }
+    const skip = p.get('skip');
+    if (skip){ const w=skip.split(',').map(s=>s.trim().toLowerCase()); base=base.filter(x=>!w.some(k=>x[0].includes(k))); }
+    LIST = base.map(x=>({ url:x[0], name:x[1], seconds:SECONDS }));
+  }
 
   const fa=document.getElementById('fa'), fb=document.getElementById('fb'), tagt=document.getElementById('tagt');
   let i=0, active=fa, hidden=fb, scrollRAF=null;
@@ -100,7 +116,8 @@
     }catch(e){ return; }
     if(max < 60) return; // panel corto o tipo-presentación: no se mueve
     const holdTop=9000, holdBottom=6000;
-    const travel=Math.max(12000, SECONDS*1000 - holdTop - holdBottom);
+    const slotMs=(LIST[i]?LIST[i].seconds:SECONDS)*1000;
+    const travel=Math.max(12000, slotMs - holdTop - holdBottom);
     const t0=performance.now();
     function step(now){
       const e=now-t0; let y;
@@ -114,7 +131,7 @@
   }
 
   async function swapTo(idx){
-    const [url,name]=LIST[idx];
+    const {url,name}=LIST[idx];
     await loadInto(hidden, url);
     tagt.innerHTML = name + ' <small>· ADN Minero</small>';
     hidden.classList.add('on'); active.classList.remove('on');
@@ -122,10 +139,10 @@
     setTimeout(()=>startScroll(active), 800); // deja renderizar antes de medir
   }
 
-  function scheduleNext(){ setTimeout(tick, SECONDS*1000); }
+  function scheduleNext(){ setTimeout(tick, LIST[i].seconds*1000); }
   async function tick(){ i=(i+1)%LIST.length; await swapTo(i); scheduleNext(); }
   async function start(){
-    const [url,name]=LIST[0];
+    const {url,name}=LIST[0];
     await loadInto(active, url);
     tagt.innerHTML = name + ' <small>· ADN Minero</small>';
     active.classList.add('on');
