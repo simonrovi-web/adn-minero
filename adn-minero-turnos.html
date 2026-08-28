@@ -37,6 +37,7 @@
     .mcell{ aspect-ratio:1; border-radius:7px; display:grid; place-items:center; font-size:12.5px; font-weight:700; }
     .mcell.today{ outline:2px solid #fff; outline-offset:1px; }
   </style>
+  <script src="adn-profile.js"></script>
   <script src="adn-ui.js" defer></script>
 </head>
 <body>
@@ -214,6 +215,8 @@
   }
 
   // init
+  // Prefill del turno desde "Mi Faena" (perfil)
+  (function(){ try{ const pr=window.ADNProfile&&ADNProfile.get(); if(pr&&pr.turno){ const i=PRESETS.findIndex(x=>x[0]===pr.turno); if(i>=0) sel=i; } }catch(e){} })();
   buildChips();
   const tt=today0(); $('start').value=`${tt.getFullYear()}-${String(tt.getMonth()+1).padStart(2,'0')}-${String(tt.getDate()).padStart(2,'0')}`;
   $('chips').addEventListener('click',e=>{ const b=e.target.closest('.chip'); if(!b) return; sel=+b.dataset.i; buildChips(); $('customBox').classList.toggle('hidden', PRESETS[sel][0]!=='Personalizado'); calc(); });
