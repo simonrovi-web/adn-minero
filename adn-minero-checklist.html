@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Autochequeo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    :root{ --copper:#cf9b6f; --ok:#7fbf9a; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', ui-sans-serif, system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(127,191,154,0.12), transparent 60%),
+      radial-gradient(1000px 600px at 100% 0%, rgba(181,115,79,0.10), transparent 55%),
+      #141110; }
+    .wrap{ max-width:620px; margin:0 auto; padding:16px 16px 40px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); backdrop-filter:blur(14px) saturate(130%); -webkit-backdrop-filter:blur(14px) saturate(130%); border:1px solid rgba(196,168,148,0.14); }
+    .metric-icon{ filter:drop-shadow(0 0 8px currentColor); }
+    a.lnk{ color:#e8c9a6; }
+    .sec-h{ font-size:1rem; font-weight:800; display:flex; align-items:center; gap:8px; }
+    .item{ display:flex; align-items:center; gap:12px; padding:12px 13px; border-radius:13px; cursor:pointer; border:1px solid rgba(196,168,148,.14); background:rgba(255,255,255,.03); transition:.15s; user-select:none; }
+    .item:active{ transform:scale(.99); }
+    .item.on{ background:rgba(127,191,154,.12); border-color:rgba(127,191,154,.4); }
+    .box{ height:26px; width:26px; border-radius:8px; border:2px solid rgba(196,168,148,.4); display:grid; place-items:center; flex:0 0 auto; transition:.15s; }
+    .item.on .box{ background:var(--ok); border-color:var(--ok); }
+    .box i{ width:16px; height:16px; color:#20160f; opacity:0; }
+    .item.on .box i{ opacity:1; }
+    .item .tx{ font-size:14.5px; font-weight:600; }
+    .item.on .tx{ color:#cfe8d8; }
+    .ring{ --p:0; height:120px; width:120px; border-radius:50%; display:grid; place-items:center; margin:0 auto;
+      background:conic-gradient(var(--ok) calc(var(--p)*1%), rgba(255,255,255,.07) 0); transition:--p .5s ease; }
+    .ring .inner{ height:96px; width:96px; border-radius:50%; background:#191411; display:grid; place-items:center; text-align:center; }
+  </style>
+  <script src="adn-ui.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(127,191,154,.15);border:1px solid rgba(127,191,154,.32)"><i data-lucide="clipboard-check" class="metric-icon" style="width:26px;height:26px;color:var(--ok)"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#a7d1ba;font-weight:700">Autochequeo Pre-Turno · ADN Minero</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Un repaso personal antes de entrar a la faena</p>
+      </div>
+    </header>
+
+    <!-- PROGRESO -->
+    <section class="glass rounded-2xl p-5 mt-4 text-center">
+      <div class="ring" id="ring"><div class="inner"><div><p id="pct" class="text-3xl font-extrabold" style="font-variant-numeric:tabular-nums">0%</p><p class="text-[11px] text-stone-400" id="pcount">0 / 0</p></div></div></div>
+      <p id="msg" class="text-sm font-semibold mt-3">Marca cada punto a medida que lo revisas.</p>
+      <p class="text-[11px] text-stone-500 mt-1" id="todayTxt"></p>
+      <button id="reset" class="text-[12px] text-stone-500 mt-2 underline">Reiniciar para un nuevo turno</button>
+    </section>
+
+    <div id="groups"></div>
+
+    <div class="mt-4 rounded-2xl p-4" style="background:rgba(224,90,63,.08);border:1px solid rgba(224,90,63,.24)">
+      <p class="text-[12px] text-stone-200 flex items-start gap-2 leading-relaxed"><i data-lucide="info" class="w-4 h-4 shrink-0 mt-0.5" style="color:#e0a35a"></i>
+        <span>Este es un <b>recordatorio personal</b>, no reemplaza el <b>ART/AST</b> ni los procedimientos de tu empresa. Ante cualquier duda o condición insegura, <b>detén la tarea</b> y avisa a tu supervisor.</span></p>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Volver a casa es la meta N.º1 · <a href="adn-minero-seguridad.html" class="lnk">Seguridad</a> · <a href="adn-minero-emergencias.html" class="lnk">Emergencias</a> · <a href="index.html" class="lnk">Inicio</a></p>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const GROUPS=[
+    { t:'Equipo de protección (EPP)', ic:'hard-hat', c:'#e0955f', items:[
+      'Casco en buen estado','Lentes de seguridad','Protección auditiva','Guantes adecuados a la tarea',
+      'Calzado de seguridad','Ropa/chaleco de alta visibilidad','Protección respiratoria (si la tarea lo exige)','Arnés y cabo de vida (si hay trabajo en altura)'
+    ]},
+    { t:'Mi condición', ic:'heart-pulse', c:'#7fbfd1', items:[
+      'Dormí y descansé bien','Sin alcohol ni drogas','Sin medicamentos que den sueño','Bien hidratado y alimentado','Me siento en condiciones de trabajar'
+    ]},
+    { t:'Antes de empezar la tarea', ic:'list-checks', c:'#d6a94f', items:[
+      'Conozco el plan y los riesgos de la jornada','Hice/leí el ART o AST','Herramientas y equipos revisados','Vehículo/equipo con chequeo pre-uso (si corresponde)','Sé cómo comunicarme (radio/teléfono)','Conozco las vías de evacuación y punto de encuentro'
+    ]}
+  ];
+
+  // estado por día
+  function todayKey(){ const d=new Date(); return 'adn_chk_'+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+  let state={};
+  function load(){ try{ state=JSON.parse(localStorage.getItem(todayKey())||'{}'); }catch(e){ state={}; } }
+  function save(){ try{ localStorage.setItem(todayKey(), JSON.stringify(state)); }catch(e){} }
+
+  let TOTAL=0, ids=[];
+  function render(){
+    let html=''; TOTAL=0; ids=[];
+    GROUPS.forEach((g,gi)=>{
+      html+=`<section class="glass rounded-2xl p-5 mt-4"><h2 class="sec-h"><i data-lucide="${g.ic}" class="w-5 h-5" style="color:${g.c}"></i> ${g.t}</h2><div class="grid gap-2 mt-3">`;
+      g.items.forEach((it,ii)=>{ const id=gi+'_'+ii; ids.push(id); TOTAL++;
+        const on=!!state[id];
+        html+=`<div class="item ${on?'on':''}" data-id="${id}"><span class="box"><i data-lucide="check"></i></span><span class="tx">${it}</span></div>`;
+      });
+      html+=`</div></section>`;
+    });
+    $('groups').innerHTML=html;
+    drawIcons(); update();
+  }
+  function update(){
+    const done=ids.filter(id=>state[id]).length;
+    const pct=TOTAL?Math.round(done/TOTAL*100):0;
+    $('ring').style.setProperty('--p', pct);
+    $('pct').textContent=pct+'%'; $('pcount').textContent=done+' / '+TOTAL;
+    const m=$('msg');
+    if(pct===100){ m.textContent='✅ ¡Listo! Revisaste todos los puntos. Buen turno.'; m.style.color='#8fe0b8'; }
+    else if(pct>=60){ m.textContent='Vas bien, te faltan algunos puntos.'; m.style.color='#e6d4c4'; }
+    else { m.textContent='Marca cada punto a medida que lo revisas.'; m.style.color='#e6d4c4'; }
+  }
+  $('groups').addEventListener('click',e=>{ const el=e.target.closest('.item'); if(!el) return;
+    const id=el.dataset.id; state[id]=!state[id]; el.classList.toggle('on', state[id]); save(); update();
+  });
+  $('reset').addEventListener('click',()=>{ state={}; save(); render(); });
+
+  const d=new Date(); $('todayTxt').textContent='Tu avance se guarda para hoy · '+d.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long'});
+  load(); render();
+</script>
+</body>
+</html>
