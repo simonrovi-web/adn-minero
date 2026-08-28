@@ -76,8 +76,11 @@
       </div>
     </div>
 
+    <!-- HOY (resumen en vivo) -->
+    <div id="hoy" class="mt-8 hidden"></div>
+
     <!-- MI FAENA (perfil) -->
-    <div id="miFaena" class="mt-8 hidden"></div>
+    <div id="miFaena" class="mt-4 hidden"></div>
 
     <!-- MIS PANELES (favoritos) -->
     <section id="sec-fav" class="mt-10 hidden">
@@ -290,6 +293,7 @@
       if (favItems.length) document.getElementById('grid-fav').innerHTML = favItems.map(p=>card(p, VIVO.includes(p))).join('');
       renderHomeCats();
       renderProfile();
+      renderHoy();
       window.lucide && lucide.createIcons();
       applyFilter();
       applyTvLive();
@@ -367,6 +371,51 @@
       const clr=ov.querySelector('#mfClear'); if(clr) clr.onclick=()=>{ ADNProfile.clear(); close(); renderProfile(); };
     }
 
+    // ===== Pantalla "Hoy" (resumen en vivo) =====
+    const PFX = location.pathname.indexOf('/app/')>=0 ? '../' : '';
+    function tileH(href,ic,col,lbl,id){
+      return `<a href="${PFX}${href}" class="glass rounded-xl p-2.5 flex items-center gap-2.5 active:scale-95 transition" style="text-decoration:none">
+        <i data-lucide="${ic}" class="w-5 h-5 shrink-0" style="color:${col}"></i>
+        <div class="min-w-0"><p class="text-[10px] text-stone-400 leading-none">${lbl}</p><p id="${id}" class="text-sm font-bold truncate mt-0.5" style="font-variant-numeric:tabular-nums">…</p></div></a>`;
+    }
+    function renderHoy(){
+      const el=document.getElementById('hoy'); if(!el) return;
+      const p=window.ADNProfile&&ADNProfile.get();
+      const climaLbl=(p&&p.faena)?p.faena:'Clima de faenas';
+      el.innerHTML=`<div class="glass rounded-2xl p-4">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-sm font-bold flex items-center gap-2"><i data-lucide="sunrise" class="w-4 h-4" style="color:#e0a35a"></i> Hoy en la minería</h2>
+          <span class="text-[11px] text-stone-500 capitalize" id="hoyDate"></span>
+        </div>
+        <div class="grid grid-cols-2 gap-2.5">
+          ${tileH('adn-minero-commodities.html','coins','#cf9b6f','Cobre','hCobre')}
+          ${tileH('adn-minero-sismos.html','activity','#e05a3f','Último sismo','hSismo')}
+          ${tileH('adn-minero-panel.html','cloud-sun','#7fbfd1',climaLbl,'hClima')}
+          ${tileH('adn-minero-tv.html','tv','#e0715a','ADN Minero TV','hTv')}
+        </div>
+        <a href="${PFX}adn-minero-prensa.html" class="flex items-start gap-2 mt-2.5 glass rounded-xl p-2.5 active:scale-[.99] transition" style="text-decoration:none">
+          <i data-lucide="newspaper" class="w-4 h-4 shrink-0 mt-0.5" style="color:#e8c9a6"></i>
+          <p id="hNews" class="text-[12px] text-stone-300 leading-snug">Cargando el titular del día…</p></a>
+      </div>`;
+      const d=new Date(); const hd=document.getElementById('hoyDate'); if(hd) hd.textContent=d.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long'});
+      window.lucide && lucide.createIcons();
+      fetchHoy();
+    }
+    function setHoy(id,v){ const e=document.getElementById(id); if(e&&v!=null) e.textContent=v; }
+    async function fetchHoy(){
+      try{ const j=await (await fetch('https://mindicador.cl/api/libra_cobre',{cache:'no-store'})).json(); const v=j.serie&&j.serie[0]&&j.serie[0].valor; if(v) setHoy('hCobre','US$ '+v.toFixed(2)); }catch(e){}
+      try{ const u='https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=1&orderby=time&minmagnitude=2.5&minlatitude=-56&maxlatitude=-17&minlongitude=-77&maxlongitude=-66';
+        const j=await (await fetch(u,{cache:'no-store'})).json(); const f=j.features&&j.features[0];
+        if(f){ const m=f.properties.mag, h=Math.round((Date.now()-f.properties.time)/36e5); setHoy('hSismo','M'+(m||0).toFixed(1)+' · '+(h<1?'recién':h<24?(h+' h'):(Math.round(h/24)+' d'))); } }catch(e){}
+      const p=window.ADNProfile&&ADNProfile.get();
+      const co=p&&p.faena&&ADNProfile.FAENA_COORD&&ADNProfile.FAENA_COORD[p.faena];
+      if(co){ try{ const j=await (await fetch('https://api.open-meteo.com/v1/forecast?latitude='+co[0]+'&longitude='+co[1]+'&current=temperature_2m,wind_speed_10m&wind_speed_unit=kmh&timezone=America%2FSantiago',{cache:'no-store'})).json(); const w=j.current; if(w) setHoy('hClima', Math.round(w.temperature_2m)+'° · '+Math.round(w.wind_speed_10m)+' km/h'); }catch(e){} }
+      else setHoy('hClima','34 faenas');
+      setHoy('hTv', TV_LIVE?'EN VIVO 🔴':'fuera de aire');
+      try{ const API='https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent('https://news.google.com/rss/search?q='+encodeURIComponent('minería Chile cobre litio')+'&hl=es-419&gl=CL&ceid=CL:es');
+        const j=await (await fetch(API,{cache:'no-store'})).json(); if(j.items&&j.items[0]){ let t=j.items[0].title; const i=t.lastIndexOf(' - '); if(i>20)t=t.slice(0,i); const e=document.getElementById('hNews'); if(e) e.textContent=t.trim(); } }catch(e){}
+    }
+
     // ===== ADN Minero TV: indicador "EN VIVO" en la tarjeta =====
     const TV_CH='UCe3J26HArZLiRaShu7ogHag', TV_WK='https://adn-muro.simonrovi.workers.dev';
     let TV_LIVE=false;
@@ -379,6 +428,7 @@
           if(badge){ badge.className='text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full inline-flex items-center gap-1'; badge.style.cssText='background:#e0303022;color:#ff6a5a;border:1px solid #e0303066'; badge.innerHTML='<span style="width:7px;height:7px;border-radius:50%;background:#ff4433;display:inline-block;animation:pulseP 1.4s infinite"></span> EN VIVO'; }
         } else { a.style.boxShadow=''; }
       });
+      try{ const ht=document.getElementById('hTv'); if(ht) ht.textContent=TV_LIVE?'EN VIVO 🔴':'fuera de aire'; }catch(e){}
     }
     async function pollTv(){ try{ const j=await (await fetch(TV_WK+'/yt/live?channel='+TV_CH,{cache:'no-store'})).json(); TV_LIVE=!!j.live; }catch(e){ TV_LIVE=false; } applyTvLive(); }
     pollTv(); setInterval(pollTv, 60000);
@@ -394,6 +444,7 @@
 
       // Inicio (tarjetas de categoría), perfil y favoritos: solo en la vista de inicio
       document.getElementById('homeCats').classList.toggle('hidden', !home);
+      document.getElementById('hoy').classList.toggle('hidden', !home);
       document.getElementById('miFaena').classList.toggle('hidden', !home);
       document.getElementById('sec-fav').classList.toggle('hidden', !home || favCount===0);
       // Barra "volver": solo dentro de una categoría
