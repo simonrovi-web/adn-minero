@@ -67,6 +67,7 @@
   <!-- OVERLAY DE DETALLE -->
   <div id="ov"><div class="sheet"><button class="closeb" id="closeb" aria-label="Cerrar"><i data-lucide="x" style="width:22px;height:22px"></i></button><div id="panel" class="panel"></div></div></div>
 
+<script src="adn-charts.js"></script>
 <script>
   const $=id=>document.getElementById(id);
   const drawIcons=()=>window.lucide&&lucide.createIcons();
@@ -140,26 +141,6 @@
       </div>
     </div>`).join('');
 
-  // ── gráfica de barras animada ──
-  function chartSVG(ch, col){
-    const max=Math.max(...ch.bars.map(b=>b.v))*1.12;
-    const W=Math.max(300, ch.bars.length*84), H=200, pad=30, bw=44, gap=(W-pad*2-bw*ch.bars.length)/(ch.bars.length-1||1);
-    let bars='', labels='';
-    ch.bars.forEach((b,i)=>{
-      const x=pad+i*(bw+gap), full=(H-pad-24)*(b.v/max), y=H-24-full;
-      bars+=`<rect class="bar" x="${x}" y="${H-24}" width="${bw}" height="0" rx="6" fill="${col}" data-y="${y.toFixed(1)}" data-h="${full.toFixed(1)}"></rect>`;
-      bars+=`<text x="${x+bw/2}" y="${y-6}" text-anchor="middle" fill="#f4ece5" font-size="14" font-weight="800" opacity="0" class="val" data-o="1">${b.v}</text>`;
-      labels+=`<text x="${x+bw/2}" y="${H-6}" text-anchor="middle" fill="#a99e92" font-size="12">${b.l}</text>`;
-    });
-    return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:${W}px;display:block;margin:0 auto">${bars}${labels}</svg>`;
-  }
-  function animBars(){
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{
-      document.querySelectorAll('#panel rect.bar').forEach(r=>{ r.setAttribute('y', r.dataset.y); r.setAttribute('height', r.dataset.h); });
-      setTimeout(()=>document.querySelectorAll('#panel text.val').forEach(t=>{ t.style.transition='opacity .5s ease'; t.style.opacity=t.dataset.o; }), 650);
-    }));
-  }
-
   // ── interactivo: materiales (minería originaria) ──
   const MAT={ Cobre:{ic:'coins',c:'#e0955f',u:'Se martillaba en frío para hacer cuchillos, anzuelos y adornos.'},
               Oro:{ic:'gem',c:'#f5c542',u:'Reservado a objetos ceremoniales y símbolos de poder.'},
@@ -226,7 +207,7 @@
     if(h.chart){ html+=`<div class="glass rounded-2xl p-4 mt-4">
       <p class="text-sm font-bold text-stone-200">${h.chart.title}</p>
       <p class="text-[11px] text-stone-500 mb-2">${h.chart.unit}</p>
-      ${chartSVG(h.chart,h.c)}
+      <div id="histchart"></div>
       <p class="text-[10px] text-stone-600 mt-1 text-center">Valores referenciales de divulgación.</p></div>`; }
     if(h.inter==='materiales') html+=interMateriales();
     if(h.inter==='dias33') html+=inter33();
@@ -236,7 +217,7 @@
     document.body.style.overflow='hidden';
     $('ov').scrollTop=0;
     drawIcons();
-    if(h.chart) animBars();
+    if(h.chart) ADNChart.bars('histchart', h.chart.bars, {accent:h.c, decimals:(h.chart.bars.some(b=>b.v%1)?1:0), max:Math.max.apply(null,h.chart.bars.map(b=>b.v))*1.12});
     if(h.inter==='materiales') wireMateriales();
     if(h.inter==='dias33') wire33();
     try{ history.pushState({d:1},''); }catch(e){}
