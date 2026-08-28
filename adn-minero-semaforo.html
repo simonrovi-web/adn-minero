@@ -38,6 +38,7 @@
     }
     @media (max-width:520px){ #grid{grid-template-columns:1fr!important} }
   </style>
+  <script src="adn-profile.js"></script>
   <script src="adn-ui.js" defer></script>
 </head>
 <body class="text-stone-100 antialiased">
@@ -157,6 +158,12 @@
 
   const COL=['#34d399','#fbbf24','#f87171'];
   const LBL=['Normal','Precaución','Alerta'];
+  const _prof = (function(){ try{ return window.ADNProfile && ADNProfile.get(); }catch(e){ return null; } })();
+  function isMine(fa){
+    if(!_prof||!_prof.faena) return false;
+    const nz=s=>(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').trim();
+    const a=nz(fa.n), b=nz(_prof.faena); return a.includes(b)||b.includes(a);
+  }
   function card(fa, ev){
     const c=ev===null?'#8a8079':COL[ev.lvl];
     const lbl=ev===null?'Sin datos':LBL[ev.lvl];
@@ -168,10 +175,12 @@
         <span class="flex items-center gap-1.5"><i data-lucide="gauge" class="w-3.5 h-3.5 text-stone-500"></i> ráf ${w.wind_gusts_10m!=null?Math.round(w.wind_gusts_10m):'–'}</span>
         <span class="flex items-center gap-1.5"><i data-lucide="eye" class="w-3.5 h-3.5 text-stone-500"></i> ${w.visibility!=null?(w.visibility>=1000?(w.visibility/1000).toFixed(0)+' km':Math.round(w.visibility)+' m'):'–'}</span>
       </div>` : `<p class="text-[12px] text-stone-500 mt-2">Sin datos meteorológicos</p>`;
-    return `<div class="glass-strong rounded-2xl p-4 flex flex-col relative overflow-hidden" style="border-color:${c}33">
+    const mine = isMine(fa);
+    return `<div class="glass-strong rounded-2xl p-4 flex flex-col relative overflow-hidden" style="border-color:${c}33${mine?';outline:2px solid #e8c9a6;outline-offset:-2px;box-shadow:0 0 22px rgba(232,201,166,.25)':''}">
       <div class="absolute top-0 left-4 right-4 h-[3px] rounded-b" style="background:${c}"></div>
       <div class="flex items-start justify-between gap-2">
         <div class="min-w-0">
+          ${mine?'<span class="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded" style="background:#e8c9a622;color:#e8c9a6;border:1px solid #e8c9a655">★ Tu faena</span>':''}
           <h3 class="text-[17px] font-bold leading-tight truncate">${fa.n}</h3>
           <p class="text-[11px] text-stone-500 flex items-center gap-1 mt-0.5"><i data-lucide="map-pin" class="w-3 h-3"></i> ${fa.z} · ${fa.el} m</p>
         </div>

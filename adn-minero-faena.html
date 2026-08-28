@@ -31,6 +31,7 @@
     .sk{ background:linear-gradient(90deg, rgba(255,255,255,.05), rgba(255,255,255,.1), rgba(255,255,255,.05)); background-size:200% 100%; animation:sh 1.4s infinite; border-radius:8px; }
     @keyframes sh{ 0%{background-position:200% 0} 100%{background-position:-200% 0} }
   </style>
+  <script src="adn-profile.js"></script>
   <script src="adn-ui.js" defer></script>
 </head>
 <body>
@@ -225,7 +226,13 @@
   // init
   $('sel').innerHTML=FAENAS.slice().sort((a,b)=>a.n.localeCompare(b.n)).map(f=>`<option value="${f.id}">${f.n} · ${f.e}</option>`).join('');
   $('sel').addEventListener('change', e=>selectFaena(e.target.value));
-  const initial=(location.search.match(/[?&]f=([a-z0-9-]+)/)||[])[1] || FAENAS[0].id;
+  function faenaIdFromProfile(){
+    try{ const p=window.ADNProfile&&ADNProfile.get();
+      if(p&&p.faena){ const nz=s=>(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').trim();
+        const m=FAENAS.find(f=>nz(f.n)===nz(p.faena)); return m?m.id:null; } }catch(e){}
+    return null;
+  }
+  const initial=(location.search.match(/[?&]f=([a-z0-9-]+)/)||[])[1] || faenaIdFromProfile() || FAENAS[0].id;
   drawIcons();
   selectFaena(initial);
 </script>

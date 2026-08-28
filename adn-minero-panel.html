@@ -109,6 +109,7 @@
     .txt-swap { animation: txtfade .5s ease both; }
   </style>
 <style>/* movil: ocultar hora */@media (max-width:820px){#clock,#clockDate{display:none!important}*:has(> #clock){display:none!important}}</style>
+  <script src="adn-profile.js"></script>
   <script src="adn-ui.js" defer></script>
 </head>
 
@@ -792,7 +793,18 @@
     drawIcons();
     tick(); setInterval(tick, 1000);
     FAENAS.forEach((_, i) => getData(i).catch(() => {}));
-    showFaena(0);
+    // Arranca en tu faena guardada (perfil "Mi Faena"), si coincide
+    let startIdx = 0;
+    try {
+      const p = window.ADNProfile && ADNProfile.get();
+      if (p && p.faena) {
+        const nz = s => (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+        const b = nz(p.faena);
+        const m = FAENAS.findIndex(f => { const a = nz(f.nombre); return a.includes(b) || b.includes(a); });
+        if (m >= 0) startIdx = m;
+      }
+    } catch (e) {}
+    showFaena(startIdx);
     startRotation();
     document.addEventListener('visibilitychange', () => { if (document.hidden) stopRotation(); else if (!paused) startRotation(); });
   </script>
