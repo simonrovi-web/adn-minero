@@ -33,6 +33,9 @@
     .cell{ aspect-ratio:1; border-radius:8px; display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:11px; font-weight:700; line-height:1.1; }
     .cell .dn{ font-size:9px; font-weight:500; opacity:.7 }
     .cell.today{ outline:2px solid #fff; outline-offset:1px; }
+    .wd{ text-align:center; font-size:10px; font-weight:700; color:#a99e92; text-transform:uppercase; letter-spacing:.03em; }
+    .mcell{ aspect-ratio:1; border-radius:7px; display:grid; place-items:center; font-size:12.5px; font-weight:700; }
+    .mcell.today{ outline:2px solid #fff; outline-offset:1px; }
   </style>
   <script src="adn-ui.js" defer></script>
 </head>
@@ -98,6 +101,26 @@
       <div id="cal" class="grid grid-cols-7 gap-1.5 mt-3"></div>
     </section>
 
+    <!-- CALENDARIO POR MES -->
+    <section class="glass rounded-2xl p-5 mt-4">
+      <div class="flex items-center justify-between">
+        <h2 class="sec-h"><i data-lucide="calendar-range" class="w-5 h-5" style="color:#7fbfd1"></i> Vista por mes</h2>
+        <div class="flex items-center gap-2">
+          <button id="mPrev" type="button" aria-label="Mes anterior" class="h-8 w-8 rounded-lg grid place-items-center active:scale-95" style="background:rgba(255,255,255,.05);border:1px solid rgba(196,168,148,.2)"><i data-lucide="chevron-left" style="width:16px;height:16px"></i></button>
+          <button id="mToday" type="button" class="text-[11px] font-semibold px-2.5 h-8 rounded-lg" style="background:rgba(255,255,255,.05);border:1px solid rgba(196,168,148,.2);color:#c9b7a5">Hoy</button>
+          <button id="mNext" type="button" aria-label="Mes siguiente" class="h-8 w-8 rounded-lg grid place-items-center active:scale-95" style="background:rgba(255,255,255,.05);border:1px solid rgba(196,168,148,.2)"><i data-lucide="chevron-right" style="width:16px;height:16px"></i></button>
+        </div>
+      </div>
+      <div class="flex items-center justify-between mt-2">
+        <p id="monthLabel" class="text-base font-bold capitalize">—</p>
+        <p id="monthSummary" class="text-[12px] out"><span style="color:#e0955f">—</span> · <span style="color:#7fbf9a">—</span></p>
+      </div>
+      <div class="grid grid-cols-7 gap-1.5 mt-3">
+        <div class="wd">lu</div><div class="wd">ma</div><div class="wd">mi</div><div class="wd">ju</div><div class="wd">vi</div><div class="wd">sá</div><div class="wd">do</div>
+      </div>
+      <div id="calMonth" class="grid grid-cols-7 gap-1.5 mt-1.5"></div>
+    </section>
+
     <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Herramienta de apoyo. Tu turno real lo define tu contrato y tu empresa. ADN Minero es un servicio independiente · <a href="adn-minero-empleos.html" class="lnk">Trabajos</a> · <a href="index.html" class="lnk">Inicio</a></p>
   </div>
 
@@ -112,6 +135,8 @@
   }
   const DAYNAME=['dom','lun','mar','mié','jue','vie','sáb'];
   const MONTH=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const MONTHFULL=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  let monthOffset=0;
   function parseDate(v){ const p=(v||'').split('-'); return p.length===3? new Date(+p[0],+p[1]-1,+p[2]) : null; }
   function fmtDate(d){ return DAYNAME[d.getDay()]+' '+d.getDate()+' '+MONTH[d.getMonth()]; }
   function today0(){ const n=new Date(); return new Date(n.getFullYear(),n.getMonth(),n.getDate()); }
@@ -161,6 +186,31 @@
         <span>${d.getDate()}</span><span class="dn">${DAYNAME[d.getDay()]}</span></div>`;
     }
     $('cal').innerHTML=html;
+    renderMonth();
+  }
+
+  function renderMonth(){
+    const [work,free]=getWF(); const cycle=work+free;
+    const start=parseDate($('start').value); if(!start) return;
+    const base=today0();
+    const view=new Date(base.getFullYear(), base.getMonth()+monthOffset, 1);
+    const y=view.getFullYear(), m=view.getMonth();
+    $('monthLabel').textContent = MONTHFULL[m]+' '+y;
+    const daysInMonth=new Date(y,m+1,0).getDate();
+    const startWd=(new Date(y,m,1).getDay()+6)%7; // lunes primero
+    const todayTs=base.getTime();
+    let html='', wCount=0, fCount=0;
+    for(let i=0;i<startWd;i++) html+='<div></div>';
+    for(let d=1; d<=daysInMonth; d++){
+      const date=new Date(y,m,d);
+      const diff=Math.round((date-start)/DAY);
+      const idx=((diff%cycle)+cycle)%cycle; const w=idx<work;
+      if(w) wCount++; else fCount++;
+      const isToday=date.getTime()===todayTs;
+      html+=`<div class="mcell ${isToday?'today':''}" style="background:${w?'rgba(224,149,95,.85)':'rgba(127,191,154,.85)'};color:#20160f">${d}</div>`;
+    }
+    $('calMonth').innerHTML=html;
+    $('monthSummary').innerHTML=`<span style="color:#e0955f">${wCount} trabajo</span> · <span style="color:#7fbf9a">${fCount} libres</span>`;
   }
 
   // init
@@ -168,6 +218,9 @@
   const tt=today0(); $('start').value=`${tt.getFullYear()}-${String(tt.getMonth()+1).padStart(2,'0')}-${String(tt.getDate()).padStart(2,'0')}`;
   $('chips').addEventListener('click',e=>{ const b=e.target.closest('.chip'); if(!b) return; sel=+b.dataset.i; buildChips(); $('customBox').classList.toggle('hidden', PRESETS[sel][0]!=='Personalizado'); calc(); });
   ['start','cwork','cfree'].forEach(id=>$(id).addEventListener('input',calc));
+  $('mPrev').addEventListener('click',()=>{ monthOffset--; renderMonth(); });
+  $('mNext').addEventListener('click',()=>{ monthOffset++; renderMonth(); });
+  $('mToday').addEventListener('click',()=>{ monthOffset=0; renderMonth(); });
   drawIcons(); calc();
 </script>
 </body>
