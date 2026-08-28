@@ -12,6 +12,33 @@
       window.addEventListener('load', function(){ navigator.serviceWorker.register('adn-push-sw.js').catch(function(){}); });
     }
   }catch(e){}
+
+  // ===== Sonido de clic suave y compartido (todos los paneles) =====
+  try{
+    var AC=null, lastClick=0;
+    function adnClick(){
+      try{
+        if(window.ADN_NO_CLICK_SOUND) return;              // el panel puede desactivarlo
+        var now=Date.now(); if(now-lastClick<70) return; lastClick=now;
+        AC=AC||new (window.AudioContext||window.webkitAudioContext)();
+        if(AC.state==='suspended') AC.resume();
+        var t=AC.currentTime, o=AC.createOscillator(), g=AC.createGain();
+        o.type='sine'; o.frequency.setValueAtTime(660,t); o.frequency.exponentialRampToValueAtTime(300,t+.11);
+        g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(.028,t+.01); g.gain.exponentialRampToValueAtTime(.0001,t+.16);
+        o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t+.17);
+      }catch(e){}
+    }
+    window.adnClick=adnClick;
+    // Suena al tocar controles interactivos (no en enlaces que navegan ni en inputs)
+    var CLICK_SEL='button, [role="button"], .role, .mat, .hcard, .cattile, .item, .chip, .tile, .lg-row, .catchip, .cell, [data-i], [data-k]';
+    document.addEventListener('click', function(e){
+      try{
+        var el=e.target.closest && e.target.closest(CLICK_SEL);
+        if(!el || el.matches('input,textarea,select')) return;
+        adnClick();
+      }catch(_){}
+    }, true);
+  }catch(e){}
   try{
     var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
