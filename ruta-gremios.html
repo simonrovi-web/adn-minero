@@ -128,6 +128,21 @@
   footer{ padding:40px 0 60px; border-top:1px solid var(--line); color:var(--muted); font-size:12.5px; text-align:center; }
   footer b{ color:var(--ink-soft); }
 
+  /* PRUÉBALA */
+  .try-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .try-card{ display:flex; flex-direction:column; text-decoration:none; color:var(--ink);
+    background:var(--surface); border:1px solid var(--line-strong); border-radius:20px; padding:30px; box-shadow:var(--shadow);
+    transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
+  .try-card:hover{ transform:translateY(-4px); border-color:var(--copper); box-shadow:0 20px 44px rgba(90,55,30,.18); }
+  .try-card .ti{ height:54px; width:54px; border-radius:15px; display:grid; place-items:center; margin-bottom:16px; }
+  .try-card.web .ti{ background:var(--copper-wash); color:var(--copper); }
+  .try-card.and .ti{ background:var(--verd-wash); color:var(--verd); }
+  .try-card h3{ font-size:23px; font-weight:800; font-family:var(--font-d); }
+  .try-card p{ margin:7px 0 0; color:var(--muted); font-size:14px; line-height:1.55; }
+  .try-card .go{ margin-top:18px; font-weight:800; font-size:15.5px; display:inline-flex; align-items:center; gap:8px; }
+  .try-card.web .go{ color:var(--copper); }
+  .try-card.and .go{ color:var(--verd); }
+
   .reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1); }
   .reveal.in{ opacity:1; transform:none; }
 
@@ -135,6 +150,7 @@
     .stats{ grid-template-columns:repeat(2,1fr); }
     .grid3{ grid-template-columns:1fr; }
     .split{ grid-template-columns:1fr; }
+    .try-grid{ grid-template-columns:1fr; }
     .phase{ grid-template-columns:1fr; gap:12px; }
     .phase .no{ font-size:28px; }
     .phase .no small{ display:inline; margin-left:10px; }
@@ -170,6 +186,28 @@
       <div class="stat"><div class="k">Play</div><div class="l">app Android en prueba cerrada, rumbo a producción</div></div>
     </div>
   </header>
+
+  <section class="band">
+    <div class="head reveal">
+      <p class="eyebrow">Pruébala ahora</p>
+      <h2>Ábrela y explórala en 10 segundos.</h2>
+      <p class="lead">Sin registro, sin costo. Ve tú mismo de qué hablamos.</p>
+    </div>
+    <div class="try-grid">
+      <a class="try-card web reveal" href="https://simonrovi-web.github.io/adn-minero/" target="_blank" rel="noopener">
+        <div class="ti"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20"/></svg></div>
+        <h3>Ver la app en vivo</h3>
+        <p>En cualquier navegador · para todos, sin instalar nada.</p>
+        <span class="go">Abrir la app <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></span>
+      </a>
+      <a class="try-card and reveal" href="https://play.google.com/apps/testing/io.github.simonrovi_web.twa" target="_blank" rel="noopener">
+        <div class="ti"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3 19 12 5 21z"/></svg></div>
+        <h3>App Android</h3>
+        <p>Prueba para testers invitados · rumbo a producción en Google Play.</p>
+        <span class="go">Instalar (testers) <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></span>
+      </a>
+    </div>
+  </section>
 
   <section class="band">
     <div class="head reveal">
