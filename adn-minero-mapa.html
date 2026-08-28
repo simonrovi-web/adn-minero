@@ -36,10 +36,28 @@
     .leaflet-tooltip.region-tip{ background:#241d18; color:#f0e2d3; border:1px solid rgba(196,168,148,.32); box-shadow:0 6px 20px rgba(0,0,0,.5); font-size:12px; font-weight:600; padding:4px 9px; border-radius:8px; }
     .leaflet-tooltip.region-tip::before{ display:none; }
     .region-label{ color:#efd9bd; font-size:10px; font-weight:700; letter-spacing:.02em; white-space:nowrap; text-shadow:0 1px 3px #000, 0 0 6px #000, 0 0 2px #000; pointer-events:none; transform:translate(-50%,-50%); opacity:.9; }
+    #searchWrap{ position:relative; flex:1 1 240px; min-width:0; max-width:440px; }
+    #searchBox{ display:flex; align-items:center; gap:8px; background:rgba(20,17,15,.55); border:1px solid rgba(196,168,148,.22); border-radius:11px; padding:8px 11px; }
+    #searchBox i{ width:17px; height:17px; color:#c9b7a5; flex:0 0 auto; }
+    #mapq{ flex:1 1 auto; min-width:0; background:transparent; border:0; outline:0; color:#f4ece5; font-size:14px; font-family:inherit; }
+    #mapq::placeholder{ color:#8a8079; }
+    #mapq::-webkit-search-cancel-button{ -webkit-appearance:none; }
+    #mapqx{ background:transparent; border:0; color:#a99e92; cursor:pointer; font-size:14px; line-height:1; padding:2px 4px; flex:0 0 auto; }
+    #mapres{ position:absolute; top:calc(100% + 7px); left:0; right:0; max-height:min(54vh,360px); overflow:auto; border-radius:13px; padding:5px; z-index:1200; display:none; }
+    #mapres.on{ display:block; }
+    .mres{ display:flex; align-items:center; gap:10px; padding:8px 9px; border-radius:9px; cursor:pointer; }
+    .mres:hover, .mres.sel{ background:rgba(207,155,111,.18); }
+    .mres .ic{ width:22px; text-align:center; font-size:15px; flex:0 0 auto; }
+    .mres .tt{ min-width:0; }
+    .mres .tt b{ font-size:13px; font-weight:700; display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .mres .tt span{ font-size:11px; color:#a99e92; display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .mres.no{ cursor:default; color:#8a8079; font-size:13px; }
+    .mres.no:hover{ background:none; }
     @media (max-width:640px){
       #topbar{ flex-direction:column; align-items:flex-start; gap:6px; padding:10px 14px; }
       #topbar .clockwrap{ display:none; }
       #legend{ font-size:11px; padding:10px 12px; }
+      #searchWrap{ width:100%; max-width:none; flex-basis:auto; }
     }
   </style>
 </head>
@@ -53,6 +71,14 @@
         <p style="margin:0;font-size:19px;font-weight:800;line-height:1.05;display:flex;align-items:center;gap:8px">Mapa Minero de Chile <span class="fi fi-cl" style="font-size:.8em;border-radius:3px"></span></p>
         <p style="margin:2px 0 0;font-size:11px;color:#c9b7a5">ADN Minero · faenas, trabajos y servicios de la minería</p>
       </div>
+    </div>
+    <div id="searchWrap">
+      <div id="searchBox">
+        <i data-lucide="search"></i>
+        <input id="mapq" type="search" inputmode="search" autocomplete="off" placeholder="Buscar faena, empresa, puerto…" aria-label="Buscar en el mapa">
+        <button id="mapqx" type="button" aria-label="Limpiar" hidden>✕</button>
+      </div>
+      <div id="mapres" class="glass" role="listbox"></div>
     </div>
     <div class="clockwrap" style="text-align:right;flex:0 0 auto">
       <p id="clock" style="margin:0;font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1">--:--</p>
@@ -298,7 +324,7 @@
       ${gmapsLink(s.lat,s.lon)}`);
     return mk;
   }
-  SERVICIOS.forEach(s=>servMarker(s).addTo(serviciosLayer));
+  SERVICIOS.forEach(s=>{ s._mk=servMarker(s).addTo(serviciosLayer); });
 
   // ===== Capa de PUERTOS MINEROS (embarque de concentrado, hierro, sales) =====
   const PORT_COLOR='#5fb3a1';
@@ -330,7 +356,7 @@
       ${gmapsLink(p.lat,p.lon)}`);
     return mk;
   }
-  PUERTOS.forEach(p=>portMarker(p).addTo(puertosLayer));
+  PUERTOS.forEach(p=>{ p._mk=portMarker(p).addTo(puertosLayer); });
 
   // ===== Capa de EDUCACIÓN (universidades e institutos con carreras mineras) =====
   const EDU_COLOR='#b98cd9';
@@ -364,7 +390,7 @@
       ${gmapsLink(e.lat,e.lon)}`);
     return mk;
   }
-  EDUCACION.forEach(e=>eduMarker(e).addTo(eduLayer));
+  EDUCACION.forEach(e=>{ e._mk=eduMarker(e).addTo(eduLayer); });
 
   function refreshCount(){
     const total=FAENAS.filter(f=>active.has(f.m)).length;
@@ -461,6 +487,56 @@
   rows.appendChild(pWrap);
 
   refreshCount();
+
+  // ===== BUSCADOR DEL MAPA =====
+  const norm=s=>(s||'').toString().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  const SEARCH_INDEX=[];
+  FAENAS.forEach(f=>{ if(!MIN[f.m]) return; SEARCH_INDEX.push({type:'faena', n:f.n, sub:f.e+' · '+MIN[f.m].label+' · Región '+f.r, lat:f.lat, lon:f.lon, key:f.m, f, ic:'⛏️'}); });
+  SERVICIOS.forEach(s=>SEARCH_INDEX.push({type:'serv', n:s.n, sub:'Servicio · '+s.cat+' · '+s.r, lat:s.lat, lon:s.lon, mk:s._mk, ic:'🔧'}));
+  PUERTOS.forEach(p=>SEARCH_INDEX.push({type:'port', n:p.n, sub:'Puerto minero · '+p.carga, lat:p.lat, lon:p.lon, mk:p._mk, ic:'⚓'}));
+  EDUCACION.forEach(e=>SEARCH_INDEX.push({type:'edu', n:e.n, sub:'Educación · Región '+e.r, lat:e.lat, lon:e.lon, mk:e._mk, ic:'🎓'}));
+  SEARCH_INDEX.forEach(it=>{ it._s=norm(it.n+' '+it.sub); });
+
+  const mapq=$F('mapq'), mapres=$F('mapres'), mapqx=$F('mapqx');
+  let results=[], sel=-1;
+  function hideRes(){ mapres.classList.remove('on'); sel=-1; }
+  function ensureLayer(it){
+    if(it.type==='faena'){ if(!active.has(it.key)){ active.add(it.key); layers[it.key].addTo(map); const el=rows.querySelector('.lg-row[data-k="'+it.key+'"]'); if(el) el.classList.remove('off'); refreshCount(); } }
+    else if(it.type==='serv'){ if(!serviciosOn){ serviciosOn=true; serviciosLayer.addTo(map); svRow.classList.remove('off'); refreshCount(); } }
+    else if(it.type==='port'){ if(!puertosOn){ puertosOn=true; puertosLayer.addTo(map); puRow.classList.remove('off'); refreshCount(); } }
+    else if(it.type==='edu'){ if(!eduOn){ eduOn=true; eduLayer.addTo(map); edRow.classList.remove('off'); refreshCount(); } }
+  }
+  function focusMap(it){
+    hideRes(); mapq.blur(); ensureLayer(it);
+    map.flyTo([it.lat,it.lon], Math.max(map.getZoom(),9), {duration:.7});
+    if(it.type==='faena'){ openFaena(it.f); }
+    else if(it.mk){ const mk=it.mk; map.once('moveend',()=>{ try{mk.openPopup();}catch(e){} }); setTimeout(()=>{ try{mk.openPopup();}catch(e){} },900); }
+  }
+  function renderRes(){
+    if(!results.length){ mapres.innerHTML='<div class="mres no">Sin resultados. Prueba con otra faena, empresa o región.</div>'; mapres.classList.add('on'); return; }
+    mapres.innerHTML=results.map((it,i)=>`<div class="mres${i===sel?' sel':''}" data-i="${i}"><span class="ic">${it.ic}</span><span class="tt"><b>${it.n}</b><span>${it.sub}</span></span></div>`).join('');
+    mapres.classList.add('on');
+  }
+  function doSearch(){
+    mapqx.hidden=!mapq.value;
+    const q=norm(mapq.value.trim());
+    if(!q){ results=[]; hideRes(); return; }
+    results=SEARCH_INDEX.filter(it=>it._s.includes(q))
+      .sort((a,b)=>(norm(a.n).startsWith(q)?0:1)-(norm(b.n).startsWith(q)?0:1))
+      .slice(0,12);
+    sel=-1; renderRes();
+  }
+  mapq.addEventListener('input', doSearch);
+  mapq.addEventListener('focus', ()=>{ if(mapq.value) doSearch(); });
+  mapq.addEventListener('keydown', e=>{
+    if(e.key==='ArrowDown'){ e.preventDefault(); if(results.length){ sel=(sel+1)%results.length; renderRes(); } }
+    else if(e.key==='ArrowUp'){ e.preventDefault(); if(results.length){ sel=(sel-1+results.length)%results.length; renderRes(); } }
+    else if(e.key==='Enter'){ e.preventDefault(); const it=results[sel>=0?sel:0]; if(it) focusMap(it); }
+    else if(e.key==='Escape'){ mapq.value=''; results=[]; hideRes(); mapqx.hidden=true; }
+  });
+  mapres.addEventListener('click', e=>{ const r=e.target.closest('.mres[data-i]'); if(!r) return; const it=results[+r.dataset.i]; if(it) focusMap(it); });
+  mapqx.addEventListener('click', ()=>{ mapq.value=''; results=[]; hideRes(); mapqx.hidden=true; mapq.focus(); });
+  document.addEventListener('click', e=>{ if(!e.target.closest('#searchWrap')) hideRes(); });
 
   function tick(){ document.getElementById('clock').textContent=new Date().toLocaleTimeString('es-CL',{timeZone:TZ,hour:'2-digit',minute:'2-digit',hour12:false}); }
   tick(); setInterval(tick,1000);
