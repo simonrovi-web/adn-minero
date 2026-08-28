@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920, initial-scale=1.0" />
+  <title>ADN Minero · Paneles en Streaming (16:9)</title>
+  <style>
+    html,body{height:100%;margin:0;background:#141110;overflow:hidden;font-family:system-ui,sans-serif}
+    /* Lienzo 16:9: la fuente de OBS debe ser 1920x1080 */
+    #stage{position:fixed;inset:0;background:#141110}
+    .fr{position:absolute;inset:0;width:100%;height:100%;border:0;background:#141110;opacity:0;transition:opacity .7s ease}
+    .fr.on{opacity:1}
+    /* etiqueta opcional del panel actual (se oculta con ?label=0) */
+    #tag{position:fixed;left:0;bottom:0;z-index:10;display:flex;align-items:center;gap:9px;
+      padding:9px 16px 9px 14px;font-family:'Inter',system-ui,sans-serif;color:#f0e6da;font-weight:700;font-size:15px;
+      background:linear-gradient(160deg,rgba(26,21,18,.92),rgba(20,17,16,.94));border-top:2px solid #b5734f;border-right:2px solid #b5734f;
+      border-top-right-radius:12px;box-shadow:0 -4px 20px rgba(0,0,0,.5);opacity:.94}
+    #tag .d{width:9px;height:9px;border-radius:50%;background:#7ee787;box-shadow:0 0 8px #7ee787;animation:pz 1.6s infinite}
+    @keyframes pz{0%,100%{opacity:1}50%{opacity:.3}}
+    #tag small{font-weight:500;color:#c9a888;margin-left:2px}
+  </style>
+</head>
+<body>
+  <div id="stage">
+    <iframe id="fa" class="fr" allowtransparency="false"></iframe>
+    <iframe id="fb" class="fr" allowtransparency="false"></iframe>
+  </div>
+  <div id="tag"><span class="d"></span><span id="tagt">ADN Minero</span></div>
+<script>
+  // Todos los paneles (primero los más visuales / en vivo)
+  const PANELS = [
+    ['adn-minero-mapa.html','Mapa Minero'],
+    ['adn-minero-sismos.html','Sismos en vivo'],
+    ['adn-minero-commodities.html','Commodities'],
+    ['adn-minero-indicadores.html','Indicadores'],
+    ['adn-minero-panel.html','Clima de faenas'],
+    ['adn-minero-mar.html','Estado del mar'],
+    ['adn-minero-semaforo.html','Semáforo operacional'],
+    ['adn-minero-faena.html','Fichas de faena'],
+    ['adn-minero-produccion.html','Producción'],
+    ['adn-minero-cartera.html','Cartera de inversión'],
+    ['adn-minero-aporte-fiscal.html','Aporte fiscal'],
+    ['adn-minero-royalty.html','¿Dónde va la plata?'],
+    ['adn-minero-historico.html','Histórico'],
+    ['adn-minero-cuenta-publica.html','Cuenta pública'],
+    ['adn-minero-chile-mundo.html','Chile en el mundo'],
+    ['adn-minero-cobre-transicion.html','El cobre y la energía'],
+    ['adn-minero-geopolitica.html','Geopolítica'],
+    ['adn-minero-estrategia.html','Estrategia minera'],
+    ['adn-minero-litio.html','Litio'],
+    ['adn-minero-empresas.html','Directorio de empresas'],
+    ['adn-minero-mujer.html','Mujer en minería'],
+    ['adn-minero-ambiente.html','Medio ambiente'],
+    ['adn-minero-seguridad.html','Seguridad'],
+    ['adn-minero-normativa.html','Normativa'],
+    ['adn-minero-historia.html','Historia'],
+    ['adn-minero-glosario.html','Glosario'],
+    ['adn-minero-trivia.html','Trivia'],
+    ['adn-minero-efemerides.html','Un día como hoy'],
+    ['adn-minero-educacion.html','Educación'],
+    ['adn-minero-calculadora.html','Calculadora'],
+    ['adn-minero-turnos.html','Calculadora de turnos'],
+    ['adn-minero-emergencias.html','Emergencias'],
+    ['adn-minero-checklist.html','Autochequeo pre-turno'],
+    ['adn-minero-empleos.html','Trabajos y servicios'],
+    ['adn-minero-bolsa.html','Bolsa de empleo'],
+    ['adn-minero-prensa.html','Noticias mineras'],
+    ['adn-minero-tv.html','ADN Minero TV'],
+    ['adn-minero-muro.html','Muro de la comunidad'],
+    ['adn-minero-promo.html','Descarga la app']
+  ];
+
+  const p = new URLSearchParams(location.search);
+  let SECONDS = 180;
+  if (p.get('seg')) SECONDS = Math.max(15, parseInt(p.get('seg'),10) || 180);
+  else if (p.get('min')) SECONDS = Math.max(15, Math.round(parseFloat(p.get('min'))*60) || 180);
+  const SHOW_TAG = p.get('label') !== '0';
+  if (!SHOW_TAG) document.getElementById('tag').style.display = 'none';
+
+  let LIST = PANELS;
+  const only = p.get('only');
+  if (only){ const w=only.split(',').map(s=>s.trim().toLowerCase()); const f=PANELS.filter(x=>w.some(k=>x[0].includes(k))); if(f.length) LIST=f; }
+  const skip = p.get('skip');
+  if (skip){ const w=skip.split(',').map(s=>s.trim().toLowerCase()); LIST=LIST.filter(x=>!w.some(k=>x[0].includes(k))); }
+
+  const fa=document.getElementById('fa'), fb=document.getElementById('fb'), tagt=document.getElementById('tagt');
+  let i=0, active=fa, hidden=fb, scrollRAF=null;
+
+  function loadInto(frame, url){ return new Promise(res=>{ let done=false; const fin=()=>{ if(!done){done=true;res();} }; frame.onload=fin; frame.src=url; setTimeout(fin, 2500); }); }
+
+  function stopScroll(){ if(scrollRAF){ cancelAnimationFrame(scrollRAF); scrollRAF=null; } }
+  function startScroll(frame){
+    stopScroll();
+    let w, d, max=0;
+    try{
+      w=frame.contentWindow; d=frame.contentDocument;
+      const h=Math.max(d.documentElement.scrollHeight||0, d.body?d.body.scrollHeight:0);
+      max=Math.max(0, h - (w.innerHeight||1080));
+      w.scrollTo(0,0);
+    }catch(e){ return; }
+    if(max < 60) return; // panel corto o tipo-presentación: no se mueve
+    const holdTop=9000, holdBottom=6000;
+    const travel=Math.max(12000, SECONDS*1000 - holdTop - holdBottom);
+    const t0=performance.now();
+    function step(now){
+      const e=now-t0; let y;
+      if(e<holdTop) y=0;
+      else if(e<holdTop+travel){ const pr=(e-holdTop)/travel; y=max*(pr<0?0:pr>1?1:pr); }
+      else y=max;
+      try{ w.scrollTo(0,y); }catch(_){}
+      scrollRAF=requestAnimationFrame(step);
+    }
+    scrollRAF=requestAnimationFrame(step);
+  }
+
+  async function swapTo(idx){
+    const [url,name]=LIST[idx];
+    await loadInto(hidden, url);
+    tagt.innerHTML = name + ' <small>· ADN Minero</small>';
+    hidden.classList.add('on'); active.classList.remove('on');
+    const tmp=active; active=hidden; hidden=tmp;
+    setTimeout(()=>startScroll(active), 800); // deja renderizar antes de medir
+  }
+
+  function scheduleNext(){ setTimeout(tick, SECONDS*1000); }
+  async function tick(){ i=(i+1)%LIST.length; await swapTo(i); scheduleNext(); }
+  async function start(){
+    const [url,name]=LIST[0];
+    await loadInto(active, url);
+    tagt.innerHTML = name + ' <small>· ADN Minero</small>';
+    active.classList.add('on');
+    setTimeout(()=>startScroll(active), 800);
+    scheduleNext();
+  }
+  start();
+</script>
+</body>
+</html>
