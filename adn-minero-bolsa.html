@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Bolsa de Empleo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    :root{ --copper:#cf9b6f; --green:#a7d18a; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', ui-sans-serif, system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(167,209,138,0.12), transparent 60%),
+      radial-gradient(1000px 600px at 100% 0%, rgba(181,115,79,0.10), transparent 55%),
+      #141110; }
+    .wrap{ max-width:680px; margin:0 auto; padding:16px 16px 40px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); backdrop-filter:blur(14px) saturate(130%); -webkit-backdrop-filter:blur(14px) saturate(130%); border:1px solid rgba(196,168,148,0.14); }
+    .metric-icon{ filter:drop-shadow(0 0 8px currentColor); }
+    a.lnk{ color:#e8c9a6; }
+    label{ font-size:12px; color:#c9b7a5; font-weight:600; }
+    input,select,textarea{ background:#241d18; color:#f4ece5; border:1px solid rgba(196,168,148,.25); border-radius:12px; padding:11px 12px; font-size:15px; outline:none; width:100%; font-family:inherit; }
+    input:focus,select:focus,textarea:focus{ border-color:rgba(207,155,111,.6); }
+    .sec-h{ font-size:1rem; font-weight:800; display:flex; align-items:center; gap:8px; }
+    .chip{ font-size:11px; font-weight:700; padding:3px 9px; border-radius:999px; background:rgba(207,155,111,.14); border:1px solid rgba(207,155,111,.3); color:#e6d4c4; }
+    .btn{ border-radius:12px; padding:12px; font-weight:800; border:0; cursor:pointer; font-family:inherit; font-size:15px; width:100%; }
+    .btn-p{ background:linear-gradient(135deg,#f0d7b6,#cf9b6f 55%,#b5734f); color:#2a1c12; }
+    .apply{ display:inline-flex; align-items:center; gap:7px; text-decoration:none; font-weight:800; font-size:14px; padding:9px 15px; border-radius:11px; background:rgba(167,209,138,.16); border:1px solid rgba(167,209,138,.4); color:#c6e6b0; }
+    .apply:active{ transform:scale(.97); }
+  </style>
+  <script src="adn-ui.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(167,209,138,.15);border:1px solid rgba(167,209,138,.32)"><i data-lucide="briefcase" class="metric-icon" style="width:26px;height:26px;color:var(--green)"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#bcd9a6;font-weight:700">Bolsa de Empleo · ADN Minero</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Avisos de trabajo minero, publicados por la comunidad</p>
+      </div>
+    </header>
+
+    <!-- PUBLICAR -->
+    <section class="glass rounded-2xl p-5 mt-4">
+      <button id="toggleForm" class="btn btn-p flex items-center justify-center gap-2"><i data-lucide="plus-circle" style="width:18px;height:18px"></i> Publicar un aviso de trabajo</button>
+      <div id="form" class="hidden mt-4 grid gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div><label>Empresa / contratista *</label><input id="f_empresa" maxlength="60" placeholder="Ej. Contratista XYZ"></div>
+          <div><label>Cargo *</label><input id="f_cargo" maxlength="70" placeholder="Ej. Operador de camión CAEX"></div>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <div><label>Lugar / faena</label><input id="f_lugar" maxlength="60" placeholder="Antofagasta"></div>
+          <div><label>Turno</label><input id="f_turno" maxlength="30" placeholder="7x7"></div>
+          <div><label>Tipo</label>
+            <select id="f_tipo"><option>Jornada</option><option>Turno</option><option>Contrato</option><option>Faena</option><option>Práctica</option><option>Reemplazo</option></select>
+          </div>
+        </div>
+        <div><label>Descripción (sin links)</label><textarea id="f_desc" maxlength="600" rows="3" placeholder="Requisitos, experiencia, licencias, condiciones..."></textarea></div>
+        <div><label>¿Cómo postular? * (link, correo o teléfono)</label><input id="f_contacto" maxlength="140" placeholder="correo@empresa.cl · +56 9 ... · https://..."></div>
+        <p id="formMsg" class="text-[13px] hidden"></p>
+        <div class="flex gap-2">
+          <button id="send" class="btn btn-p flex-1">Publicar aviso</button>
+          <button id="cancel" class="btn" style="background:rgba(255,255,255,.05);color:#c9b7a5;width:auto;padding:12px 18px">Cancelar</button>
+        </div>
+        <p class="text-[11px] text-stone-500 leading-relaxed">Al publicar aceptas que tu aviso sea visible para la comunidad. Contenido moderado (sin groserías ni spam). ADN Minero no verifica ni respalda los avisos: <b>nunca pagues por postular</b> ni entregues datos bancarios.</p>
+      </div>
+    </section>
+
+    <!-- BUSCADOR -->
+    <div class="mt-4 relative">
+      <i data-lucide="search" style="position:absolute;left:13px;top:13px;width:17px;height:17px;color:#8a8079"></i>
+      <input id="q" placeholder="Buscar por cargo, empresa o lugar…" style="padding-left:40px">
+    </div>
+
+    <!-- LISTADO -->
+    <div id="list" class="mt-4 grid gap-3"></div>
+    <div id="empty" class="hidden text-center text-stone-500 py-10">
+      <i data-lucide="briefcase" style="width:34px;height:34px;color:#5a4f45;margin:0 auto"></i>
+      <p class="mt-2 text-sm">Aún no hay avisos publicados.<br>¡Sé el primero en publicar uno!</p>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-8 leading-relaxed">Espacio comunitario y moderado · ADN Minero es un servicio independiente · <a href="adn-minero-empleos.html" class="lnk">Portales de empleo</a> · <a href="index.html" class="lnk">Inicio</a></p>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const WORKER='https://adn-muro.simonrovi.workers.dev';
+  const esc=s=>(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const ADMIN=(location.hash.match(/admin=([^&]+)/)||[])[1]||null;
+  let JOBS=[];
+
+  function timeAgo(ts){ const s=Math.floor((Date.now()-ts)/1000);
+    if(s<60) return 'recién'; const m=Math.floor(s/60); if(m<60) return 'hace '+m+' min';
+    const h=Math.floor(m/60); if(h<24) return 'hace '+h+' h'; const d=Math.floor(h/24);
+    if(d<30) return 'hace '+d+(d===1?' día':' días'); return 'hace '+Math.floor(d/30)+' mes(es)'; }
+
+  function applyBtn(contacto){
+    const c=(contacto||'').trim();
+    if(/^https?:\/\//i.test(c)) return `<a class="apply" href="${esc(c)}" target="_blank" rel="noopener nofollow"><i data-lucide="external-link" style="width:15px;height:15px"></i> Postular</a>`;
+    if(/^www\./i.test(c)) return `<a class="apply" href="https://${esc(c)}" target="_blank" rel="noopener nofollow"><i data-lucide="external-link" style="width:15px;height:15px"></i> Postular</a>`;
+    if(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c)) return `<a class="apply" href="mailto:${esc(c)}"><i data-lucide="mail" style="width:15px;height:15px"></i> Escribir</a>`;
+    const digits=c.replace(/[^0-9+]/g,''); if(digits.length>=7) return `<a class="apply" href="tel:${esc(digits)}"><i data-lucide="phone" style="width:15px;height:15px"></i> Llamar</a>`;
+    return `<span class="apply" style="cursor:default">${esc(c)}</span>`;
+  }
+
+  function jobHTML(j){
+    const chips=[j.lugar&&`📍 ${esc(j.lugar)}`, j.turno&&`🗓️ ${esc(j.turno)}`, j.tipo&&`💼 ${esc(j.tipo)}`].filter(Boolean)
+      .map(t=>`<span class="chip">${t}</span>`).join(' ');
+    return `<div class="glass rounded-2xl p-4">
+      <div class="flex items-start justify-between gap-2">
+        <div class="min-w-0">
+          <p class="font-extrabold text-lg leading-tight">${esc(j.cargo)}</p>
+          <p class="text-sm text-stone-300 flex items-center gap-1.5 mt-0.5"><i data-lucide="building-2" style="width:14px;height:14px;color:#cf9b6f"></i> ${esc(j.empresa)}</p>
+        </div>
+        <span class="text-[11px] text-stone-500 shrink-0">${timeAgo(j.ts)}</span>
+      </div>
+      ${chips?`<div class="flex flex-wrap gap-1.5 mt-2.5">${chips}</div>`:''}
+      ${j.descripcion?`<p class="text-[13px] text-stone-300 leading-relaxed mt-2.5">${esc(j.descripcion)}</p>`:''}
+      <div class="flex items-center gap-3 mt-3">
+        ${applyBtn(j.contacto)}
+        <button class="report text-[12px] text-stone-500 hover:text-stone-300 ml-auto flex items-center gap-1" data-id="${j.id}"><i data-lucide="flag" style="width:13px;height:13px"></i> Reportar</button>
+        ${ADMIN?`<button class="del text-[12px] text-red-400 flex items-center gap-1" data-id="${j.id}"><i data-lucide="trash-2" style="width:13px;height:13px"></i> Borrar</button>`:''}
+      </div>
+    </div>`;
+  }
+
+  function render(){
+    const q=($('q').value||'').toLowerCase().trim();
+    const list=JOBS.filter(j=>!q || (j.cargo+' '+j.empresa+' '+(j.lugar||'')).toLowerCase().includes(q));
+    $('empty').classList.toggle('hidden', list.length>0);
+    $('list').innerHTML=list.map(jobHTML).join('');
+    drawIcons();
+  }
+
+  async function load(){
+    try{ const r=await fetch(WORKER+'/empleos',{cache:'no-store'}); const j=await r.json(); JOBS=j.empleos||[]; }
+    catch(e){ JOBS=[]; }
+    render();
+  }
+
+  // publicar
+  $('toggleForm').addEventListener('click',()=>{ $('form').classList.toggle('hidden'); if(!$('form').classList.contains('hidden')) $('f_empresa').focus(); });
+  $('cancel').addEventListener('click',()=>$('form').classList.add('hidden'));
+  $('send').addEventListener('click', async ()=>{
+    const body={ empresa:$('f_empresa').value, cargo:$('f_cargo').value, lugar:$('f_lugar').value, turno:$('f_turno').value, tipo:$('f_tipo').value, descripcion:$('f_desc').value, contacto:$('f_contacto').value };
+    const msg=$('formMsg'); msg.classList.remove('hidden');
+    if(!body.empresa.trim()||!body.cargo.trim()){ msg.textContent='Indica al menos la empresa y el cargo.'; msg.style.color='#ff8577'; return; }
+    if(!body.contacto.trim()){ msg.textContent='Agrega cómo postular (link, correo o teléfono).'; msg.style.color='#ff8577'; return; }
+    msg.textContent='Publicando…'; msg.style.color='#c9b7a5'; $('send').disabled=true;
+    try{
+      const r=await fetch(WORKER+'/empleos',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+      const j=await r.json();
+      if(j.ok){ msg.textContent='✅ ¡Aviso publicado!'; msg.style.color='#8fe0b8';
+        ['f_empresa','f_cargo','f_lugar','f_turno','f_desc','f_contacto'].forEach(id=>$(id).value='');
+        setTimeout(()=>{ $('form').classList.add('hidden'); msg.classList.add('hidden'); }, 1200);
+        load();
+      } else { msg.textContent=j.error||'No se pudo publicar.'; msg.style.color='#ff8577'; }
+    }catch(e){ msg.textContent='Error de conexión. Intenta de nuevo.'; msg.style.color='#ff8577'; }
+    $('send').disabled=false;
+  });
+
+  // reportar / borrar
+  $('list').addEventListener('click', async e=>{
+    const rep=e.target.closest('.report'), del=e.target.closest('.del');
+    if(rep){ if(!confirm('¿Reportar este aviso como inapropiado?')) return;
+      rep.textContent=' Reportado'; try{ await fetch(WORKER+'/empleos/report',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:+rep.dataset.id})}); }catch(_){}
+    }
+    if(del && ADMIN){ if(!confirm('¿Borrar este aviso? (admin)')) return;
+      try{ await fetch(WORKER+'/empleos/delete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:+del.dataset.id, token:ADMIN})}); load(); }catch(_){}
+    }
+  });
+
+  $('q').addEventListener('input', render);
+  drawIcons(); load();
+</script>
+</body>
+</html>
