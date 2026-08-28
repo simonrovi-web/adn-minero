@@ -42,6 +42,7 @@
     html.adn-faena .text-stone-400, html.adn-faena .text-stone-500{ color:#cfbdad !important; }
   </style>
   <script src="adn-profile.js"></script>
+  <script src="adn-sponsors.js"></script>
 </head>
 <body class="text-stone-100 font-sans antialiased">
   <div class="max-w-6xl mx-auto px-5 sm:px-8 py-6 sm:py-10">
@@ -104,6 +105,9 @@
 
     <!-- SECCIONES POR CATEGORÍA (se generan solas) -->
     <div id="sections" class="mt-2"></div>
+
+    <!-- ESPACIO DE AUSPICIO -->
+    <div id="auspicio" class="mt-8 hidden"></div>
 
     <!-- SIN RESULTADOS -->
     <p id="noRes" class="hidden text-center text-stone-500 mt-12">No encontramos paneles con «<span id="noResQ" class="text-stone-300"></span>». Prueba con otra palabra.</p>
@@ -297,6 +301,7 @@
       renderHomeCats();
       renderProfile();
       renderHoy();
+      renderAuspicio();
       window.lucide && lucide.createIcons();
       applyFilter();
       applyTvLive();
@@ -372,6 +377,29 @@
         close(); renderProfile();
       };
       const clr=ov.querySelector('#mfClear'); if(clr) clr.onclick=()=>{ ADNProfile.clear(); close(); renderProfile(); };
+    }
+
+    // ===== Espacio de auspicio =====
+    function renderAuspicio(){
+      const el=document.getElementById('auspicio'); if(!el) return;
+      const today=new Date().toISOString().slice(0,10);
+      const list=(window.ADN_SPONSORS||[]).filter(s=>s&&s.nombre&&(!s.hasta||s.hasta>=today));
+      if(list.length){
+        const s=list[Math.floor(Math.random()*list.length)]; const c=s.color||'#cf9b6f';
+        el.innerHTML=`<a href="${s.url||'#'}" target="_blank" rel="noopener" class="block glass rounded-2xl p-4 relative overflow-hidden active:scale-[.99] transition" style="border:1px solid ${c}3a">
+          <span class="absolute top-2.5 right-3 text-[9px] uppercase tracking-wider text-stone-500">Auspiciado</span>
+          <div class="flex items-center gap-3">
+            <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0 text-2xl" style="background:${c}1e;border:1px solid ${c}44">${s.emoji||'🏢'}</div>
+            <div class="min-w-0"><p class="font-bold truncate">${s.nombre}</p><p class="text-sm text-stone-400 truncate">${s.texto||''}</p></div>
+            <i data-lucide="arrow-right" class="w-5 h-5 text-stone-500 ml-auto shrink-0"></i>
+          </div></a>`;
+      } else {
+        const mail=window.ADN_SPONSORS_CONTACT||'adnminerochile@gmail.com';
+        el.innerHTML=`<a href="mailto:${mail}?subject=Auspicio%20ADN%20Minero" class="block rounded-2xl p-4 text-center active:scale-[.99] transition" style="border:1px dashed rgba(196,168,148,.35);background:rgba(255,255,255,.02)">
+          <p class="text-sm font-bold text-stone-300">📣 Tu marca aquí</p>
+          <p class="text-xs text-stone-500 mt-1">Auspicia ADN Minero, el medio de la minería de Chile. <span style="color:#e8c9a6">Escríbenos →</span></p></a>`;
+      }
+      window.lucide && lucide.createIcons();
     }
 
     // ===== Pantalla "Hoy" (resumen en vivo) =====
@@ -460,6 +488,7 @@
       document.getElementById('homeCats').classList.toggle('hidden', !home);
       document.getElementById('hoy').classList.toggle('hidden', !home);
       document.getElementById('miFaena').classList.toggle('hidden', !home);
+      document.getElementById('auspicio').classList.toggle('hidden', !home);
       document.getElementById('sec-fav').classList.toggle('hidden', !home || favCount===0);
       // Barra "volver": solo dentro de una categoría
       document.getElementById('backBar').classList.toggle('hidden', !inCat);
