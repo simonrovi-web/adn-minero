@@ -85,8 +85,13 @@
       <div id="grid-fav" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
     </section>
 
-    <!-- CHIPS DE CATEGORÍA (filtro rápido) -->
-    <div id="cats" class="flex flex-wrap gap-2 justify-center mt-7"></div>
+    <!-- INICIO: TARJETAS DE CATEGORÍA -->
+    <div id="homeCats" class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-8"></div>
+
+    <!-- BARRA VOLVER (dentro de una categoría) -->
+    <div id="backBar" class="hidden mt-8">
+      <button id="backBtn" type="button" class="inline-flex items-center gap-2 text-sm font-semibold text-[#e8c9a6] glass rounded-full px-4 py-2 active:scale-95 transition"><i data-lucide="arrow-left" class="w-4 h-4"></i> Volver a categorías</button>
+    </div>
 
     <!-- SECCIONES POR CATEGORÍA (se generan solas) -->
     <div id="sections" class="mt-2"></div>
@@ -199,14 +204,14 @@
 
     // ===== Categorías para navegar fácil =====
     const CATS = [
-      { k:'vivo',      lbl:'En vivo',              sub:'se actualizan solos',      dot:'#e0715a' },
-      { k:'asistente', lbl:'Asistente y comunidad', sub:'pregunta y participa',    dot:'#e8c9a6' },
-      { k:'explora',   lbl:'Explora Chile',        sub:'mapa, faenas y empresas',  dot:'#cf9b6f' },
-      { k:'minerales', lbl:'Minerales de Chile',   sub:'cobre, litio y estrategia', dot:'#5fd1bd' },
-      { k:'trabajo',   lbl:'Trabajo y estudio',    sub:'empleo, carreras y herramientas', dot:'#a7d18a' },
-      { k:'aprende',   lbl:'Aprende de minería',   sub:'historia, juegos y seguridad', dot:'#d6a94f' },
-      { k:'economia',  lbl:'Economía y cifras',    sub:'producción, aporte e inversión', dot:'#7fbf9a' },
-      { k:'comparte',  lbl:'Comparte',             sub:'lleva ADN Minero a más gente', dot:'#cf9b6f' }
+      { k:'vivo',      lbl:'En vivo',              sub:'se actualizan solos',      dot:'#e0715a', ic:'radio' },
+      { k:'asistente', lbl:'Asistente y comunidad', sub:'pregunta y participa',    dot:'#e8c9a6', ic:'sparkles' },
+      { k:'explora',   lbl:'Explora Chile',        sub:'mapa, faenas y empresas',  dot:'#cf9b6f', ic:'map' },
+      { k:'minerales', lbl:'Minerales de Chile',   sub:'cobre, litio y estrategia', dot:'#5fd1bd', ic:'gem' },
+      { k:'trabajo',   lbl:'Trabajo y estudio',    sub:'empleo, carreras y herramientas', dot:'#a7d18a', ic:'briefcase' },
+      { k:'aprende',   lbl:'Aprende de minería',   sub:'historia, juegos y seguridad', dot:'#d6a94f', ic:'book-open' },
+      { k:'economia',  lbl:'Economía y cifras',    sub:'producción, aporte e inversión', dot:'#7fbf9a', ic:'line-chart' },
+      { k:'comparte',  lbl:'Comparte',             sub:'lleva ADN Minero a más gente', dot:'#cf9b6f', ic:'share-2' }
     ];
     const CAT_OF = {
       'adn-minero-tv.html':'vivo','adn-minero-prensa.html':'vivo','adn-minero-semaforo.html':'vivo','adn-minero-alertas.html':'vivo','adn-minero-panel.html':'vivo','adn-minero-commodities.html':'vivo','adn-minero-sismos.html':'vivo','adn-minero-mar.html':'vivo','adn-minero-indicadores.html':'vivo',
@@ -219,7 +224,7 @@
       'adn-minero-promo.html':'comparte'
     };
     const catOf = f => CAT_OF[(f||'').replace(/^.*\//,'')] || 'aprende';
-    let activeCat = 'todas';
+    let activeCat = 'home';
 
     const getFavs = () => { try { return JSON.parse(localStorage.getItem('adn_favs')||'[]'); } catch(e){ return []; } };
     const isFav = f => getFavs().includes(f);
@@ -279,17 +284,27 @@
       // Favoritos
       const favItems = getFavs().map(f=>ALL.find(p=>p.f===f)).filter(Boolean);
       if (favItems.length) document.getElementById('grid-fav').innerHTML = favItems.map(p=>card(p, VIVO.includes(p))).join('');
-      renderCats();
+      renderHomeCats();
       window.lucide && lucide.createIcons();
       applyFilter();
       applyTvLive();
     }
 
-    // ===== Chips de categoría =====
-    function renderCats(){
-      const el=document.getElementById('cats'); if(!el) return;
-      const chip=(k,lbl,dot)=>{ const on=activeCat===k; return `<button type="button" data-cat="${k}" class="catchip text-xs font-semibold px-3.5 py-1.5 rounded-full transition active:scale-95" style="background:${dot}${on?'2a':'12'};border:1px solid ${dot}${on?'80':'2e'};color:${on?'#fff':'#c9b7a5'}">${lbl}</button>`; };
-      el.innerHTML = chip('todas','✦ Todas','#cf9b6f') + CATS.filter(c=>ALL.some(p=>catOf(p.f)===c.k)).map(c=>chip(c.k,c.lbl,c.dot)).join('');
+    // ===== Inicio: tarjetas de categoría =====
+    function renderHomeCats(){
+      const el=document.getElementById('homeCats'); if(!el) return;
+      el.innerHTML = CATS.filter(c=>ALL.some(p=>catOf(p.f)===c.k)).map(c=>{
+        const n = ALL.filter(p=>catOf(p.f)===c.k).length;
+        return `<button type="button" data-cat="${c.k}" class="cattile text-left rounded-2xl p-4 sm:p-5 transition active:scale-95" style="background:linear-gradient(160deg, ${c.dot}1e, ${c.dot}0a);border:1px solid ${c.dot}3a">
+          <div class="flex items-center justify-between">
+            <div class="h-11 w-11 rounded-xl grid place-items-center shrink-0" style="background:${c.dot}22;border:1px solid ${c.dot}55"><i data-lucide="${c.ic}" class="w-5 h-5" style="color:${c.dot}"></i></div>
+            <span class="text-[11px] font-bold px-2 py-0.5 rounded-full" style="background:${c.dot}1e;color:${c.dot}">${n}</span>
+          </div>
+          <h3 class="text-base sm:text-lg font-bold mt-3 leading-tight">${c.lbl}</h3>
+          <p class="text-[11px] sm:text-xs text-stone-400 mt-1 leading-snug">${c.sub}</p>
+          <p class="text-[11px] font-semibold mt-3 flex items-center gap-1.5" style="color:${c.dot}">Ver paneles <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></p>
+        </button>`;
+      }).join('');
     }
 
     // ===== ADN Minero TV: indicador "EN VIVO" en la tarjeta =====
@@ -309,36 +324,53 @@
     pollTv(); setInterval(pollTv, 60000);
 
     function applyFilter(){
-      const q = norm((document.getElementById('q').value||'').trim());
+      const raw = (document.getElementById('q').value||'').trim();
+      const q = norm(raw);
       document.getElementById('qx').classList.toggle('hidden', !q);
+      const searching = !!q;
+      const home = !searching && activeCat==='home';
+      const inCat = !searching && !home;
       const favCount = getFavs().length;
-      // Favoritos: solo cuando no hay búsqueda ni categoría activa
-      document.getElementById('sec-fav').classList.toggle('hidden', !!q || activeCat!=='todas' || favCount===0);
+
+      // Inicio (tarjetas de categoría) y favoritos: solo en la vista de inicio
+      document.getElementById('homeCats').classList.toggle('hidden', !home);
+      document.getElementById('sec-fav').classList.toggle('hidden', !home || favCount===0);
+      // Barra "volver": solo dentro de una categoría
+      document.getElementById('backBar').classList.toggle('hidden', !inCat);
+
       let any = false;
       document.querySelectorAll('#sections .pcard').forEach(el=>{
         const okText = !q || el.dataset.text.includes(q);
-        const okCat  = activeCat==='todas' || el.dataset.cat===activeCat;
+        const okCat  = searching ? true : (home ? false : el.dataset.cat===activeCat);
         const show = okText && okCat;
         el.classList.toggle('hidden', !show);
         if (show) any = true;
       });
-      // Oculta las secciones sin tarjetas visibles
+      // Secciones: ocultas en inicio; en categoría/búsqueda se muestran las que tengan tarjetas visibles
       document.querySelectorAll('#sections .cat-sec').forEach(sec=>{
-        sec.classList.toggle('hidden', !sec.querySelector('.pcard:not(.hidden)'));
+        sec.classList.toggle('hidden', home ? true : !sec.querySelector('.pcard:not(.hidden)'));
       });
-      document.getElementById('noRes').classList.toggle('hidden', any);
-      document.getElementById('noResQ').textContent = (document.getElementById('q').value||'').trim() || (activeCat!=='todas' ? (CATS.find(c=>c.k===activeCat)||{}).lbl : '');
+      // Sin resultados: solo al buscar
+      document.getElementById('noRes').classList.toggle('hidden', !(searching && !any));
+      document.getElementById('noResQ').textContent = raw;
     }
 
     document.getElementById('q').addEventListener('input', applyFilter);
     document.getElementById('qx').addEventListener('click', ()=>{ document.getElementById('q').value=''; applyFilter(); document.getElementById('q').focus(); });
-    document.getElementById('cats').addEventListener('click', e=>{
-      const b=e.target.closest('.catchip'); if(!b) return;
-      activeCat = (activeCat===b.dataset.cat) ? 'todas' : b.dataset.cat;
-      renderCats();
+    // Tocar una tarjeta de categoría → ver sus paneles
+    document.getElementById('homeCats').addEventListener('click', e=>{
+      const b=e.target.closest('.cattile'); if(!b) return;
+      activeCat = b.dataset.cat;
+      document.getElementById('q').value=''; // por si venía una búsqueda
       applyFilter();
-      const sec = activeCat!=='todas' && document.getElementById('sec-'+activeCat);
-      if(sec) sec.scrollIntoView({behavior:'smooth',block:'start'});
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+    // Volver a las categorías
+    document.getElementById('backBtn').addEventListener('click', ()=>{
+      activeCat = 'home';
+      document.getElementById('q').value='';
+      applyFilter();
+      window.scrollTo({top:0, behavior:'smooth'});
     });
     renderAll();
 
