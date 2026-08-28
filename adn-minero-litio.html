@@ -176,7 +176,8 @@
 
   // MAPA
   const map=L.map('mapa',{zoomControl:true,attributionControl:false}).setView([-24.6,-68.6],6);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{subdomains:'abcd',maxZoom:19}).addTo(map);
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',{attribution:'Tiles &copy; Esri',maxNativeZoom:16,maxZoom:19}).addTo(map);
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}',{maxNativeZoom:16,maxZoom:19}).addTo(map);
   SALARES.forEach(s=>{
     const c=EST_COL[s.estado]||LIT;
     L.marker([s.lat,s.lon],{icon:L.divIcon({className:'',html:`<span style="display:block;width:16px;height:16px;border-radius:50%;background:${LIT};border:2px solid #fff;box-shadow:0 0 8px ${LIT}"></span>`,iconSize:[16,16],iconAnchor:[8,8]})})
