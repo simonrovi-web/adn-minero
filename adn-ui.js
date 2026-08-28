@@ -39,6 +39,28 @@
       }catch(_){}
     }, true);
   }catch(e){}
+  // ===== Modo faena (texto grande / contraste) + indicador sin conexión =====
+  try{
+    var a11y=document.createElement('style'); a11y.id='adnui-a11y';
+    a11y.textContent=
+      'html.adn-faena{font-size:118%}'+
+      'html.adn-faena .text-stone-400, html.adn-faena .text-stone-500{color:#cfbdad!important}'+
+      '#adnui-offline{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:99999;'+
+      'background:linear-gradient(160deg,#3a2a22,#2a1d17);color:#f0d7b6;border:1px solid rgba(224,163,90,.5);border-radius:999px;'+
+      'padding:7px 15px;font:600 12.5px/1 system-ui,sans-serif;box-shadow:0 6px 20px rgba(0,0,0,.5);display:none}'+
+      '#adnui-offline.on{display:block}';
+    (document.head||document.documentElement).appendChild(a11y);
+    try{ if(localStorage.getItem('adn_faena_mode')==='1') document.documentElement.classList.add('adn-faena'); }catch(e){}
+    var mount=function(){
+      if(document.getElementById('adnui-offline')||!document.body) return;
+      var off=document.createElement('div'); off.id='adnui-offline'; off.textContent='📡 Sin conexión · mostrando lo guardado';
+      document.body.appendChild(off);
+      var upd=function(){ try{ off.classList.toggle('on', navigator.onLine===false); }catch(e){} };
+      window.addEventListener('online',upd); window.addEventListener('offline',upd); upd();
+    };
+    if(document.body) mount(); else document.addEventListener('DOMContentLoaded',mount);
+  }catch(e){}
+
   try{
     var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
