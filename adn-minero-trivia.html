@@ -46,6 +46,8 @@
     <div id="start" class="glass rounded-2xl p-6 mt-6 text-center">
       <p class="text-sm text-stone-300">Banco de <b class="text-[#e8c9a6]">100 preguntas</b> · 10 al azar por partida · ¡cada juego es distinto!</p>
       <button id="btnStart" class="big w-full rounded-2xl py-4 mt-4 font-bold text-[16px] flex items-center justify-center gap-2 active:scale-95 transition"><i data-lucide="play" style="width:20px;height:20px"></i> Comenzar</button>
+      <button id="btnDaily" class="w-full rounded-2xl py-3 mt-3 font-bold text-[15px] flex items-center justify-center gap-2 active:scale-95 transition" style="background:rgba(207,155,111,.14);border:1px solid rgba(207,155,111,.4);color:#e8c9a6"><i data-lucide="calendar-check" style="width:18px;height:18px"></i> <span id="btnDailyTxt">Desafío del día</span></button>
+      <p class="text-[11px] text-stone-500 mt-2">7 preguntas iguales para todos hoy · vuelve cada día para tu racha</p>
       <div id="logros" class="mt-4"></div>
     </div>
 
@@ -262,12 +264,34 @@
   function updMute(){ const el=$('muteIcon'); if(el){ el.setAttribute('data-lucide', SND?'volume-2':'volume-x'); drawIcons(); } if($('muteBtn')) $('muteBtn').title=SND?'Silenciar sonidos':'Activar sonidos'; }
   function toggleMute(){ SND=!SND; try{ localStorage.setItem('adn_trivia_snd', SND?'1':'0'); }catch(e){} updMute(); if(SND) beep(880,0,0.1,'sine',0.15); }
 
-  let pool=[], idx=0, score=0, answered=false;
+  let pool=[], idx=0, score=0, answered=false, DAILY=false;
 
   function shuffle(a){ return a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(p=>p[1]); }
 
+  // ===== Desafío del día (mismas preguntas para todos, según la fecha) =====
+  function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+  function dailyPool(n){
+    const s=dstr(0); let h=2166136261; for(let i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619); }
+    const rnd=mulberry32(h>>>0); const arr=QUESTIONS.slice();
+    for(let i=arr.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); const t=arr[i]; arr[i]=arr[j]; arr[j]=t; }
+    return arr.slice(0,n);
+  }
+  function renderDailyStatus(){
+    const el=$('btnDailyTxt'); if(!el) return;
+    const done=(localStorage.getItem('adn_daily_last')===dstr(0)); const ds=gi('adn_daily_streak','0');
+    el.textContent = (done?'Desafío de hoy ✓':'Desafío del día') + (ds?(' · racha '+ds+' 🔥'):'');
+  }
+
   function start(){
+    DAILY=false;
     pool=shuffle(QUESTIONS).slice(0,10);
+    idx=0; score=0;
+    $('start').classList.add('hidden'); $('result').classList.add('hidden'); $('game').classList.remove('hidden');
+    renderQ();
+  }
+  function startDaily(){
+    DAILY=true;
+    pool=dailyPool(7);
     idx=0; score=0;
     $('start').classList.add('hidden'); $('result').classList.add('hidden'); $('game').classList.remove('hidden');
     renderQ();
@@ -320,6 +344,19 @@
     const prev=getBest();
     if(score>prev){ try{ localStorage.setItem(KEY,String(score)); }catch(e){} }
     recordGame(score, total); renderLogros();
+    let dailyNote='';
+    if(DAILY){
+      try{
+        const today=dstr(0), last=localStorage.getItem('adn_daily_last')||'';
+        if(last!==today){
+          let ds=gi('adn_daily_streak','0'); ds=(last===dstr(-1))?ds+1:1;
+          localStorage.setItem('adn_daily_streak',ds); localStorage.setItem('adn_daily_last',today);
+          localStorage.setItem('adn_daily_best',Math.max(gi('adn_daily_best','0'),ds));
+          dailyNote=' · 📅 Desafío del día · racha '+ds+' 🔥';
+        } else { dailyNote=' · 📅 Desafío del día (hoy ya contaba)'; }
+      }catch(e){}
+      renderDailyStatus();
+    }
     const pct=score/total;
     let emoji,title,msg;
     if(pct>=0.9){ emoji='🏆'; title='¡Eres un experto!'; msg='ADN minero puro. Chile necesita gente como tú.'; }
@@ -329,7 +366,7 @@
     $('rEmoji').textContent=emoji;
     $('rTitle').textContent=title;
     $('rScore').textContent=`${score} / ${total}`;
-    $('rMsg').textContent=msg + (score>prev&&prev>0?' 🎉 ¡Nuevo récord!':'');
+    $('rMsg').textContent=msg + (score>prev&&prev>0?' 🎉 ¡Nuevo récord!':'') + dailyNote;
     $('result').classList.remove('hidden');
     if(pct>=0.6) fanfare();
     showBest();
@@ -337,12 +374,13 @@
   }
 
   $('btnStart').addEventListener('click',start);
+  $('btnDaily').addEventListener('click',startDaily);
   $('btnRetry').addEventListener('click',start);
   $('btnNext').addEventListener('click',next);
   $('opts').addEventListener('click',e=>{ const b=e.target.closest('.opt'); if(b) answer(parseInt(b.dataset.i,10)); });
   $('muteBtn').addEventListener('click', toggleMute);
 
-  showBest(); updMute(); renderLogros(); drawIcons();
+  showBest(); updMute(); renderLogros(); renderDailyStatus(); drawIcons();
 </script>
 </body>
 </html>
