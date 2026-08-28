@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Turnos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    :root{ --copper:#cf9b6f; --work:#e0955f; --free:#7fbf9a; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', ui-sans-serif, system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(181,115,79,0.15), transparent 60%),
+      radial-gradient(1000px 600px at 100% 0%, rgba(120,108,100,0.10), transparent 55%),
+      #141110; }
+    .wrap{ max-width:620px; margin:0 auto; padding:16px 16px 40px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); backdrop-filter:blur(14px) saturate(130%); -webkit-backdrop-filter:blur(14px) saturate(130%); border:1px solid rgba(196,168,148,0.14); }
+    .metric-icon{ filter:drop-shadow(0 0 8px currentColor); }
+    a.lnk{ color:#e8c9a6; }
+    label{ font-size:12px; color:#c9b7a5; font-weight:600; }
+    input[type=date]{ background:#241d18; color:#f4ece5; border:1px solid rgba(196,168,148,.25); border-radius:12px; padding:11px 12px; font-size:15px; outline:none; width:100%; }
+    input[type=number]{ background:#241d18; color:#f4ece5; border:1px solid rgba(196,168,148,.25); border-radius:12px; padding:11px 12px; font-size:15px; outline:none; width:100%; }
+    input:focus{ border-color:rgba(207,155,111,.6); }
+    .sec-h{ font-size:1rem; font-weight:800; display:flex; align-items:center; gap:8px; }
+    .out{ font-variant-numeric:tabular-nums; }
+    .chip{ font-size:13px; font-weight:700; padding:9px 12px; border-radius:12px; cursor:pointer; border:1px solid rgba(196,168,148,.22); background:rgba(255,255,255,.03); color:#e6d4c4; transition:.15s; }
+    .chip.on{ background:rgba(207,155,111,.2); border-color:rgba(207,155,111,.6); color:#fff; }
+    .chip:active{ transform:scale(.96); }
+    .cell{ aspect-ratio:1; border-radius:8px; display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:11px; font-weight:700; line-height:1.1; }
+    .cell .dn{ font-size:9px; font-weight:500; opacity:.7 }
+    .cell.today{ outline:2px solid #fff; outline-offset:1px; }
+  </style>
+  <script src="adn-ui.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(181,115,79,.15);border:1px solid rgba(196,140,100,.3)"><i data-lucide="calendar-clock" class="metric-icon" style="width:26px;height:26px;color:var(--copper)"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#c9a888;font-weight:700">Calculadora de Turnos · ADN Minero</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Sistema de turno, bajada y días libres en segundos</p>
+      </div>
+    </header>
+
+    <!-- ELEGIR TURNO -->
+    <section class="glass rounded-2xl p-5 mt-4">
+      <h2 class="sec-h"><i data-lucide="repeat" class="w-5 h-5" style="color:#cf9b6f"></i> Tu sistema de turno</h2>
+      <p class="text-[12px] text-stone-400 mt-1">Días de trabajo × días de descanso.</p>
+      <div id="chips" class="grid grid-cols-3 sm:grid-cols-4 gap-2 mt-3"></div>
+      <div id="customBox" class="hidden mt-3 grid grid-cols-2 gap-3">
+        <div><label>Días de trabajo</label><input type="number" id="cwork" min="1" max="30" value="7" class="mt-1"></div>
+        <div><label>Días de descanso</label><input type="number" id="cfree" min="1" max="30" value="7" class="mt-1"></div>
+      </div>
+    </section>
+
+    <!-- FECHA DE SUBIDA -->
+    <section class="glass rounded-2xl p-5 mt-4">
+      <h2 class="sec-h"><i data-lucide="log-in" class="w-5 h-5" style="color:#7fbfd1"></i> ¿Qué día empezó tu turno actual?</h2>
+      <p class="text-[12px] text-stone-400 mt-1">El primer día de tu subida a faena (inicio del ciclo).</p>
+      <input type="date" id="start" class="mt-3">
+    </section>
+
+    <!-- RESULTADO -->
+    <section class="glass rounded-2xl p-5 mt-4">
+      <h2 class="sec-h"><i data-lucide="sparkles" class="w-5 h-5" style="color:#d6a94f"></i> Tu turno hoy</h2>
+      <div id="status" class="mt-3 rounded-2xl p-4 text-center"></div>
+      <div class="grid grid-cols-2 gap-3 mt-3">
+        <div class="rounded-xl p-3 text-center" style="background:rgba(255,255,255,.03);border:1px solid rgba(196,168,148,.14)">
+          <p class="text-[11px] text-stone-400">Próximo cambio</p>
+          <p id="nextChange" class="out text-lg font-extrabold mt-0.5">—</p>
+          <p id="nextDate" class="text-[11px] text-stone-400 mt-0.5"></p>
+        </div>
+        <div class="rounded-xl p-3 text-center" style="background:rgba(255,255,255,.03);border:1px solid rgba(196,168,148,.14)">
+          <p class="text-[11px] text-stone-400" id="oppLbl">Bajada</p>
+          <p id="oppVal" class="out text-lg font-extrabold mt-0.5">—</p>
+          <p id="oppDate" class="text-[11px] text-stone-400 mt-0.5"></p>
+        </div>
+      </div>
+      <div class="grid grid-cols-3 gap-3 mt-3 text-center">
+        <div class="rounded-xl p-3" style="background:rgba(224,149,95,.08);border:1px solid rgba(224,149,95,.22)"><p id="wMonth" class="out text-xl font-extrabold" style="color:#e0955f">—</p><p class="text-[10px] text-stone-400 mt-0.5">días trabajo / mes</p></div>
+        <div class="rounded-xl p-3" style="background:rgba(127,191,154,.08);border:1px solid rgba(127,191,154,.22)"><p id="fMonth" class="out text-xl font-extrabold" style="color:#7fbf9a">—</p><p class="text-[10px] text-stone-400 mt-0.5">días libres / mes</p></div>
+        <div class="rounded-xl p-3" style="background:rgba(214,169,79,.08);border:1px solid rgba(214,169,79,.22)"><p id="wYear" class="out text-xl font-extrabold" style="color:#d6a94f">—</p><p class="text-[10px] text-stone-400 mt-0.5">días trabajo / año</p></div>
+      </div>
+    </section>
+
+    <!-- CALENDARIO 4 SEMANAS -->
+    <section class="glass rounded-2xl p-5 mt-4">
+      <h2 class="sec-h"><i data-lucide="calendar-days" class="w-5 h-5" style="color:#a7d18a"></i> Próximas 4 semanas</h2>
+      <div class="flex items-center gap-4 mt-2 text-[11px] text-stone-400">
+        <span class="inline-flex items-center gap-1.5"><span style="width:11px;height:11px;border-radius:3px;background:var(--work);display:inline-block"></span> Trabajo</span>
+        <span class="inline-flex items-center gap-1.5"><span style="width:11px;height:11px;border-radius:3px;background:var(--free);display:inline-block"></span> Libre</span>
+      </div>
+      <div id="cal" class="grid grid-cols-7 gap-1.5 mt-3"></div>
+    </section>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Herramienta de apoyo. Tu turno real lo define tu contrato y tu empresa. ADN Minero es un servicio independiente · <a href="adn-minero-empleos.html" class="lnk">Trabajos</a> · <a href="index.html" class="lnk">Inicio</a></p>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const PRESETS=[['7x7',7,7],['4x3',4,3],['5x2',5,2],['4x4',4,4],['14x14',14,14],['10x10',10,10],['8x6',8,6],['Personalizado',0,0]];
+  let sel=0;
+
+  function buildChips(){
+    $('chips').innerHTML=PRESETS.map((p,i)=>`<button class="chip ${i===sel?'on':''}" data-i="${i}">${p[0]}</button>`).join('');
+  }
+  const DAYNAME=['dom','lun','mar','mié','jue','vie','sáb'];
+  const MONTH=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  function parseDate(v){ const p=(v||'').split('-'); return p.length===3? new Date(+p[0],+p[1]-1,+p[2]) : null; }
+  function fmtDate(d){ return DAYNAME[d.getDay()]+' '+d.getDate()+' '+MONTH[d.getMonth()]; }
+  function today0(){ const n=new Date(); return new Date(n.getFullYear(),n.getMonth(),n.getDate()); }
+  const DAY=86400000;
+
+  function getWF(){ if(PRESETS[sel][0]==='Personalizado') return [Math.max(1,+$('cwork').value||1), Math.max(1,+$('cfree').value||1)]; return [PRESETS[sel][1],PRESETS[sel][2]]; }
+
+  function calc(){
+    const [work,free]=getWF(); const cycle=work+free;
+    const start=parseDate($('start').value); const t=today0();
+    if(!start){ return; }
+    let diff=Math.round((t-start)/DAY);
+    let idx=((diff%cycle)+cycle)%cycle; // 0..cycle-1
+    const working=idx<work;
+    const st=$('status');
+    if(working){
+      st.style.background='rgba(224,149,95,.12)'; st.style.border='1px solid rgba(224,149,95,.35)';
+      st.innerHTML=`<p class="text-[12px] uppercase tracking-wider" style="color:#e0a35a">En faena</p><p class="text-2xl font-extrabold mt-1">Día ${idx+1} de ${work} de trabajo</p>`;
+    } else {
+      st.style.background='rgba(127,191,154,.12)'; st.style.border='1px solid rgba(127,191,154,.35)';
+      st.innerHTML=`<p class="text-[12px] uppercase tracking-wider" style="color:#7fbf9a">En descanso</p><p class="text-2xl font-extrabold mt-1">Día ${idx-work+1} de ${free} libre</p>`;
+    }
+    // próximo cambio
+    const daysToChange = working ? (work-idx) : (cycle-idx);
+    const changeDate=new Date(t.getTime()+daysToChange*DAY);
+    $('nextChange').textContent = daysToChange===0?'hoy':(daysToChange+(daysToChange===1?' día':' días'));
+    $('nextChange').style.color = working ? '#7fbf9a' : '#e0955f';
+    $('nextDate').textContent = (working?'bajas ':'subes ')+fmtDate(changeDate);
+    // bajada/subida "opuesta"
+    if(working){
+      $('oppLbl').textContent='Bajada'; const d=new Date(t.getTime()+(work-idx)*DAY);
+      $('oppVal').textContent=fmtDate(d).split(' ').slice(1).join(' '); $('oppDate').textContent='fin de tu subida';
+    } else {
+      $('oppLbl').textContent='Próxima subida'; const d=new Date(t.getTime()+(cycle-idx)*DAY);
+      $('oppVal').textContent=fmtDate(d).split(' ').slice(1).join(' '); $('oppDate').textContent='inicio de tu turno';
+    }
+    // días por mes/año
+    $('wMonth').textContent=Math.round(30*work/cycle);
+    $('fMonth').textContent=Math.round(30*free/cycle);
+    $('wYear').textContent=Math.round(365*work/cycle);
+    // calendario 28 días
+    let html='';
+    for(let i=0;i<28;i++){
+      const d=new Date(t.getTime()+i*DAY);
+      let di=(((diff+i)%cycle)+cycle)%cycle; const w=di<work;
+      html+=`<div class="cell ${i===0?'today':''}" style="background:${w?'rgba(224,149,95,.85)':'rgba(127,191,154,.85)'};color:#20160f">
+        <span>${d.getDate()}</span><span class="dn">${DAYNAME[d.getDay()]}</span></div>`;
+    }
+    $('cal').innerHTML=html;
+  }
+
+  // init
+  buildChips();
+  const tt=today0(); $('start').value=`${tt.getFullYear()}-${String(tt.getMonth()+1).padStart(2,'0')}-${String(tt.getDate()).padStart(2,'0')}`;
+  $('chips').addEventListener('click',e=>{ const b=e.target.closest('.chip'); if(!b) return; sel=+b.dataset.i; buildChips(); $('customBox').classList.toggle('hidden', PRESETS[sel][0]!=='Personalizado'); calc(); });
+  ['start','cwork','cfree'].forEach(id=>$(id).addEventListener('input',calc));
+  drawIcons(); calc();
+</script>
+</body>
+</html>
