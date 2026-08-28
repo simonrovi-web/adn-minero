@@ -521,7 +521,7 @@
 
     // ===== Onboarding (primera vez) =====
     (function(){
-      try{ if(localStorage.getItem('adn_onboarded')==='1') return; }catch(e){ return; }
+      try{ if(localStorage.getItem('adn_onboarded2')==='1') return; }catch(e){ return; }
       const st=document.createElement('style'); st.textContent='@keyframes onbup{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}'; document.head.appendChild(st);
       const row=(e,h)=>`<div style="display:flex;gap:10px;align-items:flex-start"><span style="font-size:1.1rem">${e}</span><p style="font-size:.86rem;color:#d8c8b8;margin:0;line-height:1.4">${h}</p></div>`;
       document.body.insertAdjacentHTML('beforeend', `<div id="onb" style="position:fixed;inset:0;z-index:4000;display:grid;place-items:center;background:rgba(10,8,7,.82);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:20px">
@@ -530,14 +530,14 @@
           <h3 style="font-size:1.3rem;font-weight:800;margin:8px 0 2px">¡Bienvenido a ADN Minero!</h3>
           <p style="font-size:.9rem;color:#c9b7a5;margin:0">Toda la minería de Chile en un solo lugar.</p>
           <div style="text-align:left;margin:18px 0;display:flex;flex-direction:column;gap:11px">
-            ${row('🔎','<b>Busca</b> cualquier panel — o dicta con el micrófono 🎤.')}
-            ${row('⭐','<b>Guarda</b> tus favoritos con la estrella y compártelos.')}
-            ${row('🔴','Mira <b>ADN Minero TV</b> en vivo y activa las <b>Alertas</b>.')}
+            ${row('🗂️','Toca una <b>categoría</b> para ver sus paneles — o <b>busca</b> 🎤.')}
+            ${row('👷','Guarda <b>tu faena</b> y mira el resumen <b>“Hoy”</b> en vivo.')}
+            ${row('🔴','<b>Favoritos</b> con la estrella · <b>ADN Minero TV</b> y <b>Alertas</b>.')}
           </div>
           <button id="onbok" style="width:100%;border-radius:14px;padding:14px;font-weight:800;border:0;cursor:pointer;background:linear-gradient(135deg,#f0d7b6,#cf9b6f 55%,#b5734f);color:#2a1c12;font-size:1rem">¡Empezar! 🚀</button>
         </div></div>`);
       window.lucide && lucide.createIcons();
-      const close=()=>{ try{ localStorage.setItem('adn_onboarded','1'); }catch(e){} const o=document.getElementById('onb'); if(o) o.remove(); };
+      const close=()=>{ try{ localStorage.setItem('adn_onboarded2','1'); }catch(e){} const o=document.getElementById('onb'); if(o) o.remove(); };
       document.getElementById('onbok').addEventListener('click', close);
       document.getElementById('onb').addEventListener('click', e=>{ if(e.target.id==='onb') close(); });
     })();

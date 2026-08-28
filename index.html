@@ -529,7 +529,7 @@
 
     // ===== Onboarding (primera vez) =====
     (function(){
-      try{ if(localStorage.getItem('adn_onboarded')==='1') return; }catch(e){ return; }
+      try{ if(localStorage.getItem('adn_onboarded2')==='1') return; }catch(e){ return; }
       const st=document.createElement('style'); st.textContent='@keyframes onbup{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}'; document.head.appendChild(st);
       const row=(e,h)=>`<div style="display:flex;gap:10px;align-items:flex-start"><span style="font-size:1.1rem">${e}</span><p style="font-size:.86rem;color:#d8c8b8;margin:0;line-height:1.4">${h}</p></div>`;
       document.body.insertAdjacentHTML('beforeend', `<div id="onb" style="position:fixed;inset:0;z-index:4000;display:grid;place-items:center;background:rgba(10,8,7,.82);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:20px">
@@ -538,16 +538,37 @@
           <h3 style="font-size:1.3rem;font-weight:800;margin:8px 0 2px">¡Bienvenido a ADN Minero!</h3>
           <p style="font-size:.9rem;color:#c9b7a5;margin:0">Toda la minería de Chile en un solo lugar.</p>
           <div style="text-align:left;margin:18px 0;display:flex;flex-direction:column;gap:11px">
-            ${row('🔎','<b>Busca</b> cualquier panel — o dicta con el micrófono 🎤.')}
-            ${row('⭐','<b>Guarda</b> tus favoritos con la estrella y compártelos.')}
-            ${row('🔴','Mira <b>ADN Minero TV</b> en vivo y activa las <b>Alertas</b>.')}
+            ${row('🗂️','Toca una <b>categoría</b> para ver sus paneles — o <b>busca</b> 🎤.')}
+            ${row('👷','Guarda <b>tu faena</b> y mira el resumen <b>“Hoy”</b> en vivo.')}
+            ${row('🔴','<b>Favoritos</b> con la estrella · <b>ADN Minero TV</b> y <b>Alertas</b>.')}
           </div>
           <button id="onbok" style="width:100%;border-radius:14px;padding:14px;font-weight:800;border:0;cursor:pointer;background:linear-gradient(135deg,#f0d7b6,#cf9b6f 55%,#b5734f);color:#2a1c12;font-size:1rem">¡Empezar! 🚀</button>
         </div></div>`);
       window.lucide && lucide.createIcons();
-      const close=()=>{ try{ localStorage.setItem('adn_onboarded','1'); }catch(e){} const o=document.getElementById('onb'); if(o) o.remove(); };
+      const close=()=>{ try{ localStorage.setItem('adn_onboarded2','1'); }catch(e){} const o=document.getElementById('onb'); if(o) o.remove(); };
       document.getElementById('onbok').addEventListener('click', close);
       document.getElementById('onb').addEventListener('click', e=>{ if(e.target.id==='onb') close(); });
+    })();
+
+    // ===== Instalar app (PWA) =====
+    (function(){
+      let deferred=null;
+      window.addEventListener('beforeinstallprompt', e=>{ e.preventDefault(); deferred=e; showBar(); });
+      function showBar(){
+        try{ if(localStorage.getItem('adn_install_dismiss')==='1') return; }catch(e){}
+        if(document.getElementById('pwaBar')||!deferred) return;
+        const bar=document.createElement('div'); bar.id='pwaBar';
+        bar.style.cssText='position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:3900;max-width:520px;margin:0 auto';
+        bar.innerHTML=`<div class="glass" style="display:flex;align-items:center;gap:11px;border-radius:16px;padding:12px 14px;box-shadow:0 10px 30px rgba(0,0,0,.5)">
+          <div style="height:40px;width:40px;border-radius:11px;display:grid;place-items:center;background:#cf9b6f22;border:1px solid #cf9b6f55;flex:0 0 auto;font-size:20px">⛏️</div>
+          <div style="flex:1;min-width:0"><p style="margin:0;font-weight:800;font-size:14px">Instala ADN Minero</p><p style="margin:0;font-size:12px;color:#c9b7a5">Acceso directo, ocupa muy poco</p></div>
+          <button id="pwaGo" style="flex:0 0 auto;border:0;border-radius:11px;padding:9px 14px;font-weight:800;background:linear-gradient(135deg,#f0d7b6,#cf9b6f 55%,#b5734f);color:#2a1c12;cursor:pointer">Instalar</button>
+          <button id="pwaX" aria-label="Cerrar" style="flex:0 0 auto;background:transparent;border:0;color:#8a8079;font-size:18px;cursor:pointer;padding:0 2px">✕</button>
+        </div>`;
+        document.body.appendChild(bar);
+        document.getElementById('pwaGo').onclick=async ()=>{ if(!deferred) return; deferred.prompt(); try{ await deferred.userChoice; }catch(e){} deferred=null; bar.remove(); };
+        document.getElementById('pwaX').onclick=()=>{ try{ localStorage.setItem('adn_install_dismiss','1'); }catch(e){} bar.remove(); };
+      }
     })();
   </script>
 </body>
