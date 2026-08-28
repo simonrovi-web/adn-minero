@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Agenda</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', ui-sans-serif, system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(127,176,217,0.12), transparent 60%),
+      radial-gradient(1000px 600px at 100% 0%, rgba(181,115,79,0.10), transparent 55%),
+      #141110; }
+    .wrap{ max-width:680px; margin:0 auto; padding:16px 16px 40px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); backdrop-filter:blur(14px) saturate(130%); -webkit-backdrop-filter:blur(14px) saturate(130%); border:1px solid rgba(196,168,148,0.14); }
+    .metric-icon{ filter:drop-shadow(0 0 8px currentColor); }
+    a.lnk{ color:#e8c9a6; }
+    .ev{ display:flex; gap:14px; align-items:flex-start; }
+    .cal{ width:56px; flex:0 0 auto; border-radius:13px; overflow:hidden; text-align:center; border:1px solid rgba(196,168,148,.2); }
+    .cal .m{ font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.06em; padding:3px 0; color:#20160f; }
+    .cal .y{ font-size:12px; font-weight:700; padding:7px 0 8px; color:#e6d4c4; background:rgba(255,255,255,.03); }
+    .chip{ font-size:11px; font-weight:600; padding:2px 9px; border-radius:999px; background:rgba(127,176,217,.14); border:1px solid rgba(127,176,217,.32); color:#bcd4e6; }
+    .when{ font-size:11px; font-weight:700; padding:2px 9px; border-radius:999px; }
+  </style>
+  <script src="adn-ui.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(127,176,217,.15);border:1px solid rgba(127,176,217,.32)"><i data-lucide="calendar-days" class="metric-icon" style="width:26px;height:26px;color:#7fb0d9"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#a9c6dc;font-weight:700">Agenda Minera · ADN Minero</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Congresos, ferias y encuentros del sector</p>
+      </div>
+    </header>
+
+    <div class="mt-4 flex gap-2" id="filtros">
+      <button class="fbtn text-xs font-semibold px-3 py-1.5 rounded-full" data-f="cl">🇨🇱 Chile</button>
+      <button class="fbtn text-xs font-semibold px-3 py-1.5 rounded-full" data-f="all">🌎 Todos</button>
+    </div>
+
+    <div id="lista" class="mt-4 grid gap-3"></div>
+
+    <div class="mt-4 rounded-2xl p-4" style="background:rgba(224,90,63,.08);border:1px solid rgba(224,90,63,.24)">
+      <p class="text-[12px] text-stone-200 flex items-start gap-2 leading-relaxed"><i data-lucide="info" class="w-4 h-4 shrink-0 mt-0.5" style="color:#e0a35a"></i>
+        <span>Fechas <b>referenciales</b> (muchos eventos son anuales o bienales). Confirma día exacto e inscripción en el <b>sitio oficial</b> de cada evento. ADN Minero cubrirá los principales encuentros del sector.</span></p>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">¿Falta un evento o hay una fecha nueva? Escríbenos a <a href="mailto:adnminerochile@gmail.com" class="lnk">adnminerochile@gmail.com</a> · <a href="index.html" class="lnk">Inicio</a></p>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const MESC=['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
+
+  // mes: 1-12 (mes típico) · si es bienal, indica los años; si no, se calcula el próximo
+  const EVENTOS=[
+    {n:'Semana Cesco (Cesco Week)', c:'Santiago', p:'cl', mes:4, tipo:'Cobre · foro global', d:'La cita mundial del cobre: World Copper Conference y foros de Cesco. Referente de la industria.', web:'https://www.cesco.cl'},
+    {n:'Expomin', c:'Santiago', p:'cl', mes:4, bienal:'par', tipo:'Feria (bienal)', d:'Una de las mayores ferias mineras de Latinoamérica: tecnología, proveedores y maquinaria.', web:'https://www.expomin.cl'},
+    {n:'Exponor', c:'Antofagasta', p:'cl', mes:6, bienal:'par', tipo:'Feria (bienal)', d:'Gran exhibición minera del norte, organizada por la AIA. Negocios y proveedores del sector.', web:'https://www.exponor.cl'},
+    {n:'Elecgas', c:'Santiago', p:'cl', mes:5, tipo:'Energía y minería', d:'Encuentro de energía eléctrica y su rol en la minería y la transición energética.', web:'https://www.grupoeditec.cl'},
+    {n:'Perumin', c:'Arequipa', p:'pe', mes:9, bienal:'impar', tipo:'Convención (bienal)', d:'La convención minera más importante de Perú; referente regional para Chile.', web:'https://www.perumin.com'},
+    {n:'PDAC', c:'Toronto', p:'ca', mes:3, tipo:'Exploración · mundial', d:'La mayor convención mundial de exploración e inversión minera.', web:'https://www.pdac.ca'},
+    {n:'IMARC', c:'Sídney', p:'au', mes:10, tipo:'Conferencia mundial', d:'International Mining and Resources Conference: minería, inversión y tecnología.', web:'https://imarcglobal.com'},
+    {n:'Congreso de Seguridad Minera', c:'Chile', p:'cl', mes:8, tipo:'Seguridad', d:'Encuentros del sector sobre prevención, salud y seguridad en faenas.', web:'https://www.sonami.cl'}
+  ];
+
+  let filtro='cl';
+  function fmtFiltros(){ $('filtros').querySelectorAll('.fbtn').forEach(b=>{ const on=b.dataset.f===filtro;
+    b.style.cssText=`background:${on?'rgba(207,155,111,.22)':'rgba(255,255,255,.04)'};border:1px solid ${on?'rgba(207,155,111,.6)':'rgba(196,168,148,.2)'};color:${on?'#fff':'#c9b7a5'}`; }); }
+
+  function proximo(ev){
+    const now=new Date(); const cy=now.getFullYear(), cm=now.getMonth()+1;
+    let year=cm<=ev.mes?cy:cy+1;
+    if(ev.bienal){ // ajustar a año par/impar
+      const wantEven=ev.bienal==='par';
+      while((year%2===0)!==wantEven || (year===cy && cm>ev.mes)) year++;
+    }
+    return {year, mes:ev.mes};
+  }
+  function whenLabel(pr){
+    const now=new Date(); const cy=now.getFullYear(), cm=now.getMonth()+1;
+    const months=(pr.year-cy)*12+(pr.mes-cm);
+    if(months<=0) return {t:'este mes',c:'#7fbf9a'};
+    if(months===1) return {t:'próximo mes',c:'#e0a35a'};
+    if(months<=6) return {t:'en '+months+' meses',c:'#cf9b6f'};
+    return {t:MESES[pr.mes-1]+' '+pr.year,c:'#9c8f83'};
+  }
+
+  function render(){
+    fmtFiltros();
+    let list=EVENTOS.filter(e=>filtro==='all'||e.p==='cl').map(e=>({e, pr:proximo(e)}));
+    list.sort((a,b)=> (a.pr.year-b.pr.year) || (a.pr.mes-b.pr.mes));
+    $('lista').innerHTML=list.map(({e,pr})=>{
+      const w=whenLabel(pr); const flag=e.p==='cl'?'cl':e.p==='pe'?'pe':e.p==='ca'?'ca':e.p==='au'?'au':'cl';
+      return `<div class="glass rounded-2xl p-4">
+        <div class="ev">
+          <div class="cal"><div class="m" style="background:#7fb0d9">${MESC[e.mes-1]}</div><div class="y">${pr.year}</div></div>
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2 flex-wrap">
+              <p class="font-extrabold text-[16px] leading-tight">${e.n}</p>
+              <span class="when" style="color:${w.c};background:${w.c}1e;border:1px solid ${w.c}44">${w.t}</span>
+            </div>
+            <p class="text-[12px] text-stone-400 flex items-center gap-1.5 mt-1"><i data-lucide="map-pin" style="width:13px;height:13px"></i> ${e.c} <span class="fi fi-${flag}" style="border-radius:2px"></span> · ${e.tipo}</p>
+            <p class="text-[13px] text-stone-300 leading-snug mt-2">${e.d}</p>
+            <a href="${e.web}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 mt-2.5 text-[12px] font-semibold" style="color:#7fb0d9">Sitio oficial <i data-lucide="external-link" style="width:13px;height:13px"></i></a>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+    drawIcons();
+  }
+
+  $('filtros').addEventListener('click', e=>{ const b=e.target.closest('.fbtn'); if(!b) return; filtro=b.dataset.f; render(); });
+  drawIcons(); render();
+</script>
+</body>
+</html>

@@ -56,7 +56,7 @@
       <p class="text-base sm:text-lg text-[#cf9b6f] font-semibold mt-2 sm:mt-3">Un aporte de ADN Minero a la minería de Chile</p>
       <p class="hidden sm:block text-stone-400 max-w-2xl mx-auto mt-4 leading-relaxed">Tableros con información en tiempo real y datos tomados de fuentes públicas oficiales sobre la industria que mueve al país. Servicio independiente, gratis y para todos. Haz clic en cualquiera para abrirlo en pantalla completa.</p>
       <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mt-4 sm:mt-6 text-xs">
-        <span class="glass rounded-full px-4 py-1.5 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4 text-[#cf9b6f]"></i> 40 paneles</span>
+        <span class="glass rounded-full px-4 py-1.5 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4 text-[#cf9b6f]"></i> 41 paneles</span>
         <span class="glass rounded-full px-4 py-1.5 flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-emerald-400"></span> Datos en vivo</span>
         <span class="glass rounded-full px-4 py-1.5 flex items-center gap-2"><i data-lucide="badge-check" class="w-4 h-4 text-[#cf9b6f]"></i> Fuentes oficiales</span>
       </div>
@@ -181,6 +181,7 @@
       { t:'Geopolítica y Minerales', f:'../adn-minero-geopolitica.html',     i:'globe-2',    c:'#7fb0d9', badge:'nuevo', badgeCls:'bg-amber-500/15 text-amber-300 border border-amber-400/30', d:'Por qué el cobre y el litio de Chile son clave en el mundo, quién los compra y las grandes decisiones estratégicas del país, con gráficas.' },
       { t:'Estrategia Minera',      f:'../adn-minero-estrategia.html',       i:'rocket',     c:'#7fbf9a', badge:'nuevo', badgeCls:'bg-amber-500/15 text-amber-300 border border-amber-400/30', d:'Los pilares para que la minería desarrolle a Chile: valor agregado, innovación, talento, sostenibilidad, comunidades y más. Toca cada eje para ver su ficha.' },
       { t:'Directorio de Empresas', f:'../adn-minero-empresas.html',         i:'building-2', c:'#e0955f', badge:'nuevo', badgeCls:'bg-amber-500/15 text-amber-300 border border-amber-400/30', d:'Las 15 grandes mineras de Chile (Codelco, BHP, SQM…): tipo, minerales, faenas y empleo. Toca una para ver su ficha.' },
+      { t:'Agenda Minera',          f:'../adn-minero-eventos.html',          i:'calendar-days', c:'#7fb0d9', badge:'nuevo', badgeCls:'bg-amber-500/15 text-amber-300 border border-amber-400/30', d:'Congresos y ferias mineras (Cesco, Expomin, Exponor, Perumin, PDAC…), ordenados por cuándo se vienen.' },
       { t:'Calculadora Minera',     f:'../adn-minero-calculadora.html',      i:'calculator', c:'#cf9b6f', badge:'nuevo', badgeCls:'bg-amber-500/15 text-amber-300 border border-amber-400/30', d:'Convierte onzas, kilos, libras y toneladas; calcula la ley de un mineral y el valor del cobre al precio de hoy.' },
       { t:'Calculadora de Turnos',  f:'../adn-minero-turnos.html',           i:'calendar-clock', c:'#e0955f', badge:'nuevo', badgeCls:'bg-amber-500/15 text-amber-300 border border-amber-400/30', d:'¿En qué día de tu turno estás (7x7, 4x3…)? Calcula tu próxima bajada, tus días libres y un calendario visual.' },
       { t:'Contactos de Emergencia', f:'../adn-minero-emergencias.html',     i:'siren',      c:'#e05a3f', badge:'nuevo', badgeCls:'bg-amber-500/15 text-amber-300 border border-amber-400/30', d:'Números para llamar directo (SAMU, Bomberos, Carabineros, mutualidades) y guarda el número de tu faena.' },
@@ -222,7 +223,7 @@
     const CAT_OF = {
       'adn-minero-tv.html':'vivo','adn-minero-prensa.html':'vivo','adn-minero-semaforo.html':'vivo','adn-minero-alertas.html':'vivo','adn-minero-panel.html':'vivo','adn-minero-commodities.html':'vivo','adn-minero-sismos.html':'vivo','adn-minero-mar.html':'vivo','adn-minero-indicadores.html':'vivo',
       'adn-minero-ia.html':'asistente','adn-minero-muro.html':'asistente',
-      'adn-minero-mapa.html':'explora','adn-minero-faena.html':'explora','adn-minero-empresas.html':'explora',
+      'adn-minero-mapa.html':'explora','adn-minero-faena.html':'explora','adn-minero-empresas.html':'explora','adn-minero-eventos.html':'explora',
       'adn-minero-litio.html':'minerales','adn-minero-geopolitica.html':'minerales','adn-minero-estrategia.html':'minerales','adn-minero-cobre-transicion.html':'minerales','adn-minero-chile-mundo.html':'minerales',
       'adn-minero-empleos.html':'trabajo','adn-minero-bolsa.html':'trabajo','adn-minero-calculadora.html':'trabajo','adn-minero-turnos.html':'trabajo','adn-minero-emergencias.html':'trabajo','adn-minero-checklist.html':'trabajo','adn-minero-mujer.html':'trabajo','adn-minero-educacion.html':'trabajo',
       'adn-minero-efemerides.html':'aprende','adn-minero-glosario.html':'aprende','adn-minero-trivia.html':'aprende','adn-minero-seguridad.html':'aprende','adn-minero-normativa.html':'aprende','adn-minero-historia.html':'aprende','adn-minero-ambiente.html':'aprende',
