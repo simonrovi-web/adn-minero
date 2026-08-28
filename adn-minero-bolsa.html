@@ -123,7 +123,8 @@
       ${j.descripcion?`<p class="text-[13px] text-stone-300 leading-relaxed mt-2.5">${esc(j.descripcion)}</p>`:''}
       <div class="flex items-center gap-3 mt-3">
         ${applyBtn(j.contacto)}
-        <button class="report text-[12px] text-stone-500 hover:text-stone-300 ml-auto flex items-center gap-1" data-id="${j.id}"><i data-lucide="flag" style="width:13px;height:13px"></i> Reportar</button>
+        <button class="share text-[12px] text-stone-400 hover:text-stone-200 ml-auto flex items-center gap-1" data-id="${j.id}"><i data-lucide="share-2" style="width:13px;height:13px"></i> Compartir</button>
+        <button class="report text-[12px] text-stone-500 hover:text-stone-300 flex items-center gap-1" data-id="${j.id}"><i data-lucide="flag" style="width:13px;height:13px"></i> Reportar</button>
         ${ADMIN?`<button class="del text-[12px] text-red-400 flex items-center gap-1" data-id="${j.id}"><i data-lucide="trash-2" style="width:13px;height:13px"></i> Borrar</button>`:''}
       </div>
     </div>`;
@@ -165,7 +166,16 @@
   });
 
   // reportar / borrar
+  function shareJob(j){
+    const url=location.href.split('#')[0];
+    const text='💼 '+j.cargo+' — '+j.empresa+(j.lugar?(' · '+j.lugar):'')+(j.turno?(' · '+j.turno):'')+
+      '\nPostula: '+j.contacto+'\n\nVisto en ADN Minero ⛏️';
+    if(navigator.share){ navigator.share({title:'Empleo minero · '+j.cargo, text, url}).catch(()=>{}); }
+    else { window.open('https://wa.me/?text='+encodeURIComponent(text+'\n'+url),'_blank','noopener'); }
+  }
   $('list').addEventListener('click', async e=>{
+    const sh=e.target.closest('.share');
+    if(sh){ const j=JOBS.find(x=>x.id==+sh.dataset.id); if(j) shareJob(j); return; }
     const rep=e.target.closest('.report'), del=e.target.closest('.del');
     if(rep){ if(!confirm('¿Reportar este aviso como inapropiado?')) return;
       rep.textContent=' Reportado'; try{ await fetch(WORKER+'/empleos/report',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:+rep.dataset.id})}); }catch(_){}

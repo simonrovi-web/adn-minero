@@ -377,7 +377,8 @@
       el.innerHTML=`<div class="glass rounded-2xl p-4">
         <div class="flex items-center justify-between mb-3">
           <h2 class="text-sm font-bold flex items-center gap-2"><i data-lucide="sunrise" class="w-4 h-4" style="color:#e0a35a"></i> Hoy en la minería</h2>
-          <span class="text-[11px] text-stone-500 capitalize" id="hoyDate"></span>
+          <div class="flex items-center gap-2.5"><span class="text-[11px] text-stone-500 capitalize" id="hoyDate"></span>
+          <button id="hoyShare" type="button" aria-label="Compartir" class="text-stone-400 hover:text-stone-200 transition"><i data-lucide="share-2" class="w-4 h-4"></i></button></div>
         </div>
         <div class="grid grid-cols-2 gap-2.5">
           ${tileH('adn-minero-commodities.html','coins','#cf9b6f','Cobre','hCobre')}
@@ -392,9 +393,18 @@
       </div>`;
       const d=new Date(); const hd=document.getElementById('hoyDate'); if(hd) hd.textContent=d.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long'});
       window.lucide && lucide.createIcons();
+      const hs=document.getElementById('hoyShare'); if(hs) hs.onclick=shareHoy;
       fetchHoy();
     }
     function setHoy(id,v){ const e=document.getElementById(id); if(e&&v!=null) e.textContent=v; }
+    function shareHoy(){
+      const g=id=>{ const e=document.getElementById(id); return e?e.textContent:''; };
+      const p=window.ADNProfile&&ADNProfile.get(); const climaLbl=(p&&p.faena)?p.faena:'Clima faenas';
+      const text='📊 Hoy en la minería de Chile (ADN Minero)\n🟠 Cobre: '+g('hCobre')+' /lb\n🔴 Último sismo: '+g('hSismo')+'\n🌤️ '+climaLbl+': '+g('hClima')+'\n📰 '+g('hNews')+'\n';
+      const url=location.href.split('#')[0].split('?')[0];
+      if(navigator.share){ navigator.share({title:'Hoy en la minería · ADN Minero', text, url}).catch(()=>{}); }
+      else { window.open('https://wa.me/?text='+encodeURIComponent(text+'\n'+url),'_blank','noopener'); }
+    }
     async function fetchHoy(){
       try{ const j=await (await fetch('https://mindicador.cl/api/libra_cobre',{cache:'no-store'})).json(); const v=j.serie&&j.serie[0]&&j.serie[0].valor; if(v) setHoy('hCobre','US$ '+v.toFixed(2)); }catch(e){}
       try{ const u='https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=1&orderby=time&minmagnitude=2.5&minlatitude=-56&maxlatitude=-17&minlongitude=-77&maxlongitude=-66';
