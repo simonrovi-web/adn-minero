@@ -143,6 +143,14 @@
   .try-card.web .go{ color:var(--copper); }
   .try-card.and .go{ color:var(--verd); }
 
+  /* MEDIO DE COMUNICACIÓN */
+  .media-band .feat .ic{ background:var(--verd-wash); color:var(--verd); }
+  .mission{ margin-top:22px; text-align:center; font-family:var(--font-d); font-weight:800; text-wrap:balance;
+    font-size:clamp(20px,3.4vw,29px); line-height:1.25;
+    background:linear-gradient(150deg, var(--surface), var(--surface-2)); border:1px solid var(--line-strong);
+    border-radius:20px; padding:30px 26px; box-shadow:var(--shadow); }
+  .mission b{ color:var(--copper); }
+
   .reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1); }
   .reveal.in{ opacity:1; transform:none; }
 
@@ -170,7 +178,7 @@
 
     <p class="eyebrow">Propuesta de alianza · gremios y empresas</p>
     <h1>La app de la <span class="ox">industria minera</span> de Chile, en el bolsillo de cada trabajador.</h1>
-    <p class="lead">Datos en vivo, seguridad, empleo y divulgación — gratis, sin publicidad y funciona hasta sin señal en la faena. Ya está construida y en pruebas en Google Play. Buscamos aliados para llegar a cada minera y minero del país.</p>
+    <p class="lead">ADN Minero es el <b style="color:var(--ink)">medio de comunicación de la minería chilena</b>: una app con datos en vivo, y además programas formato TV, podcast, documentales y cobertura de eventos — todo referente a la minería, en un solo lugar. Ya está en marcha; buscamos aliados para llegar a cada minera y minero del país.</p>
     <div class="btns" style="justify-content:flex-start; margin-top:26px">
       <a class="btn primary" href="https://simonrovi-web.github.io/adn-minero/" target="_blank" rel="noopener">Ver la app en vivo
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></a>
@@ -209,6 +217,23 @@
     </div>
   </section>
 
+  <section class="band media-band">
+    <div class="head reveal">
+      <p class="eyebrow">Más que una app</p>
+      <h2>El medio de comunicación de la minería chilena.</h2>
+      <p class="lead">ADN Minero informa, forma y muestra el mundo minero como ningún otro. La app es la puerta de entrada; detrás viene una parrilla completa de contenido dedicado 100% a la minería.</p>
+    </div>
+    <div class="grid3">
+      <div class="feat reveal"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2"/><path d="m17 2-5 5-5-5"/></svg></div><h3>Programas formato TV</h3><p>Entrevistas, paneles y transmisiones en vivo con los protagonistas del sector.</p></div>
+      <div class="feat reveal"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></svg></div><h3>Podcast</h3><p>Conversaciones con la gente de la minería, para escuchar en el turno o en el camino.</p></div>
+      <div class="feat reveal"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2"/><path d="M7 2v20M17 2v20M2 12h20M2 7h5M2 17h5M17 17h5M17 7h5"/></svg></div><h3>Documentales</h3><p>Historias de faenas, comunidades y personas detrás del cobre y el litio.</p></div>
+      <div class="feat reveal"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5M19.1 4.9c3.9 3.9 3.9 10.3 0 14.2M12 12h.01"/></svg></div><h3>Cobertura de eventos</h3><p>Ferias, congresos y hitos del sector, en terreno y en directo.</p></div>
+      <div class="feat reveal"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M6 21V7l6-4 6 4v14M10 9h4M10 13h4M10 17h4"/></svg></div><h3>Conoce las empresas</h3><p>Perfiles, proyectos y voces de las compañías que mueven la minería de Chile.</p></div>
+      <div class="feat reveal"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-4 0V9h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8Z"/></svg></div><h3>Noticias y divulgación</h3><p>Todo lo que pasa en la minería, al día y explicado simple para todos.</p></div>
+    </div>
+    <p class="mission reveal">Nuestra misión: ser <b>el mejor medio de comunicación minera de Chile</b>.</p>
+  </section>
+
   <section class="band">
     <div class="head reveal">
       <p class="eyebrow">Qué es hoy</p>
@@ -243,9 +268,9 @@
       <article class="phase reveal">
         <div class="no">02<small>Crecimiento</small></div>
         <div>
-          <h3>Llegar a los trabajadores <span class="pill now">En curso</span></h3>
-          <p>Publicación en Google Play (de prueba cerrada a producción), contenido diario y crecimiento orgánico de usuarios.</p>
-          <ul><li>App Android en Play</li><li>Contenido diario</li><li>ADN Minero TV</li><li>Difusión en redes</li></ul>
+          <h3>Llegar a los trabajadores y crecer como medio <span class="pill now">En curso</span></h3>
+          <p>Publicación en Google Play (de prueba cerrada a producción) y puesta en marcha de la parrilla de contenido: programas, podcast y cobertura del sector.</p>
+          <ul><li>App Android en Play</li><li>ADN Minero TV</li><li>Programas TV</li><li>Podcast</li><li>Documentales</li><li>Cobertura de eventos</li></ul>
         </div>
       </article>
       <article class="phase reveal soon">
