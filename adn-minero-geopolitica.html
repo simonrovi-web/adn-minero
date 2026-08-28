@@ -90,6 +90,7 @@
     <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Contenido de divulgación con cifras referenciales de fuentes públicas; busca informar, no tomar posición política. ADN Minero es un servicio independiente · <a href="adn-minero-litio.html" class="lnk">Litio</a> · <a href="adn-minero-chile-mundo.html" class="lnk">Chile en el Mundo</a> · <a href="index.html" class="lnk">Inicio</a></p>
   </div>
 
+<script src="adn-charts.js"></script>
 <script>
   const $=id=>document.getElementById(id);
   const drawIcons=()=>window.lucide&&lucide.createIcons();
@@ -135,29 +136,15 @@
       <div><p class="text-sm font-bold">${x.t}</p><p class="text-[13px] text-stone-300 leading-snug mt-0.5">${x.d}</p></div>
     </div>`).join('');
 
-  // ===== gráficas de barras animadas =====
-  function chart(el, bars, unit){
-    const max=Math.max(...bars.map(b=>b.v))*1.16;
-    const n=bars.length, W=Math.max(300, n*88), H=210, pad=28, bw=n<=2?90:46, gap=(W-pad*2-bw*n)/(n-1||1);
-    let svg='';
-    bars.forEach((b,i)=>{
-      const x=pad+i*(bw+gap), full=(H-pad-26)*(b.v/max), y=H-26-full, col=b.c||'#cf9b6f';
-      svg+=`<rect class="bar" x="${x}" y="${H-26}" width="${bw}" height="0" rx="6" fill="${col}" data-y="${y.toFixed(1)}" data-h="${full.toFixed(1)}"></rect>`;
-      svg+=`<text class="val" x="${x+bw/2}" y="${y-6}" text-anchor="middle" fill="#f4ece5" font-size="14" font-weight="800" opacity="0">${b.v}${unit||''}</text>`;
-      svg+=`<text x="${x+bw/2}" y="${H-8}" text-anchor="middle" fill="#a99e92" font-size="12">${b.l}</text>`;
-    });
-    $(el).innerHTML=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:${W}px;display:block;margin:0 auto">${svg}</svg>`;
-  }
-  chart('chartEV', [{l:'Bencinero',v:23,c:'#8a8079'},{l:'Eléctrico',v:83,c:'#a7d18a'}], ' kg');
-  chart('chartDest', [{l:'China',v:54,c:'#e0715a'},{l:'Japón',v:10,c:'#cf9b6f'},{l:'Corea',v:8,c:'#e0a35a'},{l:'Europa',v:13,c:'#7fb0d9'},{l:'Otros',v:15,c:'#a7d18a'}], '%');
-  function animate(){
-    document.querySelectorAll('rect.bar').forEach(r=>{ r.setAttribute('y', r.dataset.y); r.setAttribute('height', r.dataset.h); });
-    setTimeout(()=>document.querySelectorAll('text.val').forEach(t=>t.style.opacity='1'), 550);
-  }
+  // ===== gráficas (ADN Charts) =====
+  ADNChart.bars('chartEV', [
+    {l:'Bencinero',v:23,color:'#8a8079'},{l:'Eléctrico',v:83,color:'#a7d18a'}
+  ], {unit:' kg', accent:'#a7d18a', max:100});
+  ADNChart.donut('chartDest', [
+    {l:'China',v:54,color:'#e0715a'},{l:'Europa',v:13,color:'#7fb0d9'},{l:'Otros',v:15,color:'#a7d18a'},{l:'Japón',v:10,color:'#cf9b6f'},{l:'Corea',v:8,color:'#e0a35a'}
+  ], {unit:'%', center:'54%', sub:'China'});
 
   drawIcons();
-  requestAnimationFrame(()=>requestAnimationFrame(animate));
-  setTimeout(animate, 500); // respaldo si rAF se retrasa
 </script>
 </body>
 </html>

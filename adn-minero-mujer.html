@@ -78,6 +78,7 @@
     <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Contenido de divulgación con cifras referenciales de fuentes públicas del sector. ADN Minero es un servicio independiente · <a href="adn-minero-educacion.html" class="lnk">Educación</a> · <a href="index.html" class="lnk">Inicio</a></p>
   </div>
 
+<script src="adn-charts.js"></script>
 <script>
   const $=id=>document.getElementById(id);
   const drawIcons=()=>window.lucide&&lucide.createIcons();
@@ -97,23 +98,12 @@
     {ic:'shield', t:'Ambientes de respeto', d:'Protocolos contra el acoso y una cultura laboral más inclusiva.'}
   ].map(x=>`<div class="flex items-start gap-3 rounded-xl px-3 py-2.5" style="background:rgba(224,138,168,.06);border:1px solid rgba(224,138,168,.18)"><i data-lucide="${x.ic}" class="w-5 h-5 shrink-0 mt-0.5" style="color:#e0a6bd"></i><div><p class="text-sm font-bold">${x.t}</p><p class="text-[13px] text-stone-300 leading-snug mt-0.5">${x.d}</p></div></div>`).join('');
 
-  // gráfica de barras animada
-  (function(){
-    const bars=[{l:'~2010',v:7},{l:'~2015',v:9},{l:'~2020',v:13},{l:'Hoy',v:17},{l:'Meta',v:25}];
-    const max=30, W=Math.max(300,bars.length*84), H=200, pad=28, bw=46, gap=(W-pad*2-bw*bars.length)/(bars.length-1);
-    let svg='';
-    bars.forEach((b,i)=>{ const x=pad+i*(bw+gap), full=(H-pad-24)*(b.v/max), y=H-24-full, col=b.l==='Meta'?'#7fbf9a':'#e08aa8';
-      svg+=`<rect class="bar" x="${x}" y="${H-24}" width="${bw}" height="0" rx="6" fill="${col}" data-y="${y.toFixed(1)}" data-h="${full.toFixed(1)}"></rect>`;
-      svg+=`<text class="val" x="${x+bw/2}" y="${y-6}" text-anchor="middle" fill="#f4ece5" font-size="14" font-weight="800" opacity="0">${b.v}%</text>`;
-      svg+=`<text x="${x+bw/2}" y="${H-6}" text-anchor="middle" fill="#a99e92" font-size="12">${b.l}</text>`;
-    });
-    $('chart').innerHTML=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:${W}px;display:block;margin:0 auto">${svg}</svg>`;
-  })();
-  function animate(){ document.querySelectorAll('rect.bar').forEach(r=>{ r.setAttribute('y', r.dataset.y); r.setAttribute('height', r.dataset.h); }); setTimeout(()=>document.querySelectorAll('text.val').forEach(t=>t.style.opacity='1'),550); }
+  // gráfica de participación femenina (ADN Charts)
+  ADNChart.bars('chart', [
+    {l:'~2010',v:7},{l:'~2015',v:9},{l:'~2020',v:13},{l:'Hoy',v:17},{l:'Meta',v:25,color:'#7fbf9a'}
+  ], {unit:'%', max:30, accent:'#e08aa8'});
 
   drawIcons();
-  requestAnimationFrame(()=>requestAnimationFrame(animate));
-  setTimeout(animate, 500);
 </script>
 </body>
 </html>
