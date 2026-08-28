@@ -6,6 +6,12 @@
    - En paneles-presentación (sin scroll / kiosco) no hace nada. */
 (function(){
   'use strict';
+  // Registrar el service worker (caché offline de los paneles visitados; también maneja el push)
+  try{
+    if('serviceWorker' in navigator && location.protocol!=='file:'){
+      window.addEventListener('load', function(){ navigator.serviceWorker.register('adn-push-sw.js').catch(function(){}); });
+    }
+  }catch(e){}
   try{
     var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
