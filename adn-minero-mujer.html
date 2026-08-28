@@ -24,6 +24,20 @@
     .sec-h{ font-size:1.05rem; font-weight:800; display:flex; align-items:center; gap:8px; }
     .bar{ transition:height 1.1s cubic-bezier(.2,.7,.3,1), y 1.1s cubic-bezier(.2,.7,.3,1); }
     .val{ transition:opacity .5s ease .5s; }
+    .role{ cursor:pointer; transition:transform .12s, background .15s, border-color .15s; }
+    .role:hover{ transform:translateY(-1px); border-color:rgba(224,138,168,.6)!important; background:rgba(224,138,168,.16)!important; }
+    .role:active{ transform:scale(.96); }
+    #roleOv{ position:fixed; inset:0; z-index:1000; display:none; overflow-y:auto; -webkit-overflow-scrolling:touch; background:rgba(10,8,7,.72); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); }
+    #roleOv.on{ display:block; animation:rin .25s ease both; }
+    @keyframes rin{ from{opacity:0} to{opacity:1} }
+    .rsheet{ max-width:560px; margin:0 auto; min-height:100%; padding:16px 16px 48px; }
+    #roleClose{ position:sticky; top:8px; margin-left:auto; display:grid; place-items:center; width:42px;height:42px;border-radius:999px; cursor:pointer; background:linear-gradient(160deg,rgba(48,41,35,.95),rgba(28,23,19,.9)); border:1px solid rgba(196,168,148,.25); color:#e8c9a6; box-shadow:0 6px 18px rgba(0,0,0,.5); }
+    #roleClose:active{ transform:scale(.92); }
+    #ovBody{ animation:rup .3s cubic-bezier(.2,.7,.3,1) both; }
+    @keyframes rup{ from{opacity:0; transform:translateY(18px)} to{opacity:1; transform:none} }
+    .rsec{ margin-top:14px; border-radius:14px; padding:13px 15px; background:rgba(255,255,255,.03); border:1px solid rgba(196,168,148,.14); }
+    .rsec h4{ font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:#e0a6bd; font-weight:700; display:flex; align-items:center; gap:7px; margin:0 0 6px; }
+    .rsec p{ font-size:14px; color:#d8ccc0; line-height:1.55; margin:0; }
   </style>
   <script src="adn-ui.js" defer></script>
 </head>
@@ -59,7 +73,7 @@
 
     <!-- ROLES -->
     <section class="glass rounded-2xl p-5 mt-4">
-      <h2 class="sec-h"><i data-lucide="briefcase" class="w-5 h-5" style="color:var(--copper)"></i> Dónde están y qué hacen</h2>
+      <h2 class="sec-h"><i data-lucide="briefcase" class="w-5 h-5" style="color:var(--copper)"></i> Dónde están y qué hacen <span class="text-[11px] font-normal text-stone-500">· toca cada rol</span></h2>
       <p class="text-[13px] text-stone-300 mt-2 leading-relaxed">Las mujeres trabajan hoy en <b>toda la cadena</b>: operación de equipos y camiones de extracción, mantención, geología, metalurgia, prevención de riesgos, planificación, medio ambiente y gerencias. Ya no hay áreas "solo de hombres".</p>
       <div id="roles" class="flex flex-wrap gap-2 mt-3"></div>
     </section>
@@ -79,6 +93,9 @@
     <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Contenido de divulgación con cifras referenciales de fuentes públicas del sector. ADN Minero es un servicio independiente · <a href="adn-minero-educacion.html" class="lnk">Educación</a> · <a href="index.html" class="lnk">Inicio</a></p>
   </div>
 
+  <!-- FICHA DE ROL -->
+  <div id="roleOv"><div class="rsheet"><button id="roleClose" aria-label="Cerrar"><i data-lucide="x" style="width:22px;height:22px"></i></button><div id="ovBody"></div></div></div>
+
 <script src="adn-charts.js"></script>
 <script>
   const $=id=>document.getElementById(id);
@@ -90,7 +107,18 @@
     {ic:'home', t:'Desarrollo justo', d:'Buenos empleos mineros para más familias del país.'}
   ].map(x=>`<div class="rounded-xl p-3" style="background:rgba(255,255,255,.03);border:1px solid rgba(196,168,148,.14)"><i data-lucide="${x.ic}" class="w-5 h-5" style="color:#a7d18a"></i><p class="text-sm font-bold mt-1">${x.t}</p><p class="text-[12px] text-stone-400 leading-snug mt-0.5">${x.d}</p></div>`).join('');
 
-  $('roles').innerHTML=['Operadora de camión (CAEX)','Mantención','Geología','Metalurgia','Prevención de riesgos','Planificación','Medio ambiente','Gerencias','Ingeniería de minas'].map(r=>`<span class="text-[12px] font-semibold px-2.5 py-1 rounded-full" style="background:rgba(207,155,111,.14);border:1px solid rgba(207,155,111,.33);color:#e6d4c4">${r}</span>`).join('');
+  const ROLES=[
+    {n:'Operadora de camión (CAEX)', ic:'truck', f:'Conduce los camiones de extracción gigantes (CAEX), que trasladan cientos de toneladas de mineral desde el rajo hasta el chancado o el botadero. Sigue rutas y señales, cuida la seguridad y reporta el estado del equipo.', e:'No necesita carrera universitaria: se hace un curso de operación de equipos mineros pesados en centros de capacitación (OTEC) o CFT, más la licencia de conducir que exija la empresa. Muchas mineras capacitan a sus propias operadoras.'},
+    {n:'Mantención', ic:'wrench', f:'Mantiene y repara camiones, palas, correas y plantas para que todo funcione sin fallas. Hace mantención preventiva (revisiones) y correctiva (arreglos).', e:'Técnico en mantenimiento mecánico, eléctrico o mecánica industrial (CFT/IP): INACAP, DUOC UC, Santo Tomás, IP Virginio Gómez, entre otros.'},
+    {n:'Geología', ic:'gem', f:'Estudia las rocas y los minerales para saber dónde hay metal y cuánto. Guía la exploración, toma muestras y ayuda a planificar la mina.', e:'Geología (carrera universitaria, 5–6 años): U. de Chile, U. Católica del Norte, U. de Concepción, U. de Atacama, U. de Antofagasta.'},
+    {n:'Metalurgia', ic:'flame', f:'Diseña y controla los procesos que separan y purifican el metal: molienda, flotación, fundición y electroobtención de cátodos.', e:'Ingeniería Civil Metalúrgica o en Metalurgia (universidad): U. Técnica F. Santa María, UCN, U. de Concepción, U. de Santiago (USACH).'},
+    {n:'Prevención de riesgos', ic:'shield-check', f:'Cuida que todos trabajen seguros: identifica riesgos, elabora el ART/AST, capacita, revisa el uso del EPP y ayuda a que la gente vuelva sana a casa.', e:'Técnico o Ingeniería en Prevención de Riesgos (CFT/IP/universidad): INACAP, Santo Tomás, IP Virginio Gómez, entre otras.'},
+    {n:'Planificación', ic:'clipboard-list', f:'Planea la secuencia de la mina: qué extraer, cuándo y cómo, para cumplir las metas de producción de forma segura y eficiente.', e:'Ingeniería Civil de Minas o Ingeniería en Minas (universidad).'},
+    {n:'Medio ambiente', ic:'leaf', f:'Cuida el agua, el aire y los relaves; hace el monitoreo ambiental, los reportes y ayuda con los permisos.', e:'Ingeniería Ambiental o en Recursos Naturales (universidad); también hay técnicos en medio ambiente (CFT/IP).'},
+    {n:'Gerencias', ic:'briefcase', f:'Lidera equipos y toma decisiones sobre la operación, las personas y el presupuesto de la faena.', e:'Una carrera de ingeniería + experiencia; suele complementarse con posgrados (MBA, diplomados en gestión minera).'},
+    {n:'Ingeniería de minas', ic:'hard-hat', f:'Diseña y dirige la explotación de la mina: métodos de extracción, tronaduras, producción y seguridad del yacimiento.', e:'Ingeniería Civil de Minas o Ingeniería en Minas (universidad): U. de Chile, U. Técnica F. Santa María, UCN, U. de Atacama, U. de Antofagasta.'}
+  ];
+  $('roles').innerHTML=ROLES.map((r,i)=>`<button type="button" class="role text-[12px] font-semibold px-3 py-1.5 rounded-full inline-flex items-center gap-1.5" data-i="${i}" style="background:rgba(207,155,111,.14);border:1px solid rgba(207,155,111,.33);color:#e6d4c4"><i data-lucide="${r.ic}" style="width:13px;height:13px"></i> ${r.n}</button>`).join('');
 
   $('inits').innerHTML=[
     {ic:'graduation-cap', t:'Formación y becas', d:'Programas técnicos y becas que animan a mujeres a estudiar carreras mineras.'},
@@ -103,6 +131,41 @@
   ADNChart.bars('chart', [
     {l:'~2010',v:7},{l:'~2015',v:9},{l:'~2020',v:13},{l:'Hoy',v:17},{l:'Meta',v:25,color:'#7fbf9a'}
   ], {unit:'%', max:30, accent:'#e08aa8'});
+
+  // ===== sonido de clic (Web Audio) =====
+  let AC=null;
+  function playClick(){
+    try{
+      AC=AC||new (window.AudioContext||window.webkitAudioContext)();
+      if(AC.state==='suspended') AC.resume();
+      const o=AC.createOscillator(), g=AC.createGain();
+      o.type='triangle'; o.frequency.setValueAtTime(660,AC.currentTime); o.frequency.exponentialRampToValueAtTime(880,AC.currentTime+.06);
+      g.gain.setValueAtTime(.0001,AC.currentTime); g.gain.exponentialRampToValueAtTime(.14,AC.currentTime+.012); g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+.16);
+      o.connect(g); g.connect(AC.destination); o.start(); o.stop(AC.currentTime+.17);
+    }catch(e){}
+  }
+
+  // ===== ficha de rol =====
+  function openRole(i){
+    const r=ROLES[i]; if(!r) return;
+    $('ovBody').innerHTML=`
+      <div class="flex items-center gap-3">
+        <div class="h-14 w-14 rounded-2xl grid place-items-center shrink-0" style="background:rgba(224,138,168,.14);border:1px solid rgba(224,138,168,.4)"><i data-lucide="${r.ic}" style="width:28px;height:28px;color:#e08aa8"></i></div>
+        <div><p class="text-[11px] uppercase tracking-wider" style="color:#e0a6bd;font-weight:700">Rol en minería</p><h2 class="text-xl font-extrabold leading-tight">${r.n}</h2></div>
+      </div>
+      <div class="rsec"><h4><i data-lucide="list-checks" style="width:15px;height:15px"></i> Qué hace</h4><p>${r.f}</p></div>
+      <div class="rsec"><h4><i data-lucide="graduation-cap" style="width:15px;height:15px"></i> Dónde estudiar</h4><p>${r.e}</p></div>
+      <a href="adn-minero-educacion.html" class="inline-flex items-center gap-2 mt-5 rounded-xl px-4 py-3 font-bold" style="background:rgba(232,201,166,.14);border:1px solid rgba(232,201,166,.35);color:#e8c9a6;text-decoration:none"><i data-lucide="graduation-cap" style="width:16px;height:16px"></i> Ver todas las carreras y becas</a>`;
+    $('roleOv').classList.add('on'); document.body.style.overflow='hidden'; $('roleOv').scrollTop=0;
+    drawIcons();
+    try{ history.pushState({role:1},''); }catch(e){}
+  }
+  function closeRole(){ $('roleOv').classList.remove('on'); document.body.style.overflow=''; }
+  $('roles').addEventListener('click', e=>{ const b=e.target.closest('.role'); if(!b) return; playClick(); openRole(+b.dataset.i); });
+  $('roleClose').addEventListener('click', ()=>{ playClick(); closeRole(); });
+  $('roleOv').addEventListener('click', e=>{ if(e.target.id==='roleOv') closeRole(); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape' && $('roleOv').classList.contains('on')) closeRole(); });
+  window.addEventListener('popstate', ()=>{ if($('roleOv').classList.contains('on')) closeRole(); });
 
   drawIcons();
 </script>
