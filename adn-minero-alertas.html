@@ -37,12 +37,9 @@
     </header>
 
     <div class="glass rounded-2xl p-5 mt-6">
-      <p class="text-sm font-bold text-stone-200 mb-3">Te avisaremos de:</p>
-      <div class="flex flex-col gap-2.5">
-        <div class="feat"><i data-lucide="activity" class="w-5 h-5 text-[#e05a3f] shrink-0"></i> <span><b>Sismos fuertes</b> (M4.5+) cerca de una faena minera.</span></div>
-        <div class="feat" style="opacity:.6"><i data-lucide="coins" class="w-5 h-5 text-[#cf9b6f] shrink-0"></i> <span>Cambios importantes del <b>cobre</b> <span class="text-[11px] text-stone-500">(pronto)</span>.</span></div>
-        <div class="feat" style="opacity:.6"><i data-lucide="newspaper" class="w-5 h-5 text-[#a7d18a] shrink-0"></i> <span><b>Noticias</b> mineras destacadas <span class="text-[11px] text-stone-500">(pronto)</span>.</span></div>
-      </div>
+      <p class="text-sm font-bold text-stone-200 mb-1">Elige qué alertas recibir:</p>
+      <p class="text-[12px] text-stone-500 mb-3">Actívalas o desactívalas cuando quieras. Tus preferencias se guardan en tu teléfono.</p>
+      <div id="prefs" class="flex flex-col gap-1.5"></div>
     </div>
 
     <div id="estado" class="mt-5 text-center"></div>
@@ -74,6 +71,29 @@
   function setBtn(txt, ic, on){ $('btn').innerHTML=`<i data-lucide="${ic}" style="width:20px;height:20px"></i> ${txt}`; $('btn').dataset.mode=on?'on':'off'; icons(); }
   function msg(t, col){ $('msg').textContent=t; $('msg').style.color=col||'#8a8079'; }
 
+  // ===== preferencias de alertas por tipo =====
+  const TOPICS=[
+    {k:'sismos',  ic:'activity',  c:'#e05a3f', t:'Sismos fuertes (M4.5+) cerca de faenas'},
+    {k:'empleos', ic:'briefcase', c:'#a7d18a', t:'Nuevos empleos en la Bolsa'},
+    {k:'tv',      ic:'tv',        c:'#e0715a', t:'ADN Minero TV cuando esté EN VIVO'},
+    {k:'cobre',   ic:'coins',     c:'#cf9b6f', t:'Movimientos fuertes del cobre'},
+    {k:'boletin', ic:'newspaper', c:'#7fbf9a', t:'Resumen semanal (lunes por la mañana)'}
+  ];
+  function getPrefs(){ try{ return JSON.parse(localStorage.getItem('adn_push_prefs')||'null')||{}; }catch(e){ return {}; } }
+  const isOn=k=>getPrefs()[k]!==false;
+  function renderPrefs(){
+    $('prefs').innerHTML=TOPICS.map(t=>`<label class="feat" style="cursor:pointer;justify-content:space-between;gap:10px">
+      <span class="flex items-center gap-2"><i data-lucide="${t.ic}" class="w-5 h-5 shrink-0" style="color:${t.c}"></i> <span>${t.t}</span></span>
+      <input type="checkbox" class="prefchk" data-k="${t.k}" ${isOn(t.k)?'checked':''} style="width:22px;height:22px;accent-color:#cf9b6f;flex:0 0 auto">
+    </label>`).join('');
+    icons();
+  }
+  async function savePrefs(){
+    const prefs=getPrefs();
+    try{ const reg=await navigator.serviceWorker.getRegistration(); const sub=reg&&await reg.pushManager.getSubscription();
+      if(sub) await fetch(WORKER+'/push/prefs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({endpoint:sub.endpoint, prefs})}); }catch(e){}
+  }
+
   async function refresh(){
     if(!supported){ setEstado('Tu navegador no soporta notificaciones', '#e0a35a'); $('btn').style.display='none'; msg('En iPhone: instala la app (Compartir → Agregar a inicio) y ábrela desde ahí.'); return; }
     if(Notification.permission==='denied'){ setEstado('Notificaciones bloqueadas', '#e0715a'); setBtn('Están bloqueadas','bell-off',false); $('btn').disabled=true; msg('Actívalas en los ajustes del navegador/teléfono para esta página.'); return; }
@@ -91,7 +111,7 @@
       const reg=await navigator.serviceWorker.register('adn-push-sw.js');
       await navigator.serviceWorker.ready;
       const sub=await reg.pushManager.subscribe({ userVisibleOnly:true, applicationServerKey:urlB64ToUint8(VAPID) });
-      const r=await fetch(WORKER+'/push/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(sub)});
+      const r=await fetch(WORKER+'/push/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subscription:sub, prefs:getPrefs()})});
       if(!r.ok) throw new Error('subscribe');
       msg('¡Listo! Ya recibirás las alertas. 👷⛏️', '#a7d18a');
     }catch(e){ msg('No se pudo activar. Intenta de nuevo.', '#e0715a'); }
@@ -106,7 +126,11 @@
   }
 
   $('btn').addEventListener('click', ()=>{ if($('btn').dataset.mode==='on') desactivar(); else activar(); });
-  icons(); refresh();
+  $('prefs').addEventListener('change', e=>{ const chk=e.target.closest('.prefchk'); if(!chk) return;
+    const p=getPrefs(); p[chk.dataset.k]=chk.checked; try{ localStorage.setItem('adn_push_prefs', JSON.stringify(p)); }catch(e){}
+    savePrefs();
+  });
+  icons(); renderPrefs(); refresh();
 </script>
 </body>
 </html>
