@@ -13,6 +13,15 @@
     }
   }catch(e){}
 
+  // ===== Asistente IA contextual (botón flotante en todos los paneles) =====
+  try{
+    var inFrameAi=false; try{ inFrameAi = window.top!==window.self; }catch(e){ inFrameAi=true; }
+    if(!inFrameAi && !document.getElementById('adnai-loader')){
+      var sc=document.createElement('script'); sc.id='adnai-loader'; sc.src='adn-ai.js'; sc.defer=true;
+      (document.head||document.documentElement).appendChild(sc);
+    }
+  }catch(e){}
+
   // ===== Métricas propias (privacidad primero) =====
   // Un ping anónimo por sesión/panel. NO envía IP, cookies ni datos personales.
   // Respeta "No rastrear" del navegador y no cuenta si el panel va dentro de un iframe (streaming).
