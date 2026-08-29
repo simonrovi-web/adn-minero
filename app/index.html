@@ -318,15 +318,36 @@
     }
 
     // ===== Perfil "Mi Faena" =====
+    const ROLES=['Operador/a','Mantenedor/a','Supervisor/a','Ingeniero/a','Geólogo/a','Prevencionista','Administrativo/a','Estudiante','Otro'];
+    const ROLE_SUGGEST={
+      'Operador/a':['adn-minero-turnos.html','adn-minero-semaforo.html','adn-minero-empleos.html'],
+      'Mantenedor/a':['adn-minero-turnos.html','adn-minero-seguridad.html','adn-minero-empleos.html'],
+      'Supervisor/a':['adn-minero-normativa.html','adn-minero-semaforo.html','adn-minero-produccion.html'],
+      'Ingeniero/a':['adn-minero-produccion.html','adn-minero-estrategia.html','adn-minero-indicadores.html'],
+      'Geólogo/a':['adn-minero-mapa.html','adn-minero-litio.html','adn-minero-geopolitica.html'],
+      'Prevencionista':['adn-minero-seguridad.html','adn-minero-normativa.html','adn-minero-checklist.html'],
+      'Administrativo/a':['adn-minero-indicadores.html','adn-minero-aporte-fiscal.html','adn-minero-cuenta-publica.html'],
+      'Estudiante':['adn-minero-educacion.html','adn-minero-glosario.html','adn-minero-trivia.html'],
+      'Otro':['adn-minero-mapa.html','adn-minero-historia.html','adn-minero-bolsa.html']
+    };
+    function roleChips(rol){
+      const sug=ROLE_SUGGEST[rol]||[];
+      const chips=sug.map(fn=>{ const pan=ALL.find(x=>x.f.replace(/^.*\//,'')===fn); if(!pan) return '';
+        return `<a href="${pan.f}" class="inline-flex items-center gap-1.5 text-xs font-semibold rounded-full px-2.5 py-1" style="background:${pan.c}14;border:1px solid ${pan.c}33;color:#e6d4c4"><i data-lucide="${pan.i}" class="w-3.5 h-3.5" style="color:${pan.c}"></i> ${pan.t}</a>`; }).join('');
+      return (rol && chips) ? `<div class="mt-3 pt-3 border-t border-white/5"><p class="text-[11px] text-stone-500 mb-2">Para ti como <b class="text-stone-400">${rol}</b>:</p><div class="flex flex-wrap gap-2">${chips}</div></div>` : '';
+    }
     function renderProfile(){
       const el=document.getElementById('miFaena'); if(!el||!window.ADNProfile) return;
       const p=ADNProfile.get();
       if(p && p.faena){
-        const sub=[p.empresa, p.turno?('Turno '+p.turno):''].filter(Boolean).join(' · ') || 'Tu faena guardada';
-        el.innerHTML=`<div class="glass rounded-2xl p-4 flex items-center gap-3">
-          <div class="h-11 w-11 rounded-xl grid place-items-center shrink-0" style="background:rgba(207,155,111,.16);border:1px solid rgba(207,155,111,.4)"><i data-lucide="hard-hat" class="w-6 h-6" style="color:#e8c9a6"></i></div>
-          <div class="min-w-0 flex-1"><p class="text-sm font-bold truncate">Hola 👋 · <span style="color:#e8c9a6">${p.faena}</span></p><p class="text-xs text-stone-400 truncate">${sub}</p></div>
-          <button id="mfEdit" type="button" class="text-xs font-semibold text-[#e8c9a6] glass rounded-full px-3 py-1.5 shrink-0">Editar</button>
+        const sub=[p.rol, p.empresa, p.turno?('Turno '+p.turno):''].filter(Boolean).join(' · ') || 'Tu faena guardada';
+        el.innerHTML=`<div class="glass rounded-2xl p-4">
+          <div class="flex items-center gap-3">
+            <div class="h-11 w-11 rounded-xl grid place-items-center shrink-0" style="background:rgba(207,155,111,.16);border:1px solid rgba(207,155,111,.4)"><i data-lucide="hard-hat" class="w-6 h-6" style="color:#e8c9a6"></i></div>
+            <div class="min-w-0 flex-1"><p class="text-sm font-bold truncate">Hola 👋 · <span style="color:#e8c9a6">${p.faena}</span></p><p class="text-xs text-stone-400 truncate">${sub}</p></div>
+            <button id="mfEdit" type="button" class="text-xs font-semibold text-[#e8c9a6] glass rounded-full px-3 py-1.5 shrink-0">Editar</button>
+          </div>
+          ${roleChips(p.rol)}
         </div>`;
       } else {
         el.innerHTML=`<button id="mfSet" type="button" class="w-full glass rounded-2xl p-4 flex items-center gap-3 text-left active:scale-[.99] transition">
@@ -340,6 +361,7 @@
       const p=(window.ADNProfile&&ADNProfile.get())||{};
       const inS='width:100%;background:#241d18;color:#f4ece5;border:1px solid rgba(196,168,148,.25);border-radius:12px;padding:11px 12px;font-size:15px;outline:none;margin-top:4px;font-family:inherit';
       const turnoOpts='<option value="">— sin turno —</option>'+ADNProfile.TURNOS.map(t=>`<option ${p.turno===t?'selected':''}>${t}</option>`).join('');
+      const rolOpts='<option value="">— sin especificar —</option>'+ROLES.map(r=>`<option ${p.rol===r?'selected':''}>${r}</option>`).join('');
       const faenaList=ADNProfile.FAENAS.map(f=>`<option value="${f}">`).join('');
       const ov=document.createElement('div'); ov.id='mfOv';
       ov.style.cssText='position:fixed;inset:0;z-index:5000;display:grid;place-items:center;background:rgba(10,8,7,.82);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:20px';
@@ -353,6 +375,8 @@
         <input id="mfEmpresa" placeholder="Ej. Codelco" value="${(p.empresa||'').replace(/"/g,'&quot;')}" style="${inS}">
         <label class="text-xs text-stone-400 font-semibold mt-3 block">Tu turno (opcional)</label>
         <select id="mfTurno" style="${inS}">${turnoOpts}</select>
+        <label class="text-xs text-stone-400 font-semibold mt-3 block">Tu rol / cargo (opcional)</label>
+        <select id="mfRol" style="${inS}">${rolOpts}</select>
         <div class="flex gap-2 mt-5">
           <button id="mfSave" type="button" class="flex-1 rounded-xl py-3 font-bold" style="background:linear-gradient(135deg,#f0d7b6,#cf9b6f 55%,#b5734f);color:#2a1c12">Guardar</button>
           <button id="mfCancel" type="button" class="rounded-xl px-4 py-3 font-bold" style="background:rgba(255,255,255,.05);color:#c9b7a5">Cancelar</button>
@@ -366,7 +390,7 @@
       ov.querySelector('#mfSave').onclick=()=>{
         const faena=ov.querySelector('#mfFaena').value.trim();
         if(!faena){ ov.querySelector('#mfFaena').focus(); return; }
-        ADNProfile.set({ faena, empresa:ov.querySelector('#mfEmpresa').value.trim(), turno:ov.querySelector('#mfTurno').value });
+        ADNProfile.set({ faena, empresa:ov.querySelector('#mfEmpresa').value.trim(), turno:ov.querySelector('#mfTurno').value, rol:ov.querySelector('#mfRol').value });
         close(); renderProfile();
       };
       const clr=ov.querySelector('#mfClear'); if(clr) clr.onclick=()=>{ ADNProfile.clear(); close(); renderProfile(); };
