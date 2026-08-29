@@ -48,7 +48,9 @@
       '#adnui-offline{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:99999;'+
       'background:linear-gradient(160deg,#3a2a22,#2a1d17);color:#f0d7b6;border:1px solid rgba(224,163,90,.5);border-radius:999px;'+
       'padding:7px 15px;font:600 12.5px/1 system-ui,sans-serif;box-shadow:0 6px 20px rgba(0,0,0,.5);display:none}'+
-      '#adnui-offline.on{display:block}';
+      '#adnui-offline.on{display:block}'+
+      // Accesibilidad: foco de teclado visible en controles interactivos
+      'a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible,[role="button"]:focus-visible{outline:2px solid #e0a35a;outline-offset:2px;border-radius:6px}';
     (document.head||document.documentElement).appendChild(a11y);
     try{ if(localStorage.getItem('adn_faena_mode')==='1') document.documentElement.classList.add('adn-faena'); }catch(e){}
     var mount=function(){
