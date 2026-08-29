@@ -13,6 +13,33 @@
     }
   }catch(e){}
 
+  // ===== Métricas propias (privacidad primero) =====
+  // Un ping anónimo por sesión/panel. NO envía IP, cookies ni datos personales.
+  // Respeta "No rastrear" del navegador y no cuenta si el panel va dentro de un iframe (streaming).
+  try{
+    var dnt = (navigator.doNotTrack==='1' || window.doNotTrack==='1' || navigator.msDoNotTrack==='1');
+    var inFrame = false; try{ inFrame = window.top !== window.self; }catch(e){ inFrame = true; }
+    if(!dnt && !inFrame && location.protocol!=='file:'){
+      var panel=(location.pathname||'').replace(/^.*\//,'')||'index.html';
+      if(/^[a-z0-9-]+\.html$/i.test(panel)){
+        var mk='adn_m_'+panel, seen=false;
+        try{ seen = sessionStorage.getItem(mk)==='1'; }catch(e){}
+        if(!seen){
+          try{ sessionStorage.setItem(mk,'1'); }catch(e){}
+          var send=function(){
+            try{
+              var url='https://adn-muro.simonrovi.workers.dev/m', data=JSON.stringify({p:panel});
+              if(navigator.sendBeacon){ navigator.sendBeacon(url, new Blob([data],{type:'application/json'})); }
+              else{ fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:data,keepalive:true}).catch(function(){}); }
+            }catch(e){}
+          };
+          if(document.readyState==='complete') setTimeout(send,1200);
+          else window.addEventListener('load', function(){ setTimeout(send,1200); });
+        }
+      }
+    }
+  }catch(e){}
+
   // ===== Sonido de clic suave y compartido (todos los paneles) =====
   try{
     var AC=null, lastClick=0;
