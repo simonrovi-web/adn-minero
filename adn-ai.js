@@ -107,13 +107,33 @@
     }
 
     // ---- Lógica del chat ----
-    var msgsEl, inEl, sendEl, chipsEl, busy=false, started=false;
-    var history=[{role:'system', content:
-      'El usuario está viendo el panel «'+TEMA+'» de la app ADN Minero (medio de comunicación de la minería chilena). '+
-      'Responde en español de Chile, breve y claro, en el contexto de ese panel y de la minería. '+
-      'No entregues recomendaciones de inversión financiera. Si la pregunta no es de minería, redirígela con amabilidad. '+
-      'Puedes equivocarte; ante datos delicados, sugiere confirmar en fuentes oficiales.'}];
+    var msgsEl, inEl, sendEl, chipsEl, busy=false, started=false, primed=false;
+    // El backend ya tiene su propio system prompt de minería; el contexto del panel
+    // se inyecta como "primer" del usuario (más fiable que un 2º mensaje de sistema).
+    var history=[];
     var CHIPS=['¿De qué trata este panel?','Explícalo simple','Dame un dato curioso'];
+
+    // Texto visible del encabezado del panel, para aterrizar el contexto (se calcula 1 vez).
+    var _snip=null;
+    function snippet(){
+      if(_snip!==null) return _snip;
+      try{
+        var h=document.querySelector('header'); var t=h?(h.innerText||h.textContent||''):'';
+        if(!t || t.length<20){ t=(document.body?document.body.innerText:'')||''; }
+        _snip=t.replace(/\s+/g,' ').trim().slice(0,240);
+      }catch(e){ _snip=''; }
+      return _snip;
+    }
+    function prime(){
+      if(primed) return; primed=true;
+      var sn=snippet();
+      var ctx='Estoy usando la app ADN Minero (el medio de comunicación de la minería chilena) y viendo el panel «'+TEMA+'».'+
+        (sn?' Contenido visible del panel: "'+sn+'".':'')+
+        ' Responde en español de Chile, breve y claro, enfocado en la minería y en este panel. '+
+        'No des recomendaciones de inversión financiera; si algo no es de minería, redirígelo con amabilidad; puedes equivocarte.';
+      history.push({role:'user', content:ctx});
+      history.push({role:'assistant', content:'Entendido, ¿qué quieres saber sobre «'+TEMA+'»?'});
+    }
 
     function bubble(role, text){
       var b=document.createElement('div'); b.className='adnai-b '+(role==='user'?'u':'a');
@@ -138,6 +158,7 @@
     async function send(text){
       text=(text||inEl.value||'').trim(); if(!text || busy) return;
       chipsEl.innerHTML=''; inEl.value=''; autoGrow();
+      prime();
       bubble('user', text);
       history.push({role:'user', content:text});
       busy=true; sendEl.disabled=true;
