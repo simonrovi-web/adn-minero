@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Proveedores</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', ui-sans-serif, system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(103,193,214,0.10), transparent 60%),
+      radial-gradient(1000px 600px at 100% 0%, rgba(181,115,79,0.10), transparent 55%),
+      #141110; }
+    .wrap{ max-width:680px; margin:0 auto; padding:16px 16px 40px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); backdrop-filter:blur(14px) saturate(130%); -webkit-backdrop-filter:blur(14px) saturate(130%); border:1px solid rgba(196,168,148,0.14); }
+    .metric-icon{ filter:drop-shadow(0 0 8px currentColor); }
+    a.lnk{ color:#e8c9a6; }
+    input{ background:#241d18; color:#f4ece5; border:1px solid rgba(196,168,148,.25); border-radius:12px; padding:11px 12px 11px 40px; font-size:15px; outline:none; width:100%; }
+    input:focus{ border-color:rgba(207,155,111,.6); }
+    .chip{ font-size:12px; font-weight:700; padding:6px 12px; border-radius:999px; cursor:pointer; white-space:nowrap; }
+    .card{ display:flex; gap:13px; align-items:flex-start; }
+    .badge-dest{ font-size:9px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; padding:2px 7px; border-radius:999px; background:rgba(214,169,79,.16); color:#e8c9a6; border:1px solid rgba(214,169,79,.4); }
+  </style>
+  <script src="adn-ui.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(103,193,214,.15);border:1px solid rgba(103,193,214,.32)"><i data-lucide="wrench" class="metric-icon" style="width:26px;height:26px;color:#67c1d6"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#a9d3dc;font-weight:700">Proveedores · ADN Minero</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Empresas de servicios para la minería</p>
+      </div>
+    </header>
+
+    <div class="mt-4 relative">
+      <i data-lucide="search" style="position:absolute;left:13px;top:12px;width:17px;height:17px;color:#8a8079"></i>
+      <input id="q" placeholder="Buscar proveedor o servicio…" autocomplete="off">
+    </div>
+
+    <div id="cats" class="flex gap-2 mt-3 overflow-x-auto pb-1" style="scrollbar-width:none"></div>
+
+    <div id="lista" class="mt-3 grid gap-2.5"></div>
+    <p id="vacio" class="hidden text-center text-stone-500 py-8 text-sm">Sin resultados. Prueba con otra palabra.</p>
+
+    <a href="mailto:adnminerochile@gmail.com?subject=Aparecer%20en%20el%20Directorio%20de%20Proveedores" class="block mt-5 rounded-2xl p-4 text-center active:scale-[.99] transition" style="border:1px dashed rgba(103,193,214,.4);background:rgba(103,193,214,.06)">
+      <p class="text-sm font-bold text-stone-200">🔧 ¿Tu empresa presta servicios a la minería?</p>
+      <p class="text-xs text-stone-400 mt-1">Aparece en el directorio y destácate ante toda la industria. <span style="color:#a9d3dc">Escríbenos →</span></p>
+    </a>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Directorio referencial de divulgación; no implica recomendación. Confirma datos en el sitio de cada empresa. · <a href="adn-minero-mapa.html" class="lnk">Ver en el mapa</a> · <a href="index.html" class="lnk">Inicio</a></p>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const norm=s=>(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+
+  // destacado:true = espacio pagado (aparece arriba con etiqueta). Editar según auspicios.
+  const PROV=[
+    {n:'Finning (Caterpillar)', cat:'Equipos y maquinaria', d:'Distribuidor CAT: arriendo, venta y servicio de equipos mineros.', web:'https://www.finning.com/es_CL'},
+    {n:'Komatsu Cummins Chile', cat:'Equipos y maquinaria', d:'Camiones, palas y equipos de gran minería, con soporte en faena.', web:'https://www.komatsulatinoamerica.com/chile'},
+    {n:'Liebherr Chile', cat:'Equipos y maquinaria', d:'Palas, grúas y equipos de movimiento de tierra.', web:'https://www.liebherr.com/es-cl'},
+    {n:'SKC Maquinarias', cat:'Equipos y maquinaria', d:'Maquinaria, camiones y equipos para minería y construcción.', web:'https://www.skcmaquinarias.cl'},
+    {n:'Sandvik', cat:'Perforación y tronadura', d:'Equipos de perforación, carguío y transporte.', web:'https://www.rocktechnology.sandvik/es-es'},
+    {n:'Epiroc Chile', cat:'Perforación y tronadura', d:'Perforadoras, automatización y herramientas de roca.', web:'https://www.epiroc.com/es-cl'},
+    {n:'Enaex', cat:'Perforación y tronadura', d:'Servicios de tronadura y explosivos a cielo abierto.', web:'https://www.enaex.com/cl'},
+    {n:'Orica', cat:'Perforación y tronadura', d:'Voladura, explosivos y soluciones de fragmentación.', web:'https://www.orica.com'},
+    {n:'Aggreko', cat:'Energía', d:'Generación eléctrica y climatización en arriendo para faenas.', web:'https://www.aggreko.com/es-cl'},
+    {n:'Metso', cat:'Procesamiento', d:'Plantas y equipos de chancado, molienda y separación.', web:'https://www.metso.com'},
+    {n:'FLSmidth', cat:'Procesamiento', d:'Tecnología para el procesamiento de minerales.', web:'https://www.flsmidth.com'},
+    {n:'Weir Minerals', cat:'Procesamiento', d:'Bombas, hidrociclones y revestimientos para minería.', web:'https://www.global.weir'},
+    {n:'SGS Chile', cat:'Laboratorios y ensayos', d:'Análisis de minerales, inspección y certificación.', web:'https://www.sgs.com/es-cl'},
+    {n:'Bureau Veritas', cat:'Laboratorios y ensayos', d:'Laboratorios, ensayos e inspección de calidad.', web:'https://www.bureauveritas.cl'},
+    {n:'ALS', cat:'Laboratorios y ensayos', d:'Geoquímica y ensayos metalúrgicos.', web:'https://www.alsglobal.com'},
+    {n:'Tecno Fast', cat:'Campamentos y alimentación', d:'Campamentos modulares y soluciones de espacios para faena.', web:'https://www.tecnofast.cl'},
+    {n:'Sodexo Chile', cat:'Campamentos y alimentación', d:'Casinos, alimentación y servicios de apoyo en faena.', web:'https://cl.sodexo.com'},
+    {n:'3M Chile', cat:'Seguridad y EPP', d:'Protección respiratoria, auditiva y equipos de seguridad.', web:'https://www.3m.cl'},
+    {n:'MSA Safety', cat:'Seguridad y EPP', d:'Cascos, arneses y detección de gases.', web:'https://cl.msasafety.com'}
+  ];
+  const ICON={'Equipos y maquinaria':'truck','Perforación y tronadura':'drill','Energía':'zap','Procesamiento':'factory','Laboratorios y ensayos':'flask-conical','Campamentos y alimentación':'tent','Seguridad y EPP':'shield-check'};
+  const cats=['Todos', ...Array.from(new Set(PROV.map(p=>p.cat)))];
+  let cat='Todos';
+
+  function renderCats(){
+    $('cats').innerHTML=cats.map(c=>{ const on=c===cat;
+      return `<button class="chip catbtn shrink-0" data-c="${c}" style="background:${on?'rgba(103,193,214,.22)':'rgba(255,255,255,.04)'};border:1px solid ${on?'rgba(103,193,214,.6)':'rgba(196,168,148,.2)'};color:${on?'#fff':'#c9b7a5'}">${c}</button>`; }).join('');
+  }
+  function render(){
+    renderCats();
+    const q=norm($('q').value.trim());
+    let list=PROV.filter(p=>(cat==='Todos'||p.cat===cat) && (!q || norm(p.n+' '+p.cat+' '+p.d).includes(q)));
+    list.sort((a,b)=>(b.destacado?1:0)-(a.destacado?1:0));
+    $('vacio').classList.toggle('hidden', list.length>0);
+    $('lista').innerHTML=list.map(p=>`<div class="glass rounded-2xl p-4">
+      <div class="card">
+        <div class="h-11 w-11 rounded-xl grid place-items-center shrink-0" style="background:rgba(103,193,214,.14);border:1px solid rgba(103,193,214,.3)"><i data-lucide="${ICON[p.cat]||'wrench'}" class="w-5 h-5" style="color:#67c1d6"></i></div>
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-2 flex-wrap"><p class="font-bold">${p.n}</p>${p.destacado?'<span class="badge-dest">★ Destacado</span>':''}</div>
+          <p class="text-[11px] text-stone-500">${p.cat}</p>
+          <p class="text-[13px] text-stone-300 leading-snug mt-1.5">${p.d}</p>
+          <a href="${p.web}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 mt-2 text-[12px] font-semibold" style="color:#67c1d6">Sitio web <i data-lucide="external-link" style="width:13px;height:13px"></i></a>
+        </div>
+      </div>
+    </div>`).join('');
+    drawIcons();
+  }
+
+  $('cats').addEventListener('click', e=>{ const b=e.target.closest('.catbtn'); if(!b) return; cat=b.dataset.c; render(); });
+  $('q').addEventListener('input', render);
+  drawIcons(); render();
+</script>
+</body>
+</html>
