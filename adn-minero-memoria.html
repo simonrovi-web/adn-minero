@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Memoria Minera</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(207,155,111,0.12), transparent 60%), #141110; }
+    .wrap{ max-width:480px; margin:0 auto; padding:14px 14px calc(14px + env(safe-area-inset-bottom,0px)); }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.6), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    #board{ display:grid; grid-template-columns:repeat(4,1fr); gap:9px; margin-top:14px; }
+    .card{ aspect-ratio:1; perspective:600px; cursor:pointer; }
+    .inner{ position:relative; width:100%; height:100%; transition:transform .4s; transform-style:preserve-3d; }
+    .card.flip .inner, .card.done .inner{ transform:rotateY(180deg); }
+    .face{ position:absolute; inset:0; display:grid; place-items:center; border-radius:14px; backface-visibility:hidden; -webkit-backface-visibility:hidden; }
+    .front{ background:linear-gradient(150deg,#3a2c22,#2a1f18); border:1px solid rgba(196,168,148,.22); }
+    .front::after{ content:'⛏'; font-size:clamp(20px,6vw,28px); opacity:.25; }
+    .back{ background:linear-gradient(150deg,#4a3a2c,#2f251d); border:1px solid rgba(207,155,111,.4); transform:rotateY(180deg); font-size:clamp(26px,9vw,40px); }
+    .card.done .back{ background:linear-gradient(150deg,rgba(127,191,154,.28),rgba(60,80,60,.2)); border-color:rgba(127,191,154,.6); }
+    .card.done{ animation:pop .3s ease } @keyframes pop{ 50%{transform:scale(1.06)} }
+    .stat{ text-align:center } .stat b{ display:block; font-size:22px; color:#e8c9a6; font-weight:900 }
+    .hidden{ display:none !important }
+  </style>
+  <script src="adn-ui.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <div class="h-9 w-9 rounded-lg grid place-items-center shrink-0" style="background:rgba(207,155,111,.16);border:1px solid rgba(207,155,111,.4)"><i data-lucide="brain" style="width:19px;height:19px;color:#cf9b6f"></i></div>
+        <div class="min-w-0">
+          <p style="margin:0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#e6c8a8;font-weight:800">Memoria Minera</p>
+          <p style="margin:0;font-size:10px;color:#9c8f83">Encuentra los pares</p>
+        </div>
+      </div>
+      <button id="reset" class="text-xs font-bold px-3 py-1.5 rounded-full glass active:scale-95 transition">🔁 Nuevo</button>
+    </div>
+
+    <div class="glass rounded-2xl px-4 py-3 mt-4 flex justify-around items-center">
+      <div class="stat"><b id="moves">0</b><span class="text-[11px] text-stone-400">movimientos</span></div>
+      <div class="stat"><b id="pairs">0/8</b><span class="text-[11px] text-stone-400">pares</span></div>
+      <div class="stat"><b id="time">0:00</b><span class="text-[11px] text-stone-400">tiempo</span></div>
+      <div class="stat"><b id="best">—</b><span class="text-[11px] text-stone-400">récord (mov.)</span></div>
+    </div>
+
+    <div id="board"></div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-4"><a href="adn-minero-juegos.html" style="color:#e8c9a6">🎮 Juegos</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a> · Toca dos cartas para encontrar el par</p>
+  </div>
+
+  <!-- Fin -->
+  <div id="win" class="hidden" style="position:fixed;inset:0;z-index:60;background:rgba(10,8,7,.62);display:flex;align-items:center;justify-content:center;padding:20px">
+    <div class="glass rounded-2xl p-6 text-center" style="max-width:320px">
+      <div class="text-5xl mb-1">🏆</div>
+      <h2 class="text-xl font-black">¡Todos los pares!</h2>
+      <p class="text-sm text-stone-300 mt-2">Lo lograste en <b id="wMoves" style="color:#e8c9a6">0</b> movimientos y <b id="wTime" style="color:#e8c9a6">0:00</b>.</p>
+      <p id="wRecord" class="text-sm font-bold mt-1 hidden" style="color:#d6a94f">🎉 ¡Nuevo récord!</p>
+      <button id="wAgain" class="mt-5 w-full rounded-xl py-3 font-black active:scale-95 transition" style="background:linear-gradient(150deg,#e8c9a6,#cf9b6f);color:#211a15">Jugar de nuevo 🔁</button>
+    </div>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  // 8 símbolos mineros → 8 pares
+  const SYMBOLS=[
+    {e:'⛏️',n:'Pico'},{e:'🪨',n:'Mineral'},{e:'💎',n:'Gema'},{e:'🚛',n:'CAEX'},
+    {e:'⚡',n:'Energía'},{e:'🧪',n:'Laboratorio'},{e:'🔋',n:'Litio'},{e:'🦺',n:'EPP'}
+  ];
+  const shuffle=a=>{ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+  const BEST_KEY='adn_mem_best';
+  const getBest=()=>{ try{ return parseInt(localStorage.getItem(BEST_KEY)||'0',10)||0; }catch(e){ return 0; } };
+  const setBest=n=>{ try{ localStorage.setItem(BEST_KEY,String(n)); }catch(e){} };
+
+  let deck=[], first=null, lock=false, moves=0, matched=0, t0=0, timer=null;
+
+  function fmt(s){ const m=Math.floor(s/60); const ss=s%60; return m+':'+String(ss).padStart(2,'0'); }
+  function startTimer(){ t0=Date.now(); clearInterval(timer); timer=setInterval(()=>{ $('time').textContent=fmt(Math.floor((Date.now()-t0)/1000)); },1000); }
+
+  function build(){
+    clearInterval(timer); t0=0; moves=0; matched=0; first=null; lock=false;
+    $('moves').textContent='0'; $('pairs').textContent='0/8'; $('time').textContent='0:00';
+    const best=getBest(); $('best').textContent=best||'—';
+    deck=shuffle(SYMBOLS.concat(SYMBOLS).map((s,i)=>({...s,id:i})));
+    const b=$('board'); b.innerHTML='';
+    deck.forEach((card,i)=>{
+      const el=document.createElement('div'); el.className='card'; el.dataset.i=i;
+      el.innerHTML='<div class="inner"><div class="face front"></div><div class="face back">'+card.e+'</div></div>';
+      el.addEventListener('click',()=>flip(el,i));
+      b.appendChild(el);
+    });
+  }
+
+  function flip(el,i){
+    if(lock||el.classList.contains('flip')||el.classList.contains('done')) return;
+    if(!t0) startTimer();
+    el.classList.add('flip');
+    if(first===null){ first={el,i}; return; }
+    // segundo
+    moves++; $('moves').textContent=moves;
+    lock=true;
+    const a=deck[first.i], b=deck[i];
+    if(a.e===b.e){
+      setTimeout(()=>{ first.el.classList.add('done'); el.classList.add('done'); first=null; lock=false;
+        matched++; $('pairs').textContent=matched+'/8';
+        if(matched===8) win();
+      },380);
+    } else {
+      setTimeout(()=>{ first.el.classList.remove('flip'); el.classList.remove('flip'); first=null; lock=false; },820);
+    }
+  }
+
+  function win(){
+    clearInterval(timer);
+    const secs=Math.floor((Date.now()-t0)/1000);
+    $('wMoves').textContent=moves; $('wTime').textContent=fmt(secs);
+    const best=getBest(); const rec=(best===0||moves<best);
+    if(rec) setBest(moves);
+    $('wRecord').classList.toggle('hidden', !rec);
+    $('best').textContent=getBest();
+    setTimeout(()=>$('win').classList.remove('hidden'),450);
+  }
+
+  $('reset').addEventListener('click', ()=>{ $('win').classList.add('hidden'); build(); });
+  $('wAgain').addEventListener('click', ()=>{ $('win').classList.add('hidden'); build(); });
+
+  build(); drawIcons();
+</script>
+</body>
+</html>
