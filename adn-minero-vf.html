@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Verdadero o Falso</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root{ --copper:#cf9b6f; --ok:#7fbf9a; --no:#e0715a; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; height:100%; font-family:'Inter', ui-sans-serif, system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; overflow:hidden; background:
+      radial-gradient(1100px 640px at 12% -8%, rgba(214,169,79,0.12), transparent 60%),
+      radial-gradient(900px 560px at 100% 0%, rgba(103,193,214,0.08), transparent 55%),
+      #141110; }
+    .wrap{ max-width:620px; margin:0 auto; height:100dvh; display:flex; flex-direction:column; padding:14px 16px calc(16px + env(safe-area-inset-bottom,0px)); }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); backdrop-filter:blur(14px) saturate(130%); -webkit-backdrop-filter:blur(14px) saturate(130%); border:1px solid rgba(196,168,148,0.14); }
+    #card{ transition:transform .18s ease, opacity .18s ease, box-shadow .18s ease, border-color .18s ease; }
+    #card.ok{ border-color:rgba(127,191,154,.7); box-shadow:0 0 0 2px rgba(127,191,154,.35), 0 18px 50px rgba(0,0,0,.4); }
+    #card.no{ border-color:rgba(224,113,90,.7); box-shadow:0 0 0 2px rgba(224,113,90,.35), 0 18px 50px rgba(0,0,0,.4); }
+    #card.fly-ok{ transform:translateX(60%) rotate(7deg); opacity:0; }
+    #card.fly-no{ transform:translateX(-60%) rotate(-7deg); opacity:0; }
+    .bigbtn{ flex:1; border:0; border-radius:20px; padding:20px 8px; font-weight:900; font-size:18px; letter-spacing:.02em;
+      display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer; transition:transform .1s ease, filter .1s ease; }
+    .bigbtn:active{ transform:scale(.96) }
+    .bigbtn.v{ background:linear-gradient(160deg,#6fae8c,#4c8f6b); color:#08160f; box-shadow:0 8px 22px rgba(76,143,107,.4) }
+    .bigbtn.f{ background:linear-gradient(160deg,#e08a72,#c15a44); color:#180b07; box-shadow:0 8px 22px rgba(193,90,68,.4) }
+    .bigbtn:disabled{ opacity:.55; filter:grayscale(.3) }
+    .tbar{ height:10px; border-radius:999px; background:rgba(255,255,255,.07); overflow:hidden }
+    .tbar > div{ height:100%; width:100%; border-radius:999px; background:linear-gradient(90deg,#d6a94f,#cf9b6f); transition:width .25s linear }
+    .tbar.low > div{ background:linear-gradient(90deg,#e0715a,#c15a44) }
+    .pill{ font-size:11px; font-weight:800; padding:5px 11px; border-radius:999px; background:rgba(255,255,255,.05); border:1px solid rgba(196,168,148,.2) }
+    .fade{ animation:fade .25s ease both } @keyframes fade{ from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+    .pop{ animation:pop .3s cubic-bezier(.2,1.4,.4,1) both } @keyframes pop{ from{transform:scale(.8);opacity:0} to{transform:scale(1);opacity:1} }
+    #combo{ transition:opacity .2s ease }
+    .hidden{ display:none !important }
+  </style>
+  <script src="adn-ui.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- Top bar -->
+    <div class="flex items-center justify-between gap-3 shrink-0">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <div class="h-10 w-10 rounded-xl grid place-items-center shrink-0" style="background:rgba(214,169,79,.15);border:1px solid rgba(214,169,79,.32)"><i data-lucide="zap" style="width:22px;height:22px;color:#d6a94f"></i></div>
+        <div class="min-w-0">
+          <p style="margin:0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#e6c98f;font-weight:800">Verdadero o Falso</p>
+          <p style="margin:0;font-size:10.5px;color:#9c8f83">Contrarreloj · minería de Chile</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 shrink-0">
+        <span class="pill" id="scorePill">⭐ <b id="score">0</b></span>
+        <span class="pill" id="timePill">⏱️ <b id="time">60</b>s</span>
+      </div>
+    </div>
+
+    <div class="tbar mt-3 shrink-0" id="tbar"><div id="tfill"></div></div>
+
+    <!-- Zona de juego -->
+    <div class="flex-1 min-h-0 flex flex-col justify-center relative">
+
+      <!-- INICIO -->
+      <div id="start" class="glass rounded-3xl p-6 text-center">
+        <div class="text-5xl mb-2">⚡⛏️</div>
+        <h1 class="text-2xl font-black">Verdadero o Falso</h1>
+        <p class="text-stone-300 text-sm mt-2 leading-relaxed">Tienes <b>60 segundos</b>. Aparecerá una afirmación sobre minería y decides si es <span style="color:#7fbf9a;font-weight:700">Verdadero</span> o <span style="color:#e0715a;font-weight:700">Falso</span>.<br>¡Responde rápido y encadena aciertos para sumar combo! 🔥</p>
+        <p class="text-[11px] text-stone-500 mt-3">Atajos: ← Falso · → Verdadero</p>
+        <button id="startBtn" class="mt-5 w-full rounded-2xl py-4 font-black text-lg active:scale-95 transition" style="background:linear-gradient(150deg,#e8c9a6,#cf9b6f);color:#211a15">Jugar ▶</button>
+        <p class="text-[11px] text-stone-500 mt-3">Mejor puntaje: <b id="bestStart" style="color:#e8c9a6">0</b></p>
+      </div>
+
+      <!-- JUEGO -->
+      <div id="game" class="hidden">
+        <div id="combo" class="text-center h-6 mb-1 font-black text-sm" style="color:#d6a94f;opacity:0">🔥 Combo x2</div>
+        <div id="card" class="glass rounded-3xl p-6 min-h-[190px] flex flex-col items-center justify-center text-center">
+          <p id="stmt" class="text-xl font-bold leading-snug">…</p>
+          <div id="feedback" class="mt-3 text-sm font-semibold hidden"></div>
+        </div>
+        <div class="flex gap-3 mt-4">
+          <button id="btnF" class="bigbtn f"><span style="font-size:26px">✗</span>Falso</button>
+          <button id="btnV" class="bigbtn v"><span style="font-size:26px">✓</span>Verdadero</button>
+        </div>
+      </div>
+
+      <!-- FIN -->
+      <div id="over" class="hidden glass rounded-3xl p-6 text-center">
+        <div id="overEmoji" class="text-5xl mb-1">🏆</div>
+        <p class="text-sm text-stone-400">¡Tiempo!</p>
+        <p class="text-5xl font-black my-1" style="color:#e8c9a6"><span id="finalScore">0</span></p>
+        <p class="text-sm text-stone-300">aciertos · <span id="acc">0</span>% de precisión</p>
+        <p id="recordMsg" class="mt-2 text-sm font-bold hidden" style="color:#d6a94f">🎉 ¡Nuevo récord!</p>
+        <p class="text-[12px] text-stone-500 mt-1">Mejor puntaje: <b id="bestOver" style="color:#e8c9a6">0</b></p>
+        <div class="flex gap-3 mt-5">
+          <button id="againBtn" class="flex-1 rounded-2xl py-3.5 font-black active:scale-95 transition" style="background:linear-gradient(150deg,#e8c9a6,#cf9b6f);color:#211a15">Jugar de nuevo 🔁</button>
+          <button id="shareBtn" class="rounded-2xl px-4 py-3.5 font-bold active:scale-95 transition glass" title="Compartir"><i data-lucide="share-2" style="width:18px;height:18px"></i></button>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-2 shrink-0"><a href="adn-minero-trivia.html" style="color:#e8c9a6">🎯 Trivia</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a> · Datos de divulgación</p>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+
+  // Banco: v=true si la afirmación es VERDADERA. e=explicación breve.
+  const BANK=[
+    {t:'Chile es el mayor productor de cobre del mundo.', v:true, e:'Produce cerca de un cuarto del cobre mundial.'},
+    {t:'El litio chileno se extrae principalmente de salares.', v:true, e:'Sobre todo del Salar de Atacama.'},
+    {t:'Codelco es una empresa del Estado de Chile.', v:true, e:'Es la mayor productora de cobre del mundo.'},
+    {t:'El Teniente es la mina de cobre subterránea más grande del mundo.', v:true, e:'Está en la Región de O’Higgins.'},
+    {t:'Escondida es la mayor productora de cobre del planeta.', v:true, e:'Ubicada en la Región de Antofagasta.'},
+    {t:'El relave es el residuo que queda tras procesar el mineral.', v:true, e:'Se almacena en depósitos de relave.'},
+    {t:'La “ley” de un mineral indica su concentración.', v:true, e:'A mayor ley, más metal por tonelada.'},
+    {t:'El cobre es un excelente conductor de electricidad.', v:true, e:'Por eso se usa tanto en cables.'},
+    {t:'Sernageomin fiscaliza la seguridad minera en Chile.', v:true, e:'También lleva el catastro geológico.'},
+    {t:'La flotación separa minerales usando burbujas.', v:true, e:'Aprovecha las propiedades de la superficie del mineral.'},
+    {t:'El molibdeno es un subproducto de la minería del cobre.', v:true, e:'Chile es un gran productor de molibdeno.'},
+    {t:'Los CAEX son camiones de extracción de gran tonelaje.', v:true, e:'Algunos cargan más de 300 toneladas.'},
+    {t:'El EPP básico incluye casco, lentes y calzado de seguridad.', v:true, e:'Su uso es obligatorio en faena.'},
+    {t:'El royalty minero es un pago de las mineras al Estado.', v:true, e:'Parte se reparte a las comunas.'},
+    {t:'Chile posee las mayores reservas de cobre del mundo.', v:true, e:'Cerca de un tercio del total conocido.'},
+    {t:'La plata es mejor conductor eléctrico que el cobre.', v:true, e:'Pero el cobre se usa más por su menor costo.'},
+    {t:'El chancado reduce el tamaño de la roca mineralizada.', v:true, e:'Es una etapa previa a la molienda.'},
+    {t:'El litio se usa en baterías de autos eléctricos.', v:true, e:'Clave para la transición energética.'},
+    {t:'La minería subterránea usa túneles y piques.', v:true, e:'A diferencia del rajo abierto.'},
+    {t:'El cátodo de cobre tiene una pureza cercana al 99,99%.', v:true, e:'Es el producto de la electrorrefinación.'},
+    {t:'Muchas faenas del norte usan agua de mar desalada.', v:true, e:'El agua es un recurso crítico en el desierto.'},
+    {t:'Antofagasta es una de las principales regiones mineras de Chile.', v:true, e:'Concentra gran parte de la producción de cobre.'},
+    {t:'La Ley 16.744 cubre los accidentes del trabajo en Chile.', v:true, e:'Es clave en la seguridad laboral.'},
+    {t:'El puerto es clave para embarcar el concentrado de cobre.', v:true, e:'Gran parte se exporta a Asia.'},
+
+    {t:'El oro es el principal producto de exportación minera de Chile.', v:false, e:'Es el cobre, por lejos.'},
+    {t:'Chuquicamata es una mina de hierro.', v:false, e:'Es una de las mayores minas de cobre.'},
+    {t:'En Chile el litio se saca de minas subterráneas de roca.', v:false, e:'Se obtiene de la salmuera de los salares.'},
+    {t:'El cobre es magnético como el hierro.', v:false, e:'El cobre no es ferromagnético.'},
+    {t:'El Teniente es una mina a rajo abierto.', v:false, e:'Es subterránea.'},
+    {t:'El casco de seguridad es opcional en la faena.', v:false, e:'Es obligatorio, siempre.'},
+    {t:'Chile no produce litio.', v:false, e:'Es uno de los mayores productores del mundo.'},
+    {t:'El relave es agua limpia apta para beber.', v:false, e:'Es un residuo; no es potable.'},
+    {t:'Los CAEX son máquinas para perforar túneles.', v:false, e:'Son camiones de extracción.'},
+    {t:'La fundición enfría el mineral para separarlo.', v:false, e:'Usa altas temperaturas para fundirlo.'},
+    {t:'El carbón es el mineral más producido en Chile.', v:false, e:'El cobre lidera ampliamente.'},
+    {t:'A mayor ley del mineral, hay menos metal por tonelada.', v:false, e:'Es al revés: a mayor ley, más metal.'},
+    {t:'La flotación separa minerales con imanes.', v:false, e:'Usa burbujas y reactivos, no imanes.'},
+    {t:'El cobre chileno se exporta sobre todo a Europa.', v:false, e:'El principal destino es Asia, especialmente China.'},
+    {t:'En minería, el “rajo” es un tipo de explosivo.', v:false, e:'Es la excavación a cielo abierto.'},
+    {t:'El litio es un metal pesado y muy denso.', v:false, e:'Es el metal más liviano de la tabla periódica.'},
+    {t:'Trabajar en altura no requiere medidas especiales.', v:false, e:'Requiere arnés y protocolos estrictos.'},
+    {t:'El concentrado de cobre ya es cobre puro al 100%.', v:false, e:'Aún debe fundirse y refinarse.'},
+    {t:'SQM y Albemarle producen cobre en el Salar de Atacama.', v:false, e:'Producen litio, no cobre.'},
+    {t:'El “botadero” guarda el mineral de más alta ley.', v:false, e:'Ahí se deposita el estéril, sin valor económico.'},
+    {t:'La perforación y tronadura solo se usan en minería submarina.', v:false, e:'Son básicas en minería terrestre a rajo y subterránea.'},
+    {t:'La molienda agranda las partículas de roca.', v:false, e:'Las reduce a polvo fino para liberar el metal.'}
+  ];
+
+  // ---- Sonidos correcto/incorrecto (además del clic de adn-ui) ----
+  let AC=null;
+  function tone(freqs, dur){
+    try{ AC=AC||new (window.AudioContext||window.webkitAudioContext)(); if(AC.state==='suspended')AC.resume();
+      const t0=AC.currentTime; freqs.forEach((f,i)=>{ const o=AC.createOscillator(),g=AC.createGain(); const s=t0+i*0.07;
+        o.type='sine'; o.frequency.value=f; g.gain.setValueAtTime(.0001,s); g.gain.exponentialRampToValueAtTime(.05,s+.01); g.gain.exponentialRampToValueAtTime(.0001,s+dur);
+        o.connect(g); g.connect(AC.destination); o.start(s); o.stop(s+dur+.02); }); }catch(e){}
+  }
+  const sndOk=()=>tone([660,880],.14), sndNo=()=>tone([220,160],.2);
+
+  const shuffle=a=>{ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+  const BEST_KEY='adn_vf_best';
+  const getBest=()=>{ try{ return parseInt(localStorage.getItem(BEST_KEY)||'0',10)||0; }catch(e){ return 0; } };
+  const setBest=n=>{ try{ localStorage.setItem(BEST_KEY, String(n)); }catch(e){} };
+
+  let deck=[], di=0, score=0, streak=0, answered=0, correct=0, timeLeft=60, timer=null, locked=false, playing=false;
+
+  function showBest(){ const b=getBest(); $('bestStart').textContent=b; $('bestOver').textContent=b; }
+
+  function nextCard(){
+    if(di>=deck.length){ deck=shuffle(BANK.slice()); di=0; }
+    const q=deck[di++];
+    $('card').className='glass rounded-3xl p-6 min-h-[190px] flex flex-col items-center justify-center text-center';
+    $('stmt').textContent=q.t; $('stmt').classList.remove('pop'); void $('stmt').offsetWidth; $('stmt').classList.add('pop');
+    $('feedback').classList.add('hidden');
+    $('btnV').disabled=false; $('btnF').disabled=false; locked=false;
+    $('card')._q=q;
+  }
+
+  function answer(val){
+    if(locked||!playing) return; locked=true;
+    const q=$('card')._q; const right=(val===q.v);
+    answered++; if(right) correct++;
+    $('btnV').disabled=true; $('btnF').disabled=true;
+    const card=$('card'), fb=$('feedback');
+    if(right){
+      score += 1 + Math.floor(streak/3);   // bonus por combo
+      streak++;
+      card.classList.add('ok'); sndOk();
+      fb.textContent='✔ ¡Correcto! '+q.e; fb.style.color='#a7d9bd';
+      if(streak>=2){ $('combo').textContent='🔥 Combo x'+streak; $('combo').style.opacity='1'; }
+    }else{
+      streak=0;
+      card.classList.add('no'); sndNo();
+      fb.textContent=(q.v?'Era Verdadero. ':'Era Falso. ')+q.e; fb.style.color='#f0a892';
+      $('combo').style.opacity='0';
+    }
+    fb.classList.remove('hidden'); fb.classList.remove('fade'); void fb.offsetWidth; fb.classList.add('fade');
+    $('score').textContent=score;
+    // animación de salida y siguiente
+    setTimeout(()=>{ card.classList.add(val?'fly-ok':'fly-no'); }, right?520:900);
+    setTimeout(()=>{ if(playing) nextCard(); }, right?680:1080);
+  }
+
+  function tick(){
+    timeLeft--; if(timeLeft<0) timeLeft=0;
+    $('time').textContent=timeLeft;
+    const pct=Math.max(0,timeLeft/60*100); $('tfill').style.width=pct+'%';
+    $('tbar').classList.toggle('low', timeLeft<=10);
+    if(timeLeft<=0){ endGame(); }
+  }
+
+  function startGame(){
+    deck=shuffle(BANK.slice()); di=0; score=0; streak=0; answered=0; correct=0; timeLeft=60; playing=true;
+    $('score').textContent='0'; $('time').textContent='60'; $('tfill').style.width='100%'; $('tbar').classList.remove('low');
+    $('combo').style.opacity='0';
+    $('start').classList.add('hidden'); $('over').classList.add('hidden'); $('game').classList.remove('hidden'); $('game').classList.add('fade');
+    nextCard();
+    clearInterval(timer); timer=setInterval(tick,1000);
+  }
+
+  function endGame(){
+    playing=false; clearInterval(timer);
+    $('game').classList.add('hidden'); $('over').classList.remove('hidden'); $('over').classList.add('pop');
+    $('finalScore').textContent=score;
+    $('acc').textContent=answered?Math.round(correct/answered*100):0;
+    const best=getBest(); const rec=score>best;
+    if(rec){ setBest(score); }
+    $('recordMsg').classList.toggle('hidden', !rec || score===0);
+    $('overEmoji').textContent = score>=25?'🏆':score>=15?'🥇':score>=8?'⛏️':'💪';
+    showBest();
+    drawIcons();
+  }
+
+  function share(){
+    const txt='⛏️ Saqué '+score+' aciertos en Verdadero o Falso Minero de ADN Minero. ¿Le ganas? '+location.href;
+    if(navigator.share){ navigator.share({title:'ADN Minero', text:txt}).catch(()=>{}); }
+    else { try{ navigator.clipboard.writeText(txt); const b=$('shareBtn'); b.innerHTML='✓'; setTimeout(()=>{ b.innerHTML='<i data-lucide=\"share-2\" style=\"width:18px;height:18px\"></i>'; drawIcons(); },1200); }catch(e){} }
+  }
+
+  $('startBtn').addEventListener('click', startGame);
+  $('againBtn').addEventListener('click', startGame);
+  $('shareBtn').addEventListener('click', share);
+  $('btnV').addEventListener('click', ()=>answer(true));
+  $('btnF').addEventListener('click', ()=>answer(false));
+  document.addEventListener('keydown', e=>{ if(!playing) { if(e.key==='Enter'){ startGame(); } return; }
+    if(e.key==='ArrowRight'||e.key==='v'||e.key==='V') answer(true);
+    else if(e.key==='ArrowLeft'||e.key==='f'||e.key==='F') answer(false);
+  });
+
+  showBest(); drawIcons();
+</script>
+</body>
+</html>
