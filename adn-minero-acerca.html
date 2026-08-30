@@ -66,6 +66,17 @@
       <p class="text-sm text-stone-300">Correo: <a href="mailto:adnminerochile@gmail.com" class="lnk">adnminerochile@gmail.com</a><br>YouTube: <a href="https://www.youtube.com/@ADNMinero" target="_blank" rel="noopener" class="lnk">@ADNMinero</a></p>
     </section>
 
+    <section class="glass rounded-2xl p-4 mt-3">
+      <h2><i data-lucide="hard-drive-download" style="width:17px;height:17px"></i> Respaldo de mis datos</h2>
+      <p class="text-sm text-stone-300 leading-relaxed">Tu perfil, documentos, paneles guardados y récords viven <b>solo en este teléfono</b>. Si vas a cambiar de equipo, exporta un respaldo y luego impórtalo en el nuevo.</p>
+      <div class="flex gap-2 mt-3">
+        <button id="exp" class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl px-3 py-2.5 font-bold text-sm active:scale-95 transition" style="background:rgba(103,193,214,.12);color:#7fbfd1;border:1px solid rgba(103,193,214,.3)"><i data-lucide="download" style="width:16px;height:16px"></i> Exportar</button>
+        <button id="impBtn" class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl px-3 py-2.5 font-bold text-sm active:scale-95 transition" style="background:rgba(207,155,111,.12);color:#e8c9a6;border:1px solid rgba(207,155,111,.3)"><i data-lucide="upload" style="width:16px;height:16px"></i> Importar</button>
+        <input id="impFile" type="file" accept="application/json,.json" class="hidden">
+      </div>
+      <p id="bkMsg" class="text-[12px] mt-2 hidden"></p>
+    </section>
+
     <div class="grid grid-cols-2 gap-3 mt-3">
       <a href="adn-minero-privacidad.html" class="glass rounded-2xl p-4 text-center active:scale-95 transition"><i data-lucide="lock" style="width:20px;height:20px;color:#7fbfd1"></i><p class="text-sm font-bold mt-1">Privacidad</p></a>
       <a href="adn-minero-terminos.html" class="glass rounded-2xl p-4 text-center active:scale-95 transition"><i data-lucide="file-text" style="width:20px;height:20px;color:#c9a888"></i><p class="text-sm font-bold mt-1">Términos de uso</p></a>
@@ -73,6 +84,42 @@
 
     <p class="text-center text-[11px] text-stone-500 mt-5">ADN Minero · versión de agosto 2026 · <a href="index.html" class="lnk">Inicio</a></p>
   </div>
-<script>window.lucide&&lucide.createIcons();</script>
+<script>
+  window.lucide&&lucide.createIcons();
+  (function(){
+    var $=function(id){return document.getElementById(id);};
+    function msg(t,c){ var m=$('bkMsg'); m.textContent=t; m.style.color=c||'#9c8f83'; m.classList.remove('hidden'); }
+    function collect(){ var o={}; try{ for(var i=0;i<localStorage.length;i++){ var k=localStorage.key(i);
+      if(k && k.indexOf('adn_')===0 && k!=='adn_metrics_tok'){ o[k]=localStorage.getItem(k); } } }catch(e){} return o; }
+    $('exp').addEventListener('click', function(){
+      try{
+        var data={ app:'adn-minero', version:1, ts:new Date().toISOString(), data:collect() };
+        var n=Object.keys(data.data).length;
+        var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+        var url=URL.createObjectURL(blob); var a=document.createElement('a');
+        a.href=url; a.download='adn-minero-respaldo.json'; document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(function(){ URL.revokeObjectURL(url); },4000);
+        msg('Respaldo exportado ('+n+' elementos). Guárdalo en un lugar seguro.', '#9ed9ba');
+      }catch(e){ msg('No se pudo exportar en este dispositivo.', '#f0a08f'); }
+    });
+    $('impBtn').addEventListener('click', function(){ $('impFile').click(); });
+    $('impFile').addEventListener('change', function(e){
+      var f=e.target.files&&e.target.files[0]; if(!f) return;
+      var r=new FileReader();
+      r.onload=function(){
+        try{
+          var j=JSON.parse(r.result);
+          if(!j || j.app!=='adn-minero' || !j.data){ msg('Ese archivo no es un respaldo válido de ADN Minero.', '#f0a08f'); return; }
+          var keys=Object.keys(j.data);
+          if(!confirm('Se restaurarán '+keys.length+' elementos y se reemplazarán tus datos actuales. ¿Continuar?')) return;
+          keys.forEach(function(k){ if(k.indexOf('adn_')===0){ try{ localStorage.setItem(k, j.data[k]); }catch(e){} } });
+          msg('Respaldo importado. Recargando…', '#9ed9ba');
+          setTimeout(function(){ location.href='index.html'; }, 1200);
+        }catch(err){ msg('No se pudo leer el archivo.', '#f0a08f'); }
+      };
+      r.readAsText(f);
+    });
+  })();
+</script>
 </body>
 </html>
