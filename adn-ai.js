@@ -95,7 +95,8 @@
       '<div id="adnai-head">'+
         '<div class="ic">✨</div>'+
         '<div style="min-width:0"><div class="ti">ADN Minero IA</div><div class="su" id="adnai-topic"></div></div>'+
-        '<button id="adnai-x" type="button" aria-label="Cerrar">✕</button>'+
+        '<button id="adnai-voice" type="button" aria-label="Leer respuestas en voz alta" style="margin-left:auto;background:rgba(255,255,255,.06);border:0;color:#e8dccb;width:32px;height:32px;border-radius:9px;cursor:pointer;font-size:15px">🔈</button>'+
+        '<button id="adnai-x" type="button" aria-label="Cerrar" style="margin-left:6px">✕</button>'+
       '</div>'+
       '<div id="adnai-msgs"></div>'+
       '<div id="adnai-chips"></div>'+
@@ -176,12 +177,41 @@
       var b=document.createElement('div'); b.className='adnai-b '+(role==='user'?'u':'a');
       b.textContent=text||''; msgsEl.appendChild(b); msgsEl.scrollTop=msgsEl.scrollHeight; return b;
     }
+
+    // ---- Respuesta de voz (lee las respuestas en voz alta) ----
+    var synth=window.speechSynthesis, esVoice=null, autoRead=false, speaking=null;
+    try{ autoRead=localStorage.getItem('adn_ai_voice')==='1'; }catch(e){}
+    function pickVoice(){ try{ var vs=(synth&&synth.getVoices())||[];
+      esVoice = vs.filter(function(v){return /es[-_]?(cl|419|mx|es|us)/i.test(v.lang);})[0] || vs.filter(function(v){return /^es/i.test(v.lang);})[0] || null; }catch(e){} }
+    if(synth){ pickVoice(); try{ synth.onvoiceschanged=pickVoice; }catch(e){} }
+    function cleanTTS(t){ t=(t||'').replace(/[#*_`>|]/g,' ');
+      try{ t=t.replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2190}-\u{21FF}\u{2B00}-\u{2BFF}]/gu,''); }catch(e){}
+      return t.replace(/\s+/g,' ').trim(); }
+    function stopSpeak(){ try{ if(synth) synth.cancel(); }catch(e){} if(speaking){ speaking.textContent='🔊'; speaking=null; } }
+    function speak(text, btn){
+      if(!synth){ return; }
+      try{ synth.cancel();
+        var u=new SpeechSynthesisUtterance(cleanTTS(text)); u.lang=(esVoice&&esVoice.lang)||'es-CL'; if(esVoice) u.voice=esVoice; u.rate=1; u.pitch=1;
+        if(btn){ speaking=btn; btn.textContent='⏹'; }
+        u.onend=function(){ if(btn){ btn.textContent='🔊'; } if(speaking===btn) speaking=null; };
+        u.onerror=u.onend;
+        synth.speak(u);
+      }catch(e){}
+    }
+    function addListen(b, text){
+      if(!synth) return;
+      var s=document.createElement('button'); s.type='button'; s.textContent='🔊'; s.setAttribute('aria-label','Escuchar la respuesta');
+      s.style.cssText='margin-top:6px;background:transparent;border:0;cursor:pointer;font-size:15px;opacity:.8;padding:0;line-height:1';
+      s.addEventListener('click', function(e){ e.stopPropagation();
+        if(speaking===s){ stopSpeak(); } else { speak(text, s); } });
+      b.appendChild(document.createElement('br')); b.appendChild(s);
+    }
     function open(){
       back.classList.add('on'); sheet.classList.add('on');
       if(!started){ started=true; renderChips(); bubble('assistant', isData?('Puedo explicarte las cifras de «'+TEMA+'» en simple. Toca una sugerencia o pregúntame. 🧮'):('¡Hola! Pregúntame lo que quieras sobre «'+TEMA+'» o la minería. 👷')); }
       setTimeout(function(){ try{ inEl.focus(); }catch(e){} }, 300);
     }
-    function close(){ back.classList.remove('on'); sheet.classList.remove('on'); }
+    function close(){ back.classList.remove('on'); sheet.classList.remove('on'); stopSpeak(); }
     function pageText(){ try{ var t=(document.body?document.body.innerText:'')||''; return t.replace(/\s+/g,' ').trim().slice(0,1600); }catch(e){ return snippet(); } }
     function translate(){
       send('🌐 Traducir esta página al inglés', 'Translate the following content of the ADN Minero app (a Chilean mining media outlet) into clear, natural English. Return only the translation, no comments:\n\n'+pageText());
@@ -236,6 +266,7 @@
         }
         if(!acc){ b.textContent='(sin respuesta, intenta reformular)'; }
         history.push({role:'assistant', content:acc||''});
+        if(acc){ addListen(b, acc); if(autoRead) speak(acc); }
       }catch(e){
         b.classList.remove('think'); b.textContent='No se pudo conectar. Revisa tu conexión e intenta de nuevo.';
       }
@@ -249,6 +280,14 @@
       fab.addEventListener('click', open);
       sheet.querySelector('#adnai-x').addEventListener('click', close);
       back.addEventListener('click', close);
+      // Toggle de respuesta por voz
+      var voiceBtn=sheet.querySelector('#adnai-voice');
+      if(voiceBtn){
+        var updVoice=function(){ voiceBtn.textContent=autoRead?'🔊':'🔈'; voiceBtn.style.background=autoRead?'rgba(207,155,111,.28)':'rgba(255,255,255,.06)'; };
+        if(!synth){ voiceBtn.style.display='none'; }
+        updVoice();
+        voiceBtn.addEventListener('click', function(){ autoRead=!autoRead; try{ localStorage.setItem('adn_ai_voice', autoRead?'1':'0'); }catch(e){} if(!autoRead) stopSpeak(); updVoice(); });
+      }
       sendEl.addEventListener('click', function(){ send(); });
       // Micrófono (voz a texto)
       var micEl=sheet.querySelector('#adnai-mic'), vh=null, listn=false;
