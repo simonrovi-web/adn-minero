@@ -2,9 +2,18 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>ADN Minero · Paneles Mineros de Chile</title>
   <meta name="description" content="Paneles en tiempo real y de datos oficiales sobre la minería de Chile. Un aporte de ADN Minero." />
+  <!-- PWA / instalable (Android e iOS) -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#141110" />
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="ADN Minero" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -631,5 +640,9 @@
       }
     })();
   </script>
+  <script>/* PWA: registrar service worker (offline + instalable) */
+    if('serviceWorker' in navigator && location.protocol!=='file:'){
+      window.addEventListener('load',function(){ navigator.serviceWorker.register('adn-push-sw.js').catch(function(){}); });
+    }</script>
 </body>
 </html>
