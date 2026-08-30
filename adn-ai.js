@@ -100,7 +100,8 @@
       '<div id="adnai-msgs"></div>'+
       '<div id="adnai-chips"></div>'+
       '<div id="adnai-foot">'+
-        '<textarea id="adnai-in" rows="1" placeholder="Escribe tu pregunta…" autocomplete="off"></textarea>'+
+        '<textarea id="adnai-in" rows="1" placeholder="Escribe o habla tu pregunta…" autocomplete="off"></textarea>'+
+        '<button id="adnai-mic" type="button" aria-label="Hablar" style="flex:none;width:42px;height:42px;border-radius:12px;border:0;cursor:pointer;background:rgba(207,155,111,.16);color:#e8c9a6;display:grid;place-items:center;font-size:18px">🎤</button>'+
         '<button id="adnai-send" type="button" aria-label="Enviar">➤</button>'+
       '</div>'+
       '<a id="adnai-open-full" href="'+FULL_URL+'">Abrir el chat completo · <b>ADN Minero IA</b></a>';
@@ -221,6 +222,18 @@
       sheet.querySelector('#adnai-x').addEventListener('click', close);
       back.addEventListener('click', close);
       sendEl.addEventListener('click', function(){ send(); });
+      // Micrófono (voz a texto)
+      var micEl=sheet.querySelector('#adnai-mic'), vh=null, listn=false;
+      if(micEl){ micEl.addEventListener('click', function(){
+        if(!window.adnVoice) return;
+        if(listn && vh){ vh.stop(); return; }
+        vh=window.adnVoice(function(t){ if(t){ inEl.value=(inEl.value?inEl.value+' ':'')+t; autoGrow(); try{ inEl.focus(); }catch(e){} } }, {
+          onstart:function(){ listn=true; micEl.textContent='⏹'; micEl.style.background='rgba(224,90,63,.25)'; },
+          onthinking:function(){ micEl.textContent='…'; },
+          onend:function(){ listn=false; micEl.textContent='🎤'; micEl.style.background='rgba(207,155,111,.16)'; },
+          onerror:function(){ listn=false; micEl.textContent='🎤'; micEl.style.background='rgba(207,155,111,.16)'; }
+        });
+      }); }
       inEl.addEventListener('input', autoGrow);
       inEl.addEventListener('keydown', function(e){ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); send(); } });
       document.addEventListener('keydown', function(e){ if(e.key==='Escape' && sheet.classList.contains('on')) close(); });

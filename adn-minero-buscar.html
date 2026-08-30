@@ -37,7 +37,8 @@
 
     <div class="mt-4 relative">
       <i data-lucide="search" style="position:absolute;left:15px;top:16px;width:18px;height:18px;color:#8a8079"></i>
-      <input id="q" placeholder="Ej: ¿cuánto le deja la minería a mi comuna?" autocomplete="off" enterkeyhint="search">
+      <input id="q" placeholder="Ej: ¿cuánto le deja la minería a mi comuna?" autocomplete="off" enterkeyhint="search" style="padding-right:48px">
+      <button id="mic" type="button" aria-label="Buscar por voz" style="position:absolute;right:8px;top:8px;width:36px;height:36px;border:0;border-radius:10px;background:rgba(207,155,111,.14);color:#e8c9a6;display:grid;place-items:center;cursor:pointer"><i data-lucide="mic" style="width:18px;height:18px"></i></button>
     </div>
 
     <div id="chips" class="grid grid-cols-1 gap-2 mt-3"></div>
@@ -117,6 +118,26 @@
   }
 
   $('q').addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); run(); } });
+
+  // Búsqueda por voz
+  let voiceH=null, listening=false;
+  const mic=$('mic');
+  function micState(s){ // idle | listening | thinking
+    listening = s==='listening';
+    mic.style.background = s==='listening' ? 'rgba(224,90,63,.25)' : 'rgba(207,155,111,.14)';
+    mic.innerHTML = s==='thinking' ? '<span class="spin" style="width:16px;height:16px"></span>' : ('<i data-lucide="'+(s==='listening'?'square':'mic')+'" style="width:18px;height:18px"></i>');
+    drawIcons();
+  }
+  mic.addEventListener('click', ()=>{
+    if(!window.adnVoice){ return; }
+    if(listening && voiceH){ voiceH.stop(); return; }
+    voiceH = window.adnVoice(txt=>{ if(txt){ $('q').value=txt; run(); } }, {
+      onstart:()=>micState('listening'),
+      onthinking:()=>micState('thinking'),
+      onend:()=>micState('idle'),
+      onerror:(e)=>{ micState('idle'); if(e==='permiso'||e==='nosupport'){ $('status').textContent='No pude usar el micrófono en este dispositivo.'; $('status').classList.remove('hidden'); } }
+    });
+  });
   drawIcons();
 </script>
 </body>

@@ -79,6 +79,48 @@
     }
   }catch(e){}
 
+  // ===== Voz a texto compartida (Web Speech si existe; si no, Whisper vía /stt) =====
+  try{
+    window.adnVoice=function(cb, ui){
+      ui=ui||{};
+      var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+      if(SR){
+        try{
+          var r=new SR(); r.lang='es-CL'; r.interimResults=false; r.maxAlternatives=1; r.continuous=false;
+          var got=false;
+          r.onstart=function(){ ui.onstart&&ui.onstart(); };
+          r.onresult=function(e){ got=true; try{ cb((e.results[0][0].transcript||'').trim()); }catch(_){} };
+          r.onerror=function(ev){ if(!got) ui.onerror&&ui.onerror(ev&&ev.error); };
+          r.onend=function(){ ui.onend&&ui.onend(); };
+          r.start();
+          return { stop:function(){ try{ r.stop(); }catch(e){} }, mode:'speech' };
+        }catch(e){}
+      }
+      // Respaldo: grabar y transcribir con Whisper
+      var handle={ stop:function(){}, mode:'whisper' };
+      if(!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder)){ ui.onerror&&ui.onerror('nosupport'); return handle; }
+      navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){
+        var mr, chunks=[]; try{ mr=new MediaRecorder(stream); }catch(e){ stream.getTracks().forEach(function(t){t.stop();}); ui.onerror&&ui.onerror('rec'); return; }
+        ui.onstart&&ui.onstart();
+        mr.ondataavailable=function(e){ if(e.data&&e.data.size) chunks.push(e.data); };
+        mr.onstop=function(){
+          stream.getTracks().forEach(function(t){t.stop();}); ui.onend&&ui.onend();
+          var blob=new Blob(chunks,{type:(mr.mimeType||'audio/webm')});
+          if(blob.size<800){ ui.onerror&&ui.onerror('corto'); return; }
+          ui.onthinking&&ui.onthinking();
+          fetch('https://adn-muro.simonrovi.workers.dev/stt',{method:'POST',headers:{'Content-Type':blob.type},body:blob})
+            .then(function(r){ return r.json(); })
+            .then(function(j){ if(j&&j.text){ cb(j.text.trim()); } else { ui.onerror&&ui.onerror((j&&j.error)||'stt'); } })
+            .catch(function(){ ui.onerror&&ui.onerror('red'); });
+        };
+        mr.start();
+        var to=setTimeout(function(){ try{ if(mr.state!=='inactive') mr.stop(); }catch(e){} }, 6000);
+        handle.stop=function(){ clearTimeout(to); try{ if(mr.state!=='inactive') mr.stop(); }catch(e){} };
+      }).catch(function(){ ui.onerror&&ui.onerror('permiso'); });
+      return handle;
+    };
+  }catch(e){}
+
   // ===== Métricas propias (privacidad primero) =====
   // Un ping anónimo por sesión/panel. NO envía IP, cookies ni datos personales.
   // Respeta "No rastrear" del navegador y no cuenta si el panel va dentro de un iframe (streaming).
