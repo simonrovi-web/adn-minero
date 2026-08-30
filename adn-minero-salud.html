@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Salud del Minero</title>
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(127,191,154,0.12), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    .topic{ cursor:pointer; }
+    .topic .body{ display:none; }
+    .topic.open .body{ display:block; }
+    .topic.open .chev{ transform:rotate(90deg); }
+    .chev{ transition:transform .2s; }
+    .tip{ display:flex; gap:9px; align-items:flex-start; font-size:13.5px; line-height:1.5; color:#dacfc2; margin-top:8px; }
+    .tip b{ color:#f4ece5; }
+    h3{ margin:0; }
+  </style>
+  <script src="adn-ui.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(127,191,154,.15);border:1px solid rgba(127,191,154,.32)"><i data-lucide="heart-pulse" style="width:26px;height:26px;color:#7fbf9a"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#a7d1b6;font-weight:800">Salud del Minero</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Cuidarte para volver bien a casa</p>
+      </div>
+    </header>
+
+    <div class="glass rounded-2xl p-3.5 mt-4" style="border-color:rgba(224,113,90,.3);background:rgba(224,113,90,.06)">
+      <p class="text-[12px] text-stone-300 leading-relaxed"><b style="color:#f0b8a6">⚠️ Información de divulgación.</b> No reemplaza la indicación de tu médico ni del policlínico de la faena. Ante síntomas, consulta siempre a un profesional de salud.</p>
+    </div>
+
+    <div id="topics" class="mt-4 grid gap-2.5"></div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Fuentes de referencia general: Minsal, mutualidades y guías de salud ocupacional. · <a href="adn-minero-seguridad.html" style="color:#e8c9a6">Seguridad</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+
+<script>
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const TOPICS=[
+    { ic:'mountain', c:'#7fb0d9', t:'Altura y soroche (mal de altura)', s:'Faenas sobre 2.500–4.500 m',
+      tips:[
+        ['triangle-alert','<b>Síntomas frecuentes:</b> dolor de cabeza, falta de aire, mareo, náuseas, insomnio y cansancio al llegar a altura.'],
+        ['check','<b>Aclimatación:</b> sube de forma gradual, descansa las primeras horas y evita el esfuerzo intenso el primer día.'],
+        ['droplet','<b>Hidrátate</b> más de lo normal y come liviano; evita el alcohol y el exceso de cafeína al subir.'],
+        ['heart-pulse','<b>Consulta si:</b> el dolor de cabeza no cede, hay tos con desgarro, confusión o mucha dificultad para respirar. Puede ser grave: avisa de inmediato.'],
+        ['stethoscope','Si tienes enfermedades del corazón, pulmón o presión alta, coméntalo en tu examen preocupacional de altura.']
+      ]},
+    { ic:'moon', c:'#9a8cd0', t:'Sueño y turnos (7x7, noche)', s:'Descansar bien entre turnos',
+      tips:[
+        ['bed','<b>Oscuridad y silencio:</b> usa antifaz y tapones. Una pieza fresca y oscura ayuda a dormir de día tras el turno noche.'],
+        ['coffee','Evita cafeína en las últimas 6 horas del turno para poder dormir al bajar.'],
+        ['smartphone','Baja el uso de pantallas antes de dormir; la luz azul retrasa el sueño.'],
+        ['clock','Mantén horarios lo más regulares posible en tus días de bajada para reordenar el reloj biológico.'],
+        ['alert-triangle','La <b>fatiga</b> al volante o en el equipo es tan peligrosa como el alcohol. Si estás muy cansado, avisa y descansa.']
+      ]},
+    { ic:'sun', c:'#e0a35a', t:'Sol y radiación UV', s:'El desierto tiene UV extremo',
+      tips:[
+        ['shield','Usa <b>bloqueador solar</b> factor alto en cara, cuello, orejas y manos, y reaplica durante la jornada.'],
+        ['glasses','Lentes con filtro UV y protección en el casco: el reflejo en el terreno aumenta la exposición.'],
+        ['thermometer-sun','Cuida los golpes de calor: sombra, pausas e hidratación. Señales: piel caliente y seca, confusión, dejar de sudar.']
+      ]},
+    { ic:'droplets', c:'#5fb3a1', t:'Hidratación y alimentación', s:'Energía para la jornada',
+      tips:[
+        ['droplet','Bebe agua durante todo el turno aunque no tengas sed; la altura y el calor deshidratan más rápido.'],
+        ['apple','Prefiere comidas balanceadas en el casino; frutas y agua por sobre bebidas azucaradas y frituras en exceso.'],
+        ['candy','Cuida el azúcar y el peso: el trabajo por turnos y el sedentarismo del traslado aumentan el riesgo metabólico.']
+      ]},
+    { ic:'brain', c:'#c98cc0', t:'Salud mental y familia', s:'La distancia también pesa',
+      tips:[
+        ['users','Mantén contacto con tu familia en cada bajada y en los descansos; la conexión ayuda a sobrellevar la distancia.'],
+        ['heart','El estrés, la ansiedad y la pena son comunes en el sistema de turnos. Hablarlo no es debilidad.'],
+        ['phone','<b>Si lo estás pasando mal:</b> habla con tu mutualidad, el policlínico o líneas de apoyo. En crisis de salud mental en Chile: <b>*4141</b> (Salud Responde) o 600 360 7777.']
+      ]},
+    { ic:'ear', c:'#d9a86a', t:'Ruido, polvo y ergonomía', s:'Cuidados del día a día',
+      tips:[
+        ['ear','Usa <b>protección auditiva</b> en zonas de ruido: la pérdida de audición es progresiva y no se recupera.'],
+        ['wind','Usa el respirador adecuado ante polvo y sílice; protege tus pulmones a largo plazo.'],
+        ['move','Cuida la espalda al levantar peso: dobla las rodillas, acerca la carga y pide ayuda o equipo cuando sea necesario.']
+      ]}
+  ];
+
+  document.getElementById('topics').innerHTML=TOPICS.map((x,i)=>`
+    <div class="glass rounded-2xl topic" data-i="${i}">
+      <div class="p-4 flex items-center gap-3">
+        <div class="h-10 w-10 rounded-xl grid place-items-center shrink-0" style="background:${x.c}22;border:1px solid ${x.c}55"><i data-lucide="${x.ic}" class="w-5 h-5" style="color:${x.c}"></i></div>
+        <div class="min-w-0 flex-1"><h3 class="font-bold text-[15px]">${x.t}</h3><p class="text-[11.5px] text-stone-400">${x.s}</p></div>
+        <i data-lucide="chevron-right" class="chev w-5 h-5 text-stone-500 shrink-0"></i>
+      </div>
+      <div class="body px-4 pb-4 -mt-1">
+        ${x.tips.map(t=>`<div class="tip"><i data-lucide="${t[0]}" class="w-4 h-4 shrink-0 mt-0.5" style="color:${x.c}"></i><span>${t[1]}</span></div>`).join('')}
+      </div>
+    </div>`).join('');
+
+  document.getElementById('topics').addEventListener('click', e=>{
+    const t=e.target.closest('.topic'); if(!t) return;
+    t.classList.toggle('open'); drawIcons();
+  });
+  drawIcons();
+</script>
+</body>
+</html>
