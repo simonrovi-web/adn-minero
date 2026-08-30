@@ -159,6 +159,10 @@
       setTimeout(function(){ try{ inEl.focus(); }catch(e){} }, 300);
     }
     function close(){ back.classList.remove('on'); sheet.classList.remove('on'); }
+    function pageText(){ try{ var t=(document.body?document.body.innerText:'')||''; return t.replace(/\s+/g,' ').trim().slice(0,1600); }catch(e){ return snippet(); } }
+    function translate(){
+      send('🌐 Traducir esta página al inglés', 'Translate the following content of the ADN Minero app (a Chilean mining media outlet) into clear, natural English. Return only the translation, no comments:\n\n'+pageText());
+    }
     function renderChips(){
       chipsEl.innerHTML='';
       CHIPS.forEach(function(c){
@@ -166,15 +170,19 @@
         el.addEventListener('click', function(){ send(c); });
         chipsEl.appendChild(el);
       });
+      var tr=document.createElement('button'); tr.type='button'; tr.className='adnai-chip'; tr.textContent='🌐 English';
+      tr.style.cssText='background:rgba(103,193,214,.1);border-color:rgba(103,193,214,.3);color:#9ad3e0';
+      tr.addEventListener('click', translate);
+      chipsEl.appendChild(tr);
     }
     function autoGrow(){ inEl.style.height='auto'; inEl.style.height=Math.min(104, inEl.scrollHeight)+'px'; }
 
-    async function send(text){
+    async function send(text, payload){
       text=(text||inEl.value||'').trim(); if(!text || busy) return;
       chipsEl.innerHTML=''; inEl.value=''; autoGrow();
       prime();
       bubble('user', text);
-      history.push({role:'user', content:text});
+      history.push({role:'user', content: payload||text});
       busy=true; sendEl.disabled=true;
       var b=bubble('assistant',''); b.classList.add('think'); b.textContent='pensando…';
       try{
