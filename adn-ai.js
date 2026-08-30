@@ -113,6 +113,28 @@
       wire();
     }
 
+    // ---- RAG: recuperar información relevante de TODA la app (índice de embeddings) ----
+    var KB=null, KBN=null, kbTried=false;
+    async function retrieve(q){
+      try{
+        if(!KB && !kbTried){ kbTried=true;
+          KB=await fetch('search-index.json',{cache:'force-cache'}).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;});
+          if(KB && KB.items){ KBN=KB.items.map(function(it){ return Math.hypot.apply(null,it.v)||1; }); }
+        }
+        if(!KB || !KB.items) return '';
+        var r=await fetch('https://adn-muro.simonrovi.workers.dev/embed',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({q:q})});
+        if(!r.ok) return '';
+        var qv=(await r.json()).v; if(!qv || !qv.length) return '';
+        var qn=Math.hypot.apply(null,qv)||1;
+        var scored=KB.items.map(function(it,i){ var dot=0; for(var k=0;k<qv.length;k++) dot+=qv[k]*it.v[k]; return {it:it, s:dot/((qn*(KBN[i]||1))||1)}; });
+        scored.sort(function(a,b){ return b.s-a.s; });
+        var top=scored.slice(0,4).filter(function(x){ return x.s>0.28; });
+        if(!top.length) return '';
+        return 'Contexto de ADN Minero (paneles relevantes a la pregunta):\n'+
+          top.map(function(x){ return '• '+x.it.t+': '+x.it.d; }).join('\n');
+      }catch(e){ return ''; }
+    }
+
     // ---- Lógica del chat ----
     var msgsEl, inEl, sendEl, chipsEl, busy=false, started=false, primed=false;
     // El backend ya tiene su propio system prompt de minería; el contexto del panel
@@ -183,9 +205,15 @@
       chipsEl.innerHTML=''; inEl.value=''; autoGrow();
       prime();
       bubble('user', text);
-      history.push({role:'user', content: payload||text});
       busy=true; sendEl.disabled=true;
       var b=bubble('assistant',''); b.classList.add('think'); b.textContent='pensando…';
+      // RAG: si es una pregunta del usuario (sin payload propio), busca contexto en toda la app
+      var content = payload || text;
+      if(!payload){
+        var rag=await retrieve(text);
+        if(rag) content = rag + '\n\nUsando ese contexto y tu conocimiento de minería, responde de forma breve y clara: ' + text;
+      }
+      history.push({role:'user', content: content});
       try{
         var res=await fetch(WORKER_URL,{ method:'POST', headers:{'Content-Type':'application/json'},
           body: JSON.stringify({ messages: history.slice(-13) }) });
