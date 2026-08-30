@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Acerca de</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(207,155,111,0.12), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    h2{ font-size:15px; font-weight:800; color:#e8c9a6; margin:0 0 8px; display:flex; align-items:center; gap:8px }
+    .src{ display:flex; gap:10px; padding:9px 0; border-bottom:1px solid rgba(196,168,148,.1); font-size:13px }
+    .src:last-child{ border-bottom:0 }
+    .src b{ color:#f4ece5 } .src span{ color:#9c8f83 }
+    a.lnk{ color:#e8c9a6; text-decoration:none }
+  </style>
+  <script src="adn-ui.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(207,155,111,.15);border:1px solid rgba(207,155,111,.32)"><i data-lucide="info" style="width:26px;height:26px;color:#cf9b6f"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#e0c3a0;font-weight:800">Acerca de ADN Minero</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Qué es, de dónde salen los datos y cómo contactarnos</p>
+      </div>
+    </header>
+
+    <section class="glass rounded-2xl p-4 mt-4">
+      <h2><i data-lucide="pickaxe" style="width:17px;height:17px"></i> Qué es</h2>
+      <p class="text-sm text-stone-300 leading-relaxed">ADN Minero es <b>el medio de comunicación de la minería chilena</b>: informa, educa y acompaña a los trabajadores, sus familias y a cualquier persona interesada en la minería, con noticias, datos en vivo, herramientas prácticas y contenido divulgativo. Es un proyecto informativo independiente.</p>
+    </section>
+
+    <section class="glass rounded-2xl p-4 mt-3">
+      <h2><i data-lucide="shield-alert" style="width:17px;height:17px"></i> Aviso importante</h2>
+      <p class="text-sm text-stone-300 leading-relaxed">La información es <b>referencial y de divulgación</b>. Los datos de clima, sismos, semáforo operacional, indicadores y emergencias <b>no reemplazan los sistemas ni protocolos oficiales de tu faena</b> ni constituyen asesoría profesional, de seguridad o financiera. Ante cualquier emergencia, sigue siempre los canales oficiales de tu empresa y de las autoridades.</p>
+    </section>
+
+    <section class="glass rounded-2xl p-4 mt-3">
+      <h2><i data-lucide="database" style="width:17px;height:17px"></i> Fuentes de datos</h2>
+      <div class="src"><i data-lucide="activity" style="width:16px;height:16px;color:#e0715a"></i><div><b>Sismos</b> · <span>USGS Earthquake (monitoreo global)</span></div></div>
+      <div class="src"><i data-lucide="cloud-sun" style="width:16px;height:16px;color:#7fbfd1"></i><div><b>Clima y viento de faenas</b> · <span>Open-Meteo</span></div></div>
+      <div class="src"><i data-lucide="waves" style="width:16px;height:16px;color:#5fb3a1"></i><div><b>Estado del mar</b> · <span>Open-Meteo Marine</span></div></div>
+      <div class="src"><i data-lucide="line-chart" style="width:16px;height:16px;color:#7fbf9a"></i><div><b>Indicadores y cobre</b> · <span>mindicador.cl</span></div></div>
+      <div class="src"><i data-lucide="newspaper" style="width:16px;height:16px;color:#cf9b6f"></i><div><b>Noticias</b> · <span>Google Noticias (titulares de la minería de Chile)</span></div></div>
+      <div class="src"><i data-lucide="book-marked" style="width:16px;height:16px;color:#c9a888"></i><div><b>Normativa y cifras</b> · <span>Sernageomin, Cochilco, Ministerio de Minería (fuentes públicas)</span></div></div>
+      <div class="src"><i data-lucide="sparkles" style="width:16px;height:16px;color:#e8c9a6"></i><div><b>Asistente IA</b> · <span>Cloudflare Workers AI (Llama)</span></div></div>
+      <div class="src"><i data-lucide="tv" style="width:16px;height:16px;color:#e0715a"></i><div><b>Transmisiones</b> · <span>YouTube · @ADNMinero</span></div></div>
+      <p class="text-[11px] text-stone-500 mt-2">Los datos se muestran según la disponibilidad de cada fuente y de tu conexión. Pueden existir demoras o imprecisiones.</p>
+    </section>
+
+    <section class="glass rounded-2xl p-4 mt-3">
+      <h2><i data-lucide="flag" style="width:17px;height:17px"></i> ¿Viste un error?</h2>
+      <p class="text-sm text-stone-300 leading-relaxed">Somos un medio y nos tomamos en serio la exactitud. Si detectas un dato equivocado o desactualizado, escríbenos y lo corregimos.</p>
+      <a href="mailto:adnminerochile@gmail.com?subject=Reporte%20de%20error%20-%20ADN%20Minero" class="inline-flex items-center gap-2 mt-3 rounded-xl px-4 py-2.5 font-bold text-sm active:scale-95 transition" style="background:linear-gradient(150deg,#e8c9a6,#cf9b6f);color:#211a15"><i data-lucide="mail" style="width:16px;height:16px"></i> Reportar un error</a>
+    </section>
+
+    <section class="glass rounded-2xl p-4 mt-3">
+      <h2><i data-lucide="mail" style="width:17px;height:17px"></i> Contacto</h2>
+      <p class="text-sm text-stone-300">Correo: <a href="mailto:adnminerochile@gmail.com" class="lnk">adnminerochile@gmail.com</a><br>YouTube: <a href="https://www.youtube.com/@ADNMinero" target="_blank" rel="noopener" class="lnk">@ADNMinero</a></p>
+    </section>
+
+    <div class="grid grid-cols-2 gap-3 mt-3">
+      <a href="adn-minero-privacidad.html" class="glass rounded-2xl p-4 text-center active:scale-95 transition"><i data-lucide="lock" style="width:20px;height:20px;color:#7fbfd1"></i><p class="text-sm font-bold mt-1">Privacidad</p></a>
+      <a href="adn-minero-terminos.html" class="glass rounded-2xl p-4 text-center active:scale-95 transition"><i data-lucide="file-text" style="width:20px;height:20px;color:#c9a888"></i><p class="text-sm font-bold mt-1">Términos de uso</p></a>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-5">ADN Minero · versión de agosto 2026 · <a href="index.html" class="lnk">Inicio</a></p>
+  </div>
+<script>window.lucide&&lucide.createIcons();</script>
+</body>
+</html>

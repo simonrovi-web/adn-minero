@@ -13,6 +13,40 @@
     }
   }catch(e){}
 
+  // ===== Aviso de fuente + disclaimer de seguridad en paneles críticos =====
+  try{
+    var inFrN=false; try{ inFrN = window.top!==window.self; }catch(e){ inFrN=true; }
+    var fileN=(location.pathname||'').replace(/^.*\//,'').toLowerCase();
+    var NOTE={
+      'adn-minero-semaforo.html':{s:true, src:'Clima: Open-Meteo · Sismos: USGS'},
+      'adn-minero-sismos.html':{s:true, src:'USGS Earthquake (monitoreo global)'},
+      'adn-minero-panel.html':{s:true, src:'Open-Meteo'},
+      'adn-minero-emergencias.html':{s:true, src:'Números de referencia pública'},
+      'adn-minero-mar.html':{s:true, src:'Open-Meteo Marine'},
+      'adn-minero-faena.html':{s:true, src:'Open-Meteo · USGS'},
+      'adn-minero-commodities.html':{s:false, src:'mindicador.cl y datos de mercado'},
+      'adn-minero-indicadores.html':{s:false, src:'mindicador.cl'},
+      'adn-minero-historico.html':{s:false, src:'mindicador.cl'},
+      'adn-minero-bolsa.html':{s:false, src:'Avisos publicados por la comunidad'}
+    };
+    var cfg=NOTE[fileN];
+    if(cfg && !inFrN){
+      var mkNote=function(){
+        if(!document.body || document.getElementById('adnui-note')) return;
+        var n=document.createElement('div'); n.id='adnui-note';
+        n.style.cssText='max-width:680px;margin:10px auto 16px;padding:11px 14px;border-radius:12px;'+
+          'font:500 11.5px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;text-align:center;'+
+          (cfg.s?'background:rgba(224,113,90,.08);border:1px solid rgba(224,113,90,.28);color:#eab6a6;'
+                :'background:rgba(196,168,148,.06);border:1px solid rgba(196,168,148,.18);color:#b7a794;');
+        n.innerHTML=(cfg.s?'<b style="color:#f0b8a6">⚠️ Información referencial.</b> No reemplaza los sistemas ni protocolos oficiales de seguridad de tu faena. Ante una emergencia, sigue siempre los canales oficiales.<br>':'')+
+          '<span style="opacity:.85">Fuente: '+cfg.src+' · Actualización sujeta a la conexión.</span>';
+        document.body.appendChild(n);
+      };
+      if(document.body) mkNote(); else document.addEventListener('DOMContentLoaded', mkNote);
+      window.addEventListener('load', mkNote);
+    }
+  }catch(e){}
+
   // ===== Asistente IA contextual (botón flotante en todos los paneles) =====
   try{
     var inFrameAi=false; try{ inFrameAi = window.top!==window.self; }catch(e){ inFrameAi=true; }
