@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Mis Documentos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(207,155,111,0.12), transparent 60%), #141110; }
+    .wrap{ max-width:620px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    input,select{ background:#241d18; color:#f4ece5; border:1px solid rgba(196,168,148,.25); border-radius:12px; padding:11px 12px; font-size:15px; outline:none; width:100%; }
+    input:focus,select:focus{ border-color:rgba(207,155,111,.6); }
+    label{ font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:#9c8f83; }
+    .chip{ font-size:12px; font-weight:600; padding:7px 11px; border-radius:999px; cursor:pointer; background:rgba(232,201,166,.08); border:1px solid rgba(196,168,148,.24); color:#e8c9a6; white-space:nowrap; }
+    .badge{ font-size:10px; font-weight:800; padding:3px 9px; border-radius:999px; }
+    .b-ok{ background:rgba(127,191,154,.16); color:#9ed9ba; border:1px solid rgba(127,191,154,.4); }
+    .b-soon{ background:rgba(214,169,79,.16); color:#f0d097; border:1px solid rgba(214,169,79,.4); }
+    .b-warn{ background:rgba(224,140,90,.18); color:#f0b48f; border:1px solid rgba(224,140,90,.45); }
+    .b-exp{ background:rgba(224,90,63,.2); color:#f0a08f; border:1px solid rgba(224,90,63,.5); }
+  </style>
+  <script src="adn-ui.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(207,155,111,.15);border:1px solid rgba(207,155,111,.32)"><i data-lucide="badge-check" style="width:26px;height:26px;color:#cf9b6f"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#e0c3a0;font-weight:800">Mis Documentos</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Vencimientos de cursos, exámenes y licencias</p>
+      </div>
+    </header>
+
+    <!-- Alta -->
+    <section class="glass rounded-2xl p-4 mt-4">
+      <p class="text-[11px] text-stone-400 mb-2">Agrega rápido:</p>
+      <div id="presets" class="flex gap-2 overflow-x-auto pb-1 mb-3" style="scrollbar-width:none"></div>
+      <div class="grid gap-2.5">
+        <div><label>Documento</label><input id="n" placeholder="Ej: Curso Sernageomin" autocomplete="off"></div>
+        <div class="grid grid-cols-2 gap-2.5">
+          <div><label>Categoría</label>
+            <select id="cat">
+              <option>Seguridad</option><option>Salud</option><option>Licencia</option><option>Curso</option><option>Otro</option>
+            </select>
+          </div>
+          <div><label>Vence el</label><input id="exp" type="date"></div>
+        </div>
+        <button id="add" class="rounded-xl py-3 font-bold active:scale-95 transition" style="background:linear-gradient(150deg,#e8c9a6,#cf9b6f);color:#211a15">Guardar documento</button>
+      </div>
+    </section>
+
+    <div id="list" class="mt-4 grid gap-2.5"></div>
+    <p id="empty" class="hidden text-center text-stone-500 text-sm py-8">Aún no agregas documentos. Guarda tus vencimientos y te avisamos antes de que caduquen. 🔒 Todo queda solo en tu teléfono.</p>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">🔒 Privado: tus documentos se guardan solo en este dispositivo, no se envían a ningún servidor. · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const KEY='adn_docs';
+  const load=()=>{ try{ return JSON.parse(localStorage.getItem(KEY)||'[]'); }catch(e){ return []; } };
+  const save=a=>{ try{ localStorage.setItem(KEY, JSON.stringify(a)); }catch(e){} };
+  let docs=load();
+
+  const PRESETS=['Curso Sernageomin','Examen ocupacional','Trabajo en altura','Manejo defensivo','Licencia de conducir','Altura geográfica','Espacios confinados','Uso y manejo de extintores'];
+  $('presets').innerHTML=PRESETS.map(p=>`<button class="chip preset" data-n="${p}">${p}</button>`).join('');
+  $('presets').addEventListener('click',e=>{ const b=e.target.closest('.preset'); if(!b) return; $('n').value=b.dataset.n;
+    const map={'Curso Sernageomin':'Seguridad','Examen ocupacional':'Salud','Altura geográfica':'Salud','Licencia de conducir':'Licencia'};
+    $('cat').value=map[b.dataset.n]||'Curso'; $('exp').focus(); });
+
+  const CATICON={Seguridad:'shield-check',Salud:'heart-pulse',Licencia:'id-card',Curso:'graduation-cap',Otro:'file-text'};
+  const today=()=>{ const d=new Date(); d.setHours(0,0,0,0); return d; };
+  const daysTo=exp=>{ const d=new Date(exp+'T00:00:00'); return Math.round((d-today())/864e5); };
+  function statusOf(days){
+    if(days<0) return {cls:'b-exp', t:'Vencido', c:'#e05a3f'};
+    if(days<=7) return {cls:'b-warn', t:'Vence en '+days+'d', c:'#e08c5a'};
+    if(days<=30) return {cls:'b-soon', t:'Por vencer · '+days+'d', c:'#d6a94f'};
+    return {cls:'b-ok', t:'Vigente · '+days+'d', c:'#7fbf9a'};
+  }
+
+  function esc(s){ return (s||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
+
+  function render(){
+    docs.sort((a,b)=> new Date(a.exp) - new Date(b.exp));
+    save(docs);
+    $('empty').classList.toggle('hidden', docs.length>0);
+    $('list').innerHTML=docs.map((d,i)=>{
+      const days=daysTo(d.exp), st=statusOf(days);
+      const fecha=new Date(d.exp+'T00:00:00').toLocaleDateString('es-CL',{day:'2-digit',month:'short',year:'numeric'});
+      return `<div class="glass rounded-2xl p-4">
+        <div class="flex items-start gap-3">
+          <div class="h-10 w-10 rounded-xl grid place-items-center shrink-0" style="background:${st.c}22;border:1px solid ${st.c}55"><i data-lucide="${CATICON[d.cat]||'file-text'}" class="w-5 h-5" style="color:${st.c}"></i></div>
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center justify-between gap-2">
+              <p class="font-bold truncate">${esc(d.n)}</p>
+              <span class="badge ${st.cls} shrink-0">${st.t}</span>
+            </div>
+            <p class="text-[12px] text-stone-400 mt-0.5">${d.cat} · vence el ${fecha}</p>
+            <div class="flex gap-2 mt-2.5">
+              <button class="remind text-[12px] font-semibold inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5" data-i="${i}" style="background:rgba(103,193,214,.12);color:#7fbfd1;border:1px solid rgba(103,193,214,.3)"><i data-lucide="bell-plus" style="width:13px;height:13px"></i> Recordarme</button>
+              <button class="del text-[12px] font-semibold inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5" data-i="${i}" style="background:rgba(255,255,255,.05);color:#b7a794;border:1px solid rgba(196,168,148,.2)"><i data-lucide="trash-2" style="width:13px;height:13px"></i> Quitar</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+    drawIcons();
+  }
+
+  $('add').addEventListener('click', ()=>{
+    const n=$('n').value.trim(), exp=$('exp').value, cat=$('cat').value;
+    if(!n){ $('n').focus(); return; }
+    if(!exp){ $('exp').focus(); return; }
+    docs.push({id:Date.now().toString(36), n, cat, exp});
+    $('n').value=''; $('exp').value='';
+    render();
+  });
+
+  $('list').addEventListener('click', e=>{
+    const r=e.target.closest('.remind'), d=e.target.closest('.del');
+    if(r){ remind(docs[+r.dataset.i]); }
+    else if(d){ const i=+d.dataset.i; if(confirm('¿Quitar "'+docs[i].n+'"?')){ docs.splice(i,1); render(); } }
+  });
+
+  // --- Recordatorio: genera un evento de calendario (.ics) con avisos a 7 y 1 día ---
+  function icsEsc(s){ return (s||'').replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n'); }
+  function icsFor(d){
+    const dd=d.exp.replace(/-/g,'');
+    const dt=new Date(); const stamp=dt.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';
+    return ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//ADN Minero//Documentos//ES','CALSCALE:GREGORIAN',
+      'BEGIN:VEVENT','UID:adn-'+d.id+'@adnminero','DTSTAMP:'+stamp,
+      'DTSTART;VALUE=DATE:'+dd,'DTEND;VALUE=DATE:'+dd,
+      'SUMMARY:'+icsEsc('Vence: '+d.n+' ('+d.cat+')'),
+      'DESCRIPTION:'+icsEsc('Recordatorio de ADN Minero. Revisa la renovación de: '+d.n),
+      'BEGIN:VALARM','TRIGGER:-P7D','ACTION:DISPLAY','DESCRIPTION:'+icsEsc(d.n+' vence en 7 días'),'END:VALARM',
+      'BEGIN:VALARM','TRIGGER:-P1D','ACTION:DISPLAY','DESCRIPTION:'+icsEsc(d.n+' vence mañana'),'END:VALARM',
+      'END:VEVENT','END:VCALENDAR'].join('\r\n');
+  }
+  function remind(d){
+    try{
+      const blob=new Blob([icsFor(d)],{type:'text/calendar;charset=utf-8'});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a'); a.href=url; a.download=d.n.replace(/[^\w]+/g,'_')+'.ics';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),4000);
+    }catch(e){ alert('No se pudo crear el recordatorio en este dispositivo.'); }
+  }
+
+  render(); drawIcons();
+</script>
+</body>
+</html>
