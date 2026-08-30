@@ -94,6 +94,9 @@
     <!-- MI FAENA (perfil) -->
     <div id="miFaena" class="mt-4 hidden"></div>
 
+    <!-- PARA TI (personalizado con IA) -->
+    <div id="paraTi" class="mt-4 hidden"></div>
+
     <!-- MIS PANELES (favoritos) -->
     <section id="sec-fav" class="mt-10 hidden">
       <div class="flex items-center gap-3 mb-5">
@@ -319,6 +322,7 @@
       renderHomeCats();
       renderProfile();
       renderHoy();
+      renderParaTi();
       renderAuspicio();
       window.lucide && lucide.createIcons();
       applyFilter();
@@ -416,9 +420,9 @@
         const faena=ov.querySelector('#mfFaena').value.trim();
         if(!faena){ ov.querySelector('#mfFaena').focus(); return; }
         ADNProfile.set({ faena, empresa:ov.querySelector('#mfEmpresa').value.trim(), turno:ov.querySelector('#mfTurno').value, rol:ov.querySelector('#mfRol').value });
-        close(); renderProfile();
+        close(); renderProfile(); renderParaTi();
       };
-      const clr=ov.querySelector('#mfClear'); if(clr) clr.onclick=()=>{ ADNProfile.clear(); close(); renderProfile(); };
+      const clr=ov.querySelector('#mfClear'); if(clr) clr.onclick=()=>{ ADNProfile.clear(); try{localStorage.removeItem('adn_parati');}catch(e){} close(); renderProfile(); renderParaTi(); };
     }
 
     // ===== Espacio de auspicio =====
@@ -451,6 +455,39 @@
         <i data-lucide="${ic}" class="w-5 h-5 shrink-0" style="color:${col}"></i>
         <div class="min-w-0"><p class="text-[10px] text-stone-400 leading-none">${lbl}</p><p id="${id}" class="text-sm font-bold truncate mt-0.5" style="font-variant-numeric:tabular-nums">…</p></div></a>`;
     }
+    // ===== "Para ti": paneles rankeados con IA según tu perfil =====
+    async function renderParaTi(){
+      try{
+        const el=document.getElementById('paraTi'); if(!el) return;
+        const p=(window.ADNProfile&&ADNProfile.get())||{};
+        if(!p.rol && !p.faena){ el.innerHTML=''; return; }
+        const query='Soy '+(p.rol||'trabajador')+' de la minería'+(p.faena?(', en la faena '+p.faena):'')+(p.turno?(', turno '+p.turno):'')+'. Lo más útil para mí: seguridad, empleo, herramientas de faena, mis turnos, cifras y noticias.';
+        const cacheKey=norm(query).replace(/\s+/g,'_').slice(0,70);
+        let files=null;
+        try{ const c=JSON.parse(localStorage.getItem('adn_parati')||'{}'); if(c.key===cacheKey && Array.isArray(c.files)) files=c.files; }catch(e){}
+        if(!files){
+          const IDX_URL=(/\/app\//.test(location.pathname)?'../':'')+'search-index.json';
+          const idx=await fetch(IDX_URL,{cache:'force-cache'}).then(r=>r.ok?r.json():null).catch(()=>null);
+          if(!idx||!idx.items) return;
+          const r=await fetch('https://adn-muro.simonrovi.workers.dev/embed',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({q:query})}).catch(()=>null);
+          if(!r||!r.ok) return;
+          const qv=(await r.json()).v; if(!qv||!qv.length) return;
+          const qn=Math.hypot(...qv)||1;
+          const excl=['adn-minero-trivia.html','adn-minero-vf.html','adn-minero-wordle.html','adn-minero-memoria.html','adn-minero-juegos.html','adn-minero-buscar.html','adn-minero-promo.html','index.html'];
+          files=idx.items.map(it=>{ let dot=0; for(let i=0;i<qv.length;i++) dot+=qv[i]*it.v[i]; return {f:it.f, s:dot/((qn*(Math.hypot(...it.v)||1))||1)}; })
+            .filter(x=>excl.indexOf(x.f)<0).sort((a,b)=>b.s-a.s).slice(0,5).map(x=>x.f);
+          try{ localStorage.setItem('adn_parati', JSON.stringify({key:cacheKey, files})); }catch(e){}
+        }
+        const byF={}; ALL.forEach(x=>{ byF[(x.f||'').replace(/^.*\//,'')]=x; });
+        const cards=files.map(f=>byF[f]).filter(Boolean);
+        if(!cards.length){ el.innerHTML=''; return; }
+        el.innerHTML='<div class="flex items-center gap-2 mb-3"><span style="font-size:18px">🎯</span><h2 class="text-lg font-bold text-stone-100">Para ti'+(p.rol?(' · '+p.rol):'')+'</h2><span class="text-[10px] uppercase tracking-wider text-stone-500 ml-1">elegido con IA</span></div>'+
+          '<div class="grid gap-2.5">'+cards.map(x=>`<a href="${x.f}" class="glass rounded-2xl p-3.5 flex items-center gap-3 active:scale-[.99] transition"><div class="h-10 w-10 rounded-xl grid place-items-center shrink-0" style="background:${x.c}22;border:1px solid ${x.c}55"><i data-lucide="${x.i}" class="w-5 h-5" style="color:${x.c}"></i></div><div class="min-w-0 flex-1"><p class="font-bold text-stone-100">${x.t}</p><p class="text-[12px] text-stone-400 leading-snug truncate">${x.d}</p></div><i data-lucide="arrow-right" class="w-4 h-4 text-stone-500 shrink-0"></i></a>`).join('')+'</div>';
+        if(window.lucide) lucide.createIcons();
+        applyFilter();
+      }catch(e){}
+    }
+
     function renderHoy(){
       const el=document.getElementById('hoy'); if(!el) return;
       const p=window.ADNProfile&&ADNProfile.get();
@@ -530,6 +567,7 @@
       document.getElementById('homeCats').classList.toggle('hidden', !home);
       document.getElementById('hoy').classList.toggle('hidden', !home);
       document.getElementById('miFaena').classList.toggle('hidden', !home);
+      const ptEl=document.getElementById('paraTi'); ptEl.classList.toggle('hidden', !home || ptEl.children.length===0);
       document.getElementById('auspicio').classList.toggle('hidden', !home);
       document.getElementById('sec-fav').classList.toggle('hidden', !home || favCount===0);
       // Barra "volver": solo dentro de una categoría
