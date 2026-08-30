@@ -31,6 +31,24 @@
     };
     var cfg=NOTE[fileN];
     if(cfg && !inFrN){
+      // Marca de frescura: envuelve fetch para registrar la última respuesta de datos externa OK
+      try{
+        if(!window.__adnFetchWrapped && window.fetch){
+          window.__adnFetchWrapped=true;
+          var _of=window.fetch;
+          window.fetch=function(input){
+            var href=''; try{ href=(typeof input==='string')?input:(input&&input.url)||''; }catch(e){}
+            var p=_of.apply(this,arguments);
+            try{ p.then(function(r){ try{
+              if(r && (r.ok||r.type==='opaque') && /^https?:\/\//i.test(href) && href.indexOf(location.host)===-1){ window.__adnUpd=Date.now(); }
+            }catch(e){} }, function(){}); }catch(e){}
+            return p;
+          };
+        }
+      }catch(e){}
+      var _rel=function(ms){ var s=Math.round((Date.now()-ms)/1000);
+        if(s<8) return 'recién'; if(s<60) return 'hace '+s+' s'; var m=Math.round(s/60);
+        if(m<60) return 'hace '+m+(m===1?' min':' min'); var h=Math.round(m/60); return 'hace '+h+' h'; };
       var mkNote=function(){
         if(!document.body || document.getElementById('adnui-note')) return;
         var n=document.createElement('div'); n.id='adnui-note';
@@ -39,11 +57,16 @@
           (cfg.s?'background:rgba(224,113,90,.08);border:1px solid rgba(224,113,90,.28);color:#eab6a6;'
                 :'background:rgba(196,168,148,.06);border:1px solid rgba(196,168,148,.18);color:#b7a794;');
         n.innerHTML=(cfg.s?'<b style="color:#f0b8a6">⚠️ Información referencial.</b> No reemplaza los sistemas ni protocolos oficiales de seguridad de tu faena. Ante una emergencia, sigue siempre los canales oficiales.<br>':'')+
-          '<span style="opacity:.85">Fuente: '+cfg.src+' · Actualización sujeta a la conexión.</span>';
+          '<span style="opacity:.85">Fuente: '+cfg.src+'</span>'+
+          '<span id="adnui-upd" style="display:block;margin-top:3px;opacity:.95;font-weight:700"></span>';
         document.body.appendChild(n);
       };
       if(document.body) mkNote(); else document.addEventListener('DOMContentLoaded', mkNote);
       window.addEventListener('load', mkNote);
+      setInterval(function(){ var el=document.getElementById('adnui-upd'); if(!el) return;
+        if(window.__adnUpd){ el.textContent='🔄 Datos actualizados '+_rel(window.__adnUpd)+(navigator.onLine===false?' · sin conexión':''); }
+        else if(navigator.onLine===false){ el.textContent='📡 Sin conexión · mostrando lo último guardado'; }
+      }, 4000);
     }
   }catch(e){}
 
