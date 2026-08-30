@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Buscar con IA</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(232,201,166,0.12), transparent 60%), #141110; }
+    .wrap{ max-width:620px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    input{ background:#241d18; color:#f4ece5; border:1px solid rgba(196,168,148,.25); border-radius:14px; padding:14px 14px 14px 44px; font-size:16px; outline:none; width:100%; }
+    input:focus{ border-color:rgba(207,155,111,.6); }
+    .chip{ font-size:12px; font-weight:600; padding:8px 12px; border-radius:999px; cursor:pointer; background:rgba(232,201,166,.08); border:1px solid rgba(196,168,148,.24); color:#e8c9a6; text-align:left; }
+    .res{ display:flex; gap:12px; align-items:flex-start; padding:14px; border-radius:16px; text-decoration:none; color:inherit; }
+    .bar{ height:6px; border-radius:999px; background:rgba(255,255,255,.06); overflow:hidden; margin-top:6px; }
+    .bar>div{ height:100%; background:linear-gradient(90deg,#cf9b6f,#e8c9a6); border-radius:999px; }
+    .spin{ width:18px;height:18px;border:2px solid rgba(232,201,166,.3);border-top-color:#e8c9a6;border-radius:50%;animation:sp .8s linear infinite;display:inline-block;vertical-align:middle }
+    @keyframes sp{to{transform:rotate(360deg)}}
+  </style>
+  <script src="adn-ui.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(232,201,166,.15);border:1px solid rgba(232,201,166,.32)"><i data-lucide="sparkles" style="width:26px;height:26px;color:#e8c9a6"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#e6c98f;font-weight:800">Buscar con IA</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Pregunta con tus palabras · te llevo al panel exacto</p>
+      </div>
+    </header>
+
+    <div class="mt-4 relative">
+      <i data-lucide="search" style="position:absolute;left:15px;top:16px;width:18px;height:18px;color:#8a8079"></i>
+      <input id="q" placeholder="Ej: ¿cuánto le deja la minería a mi comuna?" autocomplete="off" enterkeyhint="search">
+    </div>
+
+    <div id="chips" class="grid grid-cols-1 gap-2 mt-3"></div>
+    <div id="status" class="text-center text-sm text-stone-400 py-3 hidden"></div>
+    <div id="results" class="grid gap-2.5 mt-2"></div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">La IA entiende el <b>significado</b> de tu pregunta y ordena los paneles por relevancia. · <a href="index.html" style="color:#e8c9a6">Ver todos</a></p>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const WORKER='https://adn-muro.simonrovi.workers.dev';
+  const norm=s=>(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+
+  let INDEX=null, NORMS=[];
+  const EXAMPLES=[
+    '¿Cuánto le deja la minería al Estado?',
+    'Precio del cobre y el dólar hoy',
+    'Cómo estar seguro en la faena',
+    '¿En qué día de mi turno estoy?',
+    'Dónde estudiar carreras de minería'
+  ];
+  $('chips').innerHTML=EXAMPLES.map(e=>`<button class="chip ex">🔎 ${e}</button>`).join('');
+  $('chips').addEventListener('click',e=>{ const b=e.target.closest('.ex'); if(!b) return; $('q').value=b.textContent.replace(/^🔎\s*/,''); run(); });
+
+  fetch('search-index.json',{cache:'force-cache'}).then(r=>r.json()).then(j=>{
+    INDEX=j; NORMS=j.items.map(it=>Math.hypot.apply(null, it.v));
+  }).catch(()=>{ INDEX=null; });
+
+  function cosine(qv, v, vnorm){
+    let dot=0; for(let i=0;i<qv.length;i++) dot+=qv[i]*v[i];
+    const qn=Math.hypot.apply(null,qv)||1; return dot/((qn*vnorm)||1);
+  }
+  function rankByKeyword(q){
+    const qn=norm(q), words=qn.split(/\s+/).filter(w=>w.length>2);
+    return (INDEX?INDEX.items:[]).map(it=>{ const hay=norm(it.t+' '+it.d);
+      let sc=0; words.forEach(w=>{ if(hay.includes(w)) sc+=1; }); if(norm(it.t).includes(qn)) sc+=2;
+      return {it, sc};
+    }).filter(x=>x.sc>0).sort((a,b)=>b.sc-a.sc).slice(0,6).map(x=>({it:x.it, s:Math.min(0.99,0.5+x.sc*0.12)}));
+  }
+  function rankByCosine(qv, q){
+    const qn=norm(q);
+    const scored=INDEX.items.map((it,i)=>{ let s=cosine(qv,it.v,NORMS[i]||1);
+      if(norm(it.t).includes(qn)) s+=0.05;   // pequeño empujón por coincidencia de título
+      return {it, s}; });
+    return scored.sort((a,b)=>b.s-a.s).slice(0,6);
+  }
+
+  function render(list, mode){
+    $('status').classList.add('hidden');
+    if(!list.length){ $('results').innerHTML='<p class="text-center text-stone-500 text-sm py-6">No encontré un panel para eso. Prueba con otras palabras.</p>'; return; }
+    $('results').innerHTML=`<p class="text-[11px] text-stone-500 px-1 mb-1">${mode==='IA'?'✨ Ordenado por la IA según lo que quieres decir':'Resultados por palabras clave'}:</p>`+
+      list.map(x=>{ const pct=Math.round(Math.max(0,Math.min(1,x.s))*100);
+      return `<a class="glass res" href="${x.it.f}">
+        <div class="h-10 w-10 rounded-xl grid place-items-center shrink-0" style="background:rgba(207,155,111,.14);border:1px solid rgba(207,155,111,.3)"><i data-lucide="arrow-right" class="w-5 h-5" style="color:#cf9b6f"></i></div>
+        <div class="min-w-0 flex-1">
+          <p class="font-bold">${x.it.t}</p>
+          <p class="text-[12.5px] text-stone-300 leading-snug mt-0.5">${x.it.d}</p>
+          <div class="bar"><div style="width:${pct}%"></div></div>
+        </div>
+      </a>`; }).join('');
+    drawIcons();
+  }
+
+  let busy=false;
+  async function run(){
+    const q=$('q').value.trim(); if(!q||busy) return;
+    if(!INDEX){ $('status').textContent='Cargando…'; $('status').classList.remove('hidden'); return; }
+    busy=true; $('status').innerHTML='<span class="spin"></span> Buscando con IA…'; $('status').classList.remove('hidden'); $('results').innerHTML='';
+    let qv=null;
+    try{ const r=await fetch(WORKER+'/embed',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({q})});
+      if(r.ok){ const j=await r.json(); qv=j.v; } }catch(e){}
+    if(qv && qv.length){ render(rankByCosine(qv,q),'IA'); }
+    else { render(rankByKeyword(q),'texto'); }   // respaldo sin IA / sin conexión
+    busy=false;
+  }
+
+  $('q').addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); run(); } });
+  drawIcons();
+</script>
+</body>
+</html>
