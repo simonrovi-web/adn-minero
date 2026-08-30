@@ -4,6 +4,15 @@ const ICON = 'https://simonrovi-web.github.io/adn-minero/app/icon-192.png';
 const HOME = 'https://simonrovi-web.github.io/adn-minero/';
 
 const OFFLINE_CACHE = 'adn-offline-v1';
+// CDN de terceros que la app usa (Tailwind, iconos, fuentes). Se cachean para
+// funcionar sin señal o si la red de la empresa los bloquea.
+const CDN_CACHE = 'adn-cdn-v1';
+const CDN_HOSTS = ['cdn.tailwindcss.com', 'unpkg.com', 'cdn.jsdelivr.net', 'fonts.googleapis.com', 'fonts.gstatic.com'];
+async function cdnFetchAndCache(req) {
+  const res = await fetch(req);
+  try { const cp = res.clone(); const c = await caches.open(CDN_CACHE); await c.put(req, cp); } catch (e) {}
+  return res;
+}
 const OFFLINE_HTML = '<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'+
   '<title>Sin conexión · ADN Minero</title><style>html,body{height:100%;margin:0;font-family:system-ui,sans-serif;'+
   'background:#141110;color:#f4ece5;display:grid;place-items:center;text-align:center;padding:24px}'+
@@ -24,7 +33,17 @@ self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
   let url; try { url = new URL(req.url); } catch (e) { return; }
-  if (url.origin !== location.origin) return; // deja pasar Tailwind/fuentes/APIs
+  // CDN de terceros: cache-first (stale-while-revalidate) para resistir mala señal / bloqueos
+  if (CDN_HOSTS.includes(url.hostname)) {
+    event.respondWith((async () => {
+      const cached = await caches.match(req);
+      if (cached) { cdnFetchAndCache(req).catch(() => {}); return cached; }
+      try { return await cdnFetchAndCache(req); }
+      catch (e) { const c = await caches.match(req); return c || Response.error(); }
+    })());
+    return;
+  }
+  if (url.origin !== location.origin) return; // otras APIs externas: sin tocar
   event.respondWith((async () => {
     try {
       const res = await fetch(req);
