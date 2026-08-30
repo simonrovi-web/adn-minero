@@ -18,6 +18,12 @@
     var WORKER_URL='https://adn-minero-ia.simonrovi.workers.dev';
     var FULL_URL='adn-minero-ia.html';
 
+    // Paneles de datos/cifras: el botón se enfoca en "explicar las cifras"
+    var DATA_PANELS=['adn-minero-aporte-fiscal.html','adn-minero-royalty.html','adn-minero-produccion.html',
+      'adn-minero-indicadores.html','adn-minero-commodities.html','adn-minero-cuenta-publica.html',
+      'adn-minero-cartera.html','adn-minero-historico.html','adn-minero-chile-mundo.html'];
+    var isData=DATA_PANELS.indexOf(file)>=0;
+
     // ---- Tema del panel (para sembrar el contexto) ----
     function tema(){
       var t=(document.title||'').replace(/ADN\s*Minero\s*[·|:–-]?\s*/i,'').trim();
@@ -78,8 +84,8 @@
 
     // ---- FAB ----
     var fab=document.createElement('button'); fab.id='adnai-fab'; fab.type='button';
-    fab.setAttribute('aria-label','Pregúntale a la IA sobre este panel');
-    fab.innerHTML='<span class="sp">✨</span><span class="lbl">Pregúntale a ADN</span>';
+    fab.setAttribute('aria-label', isData?'Explícame las cifras de este panel con IA':'Pregúntale a la IA sobre este panel');
+    fab.innerHTML=isData?'<span class="sp">🧮</span><span class="lbl">Explica las cifras</span>':'<span class="sp">✨</span><span class="lbl">Pregúntale a ADN</span>';
 
     // ---- Sheet ----
     var back=document.createElement('div'); back.id='adnai-back';
@@ -111,16 +117,24 @@
     // El backend ya tiene su propio system prompt de minería; el contexto del panel
     // se inyecta como "primer" del usuario (más fiable que un 2º mensaje de sistema).
     var history=[];
-    var CHIPS=['¿De qué trata este panel?','Explícalo simple','Dame un dato curioso'];
+    var CHIPS=isData
+      ? ['Explícame estas cifras en simple','¿Qué significa esto para mí?','¿De dónde salen estos datos?']
+      : ['¿De qué trata este panel?','Explícalo simple','Dame un dato curioso'];
 
     // Texto visible del encabezado del panel, para aterrizar el contexto (se calcula 1 vez).
     var _snip=null;
     function snippet(){
       if(_snip!==null) return _snip;
       try{
-        var h=document.querySelector('header'); var t=h?(h.innerText||h.textContent||''):'';
-        if(!t || t.length<20){ t=(document.body?document.body.innerText:'')||''; }
-        _snip=t.replace(/\s+/g,' ').trim().slice(0,240);
+        var t;
+        if(isData){ // en paneles de datos, incluir más texto para capturar las cifras visibles
+          t=(document.body?document.body.innerText:'')||'';
+          _snip=t.replace(/\s+/g,' ').trim().slice(0,650);
+        } else {
+          var h=document.querySelector('header'); t=h?(h.innerText||h.textContent||''):'';
+          if(!t || t.length<20){ t=(document.body?document.body.innerText:'')||''; }
+          _snip=t.replace(/\s+/g,' ').trim().slice(0,240);
+        }
       }catch(e){ _snip=''; }
       return _snip;
     }
@@ -141,7 +155,7 @@
     }
     function open(){
       back.classList.add('on'); sheet.classList.add('on');
-      if(!started){ started=true; renderChips(); bubble('assistant','¡Hola! Pregúntame lo que quieras sobre «'+TEMA+'» o la minería. 👷'); }
+      if(!started){ started=true; renderChips(); bubble('assistant', isData?('Puedo explicarte las cifras de «'+TEMA+'» en simple. Toca una sugerencia o pregúntame. 🧮'):('¡Hola! Pregúntame lo que quieras sobre «'+TEMA+'» o la minería. 👷')); }
       setTimeout(function(){ try{ inEl.focus(); }catch(e){} }, 300);
     }
     function close(){ back.classList.remove('on'); sheet.classList.remove('on'); }
