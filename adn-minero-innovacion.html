@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Innovación y Tecnología</title>
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(103,193,214,0.12), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    .topic{ cursor:pointer; } .topic .body{ display:none; } .topic.open .body{ display:block; }
+    .topic.open .chev{ transform:rotate(90deg); } .chev{ transition:transform .2s; }
+    .tip{ display:flex; gap:9px; align-items:flex-start; font-size:13.5px; line-height:1.5; color:#dacfc2; margin-top:8px; }
+    .tip b{ color:#f4ece5; } h3{ margin:0; }
+    .pill{ font-size:10px; font-weight:800; padding:3px 9px; border-radius:999px; }
+  </style>
+  <script src="adn-ui.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(103,193,214,.15);border:1px solid rgba(103,193,214,.32)"><i data-lucide="cpu" style="width:26px;height:26px;color:#67c1d6"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#a9d3dc;font-weight:800">Innovación y Tecnología</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Cómo se moderniza la minería de Chile</p>
+      </div>
+    </header>
+
+    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">La minería chilena se transforma para ser <b>más segura, eficiente y limpia</b>. Toca cada tema para conocer las tecnologías que ya están cambiando la faena.</p>
+
+    <div id="topics" class="mt-4 grid gap-2.5"></div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Panorama general de divulgación; el avance varía según cada faena y empresa. · <a href="adn-minero-cobre-transicion.html" style="color:#e8c9a6">El cobre y la energía</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+
+<script>
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const TOPICS=[
+    { ic:'truck', c:'#e0955f', t:'Camiones autónomos y teleoperación', s:'Operar sin exponer a la persona',
+      tips:[
+        ['navigation','Flotas de <b>CAEX autónomos</b> guiados por GPS y sensores ya operan en faenas del norte, las 24 horas.'],
+        ['monitor','La <b>teleoperación</b> permite manejar palas y perforadoras desde una sala de control, lejos del riesgo.'],
+        ['shield-check','Menos exposición de personas a zonas peligrosas y operación más constante y predecible.']
+      ]},
+    { ic:'battery-charging', c:'#7fbf9a', t:'Electromovilidad y flotas eléctricas', s:'Bajar emisiones en la faena',
+      tips:[
+        ['zap','Camiones y equipos <b>eléctricos o a batería</b> reemplazan al diésel para reducir emisiones y ruido.'],
+        ['plug','Trolley-assist: los camiones se conectan a una catenaria en las subidas para ahorrar combustible.'],
+        ['leaf','Menos huella de carbono en el transporte, uno de los mayores consumos de energía de una mina.']
+      ]},
+    { ic:'droplets', c:'#5fb3a1', t:'Agua de mar y desalación', s:'Cuidar el agua del desierto',
+      tips:[
+        ['waves','Plantas <b>desaladoras</b> quitan la sal al agua de mar para usarla en los procesos.'],
+        ['route','El agua se <b>bombea cientos de kilómetros</b> y sube miles de metros hasta la faena.'],
+        ['droplet','Reduce el uso de agua continental, clave en una de las zonas más áridas del mundo.']
+      ]},
+    { ic:'flame', c:'#e0a35a', t:'Hidrógeno verde y energías limpias', s:'La nueva energía de la minería',
+      tips:[
+        ['sun','La <b>energía solar</b> del desierto de Atacama alimenta cada vez más faenas.'],
+        ['flame','El <b>hidrógeno verde</b> (producido con renovables) se prueba como combustible para camiones y equipos.'],
+        ['globe','Chile busca ser líder en hidrógeno verde, aprovechando su sol y viento.']
+      ]},
+    { ic:'cpu', c:'#67c1d6', t:'IA, datos y gemelos digitales', s:'Decidir con información en tiempo real',
+      tips:[
+        ['brain-circuit','La <b>inteligencia artificial</b> anticipa fallas de equipos y optimiza la planta (mantenimiento predictivo).'],
+        ['boxes','Un <b>gemelo digital</b> es una copia virtual de la faena para simular y mejorar la operación.'],
+        ['line-chart','Sensores y datos en tiempo real ayudan a producir más con menos energía y agua.']
+      ]},
+    { ic:'radio', c:'#9a8cd0', t:'Monitoreo remoto, drones y seguridad', s:'Vigilar la faena a distancia',
+      tips:[
+        ['plane','<b>Drones</b> inspeccionan taludes, tranques y zonas de difícil acceso sin arriesgar personas.'],
+        ['activity','Sensores monitorean en vivo la estabilidad de <b>tranques de relaves</b> y de los taludes.'],
+        ['bell','Sistemas de alerta temprana avisan ante movimientos de terreno o condiciones de riesgo.']
+      ]},
+    { ic:'recycle', c:'#a7d18a', t:'Sostenibilidad y relaves', s:'Menos residuos, más reúso',
+      tips:[
+        ['recycle','Se investiga <b>reprocesar relaves antiguos</b> para recuperar cobre y otros metales que quedaron.'],
+        ['layers','Relaves espesados y filtrados usan menos agua y son más estables que los tranques tradicionales.'],
+        ['sprout','El objetivo: una minería con menor huella de agua, energía y territorio.']
+      ]}
+  ];
+
+  document.getElementById('topics').innerHTML=TOPICS.map((x,i)=>`
+    <div class="glass rounded-2xl topic" data-i="${i}">
+      <div class="p-4 flex items-center gap-3">
+        <div class="h-10 w-10 rounded-xl grid place-items-center shrink-0" style="background:${x.c}22;border:1px solid ${x.c}55"><i data-lucide="${x.ic}" class="w-5 h-5" style="color:${x.c}"></i></div>
+        <div class="min-w-0 flex-1"><h3 class="font-bold text-[15px]">${x.t}</h3><p class="text-[11.5px] text-stone-400">${x.s}</p></div>
+        <i data-lucide="chevron-right" class="chev w-5 h-5 text-stone-500 shrink-0"></i>
+      </div>
+      <div class="body px-4 pb-4 -mt-1">
+        ${x.tips.map(t=>`<div class="tip"><i data-lucide="${t[0]}" class="w-4 h-4 shrink-0 mt-0.5" style="color:${x.c}"></i><span>${t[1]}</span></div>`).join('')}
+      </div>
+    </div>`).join('');
+
+  document.getElementById('topics').addEventListener('click', e=>{
+    const t=e.target.closest('.topic'); if(!t) return;
+    t.classList.toggle('open'); drawIcons();
+  });
+  drawIcons();
+</script>
+</body>
+</html>
