@@ -108,6 +108,7 @@
     </section>
 
     <!-- INICIO: TARJETAS DE CATEGORÍA -->
+    <div id="racha" class="mt-4 hidden"></div>
     <div id="homeCats" class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-8"></div>
 
     <!-- BARRA VOLVER (dentro de una categoría) -->
@@ -330,6 +331,7 @@
       renderProfile();
       renderHoy();
       renderParaTi();
+      renderStreak();
       renderAuspicio();
       window.lucide && lucide.createIcons();
       applyFilter();
@@ -462,6 +464,23 @@
         <i data-lucide="${ic}" class="w-5 h-5 shrink-0" style="color:${col}"></i>
         <div class="min-w-0"><p class="text-[10px] text-stone-400 leading-none">${lbl}</p><p id="${id}" class="text-sm font-bold truncate mt-0.5" style="font-variant-numeric:tabular-nums">…</p></div></a>`;
     }
+    // ===== Racha de días (retención) =====
+    function renderStreak(){
+      try{
+        const el=document.getElementById('racha'); if(!el) return;
+        const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+        const today=ymd(new Date()); const yd=new Date(); yd.setDate(yd.getDate()-1); const yest=ymd(yd);
+        let st={}; try{ st=JSON.parse(localStorage.getItem('adn_streak')||'{}'); }catch(e){}
+        let n=st.n||0, best=st.best||0;
+        if(st.last!==today){ n=(st.last===yest)?n+1:1; best=Math.max(best,n); try{ localStorage.setItem('adn_streak', JSON.stringify({n,last:today,best})); }catch(e){} }
+        else { n=st.n||1; best=st.best||n; }
+        if(n<1){ el.innerHTML=''; return; }
+        const sub = n>1 ? '¡Vuelve mañana para no perderla!' : '¡Bienvenido! Vuelve mañana y suma racha.';
+        el.innerHTML='<div class="glass rounded-2xl px-4 py-2.5 flex items-center gap-3"><span style="font-size:20px">🔥</span><div class="flex-1 min-w-0"><p class="text-sm font-bold text-stone-100">Racha de '+n+' día'+(n>1?'s':'')+'</p><p class="text-[11px] text-stone-400">'+sub+'</p></div>'+(best>1?('<span class="text-[10px] text-stone-500 shrink-0">récord '+best+'</span>'):'')+'</div>';
+        applyFilter();
+      }catch(e){}
+    }
+
     // ===== "Para ti": paneles rankeados con IA según tu perfil =====
     async function renderParaTi(){
       try{
@@ -577,6 +596,7 @@
       document.getElementById('hoy').classList.toggle('hidden', !home);
       document.getElementById('miFaena').classList.toggle('hidden', !home);
       const ptEl=document.getElementById('paraTi'); ptEl.classList.toggle('hidden', !home || ptEl.children.length===0);
+      const rEl=document.getElementById('racha'); if(rEl) rEl.classList.toggle('hidden', !home || rEl.children.length===0);
       document.getElementById('auspicio').classList.toggle('hidden', !home);
       document.getElementById('sec-fav').classList.toggle('hidden', !home || favCount===0);
       // Barra "volver": solo dentro de una categoría
