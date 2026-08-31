@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Del Mineral al Cátodo</title>
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(207,155,111,0.12), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    .step{ position:relative; display:flex; gap:14px; padding-bottom:18px; }
+    .rail{ position:relative; flex:none; display:flex; flex-direction:column; align-items:center; }
+    .num{ width:38px; height:38px; border-radius:50%; display:grid; place-items:center; font-weight:900; font-size:15px; z-index:1;
+      background:linear-gradient(150deg,#e8c9a6,#cf9b6f); color:#211a15; box-shadow:0 3px 10px rgba(0,0,0,.4); }
+    .line{ position:absolute; top:38px; bottom:-4px; width:2px; background:linear-gradient(#cf9b6f88,#cf9b6f22); }
+    .step:last-child .line{ display:none; }
+    .card{ flex:1; }
+    .ic{ width:26px; height:26px; }
+    .tag{ font-size:9.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:999px; }
+  </style>
+  <script src="adn-ui.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(207,155,111,.15);border:1px solid rgba(207,155,111,.32)"><i data-lucide="git-branch" style="width:26px;height:26px;color:#cf9b6f"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#e0c3a0;font-weight:800">Del Mineral al Cátodo</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Cómo se hace el cobre, paso a paso</p>
+      </div>
+    </header>
+
+    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">Desde la roca en el cerro hasta la plancha de cobre casi puro que se exporta. Este es el camino que recorre el mineral en una faena chilena.</p>
+
+    <div id="steps" class="mt-5"></div>
+
+    <!-- Camino de los óxidos -->
+    <div class="glass rounded-2xl p-4 mt-2" style="border-color:rgba(103,193,214,.3)">
+      <div class="flex items-center gap-2 mb-2"><i data-lucide="split" style="width:18px;height:18px;color:#67c1d6"></i><h3 class="font-bold text-[14px]">¿Y el mineral oxidado? Otro camino</h3></div>
+      <p class="text-[13px] text-stone-300 leading-relaxed">Cuando el cobre está <b>oxidado</b> (no unido al azufre), no se usa flotación ni fundición. En su lugar:</p>
+      <div class="grid gap-1.5 mt-2 text-[13px] text-stone-300">
+        <div>💧 <b>Lixiviación:</b> se rocía la roca con una solución ácida que disuelve el cobre.</div>
+        <div>🧪 <b>Extracción por solventes (SX):</b> purifica y concentra la solución de cobre.</div>
+        <div>⚡ <b>Electroobtención (EW):</b> deposita el cobre como cátodos usando electricidad.</div>
+      </div>
+      <p class="text-[12px] text-stone-500 mt-2">Ambos caminos terminan igual: en un <b style="color:#e8c9a6">cátodo de cobre de 99,99%</b>.</p>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Explicación general de divulgación; cada faena tiene variantes. · <a href="adn-minero-glosario.html" style="color:#e8c9a6">Glosario</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+
+<script>
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const STEPS=[
+    { ic:'search',      c:'#7fb0d9', t:'Exploración y sondaje', d:'Se busca el yacimiento con geología y sondajes que extraen “testigos” (muestras), para conocer la ley y el tamaño.' },
+    { ic:'drill',       c:'#e0955f', t:'Perforación y tronadura', d:'Se perforan tiros, se cargan con explosivos y se detonan para fragmentar la roca del cerro.' },
+    { ic:'truck',       c:'#cf9b6f', t:'Carguío y transporte', d:'Palas cargan la roca en camiones gigantes (CAEX) que la llevan a la planta… o al botadero si es estéril.' },
+    { ic:'hammer',      c:'#d6a94f', t:'Chancado', d:'La roca se tritura en trozos cada vez más pequeños para poder procesarla.' },
+    { ic:'loader',      c:'#c9a888', t:'Molienda', d:'Molinos reducen la roca a un polvo fino, liberando las partículas de mineral.' },
+    { ic:'droplets',    c:'#5fb3a1', t:'Flotación', d:'Con burbujas y reactivos se separa el cobre del resto, formando el concentrado (~30% de cobre). (Mineral sulfurado)' },
+    { ic:'flame',       c:'#e0715a', t:'Fundición', d:'El concentrado se funde a alta temperatura para separar el cobre, obteniendo ánodos (cobre blíster).' },
+    { ic:'zap',         c:'#a7d18a', t:'Electrorrefinación', d:'Con electricidad se purifica el cobre hasta cátodos de 99,99%.' },
+    { ic:'package',     c:'#e8c9a6', t:'Cátodo y exportación', d:'El cátodo de cobre casi puro se embarca en los puertos rumbo a los mercados, sobre todo de Asia.' }
+  ];
+  document.getElementById('steps').innerHTML=STEPS.map((s,i)=>`
+    <div class="step">
+      <div class="rail"><div class="num">${i+1}</div><div class="line"></div></div>
+      <div class="glass rounded-2xl p-3.5 card">
+        <div class="flex items-center gap-2.5">
+          <div class="h-9 w-9 rounded-lg grid place-items-center shrink-0" style="background:${s.c}22;border:1px solid ${s.c}55"><i data-lucide="${s.ic}" class="w-5 h-5" style="color:${s.c}"></i></div>
+          <h3 class="font-bold text-[15px]">${s.t}</h3>
+        </div>
+        <p class="text-[13px] text-stone-300 leading-snug mt-2">${s.d}</p>
+      </div>
+    </div>`).join('');
+  drawIcons();
+</script>
+</body>
+</html>
