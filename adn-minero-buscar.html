@@ -65,7 +65,9 @@
   $('chips').innerHTML=EXAMPLES.map(e=>`<button class="chip ex">🔎 ${e}</button>`).join('');
   $('chips').addEventListener('click',e=>{ const b=e.target.closest('.ex'); if(!b) return; $('q').value=b.textContent.replace(/^🔎\s*/,''); run(); });
 
+  function decV(s){ if(typeof s!=='string') return s; var b=atob(s),n=b.length,u=new Uint8Array(n); for(var i=0;i<n;i++)u[i]=b.charCodeAt(i); return new Int8Array(u.buffer); }
   fetch('search-index.json',{cache:'force-cache'}).then(r=>r.json()).then(j=>{
+    j.items.forEach(it=>{ it.v=decV(it.v); });
     INDEX=j; NORMS=j.items.map(it=>Math.hypot.apply(null, it.v));
   }).catch(()=>{ INDEX=null; });
 

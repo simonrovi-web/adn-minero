@@ -116,11 +116,12 @@
 
     // ---- RAG: recuperar información relevante de TODA la app (índice de embeddings) ----
     var KB=null, KBN=null, kbTried=false;
+    function decV(s){ if(typeof s!=='string') return s; var b=atob(s),n=b.length,u=new Uint8Array(n); for(var i=0;i<n;i++)u[i]=b.charCodeAt(i); return new Int8Array(u.buffer); }
     async function retrieve(q){
       try{
         if(!KB && !kbTried){ kbTried=true;
           KB=await fetch('search-index.json',{cache:'force-cache'}).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;});
-          if(KB && KB.items){ KBN=KB.items.map(function(it){ return Math.hypot.apply(null,it.v)||1; }); }
+          if(KB && KB.items){ KB.items.forEach(function(it){ it.v=decV(it.v); }); KBN=KB.items.map(function(it){ return Math.hypot.apply(null,it.v)||1; }); }
         }
         if(!KB || !KB.items) return '';
         var r=await fetch('https://adn-muro.simonrovi.workers.dev/embed',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({q:q})});

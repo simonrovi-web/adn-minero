@@ -474,8 +474,10 @@
         try{ const c=JSON.parse(localStorage.getItem('adn_parati')||'{}'); if(c.key===cacheKey && Array.isArray(c.files)) files=c.files; }catch(e){}
         if(!files){
           const IDX_URL=(/\/app\//.test(location.pathname)?'../':'')+'search-index.json';
+          const decV=s=>{ if(typeof s!=='string') return s; const b=atob(s),n=b.length,u=new Uint8Array(n); for(let i=0;i<n;i++)u[i]=b.charCodeAt(i); return new Int8Array(u.buffer); };
           const idx=await fetch(IDX_URL,{cache:'force-cache'}).then(r=>r.ok?r.json():null).catch(()=>null);
           if(!idx||!idx.items) return;
+          idx.items.forEach(it=>{ it.v=decV(it.v); });
           const r=await fetch('https://adn-muro.simonrovi.workers.dev/embed',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({q:query})}).catch(()=>null);
           if(!r||!r.ok) return;
           const qv=(await r.json()).v; if(!qv||!qv.length) return;
