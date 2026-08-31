@@ -79,6 +79,33 @@
     }
   }catch(e){}
 
+  // ===== Botón "volver atrás" en todos los paneles =====
+  try{
+    var inFrB=false; try{ inFrB = window.top!==window.self; }catch(e){ inFrB=true; }
+    var fileB=(location.pathname||'').replace(/^.*\//,'').toLowerCase();
+    if(!inFrB && fileB!=='index.html' && fileB!==''){
+      var mountBack=function(){
+        if(!document.body || document.getElementById('adnui-back')) return;
+        var st=document.createElement('style');
+        st.textContent='#adnui-back{position:fixed;left:14px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:2147482998;'+
+          'width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;'+
+          'background:linear-gradient(150deg,#2b221c,#1a1310);color:#e8c9a6;'+
+          'box-shadow:0 6px 20px rgba(0,0,0,.45),0 0 0 1px rgba(196,168,148,.28);'+
+          'display:grid;place-items:center;font-size:22px;line-height:1;padding:0}'+
+          '#adnui-back:active{transform:scale(.94)}';
+        document.head.appendChild(st);
+        var b=document.createElement('button'); b.id='adnui-back'; b.type='button';
+        b.setAttribute('aria-label','Volver atrás'); b.title='Volver atrás'; b.innerHTML='←';
+        b.addEventListener('click', function(){
+          try{ if(history.length>1){ history.back(); return; } }catch(e){}
+          location.href='index.html';
+        });
+        document.body.appendChild(b);
+      };
+      if(document.body) mountBack(); else document.addEventListener('DOMContentLoaded', mountBack);
+    }
+  }catch(e){}
+
   // ===== Escuchar el panel (lee el contenido en voz alta) =====
   try{
     var inFrL=false; try{ inFrL = window.top!==window.self; }catch(e){ inFrL=true; }
