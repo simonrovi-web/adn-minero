@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Geopolítica Minera</title>
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#eef2f7; }
+    body{ min-height:100vh; background:
+      radial-gradient(1100px 640px at 12% -10%, rgba(103,150,214,0.16), transparent 60%),
+      radial-gradient(900px 560px at 100% 0%, rgba(207,155,111,0.10), transparent 55%),
+      #0f1620; }
+    .wrap{ max-width:660px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(30,40,54,0.66), rgba(18,25,35,0.5)); border:1px solid rgba(130,160,200,0.14); }
+    .tag{ font-size:10px; font-weight:800; letter-spacing:.03em; padding:2px 8px; border-radius:999px; text-transform:uppercase; }
+    .src{ font-size:11px; color:#9fb0c6; font-weight:600; }
+    .when{ font-size:11px; color:#7d8da0; }
+    .skel{ background:linear-gradient(90deg,rgba(255,255,255,.04),rgba(255,255,255,.09),rgba(255,255,255,.04)); background-size:200% 100%; animation:sh 1.2s infinite; border-radius:10px; }
+    @keyframes sh{ to{ background-position:-200% 0 } }
+    @media (prefers-reduced-motion:reduce){ .skel{ animation:none } }
+    a.card{ text-decoration:none; color:inherit; display:block; }
+    .hero{ position:relative; overflow:hidden; }
+    .hero::before{ content:''; position:absolute; right:-30px; top:-30px; width:160px; height:160px; background:radial-gradient(circle, rgba(103,150,214,.22), transparent 70%); pointer-events:none; }
+  </style>
+  <script src="adn-ui.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(103,150,214,.16);border:1px solid rgba(103,150,214,.34)"><i data-lucide="globe-2" style="width:26px;height:26px;color:#8ab0e6"></i></div>
+      <div class="min-w-0 flex-1">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#a9c3e6;font-weight:800">Geopolítica Minera</p>
+        <p style="margin:0;font-size:11px;color:#8ea1b8">El mundo que mueve el cobre y el litio de Chile</p>
+      </div>
+      <span id="live" class="tag" style="background:rgba(224,90,63,.18);color:#ff8f7e;border:1px solid rgba(224,90,63,.4)">● En vivo</span>
+    </header>
+
+    <div id="feed" class="mt-4 grid gap-3"></div>
+
+    <p class="text-center text-[11px] mt-6 leading-relaxed" style="color:#7d8da0">Titulares en vivo (Google Noticias) con una mirada a cómo el mundo afecta los recursos de Chile. Información de terceros; contrasta antes de decidir. · <a href="adn-minero-geopolitica.html" style="color:#a9c3e6">Contexto</a> · <a href="index.html" style="color:#a9c3e6">Inicio</a></p>
+  </div>
+
+<script>
+  const feed=document.getElementById('feed');
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const apiUrl=q=>'https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent('https://news.google.com/rss/search?q='+encodeURIComponent(q)+'&hl=es-419&gl=CL&ceid=CL:es');
+  const QUERIES=[
+    'geopolítica minerales críticos litio cobre Chile',
+    'cobre litio China Estados Unidos aranceles demanda',
+    'litio Chile exportación estrategia OR nacionalización',
+    'minerales críticos transición energética Sudamérica'
+  ];
+  // Etiqueta temática según palabras clave
+  const TAGS=[
+    {re:/china|beijing|pekín/i, t:'China', c:'#e0715a'},
+    {re:/estados unidos|ee\.?uu|washington|trump|arancel/i, t:'EE.UU.', c:'#7fb0d9'},
+    {re:/litio|salar|batería/i, t:'Litio', c:'#5fd1bd'},
+    {re:/cobre|copper/i, t:'Cobre', c:'#cf9b6f'},
+    {re:/europa|union europea|unión europea/i, t:'Europa', c:'#a7d18a'},
+    {re:/argentina|perú|bolivia|méxico|brasil/i, t:'Región', c:'#d6a94f'}
+  ];
+  function tagOf(t){ for(const x of TAGS){ if(x.re.test(t)) return x; } return {t:'Global', c:'#8ab0e6'}; }
+  function rel(ts){ if(!ts) return ''; const s=Math.round((Date.now()-ts)/1000);
+    if(s<3600) return 'hace '+Math.max(1,Math.round(s/60))+' min';
+    if(s<86400) return 'hace '+Math.round(s/3600)+' h';
+    return 'hace '+Math.round(s/86400)+' d'; }
+  function clean(t){ t=(t||'').trim(); const i=t.lastIndexOf(' - '); return i>40? {t:t.slice(0,i), s:t.slice(i+3)} : {t:t, s:''}; }
+
+  function skeleton(){
+    feed.innerHTML='<div class="glass rounded-2xl p-5"><div class="skel" style="height:14px;width:35%"></div><div class="skel" style="height:26px;width:92%;margin-top:12px"></div><div class="skel" style="height:26px;width:70%;margin-top:8px"></div></div>'+
+      Array(5).fill('<div class="glass rounded-2xl p-4"><div class="skel" style="height:13px;width:28%"></div><div class="skel" style="height:18px;width:88%;margin-top:9px"></div></div>').join('');
+  }
+
+  async function fetchOne(q){
+    const ctl=new AbortController(); const to=setTimeout(()=>ctl.abort(),9000);
+    try{ const r=await fetch(apiUrl(q),{signal:ctl.signal}); const j=await r.json(); clearTimeout(to);
+      if(j&&j.status==='ok'&&Array.isArray(j.items)) return j.items; }catch(e){ clearTimeout(to); }
+    return [];
+  }
+  async function load(){
+    if(!feed.children.length) skeleton();
+    const res=await Promise.all(QUERIES.map(fetchOne));
+    const seen=new Set(), all=[];
+    for(const items of res){ for(const it of items){
+      const c=clean(it.title); if(!c.t||c.t.length<20) continue;
+      const key=c.t.toLowerCase().slice(0,60); if(seen.has(key)) continue; seen.add(key);
+      all.push({t:c.t, s:c.s||(it.author||''), link:it.link||'#', ts:it.pubDate?Date.parse(it.pubDate):0});
+    }}
+    all.sort((a,b)=>b.ts-a.ts);
+    if(!all.length){
+      if(!feed.querySelector('a.card')) feed.innerHTML='<div class="glass rounded-2xl p-6 text-center" style="color:#9fb0c6"><p style="font-size:15px;font-weight:700;color:#eef2f7">Sin titulares por ahora</p><p class="text-sm mt-1">Revisa tu conexión y vuelve a intentar.</p></div>';
+      return;
+    }
+    const list=all.slice(0,14);
+    const h=list[0], ht=tagOf(h.t+' '+h.s);
+    let html='<a class="glass rounded-2xl p-5 card hero" href="'+h.link+'" target="_blank" rel="noopener">'+
+      '<div class="flex items-center gap-2 mb-3"><span class="tag" style="background:'+ht.c+'22;color:'+ht.c+';border:1px solid '+ht.c+'55">'+ht.t+'</span><span class="when">'+rel(h.ts)+'</span></div>'+
+      '<p style="font-size:20px;font-weight:800;line-height:1.24;color:#f4f8ff">'+esc(h.t)+'</p>'+
+      '<div class="flex items-center gap-2 mt-3"><span class="src">'+esc(h.s||'Fuente')+'</span><i data-lucide="arrow-up-right" style="width:15px;height:15px;color:#8ab0e6"></i></div></a>';
+    html+=list.slice(1).map(n=>{ const g=tagOf(n.t+' '+n.s); return '<a class="glass rounded-2xl p-4 card" href="'+n.link+'" target="_blank" rel="noopener">'+
+      '<div class="flex items-center gap-2 mb-1.5"><span class="tag" style="background:'+g.c+'1c;color:'+g.c+';border:1px solid '+g.c+'44">'+g.t+'</span><span class="when">'+rel(n.ts)+'</span></div>'+
+      '<p style="font-size:14.5px;font-weight:600;line-height:1.35;color:#e7edf6">'+esc(n.t)+'</p>'+
+      '<p class="src mt-1.5">'+esc(n.s||'')+'</p></a>'; }).join('');
+    feed.innerHTML=html; drawIcons();
+  }
+  function esc(s){ return (s||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
+
+  load();
+  setInterval(()=>{ if(!document.hidden) load(); }, 240000);
+  document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) load(); });
+</script>
+</body>
+</html>

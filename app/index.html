@@ -56,7 +56,7 @@
       <p class="text-base sm:text-lg text-[#cf9b6f] font-semibold mt-2 sm:mt-3">Un aporte de ADN Minero a la minería de Chile</p>
       <p class="hidden sm:block text-stone-400 max-w-2xl mx-auto mt-4 leading-relaxed">Tableros con información en tiempo real y datos tomados de fuentes públicas oficiales sobre la industria que mueve al país. Servicio independiente, gratis y para todos. Haz clic en cualquiera para abrirlo en pantalla completa.</p>
       <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mt-4 sm:mt-6 text-xs">
-        <span class="glass rounded-full px-4 py-1.5 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4 text-[#cf9b6f]"></i> 52 paneles</span>
+        <span class="glass rounded-full px-4 py-1.5 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4 text-[#cf9b6f]"></i> 53 paneles</span>
         <span class="glass rounded-full px-4 py-1.5 flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-emerald-400"></span> Datos en vivo</span>
         <span class="glass rounded-full px-4 py-1.5 flex items-center gap-2"><i data-lucide="badge-check" class="w-4 h-4 text-[#cf9b6f]"></i> Fuentes oficiales</span>
       </div>
@@ -73,6 +73,7 @@
     </div>
 
     <!-- HOY (resumen en vivo) -->
+    <div id="titulares" class="mt-6 hidden"></div>
     <div id="hoy" class="mt-8 hidden"></div>
 
     <!-- MI FAENA (perfil) -->
@@ -169,6 +170,7 @@
 
   <script>
     const VIVO = [
+      { t:'Geopolítica Minera',    f:'../adn-minero-geonoticias.html',      i:'globe-2',    c:'#8ab0e6', badge:'nuevo', badgeCls:'bg-amber-500/15 text-amber-300 border border-amber-400/30', v:true, d:'Titulares en vivo de la geopolítica de los minerales y cómo afecta al cobre y al litio de Chile.' },
       { t:'ADN Minero TV',          f:'../adn-minero-tv.html',               i:'tv',         c:'#e0715a', badge:'TV', badgeCls:'bg-[#e05a3f]/18 text-[#ff8577] border border-[#e05a3f]/40', d:'Nuestra transmisión en vivo por YouTube. Cuando el canal está al aire, la ves aquí mismo; si no, te avisamos cuándo volvemos.' },
       { t:'ADN Minero IA',          f:'../adn-minero-ia.html',               i:'sparkles',   c:'#e8c9a6', badge:'IA', badgeCls:'bg-[#cf9b6f]/20 text-[#f0d7b6] border border-[#cf9b6f]/40', d:'Asistente con inteligencia artificial: pregúntale sobre la minería de Chile, los procesos, el royalty, las empresas o para qué sirve cada panel.' },
       { t:'Noticias Mineras',       f:'../adn-minero-prensa.html',           i:'newspaper',  c:'#cf9b6f', v:true, d:'Titulares de la minería de Chile en vivo, con rotación automática y locución. Fuente: Google Noticias.' },
@@ -241,7 +243,7 @@
       { k:'comparte',  lbl:'Comparte',             sub:'lleva ADN Minero a más gente', dot:'#cf9b6f', ic:'share-2' }
     ];
     const CAT_OF = {
-      'adn-minero-tv.html':'vivo','adn-minero-prensa.html':'vivo','adn-minero-semaforo.html':'vivo','adn-minero-alertas.html':'vivo','adn-minero-panel.html':'vivo','adn-minero-commodities.html':'vivo','adn-minero-sismos.html':'vivo','adn-minero-mar.html':'vivo','adn-minero-indicadores.html':'vivo',
+      'adn-minero-tv.html':'vivo','adn-minero-geonoticias.html':'vivo','adn-minero-prensa.html':'vivo','adn-minero-semaforo.html':'vivo','adn-minero-alertas.html':'vivo','adn-minero-panel.html':'vivo','adn-minero-commodities.html':'vivo','adn-minero-sismos.html':'vivo','adn-minero-mar.html':'vivo','adn-minero-indicadores.html':'vivo',
       'adn-minero-ia.html':'asistente','adn-minero-buscar.html':'asistente','adn-minero-muro.html':'asistente',
       'adn-minero-mapa.html':'explora','adn-minero-faena.html':'explora','adn-minero-empresas.html':'explora','adn-minero-eventos.html':'explora','adn-minero-proveedores.html':'explora',
       'adn-minero-h2verde.html':'minerales','adn-minero-innovacion.html':'minerales','adn-minero-litio.html':'minerales','adn-minero-geopolitica.html':'minerales','adn-minero-estrategia.html':'minerales','adn-minero-cobre-transicion.html':'minerales','adn-minero-chile-mundo.html':'minerales',
@@ -316,6 +318,7 @@
       renderHoy();
       renderParaTi();
       renderStreak();
+      renderTitulares();
       renderAuspicio();
       window.lucide && lucide.createIcons();
       applyFilter();
@@ -448,6 +451,28 @@
         <i data-lucide="${ic}" class="w-5 h-5 shrink-0" style="color:${col}"></i>
         <div class="min-w-0"><p class="text-[10px] text-stone-400 leading-none">${lbl}</p><p id="${id}" class="text-sm font-bold truncate mt-0.5" style="font-variant-numeric:tabular-nums">…</p></div></a>`;
     }
+    // ===== Titulares de geopolítica en la portada =====
+    async function renderTitulares(){
+      try{
+        const el=document.getElementById('titulares'); if(!el) return;
+        const esc=s=>(s||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+        const pref=(/\/app\//.test(location.pathname))?'../':'';
+        const rss='https://news.google.com/rss/search?q='+encodeURIComponent('geopolítica minerales críticos litio cobre Chile')+'&hl=es-419&gl=CL&ceid=CL:es';
+        const r=await fetch('https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(rss)).then(x=>x.json()).catch(()=>null);
+        if(!r||r.status!=='ok'||!r.items||!r.items.length) return;
+        const clean=t=>{ const i=(t||'').lastIndexOf(' - '); return i>40?t.slice(0,i):(t||''); };
+        const it=r.items.map(x=>({t:clean(x.title), link:x.link||'#'})).filter(x=>x.t.length>20).slice(0,3);
+        if(!it.length) return;
+        el.innerHTML='<a href="'+pref+'adn-minero-geonoticias.html" class="block glass rounded-2xl p-4 active:scale-[.99] transition" style="text-decoration:none;border-color:rgba(138,176,230,.22)">'
+          +'<div class="flex items-center justify-between mb-2"><span class="text-[11px] font-extrabold uppercase tracking-wider" style="color:#8ab0e6"><i data-lucide="globe-2" style="width:13px;height:13px;display:inline;vertical-align:-2px"></i> Geopolítica · titulares</span><span class="text-[11px] font-semibold" style="color:#8ab0e6">Ver más →</span></div>'
+          +'<p class="font-bold text-stone-100 leading-snug">'+esc(it[0].t)+'</p>'
+          +it.slice(1).map(x=>'<p class="text-[12.5px] text-stone-400 mt-1.5 leading-snug">• '+esc(x.t)+'</p>').join('')
+          +'</a>';
+        if(window.lucide) lucide.createIcons();
+        applyFilter();
+      }catch(e){}
+    }
+
     // ===== Racha de días (retención) =====
     function renderStreak(){
       try{
@@ -578,6 +603,7 @@
       // Inicio (tarjetas de categoría), perfil y favoritos: solo en la vista de inicio
       document.getElementById('homeCats').classList.toggle('hidden', !home);
       document.getElementById('hoy').classList.toggle('hidden', !home);
+      const tEl=document.getElementById('titulares'); if(tEl) tEl.classList.toggle('hidden', !home || tEl.children.length===0);
       document.getElementById('miFaena').classList.toggle('hidden', !home);
       const ptEl=document.getElementById('paraTi'); ptEl.classList.toggle('hidden', !home || ptEl.children.length===0);
       const rEl=document.getElementById('racha'); if(rEl) rEl.classList.toggle('hidden', !home || rEl.children.length===0);
