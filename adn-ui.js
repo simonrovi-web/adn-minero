@@ -27,7 +27,14 @@
       'adn-minero-commodities.html':{s:false, src:'mindicador.cl y datos de mercado'},
       'adn-minero-indicadores.html':{s:false, src:'mindicador.cl'},
       'adn-minero-historico.html':{s:false, src:'mindicador.cl'},
-      'adn-minero-bolsa.html':{s:false, src:'Avisos publicados por la comunidad'}
+      'adn-minero-bolsa.html':{s:false, src:'Avisos publicados por la comunidad'},
+      'adn-minero-aporte-fiscal.html':{s:false, src:'Cochilco / Ministerio de Minería (cifras referenciales 2026)'},
+      'adn-minero-royalty.html':{s:false, src:'Ley del Royalty Minero · reparto a comunas (SUBDERE)'},
+      'adn-minero-produccion.html':{s:false, src:'Cochilco / Sernageomin'},
+      'adn-minero-cartera.html':{s:false, src:'Cochilco · catastro de inversión'},
+      'adn-minero-cuenta-publica.html':{s:false, src:'Ministerio de Minería · Cuenta Pública'},
+      'adn-minero-chile-mundo.html':{s:false, src:'USGS Mineral Commodity Summaries / Cochilco'},
+      'adn-minero-empresas.html':{s:false, src:'Sitios oficiales de cada empresa'}
     };
     var cfg=NOTE[fileN];
     if(cfg && !inFrN){
@@ -58,6 +65,7 @@
                 :'background:rgba(196,168,148,.06);border:1px solid rgba(196,168,148,.18);color:#b7a794;');
         n.innerHTML=(cfg.s?'<b style="color:#f0b8a6">⚠️ Información referencial.</b> No reemplaza los sistemas ni protocolos oficiales de seguridad de tu faena. Ante una emergencia, sigue siempre los canales oficiales.<br>':'')+
           '<span style="opacity:.85">Fuente: '+cfg.src+'</span>'+
+          ' · <a href="adn-minero-acerca.html" style="color:#e8c9a6;text-decoration:underline">Reportar dato</a>'+
           '<span id="adnui-upd" style="display:block;margin-top:3px;opacity:.95;font-weight:700"></span>';
         document.body.appendChild(n);
       };
