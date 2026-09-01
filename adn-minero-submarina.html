@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Minería Submarina</title>
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#e9f1f2; }
+    body{ min-height:100vh; background:radial-gradient(1000px 620px at 15% -10%, rgba(70,150,170,0.18), transparent 60%), #0c1618; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(26,42,46,0.62), rgba(15,26,28,0.5)); border:1px solid rgba(120,180,190,0.14); }
+    .topic{ cursor:pointer; } .topic .body{ display:none; } .topic.open .body{ display:block; }
+    .topic.open .chev{ transform:rotate(90deg); } .chev{ transition:transform .2s; }
+    .tip{ display:flex; gap:9px; align-items:flex-start; font-size:13.5px; line-height:1.5; color:#cfe0e2; margin-top:8px; }
+    .tip b{ color:#eefafb; } h3{ margin:0; }
+  </style>
+  <script src="adn-ui.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(70,170,190,.16);border:1px solid rgba(70,170,190,.34)"><i data-lucide="waves" style="width:26px;height:26px;color:#5fc7d1"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#9fdce2;font-weight:800">Minería Submarina</p>
+        <p style="margin:0;font-size:11px;color:#8aa7ab">Los minerales del fondo del mar y su debate</p>
+      </div>
+    </header>
+
+    <p class="text-[13px] leading-relaxed mt-4 px-1" style="color:#cfe0e2">En el fondo del océano hay metales clave para las baterías. Extraerlos es tentador… y muy polémico. Esto es lo que está en juego, y dónde se para Chile.</p>
+
+    <div id="topics" class="mt-4 grid gap-2.5"></div>
+
+    <p class="text-center text-[11px] mt-6 leading-relaxed" style="color:#7d9498">Panorama de divulgación sobre un tema en desarrollo y debate internacional. · <a href="adn-minero-ambiente.html" style="color:#9fdce2">Medio ambiente</a> · <a href="index.html" style="color:#9fdce2">Inicio</a></p>
+  </div>
+
+<script>
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const TOPICS=[
+    { ic:'anchor', c:'#5fc7d1', t:'¿Qué es la minería submarina?', s:'Minerales del lecho marino',
+      tips:[
+        ['circle-dot','En llanuras abisales hay <b>nódulos polimetálicos</b>: “piedras” del tamaño de una papa con metales.'],
+        ['layers','Contienen <b>níquel, cobalto, cobre y manganeso</b>, todos claves para baterías y tecnología.'],
+        ['ship','Se recogen del fondo (a 4.000–6.000 m) con vehículos que los aspiran o raspan.']
+      ]},
+    { ic:'battery-charging', c:'#7fbf9a', t:'¿Por qué interesa?', s:'La demanda de la transición',
+      tips:[
+        ['trending-up','La transición energética dispara la demanda de metales para <b>baterías</b> y energías limpias.'],
+        ['globe','Algunos ven el fondo marino como una nueva fuente para no depender solo de la minería terrestre.'],
+        ['coins','Hay enormes intereses económicos y geopolíticos en juego por esos recursos.']
+      ]},
+    { ic:'map-pin', c:'#7fb0d9', t:'¿Dónde y quién decide?', s:'Aguas internacionales',
+      tips:[
+        ['map','El foco está en la <b>zona Clarion-Clipperton</b>, en el Pacífico, en aguas internacionales.'],
+        ['landmark','La <b>Autoridad Internacional de los Fondos Marinos (ISA)</b> regula esa actividad bajo la ONU.'],
+        ['file-text','Aún se discuten las reglas: todavía no hay explotación comercial a gran escala aprobada.']
+      ]},
+    { ic:'fish', c:'#5fbf8a', t:'El debate ambiental', s:'Ecosistemas poco conocidos',
+      tips:[
+        ['alert-triangle','Los fondos abisales son <b>ecosistemas frágiles y poco estudiados</b>; el daño podría ser irreversible.'],
+        ['octagon-x','Decenas de países, científicos y empresas piden una <b>moratoria o pausa</b> hasta saber más.'],
+        ['leaf','La duda central: ¿vale la pena el riesgo ambiental por estos metales?']
+      ]},
+    { ic:'flag', c:'#e0955f', t:'Chile y su postura', s:'Un país oceánico',
+      tips:[
+        ['anchor','Chile tiene una enorme costa y zona económica exclusiva: el océano le importa mucho.'],
+        ['hand','Chile ha promovido en la ISA un enfoque de <b>precaución / pausa</b> a la minería submarina.'],
+        ['gem','Además, Chile ya es potencia en minerales críticos <b>en tierra</b> (cobre, litio), su carta principal.']
+      ]},
+    { ic:'scale', c:'#d6a94f', t:'¿Reemplaza a la minería terrestre?', s:'Complemento, no sustituto',
+      tips:[
+        ['scale','No la reemplaza: es una fuente potencial y muy controvertida, aún incipiente.'],
+        ['recycle','El <b>reciclaje</b> de metales y mejores baterías también reducen la presión por nuevos yacimientos.'],
+        ['clock','Es un tema a seguir: su futuro depende de la ciencia, las reglas y la voluntad política.']
+      ]}
+  ];
+  document.getElementById('topics').innerHTML=TOPICS.map((x,i)=>`
+    <div class="glass rounded-2xl topic" data-i="${i}">
+      <div class="p-4 flex items-center gap-3">
+        <div class="h-10 w-10 rounded-xl grid place-items-center shrink-0" style="background:${x.c}22;border:1px solid ${x.c}55"><i data-lucide="${x.ic}" class="w-5 h-5" style="color:${x.c}"></i></div>
+        <div class="min-w-0 flex-1"><h3 class="font-bold text-[15px]">${x.t}</h3><p class="text-[11.5px]" style="color:#8aa7ab">${x.s}</p></div>
+        <i data-lucide="chevron-right" class="chev w-5 h-5 shrink-0" style="color:#6b8488"></i>
+      </div>
+      <div class="body px-4 pb-4 -mt-1">
+        ${x.tips.map(t=>`<div class="tip"><i data-lucide="${t[0]}" class="w-4 h-4 shrink-0 mt-0.5" style="color:${x.c}"></i><span>${t[1]}</span></div>`).join('')}
+      </div>
+    </div>`).join('');
+  document.getElementById('topics').addEventListener('click', e=>{ const t=e.target.closest('.topic'); if(!t) return; t.classList.toggle('open'); drawIcons(); });
+  drawIcons();
+</script>
+</body>
+</html>

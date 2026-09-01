@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Comunidades y Minería</title>
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(214,169,79,0.12), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    .topic{ cursor:pointer; } .topic .body{ display:none; } .topic.open .body{ display:block; }
+    .topic.open .chev{ transform:rotate(90deg); } .chev{ transition:transform .2s; }
+    .tip{ display:flex; gap:9px; align-items:flex-start; font-size:13.5px; line-height:1.5; color:#dacfc2; margin-top:8px; }
+    .tip b{ color:#f4ece5; } h3{ margin:0; }
+  </style>
+  <script src="adn-ui.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(214,169,79,.15);border:1px solid rgba(214,169,79,.32)"><i data-lucide="users" style="width:26px;height:26px;color:#d6a94f"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#e6c98f;font-weight:800">Comunidades y Minería</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">La relación entre las faenas y su entorno</p>
+      </div>
+    </header>
+
+    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">La minería convive con comunidades, territorios y pueblos. Genera empleo y recursos, pero también desafíos que se abordan con diálogo. Toca cada tema para entenderlo.</p>
+
+    <div id="topics" class="mt-4 grid gap-2.5"></div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Panorama general de divulgación; cada caso y territorio es distinto. · <a href="adn-minero-royalty.html" style="color:#e8c9a6">¿Dónde va la plata?</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+
+<script>
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const TOPICS=[
+    { ic:'briefcase', c:'#a7d18a', t:'Empleo y proveedores locales', s:'Trabajo que se queda en la zona',
+      tips:[
+        ['users','Las faenas contratan personas de la región y compran a <b>proveedores locales</b>, moviendo la economía del territorio.'],
+        ['graduation-cap','Programas de capacitación y becas abren oportunidades para vecinos y jóvenes de la zona.'],
+        ['store','El comercio, el transporte y los servicios de las ciudades cercanas dependen en parte de la actividad minera.']
+      ]},
+    { ic:'hand-coins', c:'#d6a94f', t:'El royalty y las comunas', s:'Recursos que llegan al territorio',
+      tips:[
+        ['coins','Parte del <b>royalty minero</b> se reparte a más de 300 comunas de todo Chile, no solo a las mineras.'],
+        ['building','Los fondos financian obras: infraestructura, salud, seguridad y proyectos de desarrollo local.'],
+        ['map','Es una forma de que la riqueza del subsuelo llegue a más regiones del país.']
+      ]},
+    { ic:'droplets', c:'#5fb3a1', t:'Agua y territorio', s:'La preocupación central',
+      tips:[
+        ['droplet','El <b>agua</b> es el tema más sensible: la minería compite por un recurso escaso en el norte.'],
+        ['waves','Por eso crece el uso de <b>agua de mar desalada</b>, para no afectar el agua de las comunidades.'],
+        ['leaf','Monitoreo ambiental, compromisos y acuerdos buscan reducir el impacto en el entorno.']
+      ]},
+    { ic:'feather', c:'#c98cc0', t:'Pueblos originarios y consulta', s:'Derechos y participación',
+      tips:[
+        ['scroll-text','El <b>Convenio 169 de la OIT</b> obliga a consultar a los pueblos indígenas ante proyectos que los afecten.'],
+        ['handshake','La <b>consulta indígena</b> busca acuerdos y respeto a los territorios y su cultura.'],
+        ['heart','Muchas faenas están en zonas con presencia de comunidades atacameñas, aymaras, collas y otras.']
+      ]},
+    { ic:'messages-square', c:'#7fb0d9', t:'Diálogo y conflictos', s:'Tensiones y acuerdos',
+      tips:[
+        ['handshake','Existen <b>mesas de diálogo</b> y acuerdos de beneficio compartido entre empresas y comunidades.'],
+        ['triangle-alert','También hay conflictos históricos por agua, contaminación o incumplimientos; el diálogo busca resolverlos.'],
+        ['scale','La <b>licencia social</b> —la aceptación de la comunidad— es hoy tan clave como los permisos legales.']
+      ]},
+    { ic:'undo-2', c:'#e0955f', t:'Cierre de faena', s:'Qué pasa cuando la mina termina',
+      tips:[
+        ['clipboard-check','Toda faena debe tener un <b>plan de cierre</b> aprobado y financiado desde el inicio.'],
+        ['sprout','El cierre busca dejar el terreno seguro y estable, y mitigar el impacto a largo plazo.'],
+        ['users','El desafío social: qué pasa con el empleo y las localidades que dependían de la mina.']
+      ]}
+  ];
+  document.getElementById('topics').innerHTML=TOPICS.map((x,i)=>`
+    <div class="glass rounded-2xl topic" data-i="${i}">
+      <div class="p-4 flex items-center gap-3">
+        <div class="h-10 w-10 rounded-xl grid place-items-center shrink-0" style="background:${x.c}22;border:1px solid ${x.c}55"><i data-lucide="${x.ic}" class="w-5 h-5" style="color:${x.c}"></i></div>
+        <div class="min-w-0 flex-1"><h3 class="font-bold text-[15px]">${x.t}</h3><p class="text-[11.5px] text-stone-400">${x.s}</p></div>
+        <i data-lucide="chevron-right" class="chev w-5 h-5 text-stone-500 shrink-0"></i>
+      </div>
+      <div class="body px-4 pb-4 -mt-1">
+        ${x.tips.map(t=>`<div class="tip"><i data-lucide="${t[0]}" class="w-4 h-4 shrink-0 mt-0.5" style="color:${x.c}"></i><span>${t[1]}</span></div>`).join('')}
+      </div>
+    </div>`).join('');
+  document.getElementById('topics').addEventListener('click', e=>{ const t=e.target.closest('.topic'); if(!t) return; t.classList.toggle('open'); drawIcons(); });
+  drawIcons();
+</script>
+</body>
+</html>

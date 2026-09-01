@@ -123,7 +123,7 @@
       'adn-minero-educacion.html','adn-minero-glosario.html','adn-minero-mujer.html','adn-minero-cobre-transicion.html',
       'adn-minero-chile-mundo.html','adn-minero-empresas.html','adn-minero-efemerides.html','adn-minero-aporte-fiscal.html',
       'adn-minero-royalty.html','adn-minero-produccion.html','adn-minero-cartera.html','adn-minero-cuenta-publica.html',
-      'adn-minero-proveedores.html','adn-minero-eventos.html','adn-minero-salud.html','adn-minero-innovacion.html','adn-minero-proceso.html','adn-minero-h2verde.html'];
+      'adn-minero-proveedores.html','adn-minero-eventos.html','adn-minero-salud.html','adn-minero-innovacion.html','adn-minero-proceso.html','adn-minero-h2verde.html','adn-minero-comunidades.html','adn-minero-submarina.html'];
     if(READ_PANELS.indexOf(fileL)>=0 && !inFrL && window.speechSynthesis){
       var lSynth=window.speechSynthesis, lVoice=null;
       var lPick=function(){ try{ var vs=lSynth.getVoices()||[]; lVoice=vs.filter(function(v){return /es[-_]?(cl|419|mx|es|us)/i.test(v.lang);})[0]||vs.filter(function(v){return /^es/i.test(v.lang);})[0]||null; }catch(e){} };
