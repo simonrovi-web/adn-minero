@@ -10,47 +10,110 @@
   <style>
     *{box-sizing:border-box}
     html,body{ margin:0; height:100%; background:transparent; overflow:hidden; font-family:'Inter',system-ui,sans-serif; }
-    /* Contenedor del faldón: abajo-izquierda, escala con la altura del canvas */
+
+    /* Contenedor: abajo-izquierda, escala con la altura del canvas (vh) */
     #lt{ position:fixed; left:5.5vh; bottom:9vh; display:flex; align-items:stretch;
-      opacity:0; transform:translateX(-30px); pointer-events:none;
-      transition:opacity .45s ease, transform .5s cubic-bezier(.18,.9,.24,1); }
-    #lt.show{ opacity:1; transform:translateX(0); }
-    .bar{ width:.9vh; border-radius:6px; background:linear-gradient(#e8c9a6,#cf9b6f 55%,#b5734f);
-      box-shadow:0 0 2vh rgba(207,155,111,.5); }
-    .panel{ margin-left:1.4vh; padding:1.6vh 2.6vh 1.7vh 2vh; border-radius:1.2vh;
-      background:linear-gradient(120deg, rgba(20,15,12,.94), rgba(30,22,17,.9));
-      border:1px solid rgba(207,155,111,.35);
-      box-shadow:0 1.2vh 4vh rgba(0,0,0,.5); backdrop-filter:blur(2px);
-      min-width:34vh; max-width:78vw; }
+      opacity:0; transform:translateY(1.6vh);
+      transition:opacity .5s ease, transform .55s cubic-bezier(.2,.85,.2,1);
+      pointer-events:none; }
+    #lt.show{ opacity:1; transform:translateY(0); }
+
+    /* Barra cobre: crece desde abajo */
+    .bar{ width:.9vh; border-radius:6px; align-self:stretch;
+      background:linear-gradient(#f0dcc0,#cf9b6f 55%,#b5734f);
+      box-shadow:0 0 2.2vh rgba(207,155,111,.55);
+      transform:scaleY(0); transform-origin:bottom;
+      transition:transform .5s cubic-bezier(.2,.95,.25,1) .18s; }
+    #lt.show .bar{ transform:scaleY(1); transition-delay:.05s; }
+    #lt.show .bar{ animation:barGlow 3.2s ease-in-out 1s infinite; }
+    @keyframes barGlow{ 0%,100%{ box-shadow:0 0 2vh rgba(207,155,111,.5) } 50%{ box-shadow:0 0 3.4vh rgba(232,201,166,.85) } }
+
+    /* Panel: se revela con un wipe de izquierda a derecha */
+    .panel{ position:relative; overflow:hidden; margin-left:1.4vh;
+      padding:1.6vh 3vh 1.7vh 2vh; border-radius:1.2vh;
+      background:linear-gradient(120deg, rgba(20,15,12,.95), rgba(32,23,18,.9));
+      border:1px solid rgba(207,155,111,.38);
+      box-shadow:0 1.3vh 4.2vh rgba(0,0,0,.55);
+      min-width:34vh; max-width:78vw;
+      clip-path:inset(0 101% 0 0);
+      transition:clip-path .6s cubic-bezier(.22,.9,.24,1) .12s; }
+    #lt.show .panel{ clip-path:inset(0 0 0 0); }
+    /* brillo superior sutil */
+    .panel::before{ content:''; position:absolute; left:0; right:0; top:0; height:1px;
+      background:linear-gradient(90deg, transparent, rgba(232,201,166,.5), transparent); }
+
+    /* Destello que barre */
+    .sheen{ position:absolute; inset:0; pointer-events:none;
+      background:linear-gradient(105deg, transparent 32%, rgba(255,255,255,.16) 48%, transparent 64%);
+      transform:translateX(-130%); }
+    .sheen.go{ animation:sweep 1.15s cubic-bezier(.3,.5,.3,1) both; }
+    @keyframes sweep{ to{ transform:translateX(130%) } }
+
     .mark{ display:flex; align-items:center; gap:.8vh; margin-bottom:.7vh; }
-    .mark .dot{ width:1vh; height:1vh; border-radius:50%; background:#e05a3f; box-shadow:0 0 1.2vh #e05a3f; animation:pulse 1.6s infinite; }
-    @keyframes pulse{ 0%,100%{opacity:1} 50%{opacity:.35} }
+    .mark .dot{ width:1vh; height:1vh; border-radius:50%; background:#e05a3f; box-shadow:0 0 1.3vh #e05a3f; animation:pulse 1.7s infinite; }
+    @keyframes pulse{ 0%,100%{opacity:1; transform:scale(1)} 50%{opacity:.4; transform:scale(.82)} }
     .mark span{ font-family:'Archivo',sans-serif; font-weight:800; font-size:1.5vh; letter-spacing:.28vh; text-transform:uppercase; color:#e8c9a6; }
-    #l1{ font-family:'Archivo',sans-serif; font-weight:900; font-size:4.4vh; line-height:1.02; color:#fff;
+
+    /* Líneas con máscara: el texto sube desde abajo */
+    .line{ overflow:hidden; }
+    .line .inner{ transform:translateY(118%); opacity:0;
+      transition:transform .6s cubic-bezier(.2,.9,.25,1), opacity .45s ease; }
+    .line.on .inner{ transform:translateY(0); opacity:1; }
+    #l1{ font-family:'Archivo',sans-serif; font-weight:900; font-size:4.4vh; line-height:1.04; color:#fff;
       text-shadow:0 .3vh 1vh rgba(0,0,0,.55); letter-spacing:-.02em; }
     #l2{ font-family:'Inter',sans-serif; font-weight:600; font-size:2.3vh; line-height:1.15; margin-top:.5vh;
       color:#e8c9a6; text-transform:uppercase; letter-spacing:.06em; }
-    #l2:empty{ display:none; }
-    @media (prefers-reduced-motion:reduce){ #lt{ transition:opacity .2s ease; transform:none; } }
+    .l2:empty{ display:none; }
+
+    @media (prefers-reduced-motion:reduce){
+      #lt,.bar,.panel,.line .inner{ transition-duration:.25s !important; transition-delay:0s !important; }
+      .bar,.sheen{ animation:none !important; }
+    }
   </style>
 </head>
 <body>
   <div id="lt">
     <div class="bar"></div>
     <div class="panel">
+      <div class="sheen"></div>
       <div class="mark"><span class="dot"></span><span>ADN Minero</span></div>
-      <div id="l1"></div>
-      <div id="l2"></div>
+      <div class="line l1"><div class="inner" id="l1"></div></div>
+      <div class="line l2"><div class="inner" id="l2"></div></div>
     </div>
   </div>
 
 <script>
   const WORKER='https://adn-muro.simonrovi.workers.dev/lt';
-  const box=document.getElementById('lt'), l1=document.getElementById('l1'), l2=document.getElementById('l2');
-  let lastRev=-1;
+  const box=document.getElementById('lt');
+  const l1=document.getElementById('l1'), l2=document.getElementById('l2');
+  const line1=l1.parentElement, line2=l2.parentElement, sheen=document.querySelector('.sheen');
+  let lastRev=-1, sheenTimer=null;
+
+  function doSheen(){ sheen.classList.remove('go'); void sheen.offsetWidth; sheen.classList.add('go'); }
+  function stageText(){
+    line1.classList.remove('on'); line2.classList.remove('on'); void box.offsetWidth;
+    setTimeout(()=>line1.classList.add('on'), 60);
+    setTimeout(()=>line2.classList.add('on'), 190);
+  }
+  function enter(){
+    box.classList.add('show');
+    setTimeout(()=>line1.classList.add('on'), 340);
+    setTimeout(()=>line2.classList.add('on'), 470);
+    setTimeout(doSheen, 380);
+    clearInterval(sheenTimer); sheenTimer=setInterval(()=>{ if(box.classList.contains('show')) doSheen(); }, 7000);
+  }
+  function exit(){
+    line1.classList.remove('on'); line2.classList.remove('on');
+    box.classList.remove('show');
+    clearInterval(sheenTimer);
+  }
   function apply(s){
+    const showing=box.classList.contains('show');
+    const want=!!s.show && !!(s.l1||s.l2);
     l1.textContent=s.l1||''; l2.textContent=s.l2||'';
-    box.classList.toggle('show', !!s.show && !!(s.l1||s.l2));
+    if(want && !showing) enter();
+    else if(want && showing){ stageText(); doSheen(); }  // cambió el texto en pantalla
+    else if(!want && showing) exit();
   }
   async function poll(){
     try{ const r=await fetch(WORKER,{cache:'no-store'}); if(!r.ok) return; const s=await r.json();
