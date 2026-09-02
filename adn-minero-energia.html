@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADN Minero · Líderes de la Energía</title>
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:
+      radial-gradient(1000px 620px at 12% -10%, rgba(214,169,79,0.13), transparent 60%),
+      radial-gradient(900px 560px at 100% 0%, rgba(103,193,214,0.08), transparent 55%),
+      #14110d; }
+    .wrap{ max-width:660px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    .lbl{ font-size:11px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:#c9a888; }
+    .row{ display:flex; gap:13px; align-items:flex-start; padding:13px 0; border-bottom:1px solid rgba(196,168,148,.1); }
+    .row:last-child{ border-bottom:0; }
+    .fi{ border-radius:3px; box-shadow:0 1px 3px rgba(0,0,0,.4); }
+    .lead{ font-size:13px; font-weight:800; }
+    .note{ font-size:12.5px; color:#b7a794; line-height:1.4; margin-top:2px; }
+    .chip{ font-size:9.5px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; padding:2px 7px; border-radius:999px; background:rgba(207,155,111,.18); color:#e8c9a6; border:1px solid rgba(207,155,111,.4); }
+  </style>
+  <script src="adn-ui.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(214,169,79,.15);border:1px solid rgba(214,169,79,.32)"><i data-lucide="zap" style="width:26px;height:26px;color:#d6a94f"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#e6c98f;font-weight:800">Líderes de la Energía</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Quién lidera cada fuente — y dónde entra Chile</p>
+      </div>
+    </header>
+
+    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">El mundo se mueve con energía, y cada fuente tiene sus potencias. Chile no lidera el petróleo ni el gas… pero sí los minerales que necesita la <b>energía del futuro</b>.</p>
+
+    <section class="glass rounded-2xl p-4 mt-4">
+      <p class="lbl mb-1">⛽ Energía tradicional</p>
+      <div id="trad"></div>
+    </section>
+
+    <section class="glass rounded-2xl p-4 mt-3">
+      <p class="lbl mb-1">🌱 Energía del futuro · transición</p>
+      <div id="fut"></div>
+    </section>
+
+    <section class="glass rounded-2xl p-4 mt-3" style="border-color:rgba(95,191,138,.3);background:linear-gradient(160deg,rgba(95,191,138,.10),rgba(26,21,18,.4))">
+      <div class="flex items-center gap-2 mb-2"><span class="fi fi-cl" style="font-size:20px"></span><h3 class="font-extrabold text-[15px]">¿Dónde entra Chile?</h3></div>
+      <p class="text-[13px] text-stone-200 leading-relaxed">Chile es una <b>pieza clave de la transición energética</b>: es el <b>mayor productor de cobre</b> del mundo (el metal para electrificar todo), está entre los líderes del <b>litio</b> (baterías) y tiene el <b>mejor sol y gran viento</b> para energías limpias e <b>hidrógeno verde</b>. No vende energía… vende lo que la hace posible.</p>
+    </section>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Liderazgos referenciales según producción/capacidad reciente (fuentes: AIE, USGS, BP Statistical Review). Pueden variar año a año. · <a href="adn-minero-chile-mundo.html" style="color:#e8c9a6">Chile en el mundo</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+
+<script>
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const TRAD=[
+    { ic:'droplet', c:'#c9a888', name:'Petróleo', flag:'us', lead:'EE.UU.', note:'Mayor productor mundial de crudo; le siguen Arabia Saudita y Rusia.' },
+    { ic:'flame', c:'#e0955f', name:'Gas natural', flag:'us', lead:'EE.UU.', note:'Mayor productor; Rusia y Qatar son grandes exportadores (GNL).' },
+    { ic:'factory', c:'#8a8079', name:'Carbón', flag:'cn', lead:'China', note:'Mayor productor y consumidor; luego India e Indonesia (exporta).' },
+    { ic:'atom', c:'#7fb0d9', name:'Nuclear', flag:'us', lead:'EE.UU.', note:'Mayor generación total; Francia lidera en % de su electricidad (~70%).' },
+    { ic:'droplets', c:'#5fb3a1', name:'Hidroeléctrica', flag:'cn', lead:'China', note:'Líder mundial (represa de las Tres Gargantas); luego Brasil y Canadá.' }
+  ];
+  const FUT=[
+    { ic:'sun', c:'#e0a35a', name:'Solar', flag:'cn', lead:'China', note:'Líder en capacidad instalada y en fabricación de paneles del mundo.' },
+    { ic:'wind', c:'#a9d3dc', name:'Eólica', flag:'cn', lead:'China', note:'Mayor capacidad instalada; le siguen EE.UU. y Alemania.' },
+    { ic:'battery-charging', c:'#5fd1bd', name:'Litio (baterías)', flag:'au', lead:'Australia', note:'Mayor producción; Chile tiene las mayores reservas y China domina el procesamiento.', star:true },
+    { ic:'cable', c:'#cf9b6f', name:'Cobre (electrificación)', flag:'cl', lead:'Chile', note:'Chile es el mayor productor: sin cobre no hay cables, motores ni energías limpias.', star:true },
+    { ic:'flame', c:'#7fbf9a', name:'Hidrógeno verde', flag:'', lead:'En carrera', note:'Aún sin líder claro: Chile, Australia, Medio Oriente y Europa compiten por encabezarla.' }
+  ];
+  const rowHtml=x=>`<div class="row">
+    <div class="h-9 w-9 rounded-lg grid place-items-center shrink-0" style="background:${x.c}22;border:1px solid ${x.c}55"><i data-lucide="${x.ic}" class="w-5 h-5" style="color:${x.c}"></i></div>
+    <div class="min-w-0 flex-1">
+      <div class="flex items-center gap-2 flex-wrap">
+        <span class="font-bold text-[14px]">${x.name}</span>
+        <span class="flex items-center gap-1.5 lead" style="color:${x.c}">${x.flag?`<span class="fi fi-${x.flag}" style="font-size:14px"></span>`:'🌍'} ${x.lead}</span>
+        ${x.star?'<span class="chip">Chile 🇨🇱</span>':''}
+      </div>
+      <p class="note">${x.note}</p>
+    </div>
+  </div>`;
+  document.getElementById('trad').innerHTML=TRAD.map(rowHtml).join('');
+  document.getElementById('fut').innerHTML=FUT.map(rowHtml).join('');
+  drawIcons();
+</script>
+</body>
+</html>
