@@ -95,6 +95,54 @@
       <p class="text-[12px] text-stone-400 mt-2.5">Por eso hoy Australia produce más litio (roca), mientras Chile tiene las mayores reservas en sus salares.</p>
     </section>
 
+    <!-- GRÁFICA: LITIO EN EL MUNDO -->
+    <section class="glass rounded-2xl p-5 mt-4">
+      <div class="flex items-center justify-between mb-3 gap-2 flex-wrap">
+        <h2 class="text-sm font-bold text-stone-300 flex items-center gap-2"><i data-lucide="bar-chart-3" class="w-4 h-4" style="color:var(--litio)"></i> El litio en el mundo</h2>
+        <div class="flex gap-1.5 text-[11px] font-bold" id="litabs">
+          <button data-k="prod" class="litab px-3 py-1 rounded-full">Producción</button>
+          <button data-k="res" class="litab px-3 py-1 rounded-full">Reservas</button>
+        </div>
+      </div>
+      <div id="litchart" class="grid gap-2.5"></div>
+      <p id="litcap" class="text-[11px] text-stone-500 mt-3 leading-snug"></p>
+    </section>
+    <style>
+      .litab{ border:1px solid rgba(196,168,148,.25); color:#b7a794; background:transparent; cursor:pointer; }
+      .litab.on{ background:rgba(95,209,189,.18); border-color:rgba(95,209,189,.5); color:#8fe3d3; }
+      .lbar-fill{ height:100%; border-radius:999px; transition:width .5s cubic-bezier(.2,.8,.2,1); }
+    </style>
+    <script>
+      (function(){
+        var LIT='#5fd1bd';
+        var D={
+          prod:{ cap:'Participación aproximada en la producción mundial de litio (referencial, en torno a 2023).',
+            rows:[['🇦🇺','Australia',50,false],['🇨🇱','Chile',25,true],['🇨🇳','China',16,false],['🇦🇷','Argentina',5,false],['🌍','Otros',4,false]] },
+          res:{ cap:'Participación aproximada en las reservas mundiales de litio (referencial). Chile encabeza.',
+            rows:[['🇨🇱','Chile',40,true],['🇦🇺','Australia',24,false],['🇦🇷','Argentina',10,false],['🇨🇳','China',8,false],['🌍','Otros',18,false]] }
+        };
+        var chart=document.getElementById('litchart'), cap=document.getElementById('litcap'), tabs=document.getElementById('litabs');
+        function render(k){
+          var d=D[k], max=Math.max.apply(null,d.rows.map(function(r){return r[2];}));
+          chart.innerHTML=d.rows.map(function(r){
+            var hl=r[3], col=hl?LIT:'rgba(196,168,148,.5)';
+            return '<div class="flex items-center gap-2.5">'+
+              '<div class="w-24 shrink-0 text-[12.5px] font-semibold '+(hl?'':'text-stone-300')+'" style="'+(hl?'color:'+LIT:'')+'">'+r[0]+' '+r[1]+'</div>'+
+              '<div class="flex-1 h-5 rounded-full" style="background:rgba(255,255,255,.05)"><div class="lbar-fill" style="width:0%;background:'+col+'"></div></div>'+
+              '<div class="w-9 text-right text-[12px] font-bold" style="color:'+col+'">'+r[2]+'%</div>'+
+            '</div>';
+          }).join('');
+          cap.textContent=d.cap;
+          // animar barras
+          var fills=chart.querySelectorAll('.lbar-fill');
+          setTimeout(function(){ d.rows.forEach(function(r,i){ if(fills[i]) fills[i].style.width=(r[2]/max*100)+'%'; }); }, 60);
+          Array.prototype.forEach.call(tabs.children,function(b){ b.classList.toggle('on', b.dataset.k===k); });
+        }
+        tabs.addEventListener('click',function(e){ var b=e.target.closest('.litab'); if(b) render(b.dataset.k); });
+        render('prod');
+      })();
+    </script>
+
     <!-- TRIÁNGULO DEL LITIO -->
     <section class="glass rounded-2xl p-5 mt-4">
       <h2 class="text-sm font-bold text-stone-300 flex items-center gap-2 mb-3"><i data-lucide="triangle" class="w-4 h-4" style="color:var(--litio)"></i> El “Triángulo del Litio”</h2>
