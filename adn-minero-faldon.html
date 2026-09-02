@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ADN Minero · Faldón (overlay)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; height:100%; background:transparent; overflow:hidden; font-family:'Inter',system-ui,sans-serif; }
+    /* Contenedor del faldón: abajo-izquierda, escala con la altura del canvas */
+    #lt{ position:fixed; left:5.5vh; bottom:9vh; display:flex; align-items:stretch;
+      opacity:0; transform:translateX(-30px); pointer-events:none;
+      transition:opacity .45s ease, transform .5s cubic-bezier(.18,.9,.24,1); }
+    #lt.show{ opacity:1; transform:translateX(0); }
+    .bar{ width:.9vh; border-radius:6px; background:linear-gradient(#e8c9a6,#cf9b6f 55%,#b5734f);
+      box-shadow:0 0 2vh rgba(207,155,111,.5); }
+    .panel{ margin-left:1.4vh; padding:1.6vh 2.6vh 1.7vh 2vh; border-radius:1.2vh;
+      background:linear-gradient(120deg, rgba(20,15,12,.94), rgba(30,22,17,.9));
+      border:1px solid rgba(207,155,111,.35);
+      box-shadow:0 1.2vh 4vh rgba(0,0,0,.5); backdrop-filter:blur(2px);
+      min-width:34vh; max-width:78vw; }
+    .mark{ display:flex; align-items:center; gap:.8vh; margin-bottom:.7vh; }
+    .mark .dot{ width:1vh; height:1vh; border-radius:50%; background:#e05a3f; box-shadow:0 0 1.2vh #e05a3f; animation:pulse 1.6s infinite; }
+    @keyframes pulse{ 0%,100%{opacity:1} 50%{opacity:.35} }
+    .mark span{ font-family:'Archivo',sans-serif; font-weight:800; font-size:1.5vh; letter-spacing:.28vh; text-transform:uppercase; color:#e8c9a6; }
+    #l1{ font-family:'Archivo',sans-serif; font-weight:900; font-size:4.4vh; line-height:1.02; color:#fff;
+      text-shadow:0 .3vh 1vh rgba(0,0,0,.55); letter-spacing:-.02em; }
+    #l2{ font-family:'Inter',sans-serif; font-weight:600; font-size:2.3vh; line-height:1.15; margin-top:.5vh;
+      color:#e8c9a6; text-transform:uppercase; letter-spacing:.06em; }
+    #l2:empty{ display:none; }
+    @media (prefers-reduced-motion:reduce){ #lt{ transition:opacity .2s ease; transform:none; } }
+  </style>
+</head>
+<body>
+  <div id="lt">
+    <div class="bar"></div>
+    <div class="panel">
+      <div class="mark"><span class="dot"></span><span>ADN Minero</span></div>
+      <div id="l1"></div>
+      <div id="l2"></div>
+    </div>
+  </div>
+
+<script>
+  const WORKER='https://adn-muro.simonrovi.workers.dev/lt';
+  const box=document.getElementById('lt'), l1=document.getElementById('l1'), l2=document.getElementById('l2');
+  let lastRev=-1;
+  function apply(s){
+    l1.textContent=s.l1||''; l2.textContent=s.l2||'';
+    box.classList.toggle('show', !!s.show && !!(s.l1||s.l2));
+  }
+  async function poll(){
+    try{ const r=await fetch(WORKER,{cache:'no-store'}); if(!r.ok) return; const s=await r.json();
+      if(s.rev!==lastRev){ lastRev=s.rev; apply(s); }
+    }catch(e){}
+  }
+  poll(); setInterval(poll, 1200);
+</script>
+</body>
+</html>
