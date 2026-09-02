@@ -69,10 +69,8 @@
       <div id="recent" class="flex flex-wrap gap-2"></div>
     </div>
 
-    <!-- Ajustes -->
+    <!-- OBS -->
     <section class="glass rounded-2xl p-4 mt-4 grid gap-3">
-      <div><label>Token de administrador</label><input id="tok" type="password" placeholder="Tu token" autocomplete="off"></div>
-      <label class="flex items-center gap-2 text-[12px] text-stone-400"><input id="rem" type="checkbox" style="width:auto"> Recordar el token en este dispositivo</label>
       <div class="rounded-xl p-3" style="background:rgba(103,193,214,.08);border:1px solid rgba(103,193,214,.25)">
         <p class="text-[11px] text-stone-400 mb-1">URL para OBS (Fuente → Navegador):</p>
         <div class="flex items-center gap-2">
@@ -93,8 +91,6 @@
   $('obsurl').textContent = new URL('adn-minero-faldon.html', location.href).href;
   if(window.lucide) lucide.createIcons();
 
-  try{ const t=localStorage.getItem('adn_lt_token'); if(t){ $('tok').value=t; $('rem').checked=true; } }catch(e){}
-
   // Preview en vivo
   function updPreview(){ $('pvl1').textContent=$('l1').value||'Nombre'; $('pvl2').textContent=$('l2').value||''; }
   $('l1').addEventListener('input', updPreview); $('l2').addEventListener('input', updPreview); updPreview();
@@ -110,14 +106,10 @@
   let busy=false;
   async function send(show){
     if(busy) return;
-    const token=$('tok').value.trim();
-    if(!token){ msg('Ingresa tu token de administrador.','#e0a35a'); $('tok').focus(); return; }
-    try{ if($('rem').checked) localStorage.setItem('adn_lt_token',token); else localStorage.removeItem('adn_lt_token'); }catch(e){}
     const l1=$('l1').value.trim(), l2=$('l2').value.trim();
     busy=true; msg('Enviando…');
     try{
-      const r=await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token,l1,l2,show})});
-      if(r.status===403){ msg('Token incorrecto.','#e88'); busy=false; return; }
+      const r=await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({l1,l2,show})});
       if(!r.ok){ msg('Error del servidor ('+r.status+').','#e88'); busy=false; return; }
       msg(show?'✅ Faldón en pantalla':'⏹ Faldón quitado', show?'#9ed9ba':'#c9b7a5');
       if(show) saveRecent(l1,l2);
