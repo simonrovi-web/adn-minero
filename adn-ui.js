@@ -223,9 +223,10 @@
           try{ sessionStorage.setItem(mk,'1'); }catch(e){}
           var send=function(){
             try{
+              // text/plain evita el preflight CORS (sendBeacon no lo completa); el Worker igual parsea JSON.
               var url='https://adn-muro.simonrovi.workers.dev/m', data=JSON.stringify({p:panel});
-              if(navigator.sendBeacon){ navigator.sendBeacon(url, new Blob([data],{type:'application/json'})); }
-              else{ fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:data,keepalive:true}).catch(function(){}); }
+              if(navigator.sendBeacon){ navigator.sendBeacon(url, new Blob([data],{type:'text/plain'})); }
+              else{ fetch(url,{method:'POST',headers:{'Content-Type':'text/plain'},body:data,keepalive:true}).catch(function(){}); }
             }catch(e){}
           };
           if(document.readyState==='complete') setTimeout(send,1200);

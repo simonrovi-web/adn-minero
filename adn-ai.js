@@ -84,7 +84,7 @@
 
     // ---- FAB ----
     var fab=document.createElement('button'); fab.id='adnai-fab'; fab.type='button';
-    fab.setAttribute('aria-label', isData?'Explícame las cifras de este panel con IA':'Pregúntale a la IA sobre este panel');
+    fab.setAttribute('aria-label', isData?'Explica las cifras de este panel con IA':'Pregúntale a ADN sobre este panel');
     fab.innerHTML=isData?'<span class="sp">🧮</span><span class="lbl">Explica las cifras</span>':'<span class="sp">✨</span><span class="lbl">Pregúntale a ADN</span>';
 
     // ---- Sheet ----
