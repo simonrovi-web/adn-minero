@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · Chile vs. el Mundo</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="Chile vs. el Mundo: cómo se compara Chile con las potencias mineras (Perú, RDC, Australia, China) en producción, reservas de cobre y litio, y en valor agregado." />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" /></noscript>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(207,155,111,0.13), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    .row{ display:flex; align-items:center; gap:9px; margin-top:9px; }
+    .fi{ border-radius:3px; box-shadow:0 1px 3px rgba(0,0,0,.4); font-size:15px; flex:none; }
+    .nm{ width:74px; flex:none; font-size:12px; font-weight:700; }
+    .track{ flex:1; height:14px; border-radius:999px; background:rgba(255,255,255,.05); overflow:hidden; }
+    .track > span{ display:block; height:100%; border-radius:999px; width:0; transition:width 1s cubic-bezier(.22,1,.36,1); }
+    .pct{ width:38px; flex:none; text-align:right; font-size:12px; font-weight:800; font-variant-numeric:tabular-nums; }
+    .cl .nm{ color:#f0d7b6; } .cl .pct{ color:#e8c9a6; }
+    h3{ margin:0; }
+  </style>
+  <script src="adn-ui.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(207,155,111,.15);border:1px solid rgba(207,155,111,.32)"><i data-lucide="swords" style="width:24px;height:24px;color:#cf9b6f"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#e0c3a0;font-weight:800">Chile vs. el Mundo</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">¿Dónde estamos parados?</p>
+      </div>
+    </header>
+
+    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">Chile no compite solo. Estas son las grandes potencias mineras y cómo nos medimos con ellas. La conclusión sorprende: somos <b>N.º 1 en tener el recurso</b>… pero no en transformarlo.</p>
+
+    <div id="metrics" class="mt-4 grid gap-2.5"></div>
+
+    <!-- Lectura -->
+    <div class="glass rounded-2xl p-4 mt-3" style="border-color:rgba(214,169,79,.3)">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="lightbulb" style="width:17px;height:17px;color:#d6a94f"></i><h3 class="font-bold text-[13.5px]">La gran lección</h3></div>
+      <p class="text-[12.5px] text-stone-300 leading-relaxed">Chile lidera en <b>producir y en reservas</b> de cobre y litio. Pero en <b>procesar y refinar</b> —donde está el mayor valor— manda <b>China</b>, que casi no tiene el mineral pero domina la industria. Ese es el eslabón que Chile busca capturar.</p>
+      <a href="adn-minero-valor.html" class="inline-flex items-center gap-1.5 mt-3 text-[13px] font-bold" style="color:#d6a94f">Ver cómo agregar valor <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+    </div>
+
+    <div class="mt-3 grid grid-cols-2 gap-2.5">
+      <a href="adn-minero-chile-mundo.html" class="glass rounded-2xl p-3.5 active:scale-95 transition"><i data-lucide="globe" style="width:19px;height:19px;color:#7fb0d9"></i><p class="text-[13px] font-bold mt-1.5">Chile en el mundo</p><p class="text-[11px] text-stone-500">Nuestro liderazgo</p></a>
+      <a href="adn-minero-geopolitica.html" class="glass rounded-2xl p-3.5 active:scale-95 transition"><i data-lucide="globe-2" style="width:19px;height:19px;color:#a7c6de"></i><p class="text-[13px] font-bold mt-1.5">Geopolítica</p><p class="text-[11px] text-stone-500">Quién compra y por qué</p></a>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Participaciones referenciales y aproximadas de divulgación; varían por año.<br>Fuentes: USGS Mineral Commodity Summaries, Cochilco. · <a href="adn-minero-desarrollo.html" style="color:#e8c9a6">Desarrollo</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+
+<script>
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  // fl: código bandera · nm: nombre · v: % aprox · cl: es Chile
+  const METRICS=[
+    { t:'Producción de cobre', s:'Chile es, por lejos, el mayor productor', unit:'% mundial',
+      rows:[ {fl:'cl',nm:'Chile',v:24,cl:1},{fl:'cd',nm:'Rep. Congo',v:13},{fl:'pe',nm:'Perú',v:10},{fl:'cn',nm:'China',v:8} ] },
+    { t:'Reservas de cobre', s:'Chile tiene las mayores reservas del planeta', unit:'% mundial',
+      rows:[ {fl:'cl',nm:'Chile',v:19,cl:1},{fl:'au',nm:'Australia',v:10},{fl:'pe',nm:'Perú',v:9},{fl:'ru',nm:'Rusia',v:7} ] },
+    { t:'Producción de litio', s:'Aquí Australia va primero; Chile, segundo', unit:'% mundial',
+      rows:[ {fl:'au',nm:'Australia',v:48},{fl:'cl',nm:'Chile',v:24,cl:1},{fl:'cn',nm:'China',v:18},{fl:'ar',nm:'Argentina',v:6} ] },
+    { t:'Reservas de litio', s:'Chile vuelve al primer lugar del mundo', unit:'% mundial',
+      rows:[ {fl:'cl',nm:'Chile',v:33,cl:1},{fl:'au',nm:'Australia',v:22},{fl:'ar',nm:'Argentina',v:20},{fl:'cn',nm:'China',v:8} ] },
+    { t:'Refinación y proceso', s:'El eslabón del valor: aquí domina China', unit:'aprox.',
+      rows:[ {fl:'cn',nm:'China',v:60},{fl:'cl',nm:'Chile',v:9,cl:1},{fl:'other',nm:'Otros',v:31} ] }
+  ];
+  const color=(r)=> r.cl?'linear-gradient(90deg,#f0d7b6,#cf9b6f)':'rgba(150,132,116,.5)';
+  document.getElementById('metrics').innerHTML=METRICS.map(m=>`
+    <div class="glass rounded-2xl p-4">
+      <div class="flex items-baseline justify-between gap-2">
+        <h3 class="font-bold text-[14.5px]">${m.t}</h3>
+        <span class="text-[10px] font-bold uppercase tracking-wider text-stone-500 shrink-0">${m.unit}</span>
+      </div>
+      <p class="text-[11.5px] text-stone-400 mt-0.5">${m.s}</p>
+      ${m.rows.map(r=>`
+        <div class="row ${r.cl?'cl':''}">
+          ${r.fl==='other'?'<span class="fi" style="width:20px;height:15px;background:rgba(255,255,255,.12);display:inline-block"></span>':`<span class="fi fi-${r.fl}" style="width:20px;height:15px"></span>`}
+          <span class="nm ${r.cl?'':'text-stone-300'}">${r.nm}</span>
+          <span class="track"><span data-w="${r.v}" style="background:${color(r)}"></span></span>
+          <span class="pct ${r.cl?'':'text-stone-400'}">${r.v}%</span>
+        </div>`).join('')}
+    </div>`).join('');
+  drawIcons();
+  setTimeout(()=>{ document.querySelectorAll('#metrics .track > span').forEach(s=>s.style.width=s.dataset.w+'%'); }, 150);
+</script>
+</body>
+</html>
