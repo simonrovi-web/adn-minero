@@ -95,9 +95,14 @@
         <div class="rounded-xl px-2 py-2 text-center" style="background:rgba(0,0,0,.18)"><div class="text-[9px] uppercase tracking-wider text-stone-400 font-bold">Del PIB</div><b class="block text-sm sm:text-base font-black text-[#a7d18a]">10–15%</b></div>
         <div class="rounded-xl px-2 py-2 text-center" style="background:rgba(0,0,0,.18)"><div class="text-[9px] uppercase tracking-wider text-stone-400 font-bold">Al fisco ’26</div><b class="block text-sm sm:text-base font-black text-[#e8c9a6]" style="font-variant-numeric:tabular-nums">US$12.458M</b></div>
       </div>
+      <div id="heroSpark" class="mt-2.5" style="display:none;align-items:center;gap:8px">
+        <svg id="heroSvg" viewBox="0 0 220 22" preserveAspectRatio="none" style="flex:1;height:22px;display:block"></svg>
+        <span id="heroTrend" class="text-[10px] font-black shrink-0" style="font-variant-numeric:tabular-nums"></span>
+      </div>
     </a>
     <script>
       (function(){var K='adn_cu',ID='heroCu';function s(v){var e=document.getElementById(ID);if(e&&v)e.textContent='US$'+v.toFixed(2)+'/lb';}try{var c=JSON.parse(localStorage.getItem(K)||'null');if(c&&c.cu)s(c.cu);}catch(e){}fetch('https://mindicador.cl/api').then(r=>r.ok?r.json():null).then(d=>{if(d&&d.libra_cobre&&d.libra_cobre.valor){var v=d.libra_cobre.valor;s(v);try{localStorage.setItem(K,JSON.stringify({cu:v,dl:(d.dolar&&d.dolar.valor)||0,ts:Date.now()}));}catch(e){}}}).catch(function(){});})();
+      (function(){var box=document.getElementById('heroSpark');if(!box)return;fetch('https://mindicador.cl/api/libra_cobre').then(function(r){return r.ok?r.json():null;}).then(function(d){var ser=(d&&d.serie)||[];if(ser.length<3)return;var pts=ser.slice(0,30).map(function(x){return x.valor;}).reverse();var mn=Math.min.apply(null,pts),mx=Math.max.apply(null,pts),rg=(mx-mn)||1;var W=220,H=22,pad=3;var xy=pts.map(function(v,i){return [(i/(pts.length-1))*W,pad+(1-(v-mn)/rg)*(H-2*pad)];});var line=xy.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1);}).join(' ');var chg=((pts[pts.length-1]-pts[0])/pts[0])*100,up=chg>=0,c=up?'#7fbf9a':'#e0715a',last=xy[xy.length-1];document.getElementById('heroSvg').innerHTML='<polyline points="'+line+'" fill="none" stroke="'+c+'" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/><circle cx="'+last[0].toFixed(1)+'" cy="'+last[1].toFixed(1)+'" r="2.6" fill="'+c+'"/>';var t=document.getElementById('heroTrend');if(t){t.textContent=(up?'▲ +':'▼ ')+chg.toFixed(1)+'% · 30d';t.style.color=c;}box.style.display='flex';}).catch(function(){});})();
     </script>
 
     <!-- BUSCADOR -->
