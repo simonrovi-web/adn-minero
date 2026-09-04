@@ -75,7 +75,7 @@
 
 <script>
   const drawIcons=()=>window.lucide&&lucide.createIcons();
-  (function(){ fetch('https://mindicador.cl/api').then(r=>r.ok?r.json():null).then(d=>{ if(d&&d.libra_cobre&&d.libra_cobre.valor){ var e=document.getElementById('ixCu'); if(e) e.textContent='US$'+d.libra_cobre.valor.toFixed(2)+'/lb'; } }).catch(function(){}); })();
+  (function(){var K='adn_cu',ID='ixCu';function s(v){var e=document.getElementById(ID);if(e&&v)e.textContent='US$'+v.toFixed(2)+'/lb';}try{var c=JSON.parse(localStorage.getItem(K)||'null');if(c&&c.cu)s(c.cu);}catch(e){}fetch('https://mindicador.cl/api').then(r=>r.ok?r.json():null).then(d=>{if(d&&d.libra_cobre&&d.libra_cobre.valor){var v=d.libra_cobre.valor;s(v);try{localStorage.setItem(K,JSON.stringify({cu:v,dl:(d.dolar&&d.dolar.valor)||0,ts:Date.now()}));}catch(e){}}}).catch(function(){});})();
   const col=v=> v>=75?'#7fbf9a' : v>=55?'#d6a94f' : '#e0715a';
   const DIMS=[
     { ic:'award',        t:'Liderazgo y producción', v:90, d:'1º del mundo en cobre, 2º en litio.' },

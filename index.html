@@ -97,7 +97,7 @@
       </div>
     </a>
     <script>
-      (function(){ fetch('https://mindicador.cl/api').then(r=>r.ok?r.json():null).then(d=>{ if(d&&d.libra_cobre&&d.libra_cobre.valor){ var el=document.getElementById('heroCu'); if(el) el.textContent='US$'+d.libra_cobre.valor.toFixed(2)+'/lb'; } }).catch(function(){}); })();
+      (function(){var K='adn_cu',ID='heroCu';function s(v){var e=document.getElementById(ID);if(e&&v)e.textContent='US$'+v.toFixed(2)+'/lb';}try{var c=JSON.parse(localStorage.getItem(K)||'null');if(c&&c.cu)s(c.cu);}catch(e){}fetch('https://mindicador.cl/api').then(r=>r.ok?r.json():null).then(d=>{if(d&&d.libra_cobre&&d.libra_cobre.valor){var v=d.libra_cobre.valor;s(v);try{localStorage.setItem(K,JSON.stringify({cu:v,dl:(d.dolar&&d.dolar.valor)||0,ts:Date.now()}));}catch(e){}}}).catch(function(){});})();
     </script>
 
     <!-- BUSCADOR -->

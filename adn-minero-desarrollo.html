@@ -124,6 +124,9 @@
       <a href="adn-minero-indice.html" class="glass rounded-2xl p-3.5 active:scale-95 transition"><i data-lucide="gauge" style="width:19px;height:19px;color:#a7d18a"></i><p class="text-[13px] font-bold mt-1.5">Índice de desarrollo</p><p class="text-[11px] text-stone-500">La foto en un puntaje</p></a>
     </div>
 
+    <button id="shareBtn" class="w-full glass rounded-2xl p-3.5 mt-3 flex items-center justify-center gap-2 font-bold text-[14px] active:scale-95 transition" style="border-color:rgba(207,155,111,.35);color:#e8c9a6"><i data-lucide="share-2" class="w-5 h-5"></i> Compartir la foto país</button>
+    <p id="shareMsg" class="text-center text-[11.5px] mt-2 hidden" style="color:#a7d18a"></p>
+
     <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Cifras referenciales de divulgación; varían por año y precio del cobre.<br>Fuentes: Banco Central, Cochilco, Consejo Minero, Ministerio de Minería. · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
   </div>
 
@@ -131,15 +134,7 @@
   const drawIcons=()=>window.lucide&&lucide.createIcons();
 
   // ===== Datos en vivo (mindicador.cl) =====
-  (function(){
-    const clp=n=>'$'+Math.round(n).toLocaleString('es-CL');
-    fetch('https://mindicador.cl/api').then(r=>r.ok?r.json():null).then(d=>{
-      if(!d) return;
-      if(d.libra_cobre&&d.libra_cobre.valor) document.getElementById('lvCobre').textContent='US$'+d.libra_cobre.valor.toFixed(2);
-      if(d.dolar&&d.dolar.valor) document.getElementById('lvDolar').textContent=clp(d.dolar.valor);
-      try{ const f=new Date(d.dolar.fecha); document.getElementById('lvFecha').textContent='mindicador.cl · '+f.toLocaleDateString('es-CL',{day:'2-digit',month:'2-digit',year:'numeric'}); }catch(e){}
-    }).catch(()=>{});
-  })();
+(function(){var K='adn_cu';var clp=n=>'$'+Math.round(n).toLocaleString('es-CL');function fill(cu,dl,fe){var a=document.getElementById('lvCobre');if(a&&cu)a.textContent='US$'+cu.toFixed(2);var b=document.getElementById('lvDolar');if(b&&dl)b.textContent=clp(dl);if(fe){var c=document.getElementById('lvFecha');if(c)c.textContent='mindicador.cl · '+fe;}}try{var ca=JSON.parse(localStorage.getItem(K)||'null');if(ca)fill(ca.cu,ca.dl,'');}catch(e){}fetch('https://mindicador.cl/api').then(r=>r.ok?r.json():null).then(d=>{if(!d)return;var cu=d.libra_cobre&&d.libra_cobre.valor,dl=d.dolar&&d.dolar.valor;var fe='';try{fe=new Date(d.dolar.fecha).toLocaleDateString('es-CL',{day:'2-digit',month:'2-digit',year:'numeric'});}catch(e){}fill(cu,dl,fe);try{localStorage.setItem(K,JSON.stringify({cu:cu,dl:dl,ts:Date.now()}));}catch(e){}}).catch(function(){});})();
 
   const BARS=[
     { t:'De las exportaciones de Chile', v:60, note:'≈US$60 de cada US$100 exportados' },
@@ -158,6 +153,19 @@
   drawIcons();
   // anima las barras
   setTimeout(()=>{ document.querySelectorAll('#bars .bar > span').forEach(s=>{ s.style.width=s.dataset.w+'%'; }); }, 120);
+
+  // ===== Compartir la foto país =====
+  (function(){
+    var btn=document.getElementById('shareBtn'); if(!btn) return;
+    var url='https://simonrovi-web.github.io/adn-minero/adn-minero-desarrollo.html';
+    var txt='La minería mueve a Chile 🇨🇱⛏️\n≈60% de las exportaciones · 10–15% del PIB · US$12.458M al fisco (2026) · ≈270 mil empleos directos.\nMira la foto país en ADN Minero:';
+    function toast(m){ var el=document.getElementById('shareMsg'); if(!el) return; el.textContent=m; el.classList.remove('hidden'); setTimeout(function(){ el.classList.add('hidden'); }, 2600); }
+    btn.addEventListener('click', function(){
+      if(navigator.share){ navigator.share({ title:'ADN Minero · El Cobre y el Desarrollo', text:txt, url:url }).catch(function(){}); }
+      else if(navigator.clipboard){ navigator.clipboard.writeText(txt+' '+url).then(function(){ toast('¡Enlace copiado! Pégalo donde quieras.'); }).catch(function(){ toast('Copia este enlace: '+url); }); }
+      else { toast(url); }
+    });
+  })();
 </script>
 </body>
 </html>

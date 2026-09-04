@@ -99,7 +99,7 @@
 
 <script>
   const drawIcons=()=>window.lucide&&lucide.createIcons();
-  (function(){ fetch('https://mindicador.cl/api').then(r=>r.ok?r.json():null).then(d=>{ if(d&&d.libra_cobre&&d.libra_cobre.valor){ var e=document.getElementById('rqCu'); if(e) e.textContent='US$'+d.libra_cobre.valor.toFixed(2)+'/lb'; } }).catch(function(){}); })();
+  (function(){var K='adn_cu',ID='rqCu';function s(v){var e=document.getElementById(ID);if(e&&v)e.textContent='US$'+v.toFixed(2)+'/lb';}try{var c=JSON.parse(localStorage.getItem(K)||'null');if(c&&c.cu)s(c.cu);}catch(e){}fetch('https://mindicador.cl/api').then(r=>r.ok?r.json():null).then(d=>{if(d&&d.libra_cobre&&d.libra_cobre.valor){var v=d.libra_cobre.valor;s(v);try{localStorage.setItem(K,JSON.stringify({cu:v,dl:(d.dolar&&d.dolar.valor)||0,ts:Date.now()}));}catch(e){}}}).catch(function(){});})();
   const FUNDS=[
     { ic:'building-2', c:'#7fb0d9', t:'Gobiernos Regionales', d:'Un fondo para que las regiones inviertan según sus prioridades.' },
     { ic:'mountain',   c:'#cf9b6f', t:'Comunas mineras', d:'Recursos extra para las comunas donde se emplaza la minería.' },
