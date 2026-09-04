@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · Índice de Desarrollo Minero</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="Índice de Desarrollo Minero: una lectura visual y didáctica de cómo la minería aporta al desarrollo de Chile en 6 dimensiones, en un solo puntaje." />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(167,209,138,0.11), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    .gauge{ width:180px; height:180px; border-radius:50%; display:grid; place-items:center; margin:0 auto;
+      background:conic-gradient(var(--col) calc(var(--p)*1%), rgba(255,255,255,.06) 0); transition:none; }
+    .gauge .hole{ width:140px; height:140px; border-radius:50%; background:#171311; display:grid; place-items:center; text-align:center; }
+    .bar{ height:10px; border-radius:999px; background:rgba(255,255,255,.06); overflow:hidden; }
+    .bar > span{ display:block; height:100%; border-radius:999px; width:0; transition:width 1s cubic-bezier(.22,1,.36,1); }
+    h3{ margin:0; }
+  </style>
+  <script src="adn-ui.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(167,209,138,.15);border:1px solid rgba(167,209,138,.34)"><i data-lucide="gauge" style="width:26px;height:26px;color:#a7d18a"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#bfe0a8;font-weight:800">Índice de Desarrollo Minero</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">La foto país, en un puntaje</p>
+      </div>
+    </header>
+
+    <!-- Gauge -->
+    <div class="glass rounded-2xl p-5 mt-4 text-center">
+      <div class="gauge" id="gauge" style="--p:0;--col:#a7d18a">
+        <div class="hole">
+          <div>
+            <div id="score" style="font-size:44px;font-weight:900;line-height:1;color:#e8f3dc;font-variant-numeric:tabular-nums">0</div>
+            <div style="font-size:11px;color:#9c8f83;font-weight:700">de 100</div>
+          </div>
+        </div>
+      </div>
+      <p id="verdict" class="text-[14px] font-bold mt-4" style="color:#a7d18a">Base muy sólida</p>
+      <p class="text-[12.5px] text-stone-400 leading-relaxed mt-1 max-w-md mx-auto">Chile parte de una posición fuerte en producción e inversión. El margen de crecimiento está en <b style="color:#e8c9a6">agregar valor</b> y en <b style="color:#e8c9a6">sostenibilidad</b>.</p>
+    </div>
+
+    <!-- Dimensiones -->
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2 mb-3"><i data-lucide="list-checks" style="width:18px;height:18px;color:#a7d18a"></i><h3 class="font-bold text-[14px]">Las 6 dimensiones</h3></div>
+      <div id="dims" class="grid gap-3.5"></div>
+    </div>
+
+    <!-- Cómo leerlo -->
+    <div class="glass rounded-2xl p-4 mt-3" style="border-color:rgba(214,169,79,.3)">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="info" style="width:17px;height:17px;color:#d6a94f"></i><h3 class="font-bold text-[13.5px]">Cómo leer este índice</h3></div>
+      <p class="text-[12.5px] text-stone-300 leading-relaxed">Es una lectura <b>didáctica de ADN Minero</b> para conversar sobre desarrollo: combina seis dimensiones en un puntaje simple. <b>No es una estadística oficial</b> ni un ranking del Estado; busca ayudar a ver dónde Chile es fuerte y dónde tiene tarea pendiente.</p>
+    </div>
+
+    <div class="mt-3 grid grid-cols-2 gap-2.5">
+      <a href="adn-minero-desarrollo.html" class="glass rounded-2xl p-3.5 active:scale-95 transition"><i data-lucide="trending-up" style="width:19px;height:19px;color:#cf9b6f"></i><p class="text-[13px] font-bold mt-1.5">Las cifras país</p><p class="text-[11px] text-stone-500">PIB, fisco, empleo</p></a>
+      <a href="adn-minero-valor.html" class="glass rounded-2xl p-3.5 active:scale-95 transition"><i data-lucide="layers" style="width:19px;height:19px;color:#d6a94f"></i><p class="text-[13px] font-bold mt-1.5">Cómo mejorar</p><p class="text-[11px] text-stone-500">Agregar valor</p></a>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Índice ilustrativo de elaboración propia con fines divulgativos.<br>Se apoya en fuentes públicas: Cochilco, Consejo Minero, Banco Central. · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+
+<script>
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const col=v=> v>=75?'#7fbf9a' : v>=55?'#d6a94f' : '#e0715a';
+  const DIMS=[
+    { ic:'award',        t:'Liderazgo y producción', v:90, d:'1º del mundo en cobre, 2º en litio.' },
+    { ic:'hard-hat',     t:'Inversión futura',       v:82, d:'Cartera de US$104.549 M a 10 años.' },
+    { ic:'landmark',     t:'Aporte al Estado',       v:74, d:'Miles de millones al fisco cada año.' },
+    { ic:'users',        t:'Empleo y regiones',      v:66, d:'≈270 mil empleos directos; motor del norte.' },
+    { ic:'leaf',         t:'Sostenibilidad',         v:58, d:'Agua, energía y relación con comunidades.' },
+    { ic:'layers',       t:'Valor agregado e I+D',   v:42, d:'El eslabón débil: exportamos poco procesado.' }
+  ];
+  const composite=Math.round(DIMS.reduce((a,d)=>a+d.v,0)/DIMS.length);
+
+  document.getElementById('dims').innerHTML=DIMS.map(d=>`
+    <div>
+      <div class="flex items-center justify-between mb-1.5">
+        <span class="flex items-center gap-2 text-[13px] font-semibold text-stone-200"><i data-lucide="${d.ic}" class="w-4 h-4" style="color:${col(d.v)}"></i>${d.t}</span>
+        <span class="text-[14px] font-black" style="color:${col(d.v)};font-variant-numeric:tabular-nums">${d.v}</span>
+      </div>
+      <div class="bar"><span data-w="${d.v}" style="background:${col(d.v)}"></span></div>
+      <p class="text-[11px] text-stone-500 mt-1">${d.d}</p>
+    </div>`).join('');
+  drawIcons();
+
+  // anima gauge + número + barras
+  const g=document.getElementById('gauge'), sc=document.getElementById('score'), vd=document.getElementById('verdict');
+  g.style.setProperty('--col', col(composite));
+  vd.style.color=col(composite);
+  vd.textContent = composite>=75?'Muy sólido' : composite>=55?'Base sólida, con tarea pendiente' : 'Con desafíos importantes';
+  setTimeout(()=>{ document.querySelectorAll('#dims .bar > span').forEach(s=>s.style.width=s.dataset.w+'%'); }, 150);
+  let cur=0; const step=()=>{ cur+=2; if(cur>=composite){ cur=composite; } sc.textContent=cur; g.style.setProperty('--p',cur); if(cur<composite) requestAnimationFrame(step); };
+  setTimeout(()=>requestAnimationFrame(step), 250);
+</script>
+</body>
+</html>
