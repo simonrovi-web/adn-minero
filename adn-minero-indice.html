@@ -50,6 +50,7 @@
       </div>
       <p id="verdict" class="text-[14px] font-bold mt-4" style="color:#a7d18a">Base muy sólida</p>
       <p class="text-[12.5px] text-stone-400 leading-relaxed mt-1 max-w-md mx-auto">Chile parte de una posición fuerte en producción e inversión. El margen de crecimiento está en <b style="color:#e8c9a6">agregar valor</b> y en <b style="color:#e8c9a6">sostenibilidad</b>.</p>
+      <p class="text-[11px] text-stone-500 mt-3"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#e0715a;margin-right:5px;vertical-align:middle"></span>Cobre hoy <b id="ixCu" style="color:#e8c9a6">—</b> · el índice es estructural, no del día</p>
     </div>
 
     <!-- Dimensiones -->
@@ -74,6 +75,7 @@
 
 <script>
   const drawIcons=()=>window.lucide&&lucide.createIcons();
+  (function(){ fetch('https://mindicador.cl/api').then(r=>r.ok?r.json():null).then(d=>{ if(d&&d.libra_cobre&&d.libra_cobre.valor){ var e=document.getElementById('ixCu'); if(e) e.textContent='US$'+d.libra_cobre.valor.toFixed(2)+'/lb'; } }).catch(function(){}); })();
   const col=v=> v>=75?'#7fbf9a' : v>=55?'#d6a94f' : '#e0715a';
   const DIMS=[
     { ic:'award',        t:'Liderazgo y producción', v:90, d:'1º del mundo en cobre, 2º en litio.' },

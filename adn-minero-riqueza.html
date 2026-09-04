@@ -47,6 +47,7 @@
         <i data-lucide="pickaxe" style="width:22px;height:22px;color:#e8c9a6"></i>
         <p class="font-black text-[15px] mt-1">Utilidades de la minería</p>
         <p class="text-[11.5px] text-stone-400">Sobre todo del cobre y, cada vez más, del litio</p>
+        <p class="text-[11px] mt-1.5" style="color:#e0715a"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#e0715a;margin-right:5px;vertical-align:middle"></span>Cobre hoy: <b id="rqCu" style="color:#e8c9a6">—</b></p>
       </div>
     </div>
     <div class="conn"><i data-lucide="chevrons-down" class="w-5 h-5"></i></div>
@@ -98,6 +99,7 @@
 
 <script>
   const drawIcons=()=>window.lucide&&lucide.createIcons();
+  (function(){ fetch('https://mindicador.cl/api').then(r=>r.ok?r.json():null).then(d=>{ if(d&&d.libra_cobre&&d.libra_cobre.valor){ var e=document.getElementById('rqCu'); if(e) e.textContent='US$'+d.libra_cobre.valor.toFixed(2)+'/lb'; } }).catch(function(){}); })();
   const FUNDS=[
     { ic:'building-2', c:'#7fb0d9', t:'Gobiernos Regionales', d:'Un fondo para que las regiones inviertan según sus prioridades.' },
     { ic:'mountain',   c:'#cf9b6f', t:'Comunas mineras', d:'Recursos extra para las comunas donde se emplaza la minería.' },
