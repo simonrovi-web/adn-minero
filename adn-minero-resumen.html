@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · Resumen País</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="Resumen País para compartir: una imagen con las cifras clave de la minería en el desarrollo de Chile y un QR a la app." />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(207,155,111,0.13), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 96px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    #preview{ width:100%; height:auto; border-radius:16px; display:block; box-shadow:0 12px 40px rgba(0,0,0,.5); }
+    .btn{ display:flex; align-items:center; justify-content:center; gap:8px; font-weight:800; font-size:14px; padding:13px; border-radius:14px; cursor:pointer; border:0; transition:transform .15s; }
+    .btn:active{ transform:scale(.96); }
+    h3{ margin:0; }
+  </style>
+  <script src="adn-ui.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(207,155,111,.15);border:1px solid rgba(207,155,111,.32)"><i data-lucide="image-down" style="width:24px;height:24px;color:#cf9b6f"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#e0c3a0;font-weight:800">Resumen País</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Una imagen lista para compartir</p>
+      </div>
+    </header>
+
+    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">Comparte de un toque las cifras que muestran a la minería como motor de Chile. La imagen incluye un código QR para que quien la vea llegue a la app.</p>
+
+    <div class="mt-4"><canvas id="preview" width="1080" height="1350"></canvas></div>
+
+    <div class="grid grid-cols-2 gap-2.5 mt-3">
+      <button id="btnShare" class="btn" style="background:linear-gradient(150deg,#e8c9a6,#cf9b6f);color:#211a15"><i data-lucide="share-2" class="w-5 h-5"></i> Compartir</button>
+      <button id="btnDl" class="btn glass" style="color:#e8c9a6;border:1px solid rgba(207,155,111,.35)"><i data-lucide="download" class="w-5 h-5"></i> Descargar</button>
+    </div>
+    <p id="msg" class="text-center text-[12px] mt-2 hidden" style="color:#a7d18a"></p>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Cifras referenciales de divulgación (Banco Central, Cochilco, Consejo Minero); el cobre del día es de mindicador.cl. · <a href="adn-minero-desarrollo.html" style="color:#e8c9a6">Desarrollo</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+
+  <img id="qrSrc" alt="" style="display:none" src="data:image/png;base64,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" />
+
+<script>
+  const drawIcons=()=>window.lucide&&lucide.createIcons(); drawIcons();
+  var cv=document.getElementById('preview'), ctx=cv.getContext('2d');
+  var W=1080, H=1350, cobre=null;
+
+  function rr(x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+
+  var FIGS=[
+    ['≈60%','de las exportaciones de Chile','#a7c6de'],
+    ['10–15%','del Producto Interno Bruto','#a7d18a'],
+    ['US$12.458 M','de aporte al fisco (2026)','#e8c9a6'],
+    ['≈270 mil','empleos directos','#e0955f'],
+    ['US$104.549 M','en inversión 2025–2034','#c9a888']
+  ];
+
+  function draw(){
+    // fondo
+    var g=ctx.createLinearGradient(0,0,W,H); g.addColorStop(0,'#1a1310'); g.addColorStop(1,'#100c0a');
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    var rg=ctx.createRadialGradient(160,-40,60,160,-40,700); rg.addColorStop(0,'rgba(207,155,111,.20)'); rg.addColorStop(1,'rgba(207,155,111,0)');
+    ctx.fillStyle=rg; ctx.fillRect(0,0,W,H);
+
+    ctx.textBaseline='alphabetic';
+    // wordmark
+    ctx.fillStyle='#e8c9a6'; ctx.font='800 60px Inter, sans-serif'; ctx.textAlign='left';
+    ctx.fillText('ADN', 80, 150);
+    ctx.fillStyle='#f4ece5'; ctx.fillText('MINERO', 80+ctx.measureText('ADN ').width, 150);
+    ctx.fillStyle='#9c8f83'; ctx.font='500 27px Inter, sans-serif';
+    ctx.fillText('El medio de la minería chilena', 82, 192);
+    // divisor cobre
+    ctx.fillStyle='#cf9b6f'; rr(80,224,120,6,3); ctx.fill();
+
+    // título
+    ctx.fillStyle='#f4ece5'; ctx.font='900 82px Inter, sans-serif';
+    ctx.fillText('La minería,', 80, 340);
+    ctx.fillStyle='#e8c9a6'; ctx.fillText('motor de Chile', 80, 430);
+
+    // figuras
+    var y=545;
+    FIGS.forEach(function(f){
+      ctx.fillStyle=f[2]; ctx.font='900 66px Inter, sans-serif'; ctx.textAlign='left';
+      ctx.fillText(f[0], 80, y);
+      ctx.fillStyle='#c9bcae'; ctx.font='500 30px Inter, sans-serif';
+      ctx.fillText(f[1], 80, y+42);
+      y+=132;
+    });
+
+    // franja cobre en vivo
+    ctx.fillStyle='rgba(224,113,90,.14)'; rr(80,y-30,W-160,86,16); ctx.fill();
+    ctx.fillStyle='#e0715a'; ctx.beginPath(); ctx.arc(116,y+13,9,0,7); ctx.fill();
+    ctx.fillStyle='#f4ece5'; ctx.font='700 32px Inter, sans-serif';
+    ctx.fillText('Cobre hoy: '+(cobre?('US$'+cobre.toFixed(2)+'/lb'):'—'), 140, y+24);
+
+    // QR + pie
+    var qy=H-300;
+    var qr=document.getElementById('qrSrc');
+    if(qr && qr.complete && qr.naturalWidth){
+      ctx.fillStyle='#f4ead9'; rr(80,qy,220,220,18); ctx.fill();
+      ctx.drawImage(qr, 98, qy+18, 184, 184);
+    }
+    ctx.fillStyle='#e8c9a6'; ctx.font='800 34px Inter, sans-serif'; ctx.textAlign='left';
+    ctx.fillText('Escanéalo', 330, qy+92);
+    ctx.fillStyle='#c9bcae'; ctx.font='500 28px Inter, sans-serif';
+    ctx.fillText('y explora la minería', 330, qy+134);
+    ctx.fillText('de Chile en ADN Minero', 330, qy+170);
+
+    // pie
+    ctx.fillStyle='#7a6f64'; ctx.font='500 24px Inter, sans-serif';
+    ctx.fillText('simonrovi-web.github.io/adn-minero', 80, H-56);
+  }
+
+  // dibujar cuando fuentes y QR estén listos
+  function ready(){ draw(); }
+  if(document.fonts && document.fonts.ready){ document.fonts.ready.then(ready); }
+  var qrimg=document.getElementById('qrSrc');
+  if(qrimg){ if(qrimg.complete) draw(); else qrimg.onload=draw; }
+  setTimeout(draw, 400); setTimeout(draw, 1200);
+
+  // cobre en vivo (cache compartido)
+  (function(){
+    try{ var c=JSON.parse(localStorage.getItem('adn_cu')||'null'); if(c&&c.cu){ cobre=c.cu; draw(); } }catch(e){}
+    fetch('https://mindicador.cl/api').then(function(r){return r.ok?r.json():null;}).then(function(d){
+      if(d&&d.libra_cobre&&d.libra_cobre.valor){ cobre=d.libra_cobre.valor; draw();
+        try{ localStorage.setItem('adn_cu', JSON.stringify({cu:cobre, dl:(d.dolar&&d.dolar.valor)||0, ts:Date.now()})); }catch(e){} }
+    }).catch(function(){});
+  })();
+
+  function toast(m){ var el=document.getElementById('msg'); if(!el)return; el.textContent=m; el.classList.remove('hidden'); setTimeout(function(){el.classList.add('hidden');},2800); }
+
+  document.getElementById('btnShare').addEventListener('click', function(){
+    cv.toBlob(function(blob){
+      if(!blob){ toast('No se pudo generar la imagen.'); return; }
+      var file=new File([blob],'adn-minero-resumen.png',{type:'image/png'});
+      if(navigator.canShare && navigator.canShare({files:[file]})){
+        navigator.share({ files:[file], title:'ADN Minero', text:'La minería, motor de Chile 🇨🇱⛏️' }).catch(function(){});
+      } else {
+        var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='adn-minero-resumen.png'; a.click();
+        setTimeout(function(){URL.revokeObjectURL(a.href);},1500);
+        toast('Tu equipo no soporta compartir imagen; la descargué.');
+      }
+    }, 'image/png');
+  });
+  document.getElementById('btnDl').addEventListener('click', function(){
+    cv.toBlob(function(blob){
+      if(!blob){ toast('No se pudo generar la imagen.'); return; }
+      var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='adn-minero-resumen.png'; a.click();
+      setTimeout(function(){URL.revokeObjectURL(a.href);},1500);
+      toast('¡Imagen descargada!');
+    }, 'image/png');
+  });
+</script>
+</body>
+</html>
