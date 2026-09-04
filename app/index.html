@@ -63,6 +63,27 @@
       </div>
     </header>
 
+    <!-- HERO DESARROLLO (motor de Chile) -->
+    <a id="heroDev" href="../adn-minero-desarrollo.html" class="group block mt-6 sm:mt-8 max-w-3xl mx-auto rounded-2xl p-4 sm:p-5 transition active:scale-[.99]" style="background:linear-gradient(135deg, rgba(207,155,111,.16), rgba(43,37,32,.5));border:1px solid rgba(207,155,111,.32)">
+      <div class="flex items-center gap-3 sm:gap-4">
+        <span class="h-12 w-12 sm:h-14 sm:w-14 rounded-2xl grid place-items-center shrink-0" style="background:rgba(207,155,111,.22);border:1px solid rgba(207,155,111,.4)"><i data-lucide="trending-up" class="w-7 h-7 text-[#e8c9a6]"></i></span>
+        <div class="min-w-0 flex-1">
+          <p class="text-[10px] uppercase tracking-[.14em] font-bold text-[#e0c3a0]">Estrategia y Desarrollo</p>
+          <h2 class="text-lg sm:text-2xl font-extrabold leading-tight">La minería, motor de Chile</h2>
+          <p class="text-xs sm:text-sm text-stone-400 mt-0.5 hidden sm:block">La foto país: cuánto produce, cuánto aporta y hacia dónde va</p>
+        </div>
+        <i data-lucide="arrow-right" class="w-5 h-5 shrink-0 text-[#e8c9a6] transition-transform group-hover:translate-x-1"></i>
+      </div>
+      <div class="grid grid-cols-3 gap-2 mt-3 sm:mt-4">
+        <div class="rounded-xl px-2 py-2 text-center" style="background:rgba(0,0,0,.18)"><div class="text-[9px] uppercase tracking-wider text-stone-400 font-bold flex items-center justify-center gap-1"><span class="h-1.5 w-1.5 rounded-full inline-block" style="background:#e0715a"></span>Cobre</div><b id="heroCu" class="block text-sm sm:text-base font-black text-[#e8c9a6]" style="font-variant-numeric:tabular-nums">—</b></div>
+        <div class="rounded-xl px-2 py-2 text-center" style="background:rgba(0,0,0,.18)"><div class="text-[9px] uppercase tracking-wider text-stone-400 font-bold">Del PIB</div><b class="block text-sm sm:text-base font-black text-[#a7d18a]">10–15%</b></div>
+        <div class="rounded-xl px-2 py-2 text-center" style="background:rgba(0,0,0,.18)"><div class="text-[9px] uppercase tracking-wider text-stone-400 font-bold">Al fisco ’26</div><b class="block text-sm sm:text-base font-black text-[#e8c9a6]" style="font-variant-numeric:tabular-nums">US$12.458M</b></div>
+      </div>
+    </a>
+    <script>
+      (function(){ fetch('https://mindicador.cl/api').then(r=>r.ok?r.json():null).then(d=>{ if(d&&d.libra_cobre&&d.libra_cobre.valor){ var el=document.getElementById('heroCu'); if(el) el.textContent='US$'+d.libra_cobre.valor.toFixed(2)+'/lb'; } }).catch(function(){}); })();
+    </script>
+
     <!-- BUSCADOR -->
     <div class="mt-8 sm:mt-10 max-w-xl mx-auto">
       <div class="glass rounded-2xl flex items-center gap-2 px-4 py-2.5">
@@ -612,6 +633,7 @@
 
       // Inicio (tarjetas de categoría), perfil y favoritos: solo en la vista de inicio
       document.getElementById('homeCats').classList.toggle('hidden', !home);
+      { const hd=document.getElementById('heroDev'); if(hd) hd.classList.toggle('hidden', !home); }
       document.getElementById('hoy').classList.toggle('hidden', !home);
       const tEl=document.getElementById('titulares'); if(tEl) tEl.classList.toggle('hidden', !home || tEl.children.length===0);
       document.getElementById('miFaena').classList.toggle('hidden', !home);
