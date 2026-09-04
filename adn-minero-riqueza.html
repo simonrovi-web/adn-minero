@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · ¿A dónde va la riqueza?</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="¿A dónde va la riqueza minera?: el camino de la plata de la minería — impuestos y royalty, cómo se reparte a regiones y 309 comunas, y en qué se transforma." />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(167,209,138,0.12), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    .tier{ opacity:0; transform:translateY(10px); animation:rise .55s cubic-bezier(.22,1,.36,1) forwards; }
+    @keyframes rise{ to{ opacity:1; transform:none } }
+    .node{ border-radius:14px; padding:12px 12px; text-align:center; }
+    .conn{ display:flex; justify-content:center; margin:2px 0; color:#6b5d52; }
+    .tlabel{ font-size:10.5px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:#9c8f83; margin:0 0 8px 2px; }
+    h3{ margin:0; }
+  </style>
+  <script src="adn-ui.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(167,209,138,.15);border:1px solid rgba(167,209,138,.34)"><i data-lucide="hand-coins" style="width:26px;height:26px;color:#a7d18a"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#bfe0a8;font-weight:800">¿A dónde va la riqueza?</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">El camino de la plata de la minería</p>
+      </div>
+    </header>
+
+    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">Cuando una minera gana, parte de esa plata llega al país por dos vías —<b>impuestos</b> y <b>royalty</b>— y termina financiando servicios en todo Chile. Este es el recorrido, simplificado.</p>
+
+    <!-- TIER 1 -->
+    <div class="tier mt-5" style="animation-delay:.05s">
+      <p class="tlabel">1 · La minería genera</p>
+      <div class="glass node" style="border-color:rgba(207,155,111,.4);background:linear-gradient(160deg,rgba(207,155,111,.16),rgba(43,37,32,.5))">
+        <i data-lucide="pickaxe" style="width:22px;height:22px;color:#e8c9a6"></i>
+        <p class="font-black text-[15px] mt-1">Utilidades de la minería</p>
+        <p class="text-[11.5px] text-stone-400">Sobre todo del cobre y, cada vez más, del litio</p>
+      </div>
+    </div>
+    <div class="conn"><i data-lucide="chevrons-down" class="w-5 h-5"></i></div>
+
+    <!-- TIER 2 -->
+    <div class="tier" style="animation-delay:.18s">
+      <p class="tlabel">2 · Llega al país por dos vías</p>
+      <div class="grid grid-cols-2 gap-2.5">
+        <div class="glass node" style="border-color:rgba(232,201,166,.3)">
+          <i data-lucide="landmark" style="width:20px;height:20px;color:#e8c9a6"></i>
+          <p class="font-bold text-[13.5px] mt-1">Impuestos</p>
+          <p class="text-[11px] text-stone-400 leading-snug">Impuesto a la renta, específico a la minería (IEAM) y otros. Van al <b>arca fiscal</b> común.</p>
+        </div>
+        <div class="glass node" style="border-color:rgba(167,209,138,.3)">
+          <i data-lucide="hand-coins" style="width:20px;height:20px;color:#a7d18a"></i>
+          <p class="font-bold text-[13.5px] mt-1">Royalty minero</p>
+          <p class="text-[11px] text-stone-400 leading-snug">Ley 21.591 (2024): un pago por explotar el cobre, <b>dirigido a regiones y comunas</b>.</p>
+        </div>
+      </div>
+    </div>
+    <div class="conn"><i data-lucide="chevrons-down" class="w-5 h-5"></i></div>
+
+    <!-- TIER 3 -->
+    <div class="tier" style="animation-delay:.31s">
+      <p class="tlabel">3 · Se reparte a los territorios</p>
+      <div class="grid gap-2.5" id="funds"></div>
+    </div>
+    <div class="conn"><i data-lucide="chevrons-down" class="w-5 h-5"></i></div>
+
+    <!-- TIER 4 -->
+    <div class="tier" style="animation-delay:.44s">
+      <p class="tlabel">4 · Se transforma en desarrollo</p>
+      <div class="grid grid-cols-3 gap-2.5" id="uses"></div>
+    </div>
+
+    <!-- Nota -->
+    <div class="glass rounded-2xl p-4 mt-5" style="border-color:rgba(214,169,79,.28)">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="info" style="width:17px;height:17px;color:#d6a94f"></i><h3 class="font-bold text-[13.5px]">La idea de fondo</h3></div>
+      <p class="text-[12.5px] text-stone-300 leading-relaxed">El royalty busca que la riqueza minera <b>también se quede donde se produce</b>: en las regiones y comunas que conviven con las faenas, no solo en el nivel central. Es una herramienta clave de <b>equidad territorial</b>.</p>
+    </div>
+
+    <div class="mt-3 grid grid-cols-2 gap-2.5">
+      <a href="adn-minero-royalty.html" class="glass rounded-2xl p-3.5 active:scale-95 transition"><i data-lucide="map-pinned" style="width:19px;height:19px;color:#a7d18a"></i><p class="text-[13px] font-bold mt-1.5">Royalty por comuna</p><p class="text-[11px] text-stone-500">Las 309 comunas</p></a>
+      <a href="adn-minero-aporte-fiscal.html" class="glass rounded-2xl p-3.5 active:scale-95 transition"><i data-lucide="landmark" style="width:19px;height:19px;color:#e8c9a6"></i><p class="text-[13px] font-bold mt-1.5">Aporte al Estado</p><p class="text-[11px] text-stone-500">US$12.458 M</p></a>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Esquema de divulgación simplificado; el detalle legal es más complejo.<br>Fuentes: Ley 21.591, Ministerio de Hacienda, Subdere, Cochilco. · <a href="adn-minero-desarrollo.html" style="color:#e8c9a6">Desarrollo</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+
+<script>
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const FUNDS=[
+    { ic:'building-2', c:'#7fb0d9', t:'Gobiernos Regionales', d:'Un fondo para que las regiones inviertan según sus prioridades.' },
+    { ic:'mountain',   c:'#cf9b6f', t:'Comunas mineras', d:'Recursos extra para las comunas donde se emplaza la minería.' },
+    { ic:'scale',      c:'#a7d18a', t:'Equidad territorial', d:'Se reparte entre las 309 comunas del país, sobre todo las de menores ingresos.' }
+  ];
+  document.getElementById('funds').innerHTML=FUNDS.map(f=>`
+    <div class="glass node flex items-center gap-3 text-left" style="border-color:${f.c}40;padding:11px 12px">
+      <div class="h-9 w-9 rounded-lg grid place-items-center shrink-0" style="background:${f.c}22;border:1px solid ${f.c}55"><i data-lucide="${f.ic}" class="w-5 h-5" style="color:${f.c}"></i></div>
+      <div class="min-w-0"><p class="font-bold text-[13.5px]">${f.t}</p><p class="text-[11.5px] text-stone-400 leading-snug">${f.d}</p></div>
+    </div>`).join('');
+  const USES=[
+    { ic:'heart-pulse', c:'#e0715a', t:'Salud' },
+    { ic:'graduation-cap', c:'#e8c9a6', t:'Educación' },
+    { ic:'construction', c:'#d6a94f', t:'Obras' },
+    { ic:'shield', c:'#7fb0d9', t:'Seguridad' },
+    { ic:'sprout', c:'#a7d18a', t:'Fomento local' },
+    { ic:'bus', c:'#c9a888', t:'Transporte' }
+  ];
+  document.getElementById('uses').innerHTML=USES.map(u=>`
+    <div class="glass node" style="padding:12px 6px"><i data-lucide="${u.ic}" style="width:20px;height:20px;color:${u.c}"></i><p class="text-[11.5px] font-semibold mt-1.5">${u.t}</p></div>`).join('');
+  drawIcons();
+</script>
+</body>
+</html>
