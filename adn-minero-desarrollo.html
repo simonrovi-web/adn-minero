@@ -54,6 +54,7 @@
           <div class="text-center">
             <div class="text-[10px] text-stone-400 font-semibold">Dólar</div>
             <b id="lvDolar" style="font-size:19px;color:#a7d18a;font-variant-numeric:tabular-nums">—</b>
+            <span id="lvDolarT" class="block text-[10px] font-bold" style="font-variant-numeric:tabular-nums"></span>
           </div>
         </div>
       </div>
@@ -164,6 +165,18 @@
         '<circle cx="'+last[0].toFixed(1)+'" cy="'+last[1].toFixed(1)+'" r="3.2" fill="'+c+'"/>';
       var t=document.getElementById('lvTrend'); if(t){ t.textContent=(up?'▲ +':'▼ ')+chg.toFixed(1)+'%'; t.style.color=c; }
       box.classList.remove('hidden');
+    }).catch(function(){});
+  })();
+
+  // Tendencia del dólar (30 días) — colores neutros
+  (function(){
+    var el=document.getElementById('lvDolarT'); if(!el) return;
+    fetch('https://mindicador.cl/api/dolar').then(function(r){return r.ok?r.json():null;}).then(function(d){
+      var ser=(d&&d.serie)||[]; if(ser.length<3) return;
+      var hoy=ser[0].valor, ini=ser[Math.min(29,ser.length-1)].valor; if(!ini) return;
+      var chg=((hoy-ini)/ini)*100, up=chg>=0;
+      el.textContent=(up?'▲ +':'▼ ')+chg.toFixed(1)+'%';
+      el.style.color=up?'#e0955f':'#7fb0d9';
     }).catch(function(){});
   })();
 
