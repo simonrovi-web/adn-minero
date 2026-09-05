@@ -37,7 +37,7 @@
 
     <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">Comparte de un toque las cifras que muestran a la minería como motor de Chile. La imagen incluye un código QR para que quien la vea llegue a la app.</p>
 
-    <div class="mt-4"><canvas id="preview" width="1080" height="1350"></canvas></div>
+    <div class="mt-4"><canvas id="preview" width="1080" height="1500"></canvas></div>
 
     <div class="grid grid-cols-2 gap-2.5 mt-3">
       <button id="btnShare" class="btn" style="background:linear-gradient(150deg,#e8c9a6,#cf9b6f);color:#211a15"><i data-lucide="share-2" class="w-5 h-5"></i> Compartir</button>
@@ -53,7 +53,7 @@
 <script>
   const drawIcons=()=>window.lucide&&lucide.createIcons(); drawIcons();
   var cv=document.getElementById('preview'), ctx=cv.getContext('2d');
-  var W=1080, H=1350, cobre=null;
+  var W=1080, H=1500, cobre=null;
 
   function rr(x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
 
@@ -88,37 +88,40 @@
     ctx.fillStyle='#e8c9a6'; ctx.fillText('motor de Chile', 80, 430);
 
     // figuras
-    var y=545;
+    var y=530;
     FIGS.forEach(function(f){
-      ctx.fillStyle=f[2]; ctx.font='900 66px Inter, sans-serif'; ctx.textAlign='left';
+      ctx.fillStyle=f[2]; ctx.font='900 62px Inter, sans-serif'; ctx.textAlign='left';
       ctx.fillText(f[0], 80, y);
-      ctx.fillStyle='#c9bcae'; ctx.font='500 30px Inter, sans-serif';
-      ctx.fillText(f[1], 80, y+42);
-      y+=132;
+      ctx.fillStyle='#c9bcae'; ctx.font='500 29px Inter, sans-serif';
+      ctx.fillText(f[1], 80, y+40);
+      y+=120;
     });
 
-    // franja cobre en vivo
-    ctx.fillStyle='rgba(224,113,90,.14)'; rr(80,y-30,W-160,86,16); ctx.fill();
-    ctx.fillStyle='#e0715a'; ctx.beginPath(); ctx.arc(116,y+13,9,0,7); ctx.fill();
+    // franja cobre en vivo (debajo de las cifras)
+    var fy=y+8;
+    ctx.fillStyle='rgba(224,113,90,.14)'; rr(80,fy,W-160,88,16); ctx.fill();
+    ctx.fillStyle='#e0715a'; ctx.beginPath(); ctx.arc(120,fy+44,9,0,7); ctx.fill();
+    ctx.textBaseline='middle';
     ctx.fillStyle='#f4ece5'; ctx.font='700 32px Inter, sans-serif';
-    ctx.fillText('Cobre hoy: '+(cobre?('US$'+cobre.toFixed(2)+'/lb'):'—'), 140, y+24);
+    ctx.fillText('Cobre hoy: '+(cobre?('US$'+cobre.toFixed(2)+'/lb'):'—'), 144, fy+46);
+    ctx.textBaseline='alphabetic';
 
-    // QR + pie
-    var qy=H-300;
+    // QR + texto (en flujo, debajo de la franja → nunca encima)
+    var qy=fy+120;
     var qr=document.getElementById('qrSrc');
     if(qr && qr.complete && qr.naturalWidth){
-      ctx.fillStyle='#f4ead9'; rr(80,qy,220,220,18); ctx.fill();
-      ctx.drawImage(qr, 98, qy+18, 184, 184);
+      ctx.fillStyle='#f4ead9'; rr(80,qy,185,185,16); ctx.fill();
+      ctx.drawImage(qr, 95, qy+15, 155, 155);
     }
     ctx.fillStyle='#e8c9a6'; ctx.font='800 34px Inter, sans-serif'; ctx.textAlign='left';
-    ctx.fillText('Escanéalo', 330, qy+92);
-    ctx.fillStyle='#c9bcae'; ctx.font='500 28px Inter, sans-serif';
-    ctx.fillText('y explora la minería', 330, qy+134);
-    ctx.fillText('de Chile en ADN Minero', 330, qy+170);
+    ctx.fillText('Escanéalo', 300, qy+56);
+    ctx.fillStyle='#c9bcae'; ctx.font='500 27px Inter, sans-serif';
+    ctx.fillText('y explora la minería', 300, qy+98);
+    ctx.fillText('de Chile en ADN Minero', 300, qy+132);
 
     // pie
-    ctx.fillStyle='#7a6f64'; ctx.font='500 24px Inter, sans-serif';
-    ctx.fillText('simonrovi-web.github.io/adn-minero', 80, H-56);
+    ctx.fillStyle='#7a6f64'; ctx.font='500 24px Inter, sans-serif'; ctx.textAlign='left';
+    ctx.fillText('simonrovi-web.github.io/adn-minero', 80, H-42);
   }
 
   // dibujar cuando fuentes y QR estén listos
