@@ -81,6 +81,7 @@
     {k:'empleos', ic:'briefcase', c:'#a7d18a', t:'Nuevos empleos en la Bolsa'},
     {k:'tv',      ic:'tv',        c:'#e0715a', t:'ADN Minero TV cuando esté EN VIVO'},
     {k:'cobre',   ic:'coins',     c:'#cf9b6f', t:'Movimientos fuertes del cobre'},
+    {k:'diario',  ic:'lightbulb', c:'#e0c35a', t:'Dato minero del día (cada mañana)'},
     {k:'boletin', ic:'newspaper', c:'#7fbf9a', t:'Resumen semanal (lunes por la mañana)'}
   ];
   function getPrefs(){ try{ return JSON.parse(localStorage.getItem('adn_push_prefs')||'null')||{}; }catch(e){ return {}; } }
