@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · Faenas de Chile</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="Faenas de Chile: la colección de fichas de las grandes minas del país — Chuquicamata, El Teniente, Escondida, el Salar de Atacama y más, con su historia y su rol en el desarrollo." />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(207,155,111,0.13), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 96px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    .fcard{ display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; }
+    .tag{ font-size:9.5px; font-weight:800; letter-spacing:.03em; text-transform:uppercase; padding:2px 7px; border-radius:999px; }
+    .lbl{ font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:#9c8f83; margin:18px 2px 8px; }
+    h3{ margin:0; }
+  </style>
+  <script src="adn-ui.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(207,155,111,.15);border:1px solid rgba(207,155,111,.32)"><i data-lucide="layers-3" style="width:26px;height:26px;color:#cf9b6f"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#e0c3a0;font-weight:800">Faenas de Chile</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Las grandes minas, una por una</p>
+      </div>
+    </header>
+
+    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">Cada gran mina tiene su historia, su gente y su rol en el país. Esta es la colección de fichas de las faenas más importantes de Chile. Toca una para conocerla.</p>
+
+    <p class="lbl">Las gigantes de Codelco (estatales)</p>
+    <div id="g1" class="grid gap-2.5"></div>
+    <p class="lbl">Grandes privadas y de capital chileno</p>
+    <div id="g2" class="grid gap-2.5"></div>
+    <p class="lbl">El litio</p>
+    <div id="g3" class="grid gap-2.5"></div>
+
+    <div class="glass rounded-2xl p-4 mt-5">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="map" style="width:17px;height:17px;color:#7fb0d9"></i><h3 class="font-bold text-[13.5px]">¿Quieres verlas en el mapa?</h3></div>
+      <p class="text-[12.5px] text-stone-300 leading-relaxed">El mapa minero muestra dónde está cada faena a lo largo de Chile.</p>
+      <a href="adn-minero-mapa.html" class="inline-flex items-center gap-1.5 mt-2.5 text-[13px] font-bold" style="color:#7fb0d9">Abrir el mapa minero <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Fichas de divulgación con datos referenciales. · <a href="adn-minero-empresas.html" style="color:#e8c9a6">Empresas</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+
+<script>
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const F={
+    g1:[
+      {f:'chuqui',n:'Chuquicamata',r:'Antofagasta',ic:'mountain',t:'A cielo abierto'},
+      {f:'teniente',n:'El Teniente',r:"O'Higgins",ic:'pickaxe',t:'Subterránea'},
+      {f:'andina',n:'Andina',r:'Valparaíso',ic:'mountain-snow',t:'Cordillera'},
+      {f:'salvador',n:'El Salvador',r:'Atacama',ic:'flame',t:'Rajo Inca'}
+    ],
+    g2:[
+      {f:'escondida',n:'Escondida',r:'Antofagasta',ic:'gem',t:'BHP · N.º1'},
+      {f:'collahuasi',n:'Collahuasi',r:'Tarapacá',ic:'mountain-snow',t:'Anglo/Glencore'},
+      {f:'pelambres',n:'Los Pelambres',r:'Coquimbo',ic:'factory',t:'Cap. chileno'},
+      {f:'spence',n:'Spence',r:'Antofagasta',ic:'gem',t:'BHP'},
+      {f:'candelaria',n:'Candelaria',r:'Atacama',ic:'gem',t:'Lundin'},
+      {f:'qb',n:'Quebrada Blanca',r:'Tarapacá',ic:'layers',t:'Teck · QB2'}
+    ],
+    g3:[
+      {f:'salar',n:'Salar de Atacama',r:'Antofagasta',ic:'battery-charging',t:'SQM/Albemarle'}
+    ]
+  };
+  function card(x){
+    return '<a class="glass rounded-2xl p-3.5 fcard active:scale-95 transition" href="adn-minero-'+x.f+'.html">'+
+      '<div class="h-11 w-11 rounded-xl grid place-items-center shrink-0" style="background:rgba(207,155,111,.14);border:1px solid rgba(207,155,111,.3)"><i data-lucide="'+x.ic+'" class="w-5 h-5" style="color:#cf9b6f"></i></div>'+
+      '<div class="min-w-0 flex-1"><h3 class="font-bold text-[15px] leading-tight">'+x.n+'</h3>'+
+      '<p class="text-[11.5px] text-stone-400 mt-0.5"><i data-lucide="map-pin" class="w-3 h-3 inline align-[-1px]"></i> '+x.r+'</p></div>'+
+      '<span class="tag shrink-0" style="background:rgba(207,155,111,.14);color:#e8c9a6;border:1px solid rgba(207,155,111,.28)">'+x.t+'</span>'+
+      '<i data-lucide="chevron-right" class="w-5 h-5 shrink-0" style="color:#6b5d52"></i></a>';
+  }
+  document.getElementById('g1').innerHTML=F.g1.map(card).join('');
+  document.getElementById('g2').innerHTML=F.g2.map(card).join('');
+  document.getElementById('g3').innerHTML=F.g3.map(card).join('');
+  drawIcons();
+</script>
+</body>
+</html>
