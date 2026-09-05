@@ -109,6 +109,9 @@
     <!-- PARA TI (personalizado con IA) -->
     <div id="paraTi" class="mt-4 hidden"></div>
 
+    <!-- ¿SABÍAS QUE? (loop de curiosidad) -->
+    <div id="sabias" class="mt-4 hidden"></div>
+
     <!-- MIS PANELES (favoritos) -->
     <section id="sec-fav" class="mt-10 hidden">
       <div class="flex items-center gap-3 mb-5">
@@ -368,6 +371,7 @@
       renderProfile();
       renderHoy();
       renderParaTi();
+      renderSabias();
       renderStreak();
       renderTitulares();
       renderAuspicio();
@@ -576,6 +580,72 @@
       }catch(e){}
     }
 
+    // ===== ¿Sabías que…? loop de curiosidad =====
+    const SABIAS=[
+      ["Chile produce cerca de 1 de cada 4 kilos de cobre del mundo.","adn-minero-chile-mundo.html"],
+      ["El cobre es 100% reciclable y no pierde sus propiedades.","adn-minero-cobre-transicion.html"],
+      ["Un auto eléctrico usa varias veces más cobre que uno a bencina.","adn-minero-cobre-transicion.html"],
+      ["El Teniente tiene más de 4.500 km de túneles: la mina subterránea más grande del mundo.","adn-minero-teniente.html"],
+      ["Chuquicamata es una de las minas a cielo abierto más grandes del planeta.","adn-minero-chuqui.html"],
+      ["El litio de Chile sale de salmuera bajo el Salar de Atacama, evaporada por el sol.","adn-minero-salar.html"],
+      ["Al cobre se le dice “el sueldo de Chile”.","adn-minero-aporte-fiscal.html"],
+      ["Cada vez más faenas usan agua de mar desalada para cuidar los acuíferos.","adn-minero-metas.html"],
+      ["Sewell, el pueblo minero de El Teniente, es Patrimonio de la Humanidad.","adn-minero-teniente.html"],
+      ["Chile tiene las mayores reservas de cobre del mundo.","adn-minero-comparador.html"],
+      ["El royalty minero reparte recursos a las 309 comunas del país.","adn-minero-riqueza.html"],
+      ["El norte de Chile tiene la radiación solar más alta del planeta.","adn-minero-h2verde.html"],
+      ["El cátodo de cobre que exporta Chile tiene 99,99% de pureza.","adn-minero-proceso.html"],
+      ["Codelco es la mayor productora de cobre del mundo, y es del Estado.","adn-minero-empresas.html"],
+      ["Escondida es la mina de cobre privada más grande del mundo.","adn-minero-escondida.html"],
+      ["El hidrógeno verde podría ser un nuevo gran producto de exportación de Chile.","adn-minero-h2verde.html"],
+      ["La minería es cerca del 60% de las exportaciones de Chile.","adn-minero-desarrollo.html"],
+      ["Australia produce más litio que Chile, pero Chile tiene más reservas.","adn-minero-comparador.html"],
+      ["El molibdeno, subproducto del cobre, sirve para endurecer el acero.","adn-minero-produccion.html"],
+      ["Collahuasi opera a más de 4.400 metros de altura.","adn-minero-collahuasi.html"],
+      ["El cobre tiene propiedades antimicrobianas: elimina gérmenes en su superficie.","adn-minero-cobre-transicion.html"],
+      ["La flotación separa el cobre de la roca usando burbujas y reactivos.","adn-minero-proceso.html"],
+      ["Antofagasta es la región más minera de Chile.","adn-minero-mapa.html"],
+      ["China domina la refinación de cobre y litio, aunque casi no los produce.","adn-minero-comparador.html"],
+      ["Los Pelambres es una gran minera de capital chileno.","adn-minero-pelambres.html"],
+      ["Quebrada Blanca creció con QB2, uno de los mayores proyectos recientes.","adn-minero-qb.html"],
+      ["El litio es clave para las baterías de autos y celulares.","adn-minero-litio.html"],
+      ["Chile fue el mayor productor mundial de salitre hace un siglo.","adn-minero-historia.html"],
+      ["La cartera de inversión minera 2025–2034 suma US$104.549 millones.","adn-minero-cartera.html"],
+      ["El mineral viaja del cerro al puerto por un mineroducto de tuberías.","adn-minero-pelambres.html"],
+      ["La minería emplea de forma directa a unas 270 mil personas en Chile.","adn-minero-desarrollo.html"],
+      ["El Salvador renació de casi cerrar con el proyecto Rajo Inca.","adn-minero-salvador.html"]
+    ];
+    let _sab=-1;
+    function renderSabias(){
+      const el=document.getElementById("sabias"); if(!el) return;
+      el.innerHTML='<div class="glass rounded-2xl p-4">'+
+        '<div class="flex items-center justify-between mb-2">'+
+          '<h2 class="text-sm font-bold flex items-center gap-2"><i data-lucide="lightbulb" class="w-4 h-4" style="color:#e0c35a"></i> ¿Sabías que…?</h2>'+
+          '<button id="sabShare" type="button" aria-label="Compartir" class="text-stone-400 hover:text-stone-200 transition"><i data-lucide="share-2" class="w-4 h-4"></i></button>'+
+        '</div>'+
+        '<p id="sabTxt" class="text-[15px] leading-relaxed text-stone-100" style="min-height:3.2em;opacity:0;transition:opacity .3s"></p>'+
+        '<div class="flex items-center gap-2 mt-2">'+
+          '<a id="sabMore" style="color:#cf9b6f;text-decoration:none;font-weight:700;font-size:12.5px"></a>'+
+          '<button id="sabNext" class="ml-auto inline-flex items-center gap-1.5 text-[13px] font-bold rounded-full px-4 py-2 active:scale-95 transition" style="background:linear-gradient(150deg,#e8c9a6,#cf9b6f);color:#211a15">Otro dato <i data-lucide="refresh-cw" class="w-4 h-4"></i></button>'+
+        '</div></div>';
+      function show(){
+        let i; do { i=Math.floor(Math.random()*SABIAS.length); } while(i===_sab && SABIAS.length>1); _sab=i;
+        const t=document.getElementById("sabTxt"); if(!t) return; t.style.opacity="0";
+        setTimeout(function(){ t.textContent=SABIAS[i][0]; t.style.opacity="1";
+          const m=document.getElementById("sabMore");
+          if(m){ if(SABIAS[i][1]){ m.textContent="Saber más →"; m.href=PFX+SABIAS[i][1]; m.style.display=""; } else { m.style.display="none"; } }
+        },120);
+      }
+      const nx=document.getElementById("sabNext"); if(nx) nx.onclick=show;
+      const sh=document.getElementById("sabShare"); if(sh) sh.onclick=function(){
+        const txt="💡 ¿Sabías que… "+SABIAS[_sab][0]+"\n— vía ADN Minero";
+        const url=location.href.split("#")[0].split("?")[0];
+        if(navigator.share){ navigator.share({title:"ADN Minero", text:txt, url:url}).catch(function(){}); }
+        else if(navigator.clipboard){ navigator.clipboard.writeText(txt+" "+url).catch(function(){}); }
+      };
+      show(); window.lucide && lucide.createIcons();
+    }
+
     function renderHoy(){
       const el=document.getElementById('hoy'); if(!el) return;
       const p=window.ADNProfile&&ADNProfile.get();
@@ -658,6 +728,7 @@
       const tEl=document.getElementById('titulares'); if(tEl) tEl.classList.toggle('hidden', !home || tEl.children.length===0);
       document.getElementById('miFaena').classList.toggle('hidden', !home);
       const ptEl=document.getElementById('paraTi'); ptEl.classList.toggle('hidden', !home || ptEl.children.length===0);
+      { const sbEl=document.getElementById('sabias'); if(sbEl) sbEl.classList.toggle('hidden', !home); }
       const rEl=document.getElementById('racha'); if(rEl) rEl.classList.toggle('hidden', !home || rEl.children.length===0);
       document.getElementById('auspicio').classList.toggle('hidden', !home);
       document.getElementById('sec-fav').classList.toggle('hidden', !home || favCount===0);
