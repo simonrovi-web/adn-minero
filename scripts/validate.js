@@ -45,8 +45,9 @@ for (const f of HTML) {
   });
 }
 
-console.log('== 2) Evaluación de VIVO / DATOS ==');
-for (const f of ['index.html', 'app/index.html']) {
+console.log('== 2) Evaluación de VIVO / DATOS (portal-data.js) ==');
+{
+  const f = 'portal-data.js';
   const s = fs.readFileSync(path.join(ROOT, f), 'utf8');
   for (const name of ['VIVO', 'DATOS']) {
     const m = s.match(new RegExp('const\\s+' + name + '\\s*=\\s*(\\[[\\s\\S]*?\\]);'));
@@ -60,7 +61,7 @@ for (const f of ['index.html', 'app/index.html']) {
 }
 
 console.log('== 3) Integridad de enlaces internos ==');
-for (const f of HTML) {
+for (const f of [...HTML, 'portal-data.js']) {
   const s = fs.readFileSync(path.join(ROOT, f), 'utf8');
   const refs = new Set();
   let m;
