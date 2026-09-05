@@ -539,12 +539,29 @@
         const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
         const today=ymd(new Date()); const yd=new Date(); yd.setDate(yd.getDate()-1); const yest=ymd(yd);
         let st={}; try{ st=JSON.parse(localStorage.getItem('adn_streak')||'{}'); }catch(e){}
+        const justUp = (st.last!==today);
         let n=st.n||0, best=st.best||0;
-        if(st.last!==today){ n=(st.last===yest)?n+1:1; best=Math.max(best,n); try{ localStorage.setItem('adn_streak', JSON.stringify({n,last:today,best})); }catch(e){} }
+        if(justUp){ n=(st.last===yest)?n+1:1; best=Math.max(best,n); try{ localStorage.setItem('adn_streak', JSON.stringify({n,last:today,best})); }catch(e){} }
         else { n=st.n||1; best=st.best||n; }
         if(n<1){ el.innerHTML=''; return; }
-        const sub = n>1 ? '¡Vuelve mañana para no perderla!' : '¡Bienvenido! Vuelve mañana y suma racha.';
-        el.innerHTML='<div class="glass rounded-2xl px-4 py-2.5 flex items-center gap-3"><span style="font-size:20px">🔥</span><div class="flex-1 min-w-0"><p class="text-sm font-bold text-stone-100">Racha de '+n+' día'+(n>1?'s':'')+'</p><p class="text-[11px] text-stone-400">'+sub+'</p></div>'+(best>1?('<span class="text-[10px] text-stone-500 shrink-0">récord '+best+'</span>'):'')+'</div>';
+        const MS=[3,7,14,30,60,100];
+        let nxt=0, prv=0, i;
+        for(i=0;i<MS.length;i++){ if(MS[i]>n){ nxt=MS[i]; break; } }
+        for(i=MS.length-1;i>=0;i--){ if(MS[i]<=n){ prv=MS[i]; break; } }
+        const hit = justUp && MS.indexOf(n)>=0;
+        const pct = nxt ? Math.round(((n-prv)/(nxt-prv))*100) : 100;
+        const sub = hit ? ('🎉 ¡Hito de '+n+' días! Sigue así.')
+                  : nxt ? ('Te faltan '+(nxt-n)+' día'+((nxt-n)>1?'s':'')+' para el hito de '+nxt+' 🏅')
+                  : '👑 ¡Racha legendaria! Eres imparable.';
+        if(!document.getElementById('rachaCss')){ var stl=document.createElement('style'); stl.id='rachaCss'; stl.textContent='@keyframes rachaPop{0%{transform:scale(1)}30%{transform:scale(1.35)}60%{transform:scale(.9)}100%{transform:scale(1)}}@keyframes rachaGlow{0%,100%{filter:drop-shadow(0 0 0 rgba(224,113,90,0))}50%{filter:drop-shadow(0 0 10px rgba(224,113,90,.75))}}'; document.head.appendChild(stl); }
+        el.innerHTML='<div class="glass rounded-2xl px-4 py-3">'+
+          '<div class="flex items-center gap-3">'+
+            '<span style="font-size:24px;'+(justUp?'animation:rachaPop .6s ease, rachaGlow 1.2s ease':'')+'">🔥</span>'+
+            '<div class="flex-1 min-w-0"><p class="text-sm font-bold text-stone-100">Racha de '+n+' día'+(n>1?'s':'')+(justUp&&n>1?' <span style="color:#e0955f">· +1 hoy</span>':'')+'</p><p class="text-[11px] text-stone-400">'+sub+'</p></div>'+
+            (best>1?('<span class="text-[10px] text-stone-500 shrink-0">récord '+best+'</span>'):'')+
+          '</div>'+
+          (nxt?('<div style="height:6px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:9px"><span style="display:block;height:100%;border-radius:999px;width:'+pct+'%;background:linear-gradient(90deg,#e0955f,#e8c9a6)"></span></div>'):'')+
+          '</div>';
         applyFilter();
       }catch(e){}
     }
