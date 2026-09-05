@@ -21,7 +21,9 @@
     // Paneles de datos/cifras: el botón se enfoca en "explicar las cifras"
     var DATA_PANELS=['adn-minero-aporte-fiscal.html','adn-minero-royalty.html','adn-minero-produccion.html',
       'adn-minero-indicadores.html','adn-minero-commodities.html','adn-minero-cuenta-publica.html',
-      'adn-minero-cartera.html','adn-minero-historico.html','adn-minero-chile-mundo.html'];
+      'adn-minero-cartera.html','adn-minero-historico.html','adn-minero-chile-mundo.html',
+      'adn-minero-desarrollo.html','adn-minero-comparador.html','adn-minero-riqueza.html',
+      'adn-minero-indice.html','adn-minero-metas.html'];
     var isData=DATA_PANELS.indexOf(file)>=0;
 
     // ---- Tema del panel (para sembrar el contexto) ----
