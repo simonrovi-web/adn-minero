@@ -749,7 +749,8 @@
       else { window.open('https://wa.me/?text='+encodeURIComponent(text+'\n'+url),'_blank','noopener'); }
     }
     async function fetchHoy(){
-      try{ const j=await (await fetch('https://mindicador.cl/api/libra_cobre',{cache:'no-store'})).json(); const v=j.serie&&j.serie[0]&&j.serie[0].valor; if(v) setHoy('hCobre','US$ '+v.toFixed(2)); }catch(e){}
+      try{ var _cc=JSON.parse(localStorage.getItem('adn_cu')||'null'); if(_cc&&_cc.cu) setHoy('hCobre','US$ '+_cc.cu.toFixed(2)); }catch(e){}
+      try{ const j=await (await fetch('https://mindicador.cl/api/libra_cobre',{cache:'no-store'})).json(); const v=j.serie&&j.serie[0]&&j.serie[0].valor; if(v){ setHoy('hCobre','US$ '+v.toFixed(2)); try{ var _p=JSON.parse(localStorage.getItem('adn_cu')||'{}')||{}; _p.cu=v; _p.ts=Date.now(); localStorage.setItem('adn_cu',JSON.stringify(_p)); }catch(e){} } }catch(e){}
       try{ const u='https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=1&orderby=time&minmagnitude=2.5&minlatitude=-56&maxlatitude=-17&minlongitude=-77&maxlongitude=-66';
         const j=await (await fetch(u,{cache:'no-store'})).json(); const f=j.features&&j.features[0];
         if(f){ const m=f.properties.mag, h=Math.round((Date.now()-f.properties.time)/36e5); setHoy('hSismo','M'+(m||0).toFixed(1)+' · '+(h<1?'recién':h<24?(h+' h'):(Math.round(h/24)+' d'))); } }catch(e){}
