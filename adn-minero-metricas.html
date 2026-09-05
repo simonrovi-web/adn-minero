@@ -84,6 +84,8 @@
 
     <div id="lista" class="mt-4 grid gap-2"></div>
 
+    <div id="errores" class="mt-7"></div>
+
     <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Datos anónimos y agregados: no se guarda IP, cookies ni información personal. Respeta “No rastrear”. · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
   </div>
 
@@ -126,7 +128,29 @@
           </div>
           <div class="barbg"><div class="bar" style="width:${Math.max(4,Math.round(p.views/max*100))}%"></div></div>
         </div>`).join('');
+      loadErrores(tok);
     }catch(e){ setMsg('No se pudo conectar. Revisa tu conexión.','#e88'); }
+  }
+
+  function rel(ts){ if(!ts) return ''; const s=Math.round((Date.now()-ts)/1000);
+    if(s<60) return 'hace '+s+'s'; const m=Math.round(s/60);
+    if(m<60) return 'hace '+m+'min'; const h=Math.round(m/60);
+    if(h<24) return 'hace '+h+'h'; return 'hace '+Math.round(h/24)+'d'; }
+  const esc=s=>(s||'').replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
+
+  async function loadErrores(tok){
+    try{
+      const r=await fetch(`${BASE}/err?token=${encodeURIComponent(tok)}`);
+      if(!r.ok) return;
+      const errs=await r.json();
+      $('errores').innerHTML='<h2 class="text-lg font-bold mb-3">🐛 Errores recientes</h2>'+
+        (errs.length? errs.map(e=>`
+          <div class="glass rounded-2xl p-3 mb-2" style="border-color:rgba(224,113,90,.25)">
+            <p class="text-[12.5px] font-semibold leading-snug" style="color:#f0b8a6">${esc(e.m)}</p>
+            <p class="text-[11px] text-stone-500 mt-1">${nice(e.f)} · ${esc(e.l)} · ${rel(e.ts)}</p>
+          </div>`).join('')
+          : '<p class="text-center text-stone-500 text-sm py-4">Sin errores registrados. 🎉</p>');
+    }catch(e){}
   }
 
   $('go').addEventListener('click', load);

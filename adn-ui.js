@@ -422,3 +422,31 @@
     try{ localStorage.setItem(K, JSON.stringify(arr)); }catch(e){}
   }catch(e){}
 })();
+
+/* ===== Monitoreo de errores en producción (muestreado, privado, sin datos personales) ===== */
+(function(){
+  try{
+    if(location.protocol==='file:') return;
+    var sent=0, MAX=3;                 // máximo 3 por sesión (anti-spam)
+    function report(msg, src, line){
+      try{
+        if(sent>=MAX || !msg) return; sent++;
+        var f=(location.pathname||'').replace(/^.*\//,'')||'index.html';
+        var data=JSON.stringify({
+          m:String(msg).slice(0,300),
+          f:f,
+          l:(src?String(src).replace(/^.*\//,''):'')+':'+(line||0),
+          ua:(navigator.userAgent||'').slice(0,90)
+        });
+        var u='https://adn-muro.simonrovi.workers.dev/err';
+        // text/plain evita preflight CORS; el Worker igual parsea JSON
+        if(navigator.sendBeacon){ navigator.sendBeacon(u, new Blob([data],{type:'text/plain'})); }
+        else{ fetch(u,{method:'POST',headers:{'Content-Type':'text/plain'},body:data,keepalive:true}).catch(function(){}); }
+      }catch(e){}
+    }
+    window.addEventListener('error', function(e){ report(e.message, e.filename, e.lineno); });
+    window.addEventListener('unhandledrejection', function(e){
+      var r=e&&e.reason; report('promise: '+((r&&r.message)||r), '', 0);
+    });
+  }catch(e){}
+})();
