@@ -887,6 +887,10 @@
     (function(){
       let deferred=null;
       window.addEventListener('beforeinstallprompt', e=>{ e.preventDefault(); deferred=e; showBar(); });
+      // iOS Safari no dispara beforeinstallprompt → mostrar instrucciones para "Añadir a inicio"
+      var _isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent||'');
+      var _standalone=(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;
+      if(_isIOS && !_standalone){ window.addEventListener('load', function(){ setTimeout(showIosBar, 2800); }); }
       function showBar(){
         try{ if(localStorage.getItem('adn_install_dismiss')==='1') return; }catch(e){}
         if(document.getElementById('pwaBar')||!deferred) return;
@@ -900,6 +904,19 @@
         </div>`;
         document.body.appendChild(bar);
         document.getElementById('pwaGo').onclick=async ()=>{ if(!deferred) return; deferred.prompt(); try{ await deferred.userChoice; }catch(e){} deferred=null; bar.remove(); };
+        document.getElementById('pwaX').onclick=()=>{ try{ localStorage.setItem('adn_install_dismiss','1'); }catch(e){} bar.remove(); };
+      }
+      function showIosBar(){
+        try{ if(localStorage.getItem('adn_install_dismiss')==='1') return; }catch(e){}
+        if(document.getElementById('pwaBar')) return;
+        const bar=document.createElement('div'); bar.id='pwaBar';
+        bar.style.cssText='position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:3900;max-width:520px;margin:0 auto';
+        bar.innerHTML=`<div class="glass" style="display:flex;align-items:center;gap:11px;border-radius:16px;padding:12px 14px;box-shadow:0 10px 30px rgba(0,0,0,.5)">
+          <div style="height:40px;width:40px;border-radius:11px;display:grid;place-items:center;background:#cf9b6f22;border:1px solid #cf9b6f55;flex:0 0 auto;font-size:20px">⛏️</div>
+          <div style="flex:1;min-width:0"><p style="margin:0;font-weight:800;font-size:14px">Instala ADN Minero</p><p style="margin:0;font-size:12px;color:#c9b7a5">Toca <b>Compartir</b> y luego <b>“Añadir a pantalla de inicio”</b></p></div>
+          <button id="pwaX" aria-label="Cerrar" style="flex:0 0 auto;background:transparent;border:0;color:#8a8079;font-size:18px;cursor:pointer;padding:0 2px">✕</button>
+        </div>`;
+        document.body.appendChild(bar);
         document.getElementById('pwaX').onclick=()=>{ try{ localStorage.setItem('adn_install_dismiss','1'); }catch(e){} bar.remove(); };
       }
     })();
