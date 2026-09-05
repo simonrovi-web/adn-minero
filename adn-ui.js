@@ -406,3 +406,19 @@
     else setTimeout(go,350);
   }catch(e){}
 })();
+
+/* ===== Historial: registra paneles visitados para "Continúa donde quedaste" en el home ===== */
+(function(){
+  try{
+    var here=(location.pathname||"").replace(/^.*\//,"")||"";
+    if(!/^adn-minero-[a-z0-9-]+\.html$/i.test(here)) return;
+    if(/^adn-minero-(faldon|faldon-control|metricas)\.html$/i.test(here)) return;
+    var K="adn_recent", arr=[];
+    try{ arr=JSON.parse(localStorage.getItem(K)||"[]"); }catch(e){ arr=[]; }
+    if(!Array.isArray(arr)) arr=[];
+    arr=arr.filter(function(x){ return x && x.f && x.f!==here; });
+    arr.unshift({f:here, ts:Date.now()});
+    arr=arr.slice(0,8);
+    try{ localStorage.setItem(K, JSON.stringify(arr)); }catch(e){}
+  }catch(e){}
+})();

@@ -116,6 +116,9 @@
     </div>
 
     <!-- HOY (resumen en vivo) -->
+    <!-- CONTINÚA DONDE QUEDASTE -->
+    <div id="reciente" class="mt-8 hidden"></div>
+
     <div id="titulares" class="mt-6 hidden"></div>
     <div id="hoy" class="mt-8 hidden"></div>
 
@@ -386,6 +389,7 @@
       if (favItems.length) document.getElementById('grid-fav').innerHTML = favItems.map(p=>card(p, VIVO.includes(p))).join('');
       renderHomeCats();
       renderProfile();
+      renderReciente();
       renderHoy();
       renderParaTi();
       renderSabias();
@@ -663,6 +667,29 @@
       show(); window.lucide && lucide.createIcons();
     }
 
+    // ===== Continúa donde quedaste (historial local) =====
+    function renderReciente(){
+      try{
+        var el=document.getElementById("reciente"); if(!el) return;
+        var arr=[]; try{ arr=JSON.parse(localStorage.getItem("adn_recent")||"[]"); }catch(e){ arr=[]; }
+        if(!Array.isArray(arr)){ el.innerHTML=""; return; }
+        var byF={}; ALL.forEach(function(p){ byF[p.f.replace(/^\.\.\//,"")]=p; });
+        var seen={}, items=[];
+        for(var k=0;k<arr.length;k++){ var it=arr[k]&&byF[arr[k].f]; if(it && !seen[it.f]){ seen[it.f]=1; items.push(it); } }
+        items=items.slice(0,6);
+        if(items.length<2){ el.innerHTML=""; return; }
+        var cards=items.map(function(p){
+          var ic=p.i||"pickaxe", c=p.c||"#cf9b6f";
+          return '<a href="'+p.f+'" class="glass rounded-2xl p-3 flex items-center gap-2.5 active:scale-95 transition" style="text-decoration:none;color:inherit">'+
+            '<span style="width:34px;height:34px;border-radius:9px;flex:none;display:grid;place-items:center;background:'+c+'22;border:1px solid '+c+'55"><i data-lucide="'+ic+'" style="width:18px;height:18px;color:'+c+'"></i></span>'+
+            '<span style="min-width:0;flex:1;font-weight:700;font-size:13px;line-height:1.15">'+(p.t||p.f)+'</span></a>';
+        }).join("");
+        el.innerHTML='<div class="flex items-center gap-2 mb-3"><i data-lucide="history" class="w-5 h-5" style="color:#cf9b6f"></i><h2 class="text-lg font-bold">Continúa donde quedaste</h2></div>'+
+          '<div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">'+cards+'</div>';
+        window.lucide && lucide.createIcons();
+      }catch(e){ var el2=document.getElementById("reciente"); if(el2) el2.innerHTML=""; }
+    }
+
     function renderHoy(){
       const el=document.getElementById('hoy'); if(!el) return;
       const p=window.ADNProfile&&ADNProfile.get();
@@ -740,6 +767,7 @@
 
       // Inicio (tarjetas de categoría), perfil y favoritos: solo en la vista de inicio
       document.getElementById('homeCats').classList.toggle('hidden', !home);
+      { const rcEl=document.getElementById('reciente'); if(rcEl) rcEl.classList.toggle('hidden', !home || rcEl.children.length===0); }
       { const hd=document.getElementById('heroDev'); if(hd) hd.classList.toggle('hidden', !home); }
       document.getElementById('hoy').classList.toggle('hidden', !home);
       const tEl=document.getElementById('titulares'); if(tEl) tEl.classList.toggle('hidden', !home || tEl.children.length===0);
