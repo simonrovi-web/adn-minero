@@ -22,6 +22,7 @@
   <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
   <link rel="stylesheet" href="tailwind.min.css">
   <script src="lucide.min.js"></script>
+  <script src="datos-clave.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" /></noscript>
@@ -81,39 +82,9 @@
       <p class="text-[10.5px] text-stone-500 mt-2 text-center">El precio del cobre mueve el aporte fiscal y el PIB · <span id="lvFecha">mindicador.cl</span></p>
     </div>
 
-    <!-- KPIs -->
-    <div class="grid grid-cols-2 gap-2.5 mt-4">
-      <div class="glass rounded-2xl p-3.5 kpi">
-        <div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="mountain" class="w-4 h-4" style="color:#cf9b6f"></i><span class="text-[11px] font-bold text-stone-400">Producción de cobre</span></div>
-        <b style="font-size:26px;color:#e8c9a6">≈5,3<span style="font-size:13px;font-weight:700;color:#9c8f83"> Mt/año</span></b>
-        <p class="text-[11px] text-stone-500 mt-1">1º del mundo · ≈24% del cobre global</p>
-      </div>
-      <div class="glass rounded-2xl p-3.5 kpi">
-        <div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="pie-chart" class="w-4 h-4" style="color:#7fbf9a"></i><span class="text-[11px] font-bold text-stone-400">Peso en el PIB</span></div>
-        <b style="font-size:26px;color:#a7d18a">10–15<span style="font-size:13px;font-weight:700;color:#9c8f83"> %</span></b>
-        <p class="text-[11px] text-stone-500 mt-1">Según el año y el precio del cobre</p>
-      </div>
-      <div class="glass rounded-2xl p-3.5 kpi">
-        <div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="ship" class="w-4 h-4" style="color:#7fb0d9"></i><span class="text-[11px] font-bold text-stone-400">De las exportaciones</span></div>
-        <b style="font-size:26px;color:#a7c6de">≈60<span style="font-size:13px;font-weight:700;color:#9c8f83"> %</span></b>
-        <p class="text-[11px] text-stone-500 mt-1">El cobre solo, ≈50%</p>
-      </div>
-      <div class="glass rounded-2xl p-3.5 kpi">
-        <div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="landmark" class="w-4 h-4" style="color:#d6a94f"></i><span class="text-[11px] font-bold text-stone-400">Aporte fiscal 2026</span></div>
-        <b style="font-size:24px;color:#e8c9a6">US$12.458<span style="font-size:13px;font-weight:700;color:#9c8f83"> M</span></b>
-        <p class="text-[11px] text-stone-500 mt-1"><a href="adn-minero-aporte-fiscal.html" style="color:#cf9b6f">Ver detalle →</a></p>
-      </div>
-      <div class="glass rounded-2xl p-3.5 kpi">
-        <div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="users" class="w-4 h-4" style="color:#e0955f"></i><span class="text-[11px] font-bold text-stone-400">Empleo directo</span></div>
-        <b style="font-size:26px;color:#e8c9a6">≈270<span style="font-size:13px;font-weight:700;color:#9c8f83"> mil</span></b>
-        <p class="text-[11px] text-stone-500 mt-1">Más el empleo indirecto que arrastra</p>
-      </div>
-      <div class="glass rounded-2xl p-3.5 kpi">
-        <div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="hard-hat" class="w-4 h-4" style="color:#c9a888"></i><span class="text-[11px] font-bold text-stone-400">Cartera 2025–2034</span></div>
-        <b style="font-size:24px;color:#e8c9a6">US$104.549<span style="font-size:13px;font-weight:700;color:#9c8f83"> M</span></b>
-        <p class="text-[11px] text-stone-500 mt-1"><a href="adn-minero-cartera.html" style="color:#cf9b6f">Ver proyectos →</a></p>
-      </div>
-    </div>
+    <!-- KPIs (fuente única: datos-clave.js) -->
+    <div id="kpis" class="grid grid-cols-2 gap-2.5 mt-4"></div>
+    <p class="text-center text-[11px] text-stone-500 mt-3" id="datosSello"></p>
 
     <!-- Cuánto pesa -->
     <div class="glass rounded-2xl p-4 mt-3">
@@ -154,6 +125,19 @@
 
 <script>
   const drawIcons=()=>window.lucide&&lucide.createIcons();
+  (function(){
+    var D=window.ADN_DATOS; if(!D) return;
+    var host=document.getElementById('kpis');
+    if(host){ host.innerHTML=D.kpis.map(function(k){
+      var val='<b style="font-size:'+(k.v.length>7?'24':'26')+'px;color:'+k.vc+'">'+k.v+'<span style="font-size:13px;font-weight:700;color:#9c8f83">'+(k.u||'')+'</span></b>';
+      var nota=k.link?('<a href="'+k.link+'" style="color:#cf9b6f">'+(k.linkTxt||'Ver \u2192')+'</a>'):(k.nota||'');
+      return '<div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="'+k.ic+'" class="w-4 h-4" style="color:'+k.c+'"></i><span class="text-[11px] font-bold text-stone-400">'+k.lab+'</span></div>'+val+'<p class="text-[11px] text-stone-500 mt-1">'+nota+'</p></div>';
+    }).join(''); }
+    var sello=document.getElementById('datosSello');
+    if(sello){ var d=new Date(D.actualizado+'T12:00:00'); var mes=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][d.getMonth()];
+      sello.innerHTML='\U0001f4c5 Cifras actualizadas: <b style="color:#c9bcae">'+d.getDate()+' '+mes+' '+d.getFullYear()+'</b> \u00b7 Fuentes: '+D.fuentes; }
+    if(window.lucide) lucide.createIcons();
+  })();
 
   // ===== Datos en vivo (mindicador.cl) =====
 (function(){var K='adn_cu';var clp=n=>'$'+Math.round(n).toLocaleString('es-CL');function fill(cu,dl,fe){var a=document.getElementById('lvCobre');if(a&&cu)a.textContent='US$'+cu.toFixed(2);var b=document.getElementById('lvDolar');if(b&&dl)b.textContent=clp(dl);if(fe){var c=document.getElementById('lvFecha');if(c)c.textContent='mindicador.cl · '+fe;}}try{var ca=JSON.parse(localStorage.getItem(K)||'null');if(ca)fill(ca.cu,ca.dl,'');}catch(e){}fetch('https://mindicador.cl/api').then(r=>r.ok?r.json():null).then(d=>{if(!d)return;var cu=d.libra_cobre&&d.libra_cobre.valor,dl=d.dolar&&d.dolar.valor;var fe='';try{fe=new Date(d.dolar.fecha).toLocaleDateString('es-CL',{day:'2-digit',month:'2-digit',year:'numeric'});}catch(e){}fill(cu,dl,fe);try{localStorage.setItem(K,JSON.stringify({cu:cu,dl:dl,ts:Date.now()}));}catch(e){}}).catch(function(){});})();
