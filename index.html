@@ -670,6 +670,7 @@
       const d=new Date(); const hd=document.getElementById('hoyDate'); if(hd) hd.textContent=d.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long'});
       window.lucide && lucide.createIcons();
       const hs=document.getElementById('hoyShare'); if(hs) hs.onclick=shareHoy;
+      try{ var _hn=localStorage.getItem('adn_hoy_news'); if(_hn){ var _e=document.getElementById('hNews'); if(_e) _e.textContent=_hn; } }catch(e){}
       fetchHoy();
     }
     function setHoy(id,v){ const e=document.getElementById(id); if(e&&v!=null) e.textContent=v; }
@@ -693,7 +694,7 @@
       else setHoy('hClima','34 faenas');
       setHoy('hTv', TV_LIVE?'EN VIVO 🔴':'fuera de aire');
       try{ const API='https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent('https://news.google.com/rss/search?q='+encodeURIComponent('minería Chile cobre litio')+'&hl=es-419&gl=CL&ceid=CL:es');
-        const j=await (await fetch(API,{cache:'no-store'})).json(); if(j.items&&j.items[0]){ let t=j.items[0].title; const i=t.lastIndexOf(' - '); if(i>20)t=t.slice(0,i); const e=document.getElementById('hNews'); if(e) e.textContent=t.trim(); } }catch(e){}
+        const j=await (await fetch(API,{cache:'no-store'})).json(); if(j.items&&j.items[0]){ let t=j.items[0].title; const i=t.lastIndexOf(' - '); if(i>20)t=t.slice(0,i); const e=document.getElementById('hNews'); if(e) e.textContent=t.trim(); try{ localStorage.setItem('adn_hoy_news', t.trim()); }catch(_){} } }catch(e){}
     }
 
     // ===== ADN Minero TV: indicador "EN VIVO" en la tarjeta =====
