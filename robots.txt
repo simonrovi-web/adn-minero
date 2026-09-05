@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://simonrovi-web.github.io/adn-minero/sitemap.xml
