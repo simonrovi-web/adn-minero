@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · El Teniente</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="El Teniente: la mina de cobre subterránea más grande del mundo, en la cordillera de O'Higgins — su historia, Sewell la ciudad de las escaleras, el Nuevo Nivel Mina y su rol en Chile." />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(207,155,111,0.13), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 96px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    .kpi b{ display:block; font-weight:900; line-height:1; font-variant-numeric:tabular-nums; }
+    .tl{ position:relative; display:flex; gap:14px; padding-bottom:16px; }
+    .tl .rail{ flex:none; display:flex; flex-direction:column; align-items:center; }
+    .tl .dot{ width:16px; height:16px; border-radius:50%; background:linear-gradient(150deg,#e8c9a6,#cf9b6f); box-shadow:0 0 0 4px rgba(207,155,111,.16); z-index:1; margin-top:4px; }
+    .tl .line{ flex:1; width:2px; background:linear-gradient(#cf9b6f66,#cf9b6f18); margin-top:2px; }
+    .tl:last-child .line{ display:none; }
+    .yr{ font-size:12px; font-weight:900; color:#e8c9a6; }
+    h3{ margin:0; }
+  </style>
+  <script src="adn-ui.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(207,155,111,.15);border:1px solid rgba(207,155,111,.32)"><i data-lucide="pickaxe" style="width:26px;height:26px;color:#cf9b6f"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#e0c3a0;font-weight:800">El Teniente</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Una ciudad de túneles bajo los Andes</p>
+      </div>
+    </header>
+
+    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">En la cordillera de la Región de O'Higgins, cerca de Rancagua, se esconde la <b>mina de cobre subterránea más grande del mundo</b>: miles de kilómetros de galerías excavadas en la montaña por más de un siglo.</p>
+
+    <!-- KPIs -->
+    <div class="grid grid-cols-2 gap-2.5 mt-4">
+      <div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="network" class="w-4 h-4" style="color:#cf9b6f"></i><span class="text-[11px] font-bold text-stone-400">Galerías</span></div><b style="font-size:22px;color:#e8c9a6">+4.500 km</b><p class="text-[11px] text-stone-500 mt-1">de túneles: la mayor del mundo</p></div>
+      <div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="calendar" class="w-4 h-4" style="color:#7fbf9a"></i><span class="text-[11px] font-bold text-stone-400">Historia</span></div><b style="font-size:24px;color:#a7d18a">+115 años</b><p class="text-[11px] text-stone-500 mt-1">de minería continua</p></div>
+      <div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="building" class="w-4 h-4" style="color:#d6a94f"></i><span class="text-[11px] font-bold text-stone-400">Operador</span></div><b style="font-size:22px;color:#e8c9a6">Codelco</b><p class="text-[11px] text-stone-500 mt-1">la estatal chilena del cobre</p></div>
+      <div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="mountain-snow" class="w-4 h-4" style="color:#7fb0d9"></i><span class="text-[11px] font-bold text-stone-400">Dónde</span></div><b style="font-size:19px;color:#a7c6de">Rancagua</b><p class="text-[11px] text-stone-500 mt-1">Región de O'Higgins</p></div>
+    </div>
+
+    <!-- Línea de tiempo -->
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2 mb-3"><i data-lucide="history" style="width:18px;height:18px;color:#cf9b6f"></i><h3 class="font-bold text-[14px]">De 1905 a hoy</h3></div>
+      <div id="tl"></div>
+    </div>
+
+    <!-- Sewell -->
+    <div class="glass rounded-2xl p-4 mt-3" style="border-color:rgba(224,149,95,.3)">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="footprints" style="width:17px;height:17px;color:#e0955f"></i><h3 class="font-bold text-[13.5px]">Sewell, la ciudad de las escaleras</h3></div>
+      <p class="text-[12.5px] text-stone-300 leading-relaxed">Para alojar a los mineros se construyó <b>Sewell</b>, un pueblo colgado en la ladera a más de 2.000 m, sin calles para autos: se movía por <b>escaleras</b>. Hoy es <b>Patrimonio de la Humanidad de la UNESCO</b> (2006), un testimonio único de la vida minera.</p>
+    </div>
+
+    <!-- Nuevo Nivel Mina -->
+    <div class="glass rounded-2xl p-4 mt-3" style="border-color:rgba(103,193,214,.3)">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="arrow-down-to-line" style="width:17px;height:17px;color:#67c1d6"></i><h3 class="font-bold text-[13.5px]">Nuevo Nivel Mina</h3></div>
+      <p class="text-[12.5px] text-stone-300 leading-relaxed">El cobre más accesible se va agotando, así que Codelco excava <b>aún más profundo</b> con el proyecto <b>Nuevo Nivel Mina</b>, que busca <b>extender su vida por décadas</b> y mantener a El Teniente entre las grandes del mundo.</p>
+    </div>
+
+    <!-- Rol país -->
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="trending-up" style="width:17px;height:17px;color:#a7d18a"></i><h3 class="font-bold text-[13.5px]">Su rol en el desarrollo</h3></div>
+      <p class="text-[12.5px] text-stone-300 leading-relaxed">Como Chuquicamata, El Teniente es de <b>Codelco</b>: su cobre financia al <b>Estado de Chile</b>. Dos gigantes —uno a cielo abierto, otro subterráneo— sostienen buena parte del aporte minero al país.</p>
+      <a href="adn-minero-riqueza.html" class="inline-flex items-center gap-1.5 mt-2.5 text-[13px] font-bold" style="color:#a7d18a">¿A dónde va esa riqueza? <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+    </div>
+
+    <div class="mt-3 grid grid-cols-2 gap-2.5">
+      <a href="adn-minero-chuqui.html" class="glass rounded-2xl p-3.5 active:scale-95 transition"><i data-lucide="mountain" style="width:19px;height:19px;color:#cf9b6f"></i><p class="text-[13px] font-bold mt-1.5">Chuquicamata</p><p class="text-[11px] text-stone-500">La otra gigante</p></a>
+      <a href="adn-minero-empresas.html" class="glass rounded-2xl p-3.5 active:scale-95 transition"><i data-lucide="building-2" style="width:19px;height:19px;color:#d6a94f"></i><p class="text-[13px] font-bold mt-1.5">Codelco y las mineras</p><p class="text-[11px] text-stone-500">Directorio</p></a>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Ficha de divulgación con datos referenciales y aproximados.<br>Fuentes: Codelco, UNESCO, Sernageomin, fuentes históricas públicas. · <a href="adn-minero-historia.html" style="color:#e8c9a6">Historia</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+
+<script>
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const TL=[
+    { y:'1905', t:'Nace la mina', d:'La Braden Copper Company inicia la explotación industrial del yacimiento en la cordillera.' },
+    { y:'Años 20–40', t:'Se levanta Sewell', d:'Crece el campamento minero en la ladera: la “ciudad de las escaleras”, hogar de miles de familias.' },
+    { y:'1971', t:'Nacionalización del cobre', d:'El Teniente pasa al Estado junto con la gran minería del cobre.' },
+    { y:'1976', t:'Se crea Codelco', d:'La estatal del cobre toma la operación de El Teniente.' },
+    { y:'1998', t:'Sewell deja de habitarse', d:'El pueblo se despuebla; se preserva como sitio histórico.' },
+    { y:'2006', t:'Patrimonio de la Humanidad', d:'La UNESCO declara a Sewell Patrimonio Mundial por su valor único.' },
+    { y:'Hoy', t:'Nuevo Nivel Mina', d:'Codelco excava más profundo para prolongar su vida por décadas.' }
+  ];
+  document.getElementById('tl').innerHTML=TL.map(function(x){
+    return '<div class="tl"><div class="rail"><div class="dot"></div><div class="line"></div></div>'+
+      '<div style="padding-bottom:2px"><div class="yr">'+x.y+'</div>'+
+      '<div class="font-bold text-[14px] mt-0.5">'+x.t+'</div>'+
+      '<p class="text-[12.5px] text-stone-300 leading-snug mt-1">'+x.d+'</p></div></div>';
+  }).join('');
+  drawIcons();
+</script>
+</body>
+</html>
