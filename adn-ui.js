@@ -340,3 +340,69 @@
     window.addEventListener('load', function(){ setTimeout(run,80); });
   }catch(e){ try{ var a=document.querySelectorAll('.adnui-rev'); for(var i=0;i<a.length;i++) a[i].classList.add('in'); }catch(_){} }
 })();
+
+
+/* ===== Sigue explorando: sugerencias relacionadas al final de cada panel de contenido ===== */
+(function(){
+  try{
+    var here=(location.pathname||"").replace(/^.*\//,"")||"";
+    if(!/^adn-minero-[a-z0-9-]+\.html$/i.test(here)) return;
+    var SKIP=/^adn-minero-(faldon|faldon-control|metricas|resumen|en|promo|muro|panel|tv|faenas|mapa|buscar|ia)\.html$/i;
+    if(SKIP.test(here)) return;
+    if(document.querySelector('script[src*="adn-recorrido"]')) return; // ya trae el recorrido del hub
+
+    function decV(s){ var b=atob(s),n=b.length,u=new Uint8Array(n); for(var i=0;i<n;i++)u[i]=b.charCodeAt(i); return new Int8Array(u.buffer); }
+    function nrm(v){ var s=0,i; for(i=0;i<v.length;i++) s+=v[i]*v[i]; return Math.sqrt(s)||1; }
+
+    function render(picks){
+      try{
+        if(document.getElementById("adnui-more")) return;
+        var host=document.querySelector(".wrap"); if(!host) return;
+        var cards=picks.map(function(p){
+          return '<a href="'+p.f+'" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;background:linear-gradient(160deg,rgba(43,37,32,.6),rgba(26,21,18,.44));border:1px solid rgba(196,168,148,.14);border-radius:14px;padding:12px 13px">'+
+            '<span style="width:32px;height:32px;border-radius:9px;flex:none;display:grid;place-items:center;background:rgba(207,155,111,.14);border:1px solid rgba(207,155,111,.28);font-size:15px">\u26cf\ufe0f</span>'+
+            '<span style="min-width:0;flex:1;font-weight:700;font-size:13.5px;color:#f4ece5;line-height:1.2">'+(p.t||p.f)+'</span>'+
+            '<span style="color:#cf9b6f;flex:none;font-weight:800">\u2192</span></a>';
+        }).join("");
+        var box=document.createElement("div");
+        box.id="adnui-more";
+        box.setAttribute("style","max-width:640px;margin:24px auto 8px;padding:0 2px");
+        box.innerHTML='<p style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:#9c8f83;margin:0 0 9px 2px">Sigue explorando</p><div style="display:grid;gap:8px">'+cards+'</div>';
+        host.appendChild(box);
+      }catch(e){}
+    }
+
+    function build(items){
+      try{
+        var cur=null,i; for(i=0;i<items.length;i++){ if(items[i].f===here){ cur=items[i]; break; } }
+        var picks=[];
+        if(cur && cur.v){
+          var cv=decV(cur.v), cn=nrm(cv), scored=[],j,k;
+          for(j=0;j<items.length;j++){ var it=items[j]; if(it.f===here||!it.v) continue;
+            if(/^adn-minero-(faldon|faldon-control|metricas|resumen|en|promo|faenas)\.html$/i.test(it.f)) continue;
+            var vv=decV(it.v), dot=0; for(k=0;k<cv.length;k++) dot+=cv[k]*vv[k];
+            scored.push({it:it,s:dot/((cn*nrm(vv))||1)});
+          }
+          scored.sort(function(a,b){return b.s-a.s;});
+          for(j=0;j<scored.length && picks.length<3;j++) picks.push(scored[j].it);
+        }
+        if(picks.length<3){
+          var pool=items.filter(function(x){ return x.f!==here && picks.indexOf(x)<0 && !/^adn-minero-(faldon|faldon-control|metricas|resumen|en|promo|faenas)\.html$/i.test(x.f); });
+          while(picks.length<3 && pool.length) picks.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0]);
+        }
+        if(picks.length) render(picks);
+      }catch(e){}
+    }
+
+    function go(){
+      try{
+        if(window.__ADN_KB){ build(window.__ADN_KB); return; }
+        fetch("search-index.json",{cache:"force-cache"}).then(function(r){return r.ok?r.json():null;}).then(function(d){
+          if(d&&d.items){ window.__ADN_KB=d.items; build(d.items); }
+        }).catch(function(){});
+      }catch(e){}
+    }
+    if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", function(){ setTimeout(go,350); });
+    else setTimeout(go,350);
+  }catch(e){}
+})();
