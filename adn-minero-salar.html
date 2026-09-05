@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · Salar de Atacama</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="Salar de Atacama: el corazón del litio de Chile — cómo se extrae de la salmuera, quién opera (SQM y Albemarle), el debate ambiental y su lugar en la estrategia del país." />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#eef3f2; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 15% -10%, rgba(95,209,189,0.14), transparent 60%), #101613; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 96px; }
+    .glass{ background:linear-gradient(160deg, rgba(30,44,40,0.6), rgba(18,28,25,0.46)); border:1px solid rgba(150,200,185,0.14); }
+    .kpi b{ display:block; font-weight:900; line-height:1; font-variant-numeric:tabular-nums; }
+    .step{ display:flex; gap:12px; align-items:flex-start; margin-top:12px; }
+    .step .n{ width:30px; height:30px; border-radius:50%; flex:none; display:grid; place-items:center; font-weight:900; font-size:13px; background:linear-gradient(150deg,#a8e6d5,#5fd1bd); color:#0f2620; }
+    h3{ margin:0; }
+  </style>
+  <script src="adn-ui.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(95,209,189,.16);border:1px solid rgba(95,209,189,.34)"><i data-lucide="battery-charging" style="width:26px;height:26px;color:#5fd1bd"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#9fe0d2;font-weight:800">Salar de Atacama</p>
+        <p style="margin:0;font-size:11px;color:#8aa7a0">El corazón del litio de Chile</p>
+      </div>
+    </header>
+
+    <p class="text-[13px] leading-relaxed mt-4 px-1" style="color:#cfe0db">No es una mina de túneles ni de rajo: es un <b>salar</b>. Bajo su costra blanca hay salmuera cargada de <b>litio</b>, el metal de las baterías. De aquí sale gran parte del litio del mundo.</p>
+
+    <div class="grid grid-cols-2 gap-2.5 mt-4">
+      <div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="zap" class="w-4 h-4" style="color:#5fd1bd"></i><span class="text-[11px] font-bold" style="color:#8aa7a0">Qué es</span></div><b style="font-size:19px;color:#a8e6d5">Litio</b><p class="text-[11px] mt-1" style="color:#7c968f">de salmuera, no de roca</p></div>
+      <div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="building" class="w-4 h-4" style="color:#7fbf9a"></i><span class="text-[11px] font-bold" style="color:#8aa7a0">Operan</span></div><b style="font-size:19px;color:#a7d18a">SQM · Albemarle</b><p class="text-[11px] mt-1" style="color:#7c968f">bajo contrato con Corfo</p></div>
+      <div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="sun" class="w-4 h-4" style="color:#e0c35f"></i><span class="text-[11px] font-bold" style="color:#8aa7a0">El secreto</span></div><b style="font-size:19px;color:#e8d79a">Sol y sequía</b><p class="text-[11px] mt-1" style="color:#7c968f">evaporan el agua gratis</p></div>
+      <div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="map-pin" class="w-4 h-4" style="color:#7fb0d9"></i><span class="text-[11px] font-bold" style="color:#8aa7a0">Dónde</span></div><b style="font-size:18px;color:#a7c6de">Antofagasta</b><p class="text-[11px] mt-1" style="color:#7c968f">Región del norte</p></div>
+    </div>
+
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2 mb-1"><i data-lucide="droplet" style="width:18px;height:18px;color:#5fd1bd"></i><h3 class="font-bold text-[14px]">Cómo se saca el litio</h3></div>
+      <div class="step"><div class="n">1</div><p class="text-[12.5px] leading-snug" style="color:#cfe0db"><b>Se bombea salmuera</b> desde bajo el salar a grandes pozas.</p></div>
+      <div class="step"><div class="n">2</div><p class="text-[12.5px] leading-snug" style="color:#cfe0db">El <b>sol y el viento evaporan</b> el agua durante meses; el litio se concentra.</p></div>
+      <div class="step"><div class="n">3</div><p class="text-[12.5px] leading-snug" style="color:#cfe0db">Se procesa en <b>carbonato o hidróxido de litio</b>, listos para exportar.</p></div>
+      <a href="adn-minero-litio.html" class="inline-flex items-center gap-1.5 mt-3 text-[13px] font-bold" style="color:#5fd1bd">Ver todo sobre el litio <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+    </div>
+
+    <div class="glass rounded-2xl p-4 mt-3" style="border-color:rgba(224,149,95,.3)">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="scale" style="width:17px;height:17px;color:#e0955f"></i><h3 class="font-bold text-[13.5px]">El debate</h3></div>
+      <p class="text-[12.5px] leading-relaxed" style="color:#cfe0db">Sacar salmuera afecta el <b>agua y los ecosistemas</b> del salar, hogar de comunidades atacameñas y de flamencos. El desafío: aprovechar el litio <b>cuidando el salar</b> y con acuerdo con las comunidades.</p>
+    </div>
+
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="flag" style="width:17px;height:17px;color:#a7d18a"></i><h3 class="font-bold text-[13.5px]">Estrategia y desarrollo</h3></div>
+      <p class="text-[12.5px] leading-relaxed" style="color:#cfe0db">El salar es clave en la <b>Estrategia Nacional del Litio</b>: el Estado busca más producción <b>con valor agregado</b> y participación pública, protegiendo los salares.</p>
+      <a href="adn-minero-valor.html" class="inline-flex items-center gap-1.5 mt-2.5 text-[13px] font-bold" style="color:#a7d18a">De la salmuera a la batería <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+    </div>
+
+    <div class="mt-3 grid grid-cols-2 gap-2.5">
+      <a href="adn-minero-escondida.html" class="glass rounded-2xl p-3.5 active:scale-95 transition"><i data-lucide="gem" style="width:19px;height:19px;color:#cf9b6f"></i><p class="text-[13px] font-bold mt-1.5">Escondida</p><p class="text-[11px]" style="color:#7c968f">La mayor de cobre</p></a>
+      <a href="adn-minero-litio.html" class="glass rounded-2xl p-3.5 active:scale-95 transition"><i data-lucide="battery-charging" style="width:19px;height:19px;color:#5fd1bd"></i><p class="text-[13px] font-bold mt-1.5">Litio · Oro Blanco</p><p class="text-[11px]" style="color:#7c968f">El panel completo</p></a>
+    </div>
+
+    <p class="text-center text-[11px] mt-6 leading-relaxed" style="color:#6f8880">Ficha de divulgación con datos referenciales y aproximados.<br>Fuentes: Cochilco, Corfo, SQM, Albemarle. · <a href="adn-minero-comunidades.html" style="color:#9fe0d2">Comunidades</a> · <a href="index.html" style="color:#9fe0d2">Inicio</a></p>
+  </div>
+
+<script>
+  const drawIcons=()=>window.lucide&&lucide.createIcons(); drawIcons();
+</script>
+</body>
+</html>
