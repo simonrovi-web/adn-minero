@@ -360,7 +360,7 @@
         var host=document.querySelector(".wrap"); if(!host) return;
         var cards=picks.map(function(p){
           return '<a href="'+p.f+'" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;background:linear-gradient(160deg,rgba(43,37,32,.6),rgba(26,21,18,.44));border:1px solid rgba(196,168,148,.14);border-radius:14px;padding:12px 13px">'+
-            '<span style="width:32px;height:32px;border-radius:9px;flex:none;display:grid;place-items:center;background:rgba(207,155,111,.14);border:1px solid rgba(207,155,111,.28);font-size:15px">\u26cf\ufe0f</span>'+
+            '<span style="width:32px;height:32px;border-radius:9px;flex:none;display:grid;place-items:center;background:'+(p.c||"#cf9b6f")+'22;border:1px solid '+(p.c||"#cf9b6f")+'55"><i data-lucide="'+(p.i||"pickaxe")+'" style="width:17px;height:17px;color:'+(p.c||"#cf9b6f")+'"></i></span>'+
             '<span style="min-width:0;flex:1;font-weight:700;font-size:13.5px;color:#f4ece5;line-height:1.2">'+(p.t||p.f)+'</span>'+
             '<span style="color:#cf9b6f;flex:none;font-weight:800">\u2192</span></a>';
         }).join("");
@@ -368,7 +368,7 @@
         box.id="adnui-more";
         box.setAttribute("style","max-width:640px;margin:24px auto 8px;padding:0 2px");
         box.innerHTML='<p style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:#9c8f83;margin:0 0 9px 2px">Sigue explorando</p><div style="display:grid;gap:8px">'+cards+'</div>';
-        host.appendChild(box);
+        host.appendChild(box); try{ window.lucide && lucide.createIcons(); }catch(e){}
       }catch(e){}
     }
 
