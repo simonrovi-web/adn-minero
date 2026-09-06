@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <meta name="robots" content="noindex" />
+  <title>ADN Minero · Enviar Última Hora</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="Panel de administración para enviar notificaciones de última hora minera." />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(207,155,111,0.13), transparent 60%), #141110; }
+    .wrap{ max-width:520px; margin:0 auto; padding:16px 16px 96px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    label{ display:block; font-size:12px; font-weight:700; color:#c9b7a5; margin:14px 0 5px; }
+    input,textarea{ width:100%; background:rgba(0,0,0,.22); border:1px solid rgba(196,168,148,.2); border-radius:12px; padding:11px 13px; color:#f4ece5; font-size:14px; font-family:inherit; }
+    input:focus,textarea:focus{ outline:none; border-color:rgba(207,155,111,.6); }
+    textarea{ resize:vertical; min-height:70px; }
+    .btn{ width:100%; margin-top:18px; border:0; border-radius:14px; padding:14px; font-weight:800; font-size:15px; cursor:pointer; background:linear-gradient(150deg,#e8c9a6,#cf9b6f 55%,#b5734f); color:#2a1c12; }
+    .btn:active{ transform:scale(.98); }
+    .btn:disabled{ opacity:.6; cursor:default; }
+    .count{ font-size:11px; color:#8a8079; text-align:right; margin-top:3px; }
+    h3{ margin:0; }
+  </style>
+  <script src="adn-ui.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(207,155,111,.15);border:1px solid rgba(207,155,111,.32)"><i data-lucide="newspaper" style="width:24px;height:24px;color:#e8c9a6"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#e0c3a0;font-weight:800">Enviar Última Hora</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Notificación a quienes activaron “noticias”</p>
+      </div>
+    </header>
+
+    <div class="glass rounded-2xl p-4 mt-4">
+      <label for="tok">Token de administrador</label>
+      <input id="tok" type="password" autocomplete="off" placeholder="Tu token de admin">
+
+      <label for="tit">Título <span style="color:#8a8079;font-weight:400">(máx. 80)</span></label>
+      <input id="tit" type="text" maxlength="80" placeholder="Ej: Codelco anuncia nueva inversión en El Teniente">
+      <div class="count"><span id="cTit">0</span>/80</div>
+
+      <label for="cue">Detalle <span style="color:#8a8079;font-weight:400">(opcional, máx. 180)</span></label>
+      <textarea id="cue" maxlength="180" placeholder="Una línea de contexto. Toca para leer en ADN Minero."></textarea>
+      <div class="count"><span id="cCue">0</span>/180</div>
+
+      <label for="url">Enlace <span style="color:#8a8079;font-weight:400">(opcional; por defecto, Noticias)</span></label>
+      <input id="url" type="url" inputmode="url" placeholder="https://simonrovi-web.github.io/adn-minero/adn-minero-…">
+
+      <label class="flex items-center gap-2 text-[12px] text-stone-400" style="margin-top:14px"><input id="rem" type="checkbox" style="width:auto"> Recordar el token en este dispositivo</label>
+
+      <button id="send" class="btn">📤 Enviar a todos</button>
+      <p id="msg" class="text-center text-[13px] mt-3 hidden"></p>
+    </div>
+
+    <div class="glass rounded-2xl p-4 mt-3" style="border-color:rgba(214,169,79,.28)">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="info" style="width:16px;height:16px;color:#d6a94f"></i><h3 class="font-bold text-[13px]">Con criterio editorial</h3></div>
+      <p class="text-[12px] text-stone-400 leading-relaxed">Envía solo <b>noticias realmente importantes</b>. El exceso de avisos hace que la gente los desactive. Un buen aviso: claro, verificado y con un enlace útil.</p>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-5">Panel privado de administración. · <a href="adn-minero-metricas.html" style="color:#e8c9a6">Métricas</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+
+<script>
+  const BASE='https://adn-muro.simonrovi.workers.dev';
+  const $=id=>document.getElementById(id);
+  window.lucide&&lucide.createIcons();
+  try{ const t=localStorage.getItem('adn_metrics_tok'); if(t){ $('tok').value=t; $('rem').checked=true; } }catch(e){}
+  $('tit').addEventListener('input',()=>$('cTit').textContent=$('tit').value.length);
+  $('cue').addEventListener('input',()=>$('cCue').textContent=$('cue').value.length);
+
+  function msg(t,c){ const m=$('msg'); if(!t){ m.classList.add('hidden'); return; } m.textContent=t; m.style.color=c||'#c9b7a5'; m.classList.remove('hidden'); }
+
+  async function send(){
+    const token=$('tok').value.trim(), titulo=$('tit').value.trim();
+    if(!token){ msg('Ingresa tu token.','#e0a35a'); return; }
+    if(!titulo){ msg('Escribe un título.','#e0a35a'); return; }
+    try{ if($('rem').checked) localStorage.setItem('adn_metrics_tok',token); else localStorage.removeItem('adn_metrics_tok'); }catch(e){}
+    if(!confirm('¿Enviar esta notificación a todos los suscriptores de “noticias”?\n\n'+titulo)) return;
+    $('send').disabled=true; msg('Enviando…');
+    try{
+      const r=await fetch(`${BASE}/news/push`,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({token, titulo, cuerpo:$('cue').value.trim(), url:$('url').value.trim()})});
+      if(r.status===401){ msg('Token incorrecto.','#e88'); $('send').disabled=false; return; }
+      const d=await r.json();
+      if(d.ok){ msg('✅ Enviado a '+ (d.enviados||0) +' dispositivo(s).','#a7d18a'); $('tit').value=''; $('cue').value=''; $('url').value=''; $('cTit').textContent='0'; $('cCue').textContent='0'; }
+      else msg('No se pudo enviar: '+(d.error||'error'),'#e88');
+    }catch(e){ msg('No se pudo conectar.','#e88'); }
+    $('send').disabled=false;
+  }
+  $('send').addEventListener('click', send);
+</script>
+</body>
+</html>
