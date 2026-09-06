@@ -44,6 +44,25 @@ self.addEventListener('fetch', (event) => {
     return;
   }
   if (url.origin !== location.origin) return; // otras APIs externas: sin tocar
+  // Assets vendorizados e inmutables (CSS/JS pesado, fuentes, banderas, iconos): stale-while-revalidate.
+  // Se sirven al instante desde cache y se revalidan en 2o plano. HTML, datos y logica de la app siguen red-primero.
+  const p = url.pathname;
+  const isVendorAsset =
+    /\.(?:png|jpe?g|gif|svg|webp|ico|woff2?|ttf|otf)$/i.test(p) ||
+    /\.css$/i.test(p) ||
+    /lucide(?:\.full)?\.min\.js$/i.test(p);
+  if (isVendorAsset) {
+    event.respondWith((async () => {
+      const cached = await caches.match(req);
+      const netP = fetch(req).then(res => {
+        if (res && res.status === 200) { const cp = res.clone(); caches.open(OFFLINE_CACHE).then(c => c.put(req, cp)).catch(() => {}); }
+        return res;
+      }).catch(() => null);
+      if (cached) return cached;              // rapido: cache primero
+      return (await netP) || new Response('', { status: 504 });
+    })());
+    return;
+  }
   event.respondWith((async () => {
     try {
       const res = await fetch(req);
