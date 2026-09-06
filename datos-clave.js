@@ -18,3 +18,19 @@ window.ADN_DATOS = {
   reservasCobrePct: 19,
   litioReservasPct: 33
 };
+
+/* Rellena automáticamente cualquier elemento con [data-datos-sello] con la fecha + fuentes. */
+(function(){
+  function sello(){
+    try{
+      var D=window.ADN_DATOS; if(!D) return;
+      var d=new Date(D.actualizado+'T12:00:00');
+      var mes=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][d.getMonth()];
+      var html='📅 Cifras actualizadas: <b style="color:#c9bcae">'+d.getDate()+' '+mes+' '+d.getFullYear()+'</b> · Fuentes: '+D.fuentes;
+      var els=document.querySelectorAll('[data-datos-sello]');
+      for(var i=0;i<els.length;i++) els[i].innerHTML=html;
+    }catch(e){}
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', sello);
+  else sello();
+})();
