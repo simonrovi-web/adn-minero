@@ -74,5 +74,37 @@ for (const f of [...HTML, 'portal-data.js']) {
   }
 }
 
+console.log('== 4) Integridad de assets (byte NUL / carácter de reemplazo) ==');
+{
+  const skip = new Set(['node_modules', '.git']);
+  const exts = new Set(['.html', '.css', '.js', '.json', '.svg', '.webmanifest']);
+  const walk = dir => {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (skip.has(e.name)) continue;
+      const p = path.join(dir, e.name);
+      if (e.isDirectory()) { walk(p); continue; }
+      if (!exts.has(path.extname(e.name).toLowerCase())) continue;
+      const rel = path.relative(ROOT, p).replace(/\\/g, '/');
+      const buf = fs.readFileSync(p);
+      if (buf.includes(0x00)) fail(rel, 'contiene byte NUL (0x00) — texto corrupto (p.ej. escape CSS \\00xx roto)');
+      if (buf.includes(String.fromCharCode(0xFFFD))) fail(rel, 'contiene caracter de reemplazo U+FFFD (mojibake / codificacion rota)');
+    }
+  };
+  walk(ROOT);
+}
+
+console.log('== 5) Integridad de banderas (flags.css ↔ flags/*.svg) ==');
+{
+  const cssPath = path.join(ROOT, 'flags.css');
+  const dir = path.join(ROOT, 'flags');
+  if (fs.existsSync(cssPath) && fs.existsSync(dir)) {
+    const css = fs.readFileSync(cssPath, 'utf8');
+    const defined = new Set([...css.matchAll(/\.fi-([a-z]{2})\b/g)].map(m => m[1]));
+    const files = new Set(fs.readdirSync(dir).filter(f => f.endsWith('.svg')).map(f => f.replace('.svg', '')));
+    for (const c of defined) if (!files.has(c)) fail('flags.css', `.fi-${c} sin archivo flags/${c}.svg`);
+    for (const c of files) if (!defined.has(c)) fail('flags/', `${c}.svg sin regla .fi-${c} en flags.css`);
+  }
+}
+
 if (errors) { console.error(`\n${errors} error(es). Falla la validación.`); process.exit(1); }
 console.log(`\n✓ Todo OK · ${HTML.length} archivos validados.`);
