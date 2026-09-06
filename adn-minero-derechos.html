@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · Tus Derechos en Faena</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="Tus derechos en faena: jornadas excepcionales, contrato, sueldo, descanso, subcontratación, seguro de accidentes (Ley 16.744), Ley Karin, sindicato y dónde reclamar." />
+  <link rel="canonical" href="https://simonrovi-web.github.io/adn-minero/adn-minero-derechos.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ADN Minero" />
+  <meta property="og:title" content="ADN Minero · Tus Derechos en Faena" />
+  <meta property="og:description" content="Tus derechos en faena: jornadas excepcionales, contrato, sueldo, descanso, subcontratación, seguro de accidentes (Ley 16.744), Ley Karin, sindicato y dónde reclamar." />
+  <meta property="og:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://simonrovi-web.github.io/adn-minero/adn-minero-derechos.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ADN Minero · Tus Derechos en Faena" />
+  <meta name="twitter:description" content="Tus derechos en faena: jornadas excepcionales, contrato, sueldo, descanso, subcontratación, seguro de accidentes (Ley 16.744), Ley Karin, sindicato y dónde reclamar." />
+  <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(224,163,90,0.13), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    .topic{ cursor:pointer; }
+    .topic .body{ display:none; }
+    .topic.open .body{ display:block; }
+    .topic.open .chev{ transform:rotate(90deg); }
+    .chev{ transition:transform .2s; }
+    .tip{ display:flex; gap:9px; align-items:flex-start; font-size:13.5px; line-height:1.5; color:#dacfc2; margin-top:8px; }
+    .tip b{ color:#f4ece5; }
+    h3{ margin:0; }
+  </style>
+  <script src="adn-ui.js" defer></script>
+  <script src="adn-recorrido.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(224,163,90,.15);border:1px solid rgba(224,163,90,.32)"><i data-lucide="scale" style="width:26px;height:26px;color:#e0a35a"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#eabf86;font-weight:800">Tus Derechos en Faena</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Lo que la ley te reconoce como trabajador</p>
+      </div>
+    </header>
+
+    <div class="glass rounded-2xl p-3.5 mt-4" style="border-color:rgba(224,113,90,.3);background:rgba(224,113,90,.06)">
+      <p class="text-[12px] text-stone-300 leading-relaxed"><b style="color:#f0b8a6">⚠️ Información de divulgación.</b> Es una guía general y no reemplaza asesoría legal ni la información oficial de la Dirección del Trabajo. Ante un caso concreto, consulta a la Inspección del Trabajo o a un abogado.</p>
+    </div>
+
+    <div id="topics" class="mt-4 grid gap-2.5"></div>
+
+    <div class="glass rounded-2xl p-4 mt-3" style="border-color:rgba(127,191,209,.28)">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="phone" style="width:17px;height:17px;color:#7fbfd1"></i><h3 class="font-bold text-[13.5px]">¿Dónde pedir ayuda?</h3></div>
+      <p class="text-[12.5px] text-stone-300 leading-relaxed"><b>Dirección del Trabajo</b> (derechos laborales, jornadas, sueldos): <b>600 450 4000</b> y dt.gob.cl. · <b>Sernageomin</b> (seguridad minera). · Tu <b>mutualidad</b> (accidentes y enfermedades del trabajo).</p>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Referencia general basada en el Código del Trabajo, la Ley 16.744, la Ley 20.123 y la Ley 21.643 (Ley Karin). · <a href="adn-minero-seguridad.html" style="color:#e8c9a6">Seguridad</a> · <a href="adn-minero-turnos.html" style="color:#e8c9a6">Turnos</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+
+<script>
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const TOPICS=[
+    { ic:'calendar-clock', c:'#e0a35a', t:'Jornada excepcional (7x7, 4x3…)', s:'Turnos y descansos en faena',
+      tips:[
+        ['check','Los sistemas de turno tipo 7x7, 14x14 o 4x3 son <b>jornadas excepcionales</b> que deben estar <b>autorizadas por la Dirección del Trabajo</b>.'],
+        ['clock','La ley limita las horas de trabajo y exige <b>días de descanso compensatorio</b> por los feriados y domingos trabajados en el ciclo.'],
+        ['bed','El tiempo de descanso dentro de la faena y el <b>alojamiento y alimentación</b> en régimen de campamento forman parte de las condiciones pactadas.'],
+        ['triangle-alert','Si te hacen trabajar más días de los autorizados o sin el descanso que corresponde, puedes reclamar en la Inspección del Trabajo.']
+      ]},
+    { ic:'file-text', c:'#e8c9a6', t:'Contrato de trabajo', s:'Debe estar por escrito',
+      tips:[
+        ['check','El contrato debe firmarse <b>por escrito</b> dentro del plazo legal e indicar funciones, lugar, sueldo, jornada y duración.'],
+        ['badge-check','Distingue <b>contrato indefinido</b>, a <b>plazo fijo</b> y <b>por obra o faena</b>: cambian tus indemnizaciones y estabilidad.'],
+        ['scale','El <b>finiquito</b> debe pagarte lo que corresponde y firmarse ante ministro de fe (notario, Inspección del Trabajo o sindicato).']
+      ]},
+    { ic:'banknote', c:'#a7d18a', t:'Sueldo, cotizaciones y asignaciones', s:'Lo que va en tu liquidación',
+      tips:[
+        ['check','Tu <b>sueldo base</b> por jornada completa no puede ser inferior al <b>ingreso mínimo</b> vigente.'],
+        ['coins','Revisa que te paguen <b>gratificación</b> y las <b>asignaciones</b> pactadas (colación, movilización); estas últimas no son imponibles.'],
+        ['shield-check','El empleador debe <b>pagar tus cotizaciones</b> (AFP, salud y seguro de cesantía). Puedes revisarlas en tu AFP y en Previred.'],
+        ['triangle-alert','Guarda tus <b>liquidaciones de sueldo</b>: son la prueba de lo que te pagaron y descontaron.']
+      ]},
+    { ic:'building-2', c:'#e0955f', t:'Subcontratación (Ley 20.123)', s:'Si trabajas para un contratista',
+      tips:[
+        ['check','Aunque tu contrato sea con una <b>empresa contratista</b>, la <b>empresa mandante</b> (la minera) responde de forma <b>solidaria</b> por tus remuneraciones y cotizaciones.'],
+        ['shield-check','La mandante también debe velar por tu <b>seguridad</b> mientras trabajas en su faena, no solo tu empleador directo.'],
+        ['users','Tienes los <b>mismos derechos</b> que cualquier trabajador: contrato, cotizaciones, seguro de accidentes y protección.']
+      ]},
+    { ic:'shield-check', c:'#7fbf9a', t:'Accidentes y enfermedades (Ley 16.744)', s:'Seguro que te cubre',
+      tips:[
+        ['check','Estás cubierto por el <b>seguro de accidentes del trabajo y enfermedades profesionales</b>, administrado por tu <b>mutualidad</b> (ACHS, IST o Mutual).'],
+        ['heart-pulse','Ante un accidente de trabajo o de trayecto, <b>avisa de inmediato</b> y acude a la mutualidad: la atención es gratuita y puede incluir licencia y pensión.'],
+        ['wind','Enfermedades como la <b>silicosis</b> o la <b>hipoacusia</b> por ruido son enfermedades profesionales y también están cubiertas.']
+      ]},
+    { ic:'heart-handshake', c:'#e08aa8', t:'Sin acoso ni violencia — Ley Karin', s:'Ambiente de trabajo respetuoso',
+      tips:[
+        ['check','Tienes derecho a un trabajo <b>libre de acoso laboral, acoso sexual y violencia</b>. La empresa debe tener un canal para denunciar y proteger a quien denuncia.'],
+        ['users','La denuncia se puede hacer en la empresa o en la <b>Dirección del Trabajo</b>, que investiga y puede sancionar.'],
+        ['heart','Nadie debe soportar malos tratos por miedo a perder la pega. Buscar ayuda no es debilidad.']
+      ]},
+    { ic:'users', c:'#7fb0d9', t:'Sindicato y negociación colectiva', s:'Unirse para negociar',
+      tips:[
+        ['check','Tienes derecho a <b>formar o afiliarte a un sindicato</b> y a <b>negociar colectivamente</b> tus condiciones de trabajo.'],
+        ['shield','Los dirigentes sindicales y quienes participan en una negociación tienen <b>fuero</b>: no pueden ser despedidos libremente.'],
+        ['handshake','El contrato colectivo puede mejorar sueldos, bonos y beneficios por sobre el mínimo legal.']
+      ]},
+    { ic:'clipboard-check', c:'#d6a94f', t:'Antes de firmar: revisa', s:'Ojo con estos puntos',
+      tips:[
+        ['check','Que el <b>sueldo, bonos y asignaciones</b> estén escritos, no solo prometidos de palabra.'],
+        ['calendar-clock','El <b>sistema de turnos</b> exacto y cómo se pagan los días trabajados en festivos.'],
+        ['building-2','Con qué <b>empresa</b> firmas (contratista o mandante) y por cuánto tiempo.'],
+        ['triangle-alert','Desconfía si te piden trabajar <b>sin contrato</b> o "a honorarios" para un trabajo que en realidad es dependiente.']
+      ]}
+  ];
+
+  document.getElementById('topics').innerHTML=TOPICS.map((x,i)=>`
+    <div class="glass rounded-2xl topic" data-i="${i}">
+      <div class="p-4 flex items-center gap-3">
+        <div class="h-10 w-10 rounded-xl grid place-items-center shrink-0" style="background:${x.c}22;border:1px solid ${x.c}55"><i data-lucide="${x.ic}" class="w-5 h-5" style="color:${x.c}"></i></div>
+        <div class="min-w-0 flex-1"><h3 class="font-bold text-[15px]">${x.t}</h3><p class="text-[11.5px] text-stone-400">${x.s}</p></div>
+        <i data-lucide="chevron-right" class="chev w-5 h-5 text-stone-500 shrink-0"></i>
+      </div>
+      <div class="body px-4 pb-4 -mt-1">
+        ${x.tips.map(t=>`<div class="tip"><i data-lucide="${t[0]}" class="w-4 h-4 shrink-0 mt-0.5" style="color:${x.c}"></i><span>${t[1]}</span></div>`).join('')}
+      </div>
+    </div>`).join('');
+
+  document.getElementById('topics').addEventListener('click', e=>{
+    const t=e.target.closest('.topic'); if(!t) return;
+    t.classList.toggle('open'); drawIcons();
+  });
+  drawIcons();
+</script>
+</body>
+</html>
