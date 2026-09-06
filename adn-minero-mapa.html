@@ -34,7 +34,7 @@
     #map{ position:fixed; inset:0; z-index:0; background:#141110; }
     .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.82), rgba(26,21,18,0.72)); backdrop-filter:blur(14px) saturate(130%); -webkit-backdrop-filter:blur(14px) saturate(130%); border:1px solid rgba(196,168,148,0.16); box-shadow:0 8px 30px rgba(0,0,0,0.5); }
     #topbar{ position:fixed; top:14px; left:14px; right:14px; z-index:1000; display:flex; align-items:center; justify-content:space-between; gap:12px; border-radius:16px; padding:10px 16px; pointer-events:auto; }
-    #legend{ position:fixed; left:14px; bottom:14px; z-index:1000; border-radius:14px; padding:12px 14px; font-size:12px; }
+    #legend{ position:fixed; left:14px; bottom:calc(70px + env(safe-area-inset-bottom,0px)); z-index:1000; border-radius:14px; padding:12px 14px; font-size:12px; }
     #legend h4{ margin:0 0 8px; font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:#c9b7a5; font-weight:700; }
     .lg-row{ display:flex; align-items:center; gap:8px; margin:5px 0; cursor:pointer; user-select:none; opacity:.95; }
     .lg-row.off{ opacity:.35; }
