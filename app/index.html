@@ -120,9 +120,9 @@
 
     <!-- HOY (resumen en vivo) -->
     <!-- CONTINÚA DONDE QUEDASTE -->
-    <div id="reciente" class="mt-8 hidden"></div>
-
     <div id="titulares" class="mt-6 hidden"></div>
+
+    <div id="reciente" class="mt-8 hidden"></div>
     <div id="hoy" class="mt-8 hidden"></div>
 
     <!-- MI FAENA (perfil) -->
@@ -424,26 +424,41 @@
         <i data-lucide="${ic}" class="w-5 h-5 shrink-0" style="color:${col}"></i>
         <div class="min-w-0"><p class="text-[10px] text-stone-400 leading-none">${lbl}</p><p id="${id}" class="text-sm font-bold truncate mt-0.5" style="font-variant-numeric:tabular-nums">…</p></div></a>`;
     }
-    // ===== Titulares de geopolítica en la portada =====
+    // ===== Titulares en vivo en la portada (Noticias Mineras arriba, Geopolítica debajo) =====
     async function renderTitulares(){
-      try{
-        const el=document.getElementById('titulares'); if(!el) return;
-        const esc=s=>(s||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
-        const pref=(/\/app\//.test(location.pathname))?'../':'';
-        const rss='https://news.google.com/rss/search?q='+encodeURIComponent('geopolítica minerales críticos litio cobre Chile')+'&hl=es-419&gl=CL&ceid=CL:es';
-        const r=await fetch('https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(rss)).then(x=>x.json()).catch(()=>null);
-        if(!r||r.status!=='ok'||!r.items||!r.items.length) return;
-        const clean=t=>{ const i=(t||'').lastIndexOf(' - '); return i>40?t.slice(0,i):(t||''); };
-        const it=r.items.map(x=>({t:clean(x.title), link:x.link||'#'})).filter(x=>x.t.length>20).slice(0,3);
-        if(!it.length) return;
-        el.innerHTML='<a href="'+pref+'adn-minero-geonoticias.html" class="block glass rounded-2xl p-4 active:scale-[.99] transition" style="text-decoration:none;border-color:rgba(138,176,230,.22)">'
-          +'<div class="flex items-center justify-between mb-2"><span class="text-[11px] font-extrabold uppercase tracking-wider" style="color:#8ab0e6"><i data-lucide="globe-2" style="width:13px;height:13px;display:inline;vertical-align:-2px"></i> Geopolítica · titulares</span><span class="text-[11px] font-semibold" style="color:#8ab0e6">Ver más →</span></div>'
-          +'<p class="font-bold text-stone-100 leading-snug">'+esc(it[0].t)+'</p>'
-          +it.slice(1).map(x=>'<p class="text-[12.5px] text-stone-400 mt-1.5 leading-snug">• '+esc(x.t)+'</p>').join('')
-          +'</a>';
-        if(window.lucide) lucide.createIcons();
-        applyFilter();
-      }catch(e){}
+      const el=document.getElementById('titulares'); if(!el) return;
+      const esc=s=>(s||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+      const pref=(/\/app\//.test(location.pathname))?'../':'';
+      const api=q=>'https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent('https://news.google.com/rss/search?q='+encodeURIComponent(q)+'&hl=es-419&gl=CL&ceid=CL:es');
+      const rel=ts=>{ if(!ts) return ''; const s=(Date.now()-ts)/1000; if(s<3600) return 'hace '+Math.max(1,Math.round(s/60))+' min'; if(s<86400) return 'hace '+Math.round(s/3600)+' h'; return 'hace '+Math.round(s/86400)+' d'; };
+      const clean=t=>{ t=(t||'').trim(); const i=t.lastIndexOf(' - '); return i>40?{t:t.slice(0,i),s:t.slice(i+3)}:{t:t,s:''}; };
+      if(!document.getElementById('titcss')){ const st=document.createElement('style'); st.id='titcss';
+        st.textContent='.tit-dot{width:8px;height:8px;border-radius:50%;background:#e0715a;animation:titp 1.8s infinite}@keyframes titp{0%{box-shadow:0 0 0 0 rgba(224,113,63,.55)}70%{box-shadow:0 0 0 7px rgba(224,113,63,0)}100%{box-shadow:0 0 0 0 rgba(224,113,63,0)}}.tit-row{display:block;text-decoration:none;padding:8px 0;border-top:1px solid rgba(196,168,148,.1)}.tit-row:first-of-type{border-top:0}.tit-row:active{opacity:.65}.tit-t{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.35;margin:0}.tit-sk{height:13px;border-radius:6px;background:linear-gradient(90deg,rgba(255,255,255,.05),rgba(255,255,255,.12),rgba(255,255,255,.05));background-size:200% 100%;animation:titsk 1.3s infinite}@keyframes titsk{0%{background-position:200% 0}100%{background-position:-200% 0}}@media(prefers-reduced-motion:reduce){.tit-dot,.tit-sk{animation:none}}';
+        document.head.appendChild(st); }
+      async function feed(q,n){
+        const ctl=new AbortController(); const to=setTimeout(()=>ctl.abort(),9000); let items=[];
+        try{ const r=await fetch(api(q),{signal:ctl.signal}).then(x=>x.json()); clearTimeout(to); if(r&&r.status==='ok'&&Array.isArray(r.items)) items=r.items; }catch(e){ clearTimeout(to); }
+        const seen=new Set(), out=[];
+        for(const x of items){ const c=clean(x.title); if(c.t.length<20) continue; const k=c.t.toLowerCase().slice(0,50); if(seen.has(k)) continue; seen.add(k); out.push({t:c.t,s:c.s,link:x.link||'#',ts:x.pubDate?Date.parse(x.pubDate):0}); }
+        out.sort((a,b)=>b.ts-a.ts); return out.slice(0,n);
+      }
+      const rowH=(x,lead)=>'<a class="tit-row" href="'+esc(x.link)+'" target="_blank" rel="noopener"><p class="tit-t" style="font-weight:'+(lead?800:700)+';font-size:'+(lead?'15px':'13px')+';color:#f4ece5">'+esc(x.t)+'</p><p style="font-size:11px;color:#9c8f83;margin:3px 0 0">'+(x.s?esc(x.s)+' · ':'')+rel(x.ts)+'</p></a>';
+      const secHead=(href,color,ic,lbl)=>'<a href="'+pref+href+'" class="flex items-center justify-between mb-0.5" style="text-decoration:none"><span class="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wide" style="color:'+color+'"><i data-lucide="'+ic+'" style="width:14px;height:14px"></i> '+lbl+'</span><span class="text-[11px] font-semibold" style="color:'+color+'">Ver todas →</span></a>';
+      function paint(min,geo){
+        if(!min.length && !geo.length){ el.classList.add('hidden'); return; }
+        let h='<div class="glass rounded-2xl p-4" style="border-color:rgba(207,155,111,.2)"><div class="flex items-center gap-2 mb-3"><span class="tit-dot"></span><span class="text-[12px] font-extrabold uppercase tracking-wider text-stone-200">Titulares en vivo</span></div>';
+        if(min.length) h+=secHead('adn-minero-prensa.html','#e8c9a6','newspaper','Noticias Mineras')+'<div class="mt-0.5">'+min.map((x,i)=>rowH(x,i===0)).join('')+'</div>';
+        if(geo.length) h+='<div style="height:1px;background:rgba(196,168,148,.14);margin:13px 0"></div>'+secHead('adn-minero-geonoticias.html','#8ab0e6','globe-2','Geopolítica')+'<div class="mt-0.5">'+geo.map(x=>rowH(x,false)).join('')+'</div>';
+        h+='</div>'; el.innerHTML=h; el.classList.remove('hidden'); if(window.lucide) lucide.createIcons(); try{ applyFilter(); }catch(e){}
+      }
+      let cached=null; try{ cached=JSON.parse(localStorage.getItem('adn_titulares')||'null'); }catch(e){}
+      if(cached && (cached.min||cached.geo)){ paint(cached.min||[], cached.geo||[]); }
+      else { el.classList.remove('hidden'); el.innerHTML='<div class="glass rounded-2xl p-4" style="border-color:rgba(207,155,111,.2)"><div class="flex items-center gap-2 mb-3"><span class="tit-dot"></span><span class="text-[12px] font-extrabold uppercase tracking-wider text-stone-200">Titulares en vivo</span></div><div class="tit-sk" style="width:34%;margin-bottom:11px"></div><div class="tit-sk" style="height:16px;width:92%;margin-bottom:9px"></div><div class="tit-sk" style="width:78%;margin-bottom:9px"></div><div class="tit-sk" style="width:72%"></div></div>'; }
+      if(cached && cached.at && (Date.now()-cached.at)<15*60000) return;
+      const [min,geo]=await Promise.all([ feed('minería Chile cobre litio', 4), feed('geopolítica minerales críticos litio cobre Chile', 3) ]);
+      const fMin=min.length?min:((cached&&cached.min)||[]), fGeo=geo.length?geo:((cached&&cached.geo)||[]);
+      paint(fMin,fGeo);
+      if(min.length||geo.length){ try{ localStorage.setItem('adn_titulares', JSON.stringify({min:fMin,geo:fGeo,at:Date.now()})); }catch(e){} }
     }
 
     // ===== Racha de días (retención) =====
