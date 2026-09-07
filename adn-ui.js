@@ -105,7 +105,11 @@
         var b=document.createElement('button'); b.id='adnui-back'; b.type='button';
         b.setAttribute('aria-label','Volver atrás'); b.title='Volver atrás'; b.innerHTML='←';
         b.addEventListener('click', function(){
+          // 1) página anterior real (mismo comportamiento que el botón atrás del teléfono)
           try{ if(history.length>1){ history.back(); return; } }catch(e){}
+          // 2) sin historial: volver a la página anterior del mismo sitio (no al inicio)
+          try{ var r=document.referrer; if(r && r.indexOf(location.origin)===0 && r.split('#')[0]!==location.href.split('#')[0]){ location.href=r; return; } }catch(e){}
+          // 3) último recurso
           location.href='index.html';
         });
         document.body.appendChild(b);

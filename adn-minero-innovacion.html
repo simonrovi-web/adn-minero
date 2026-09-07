@@ -48,15 +48,15 @@
     .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:narr 8s infinite; } .nl b{ color:#f4ece5; }
     .nl.n2{ animation-delay:2s } .nl.n3{ animation-delay:4s } .nl.n4{ animation-delay:6s }
     @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
-    #atruck{ animation:adr 8s ease-in-out infinite; } @keyframes adr{ 0%{ transform:translateX(-118px) } 50%{ transform:translateX(118px) } 100%{ transform:translateX(-118px) } }
+    #atruck{ animation:adr 9s ease-in-out infinite; } @keyframes adr{ 0%{ transform:translateX(-118px) } 50%{ transform:translateX(90px) } 100%{ transform:translateX(-118px) } }
     #dome{ animation:dome 1.4s ease-in-out infinite; } @keyframes dome{ 0%,100%{ opacity:.5 } 50%{ opacity:1 } }
     .sig{ animation:sig 2s ease-in-out infinite; } .sig.s2{ animation-delay:.3s } .sig.s3{ animation-delay:.6s }
     @keyframes sig{ 0%,100%{ opacity:.12 } 45%{ opacity:.9 } }
     .link{ stroke-dasharray:4 5; animation:link 1s linear infinite; } @keyframes link{ to{ stroke-dashoffset:-18 } }
     .tbar{ animation:tbar 1.6s ease-in-out infinite; } .tbar.b{ animation-delay:.35s } .tbar.c{ animation-delay:.7s }
-    @keyframes tbar{ 0%,100%{ height:8px; y:116px } 50%{ height:26px; y:98px } }
+    @keyframes tbar{ 0%,100%{ height:6px; y:126px } 50%{ height:24px; y:108px } }
     #drone{ animation:drone 5s ease-in-out infinite; } @keyframes drone{ 0%,100%{ transform:translate(0,0) } 50%{ transform:translate(22px,-6px) } }
-    @media (prefers-reduced-motion:reduce){ #atruck,#dome,.sig,.link,.tbar,#drone,.step,.nl{ animation:none !important } .narr{ display:none } .sig{ opacity:.6 } .tbar{ height:18px; y:104px } }
+    @media (prefers-reduced-motion:reduce){ #atruck,#dome,.sig,.link,.tbar,#drone,.step,.nl{ animation:none !important } .narr{ display:none } .sig{ opacity:.6 } .tbar{ height:16px; y:116px } }
   </style>
   <script src="adn-ui.js" defer></script>
 </head>
@@ -78,45 +78,62 @@
         <i data-lucide="cpu" style="width:20px;height:20px;color:#67c1d6"></i>
         <h3 class="font-bold text-[15.5px]">La faena inteligente <span class="text-[12px] font-semibold" style="color:#8a979a">· autónoma y conectada</span></h3>
       </div>
-      <svg class="viz" viewBox="0 0 400 190" role="img" aria-label="Faena inteligente: camion autonomo guiado por GPS y sensores, teleoperado desde una sala de control, con datos e IA en tiempo real">
-        <rect x="0" y="0" width="400" height="190" fill="#111819"/>
-        <!-- satélite / GPS -->
-        <g>
-          <rect x="142" y="22" width="16" height="12" rx="1.5" fill="#c9d6da"/>
-          <rect x="126" y="25" width="14" height="6" rx="1" fill="#67c1d6"/><rect x="160" y="25" width="14" height="6" rx="1" fill="#67c1d6"/>
-          <line x1="150" y1="22" x2="150" y2="16" stroke="#c9d6da" stroke-width="1.5"/><circle cx="150" cy="15" r="1.6" fill="#a7e0ea"/>
+      <svg class="viz" viewBox="0 0 400 205" role="img" aria-label="Faena inteligente: camion autonomo guiado por GPS y sensores, teleoperado desde una sala de control con datos e IA">
+        <defs>
+          <linearGradient id="iSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16242e"/><stop offset="1" stop-color="#1b2f30"/></linearGradient>
+          <linearGradient id="iGround" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#33291d"/><stop offset="1" stop-color="#1c150f"/></linearGradient>
+          <linearGradient id="iTruck" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2b57e"/><stop offset="1" stop-color="#cf9b6f"/></linearGradient>
+          <linearGradient id="iBed" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b5824f"/><stop offset="1" stop-color="#8a5f3a"/></linearGradient>
+          <linearGradient id="iBld" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#27353c"/><stop offset="1" stop-color="#17232a"/></linearGradient>
+          <linearGradient id="iPanel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3a86a8"/><stop offset="1" stop-color="#1f4a5e"/></linearGradient>
+          <linearGradient id="iScreen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0f2a30"/><stop offset="1" stop-color="#0a1a1f"/></linearGradient>
+          <filter id="iSoft" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="2.5" stdDeviation="2.5" flood-color="#000" flood-opacity="0.45"/></filter>
+        </defs>
+        <rect x="0" y="0" width="400" height="205" fill="url(#iSky)"/>
+        <polygon points="0,150 70,104 140,150 210,96 300,150 360,120 400,150 400,205 0,205" fill="#20303a" opacity=".55"/>
+        <rect x="0" y="168" width="400" height="37" fill="url(#iGround)"/>
+        <path d="M0,184 Q150,177 300,185" fill="none" stroke="#4a3d2f" stroke-width="9" stroke-linecap="round"/>
+        <path d="M0,184 Q150,177 300,185" fill="none" stroke="#6b5842" stroke-width="1.5" stroke-dasharray="12 12"/>
+        <!-- satélite -->
+        <g filter="url(#iSoft)">
+          <polygon points="124,22 140,25 140,31 124,34" fill="url(#iPanel)"/><polygon points="176,22 160,25 160,31 176,34" fill="url(#iPanel)"/>
+          <rect x="140" y="20" width="20" height="14" rx="2" fill="url(#iBld)" stroke="#8fbfce" stroke-width="1"/>
+          <path d="M150,20 q6,-6 12,-2" fill="none" stroke="#a7e0ea" stroke-width="1.4"/><circle cx="162" cy="18" r="1.6" fill="#a7e0ea"/>
         </g>
-        <g stroke="#67c1d6" stroke-width="2" fill="none">
-          <path class="sig" d="M139,42 Q150,49 161,42"/>
-          <path class="sig s2" d="M133,48 Q150,60 167,48"/>
-          <path class="sig s3" d="M127,54 Q150,70 173,54"/>
+        <g stroke="#67c1d6" stroke-width="2" fill="none" stroke-linecap="round">
+          <path class="sig" d="M139,42 Q150,49 161,42"/><path class="sig s2" d="M132,49 Q150,61 168,49"/><path class="sig s3" d="M125,56 Q150,72 175,56"/>
         </g>
-        <!-- enlace de datos al centro de control -->
-        <line class="link" x1="166" y1="30" x2="322" y2="92" stroke="#a7d18a" stroke-width="2"/>
+        <!-- enlace de datos satélite -> sala de control -->
+        <path class="link" d="M168,30 Q262,44 332,96" fill="none" stroke="#a7d18a" stroke-width="2"/>
         <!-- dron -->
-        <g id="drone"><g transform="translate(66,58)"><rect x="-8" y="-1" width="16" height="3" rx="1.5" fill="#a9d3dc"/><circle cx="-8" cy="-1" r="3" fill="none" stroke="#67c1d6" stroke-width="1.4"/><circle cx="8" cy="-1" r="3" fill="none" stroke="#67c1d6" stroke-width="1.4"/></g></g>
-        <!-- suelo / camino -->
-        <rect x="0" y="158" width="400" height="32" fill="#241d17"/>
-        <line x1="10" y1="172" x2="390" y2="172" stroke="#4a3d33" stroke-width="2" stroke-dasharray="14 12"/>
-        <!-- camión autónomo -->
-        <g id="atruck"><g transform="translate(196,150)">
-          <circle id="dome" cx="10" cy="-22" r="5" fill="none" stroke="#67c1d6" stroke-width="1.6"/>
-          <line x1="10" y1="-27" x2="10" y2="-31" stroke="#67c1d6" stroke-width="1.4"/><circle cx="10" cy="-32" r="1.4" fill="#a7e0ea"/>
-          <path d="M2,-16 Q12,-22 22,-16 Z" fill="#c9a06a"/>
-          <rect x="0" y="-15" width="34" height="13" rx="2" fill="#e0955f"/>
-          <rect x="26" y="-21" width="9" height="7" rx="1" fill="#c9b7a5"/>
-          <circle cx="8" cy="1" r="4" fill="#1a120c"/><circle cx="27" cy="1" r="4" fill="#1a120c"/>
+        <g id="drone"><g transform="translate(58,58)">
+          <ellipse cx="-9" cy="-2" rx="6" ry="1.6" fill="#67c1d6" opacity=".7"/><ellipse cx="9" cy="-2" rx="6" ry="1.6" fill="#67c1d6" opacity=".7"/>
+          <rect x="-9" y="-1" width="18" height="3" rx="1.5" fill="#c4dbe0"/><rect x="-3" y="-3" width="6" height="6" rx="1" fill="#7fb0d9"/>
         </g></g>
-        <!-- centro de control -->
-        <g><rect x="314" y="70" width="66" height="46" rx="4" fill="#1c2426" stroke="#67c1d6" stroke-width="1.6"/>
-          <rect class="tbar"   x="326" y="116" width="9" height="8" rx="1" fill="#67c1d6"/>
-          <rect class="tbar b" x="342" y="116" width="9" height="8" rx="1" fill="#7fd4a2"/>
-          <rect class="tbar c" x="358" y="116" width="9" height="8" rx="1" fill="#e0a35a"/>
-          <rect x="334" y="118" width="26" height="6" rx="1" fill="#2a3436"/>
+        <!-- sala de control (elevada, a la derecha) -->
+        <g filter="url(#iSoft)">
+          <rect x="308" y="92" width="80" height="76" rx="5" fill="url(#iBld)" stroke="#3a5560" stroke-width="1"/>
+          <rect x="318" y="102" width="60" height="42" rx="4" fill="url(#iScreen)" stroke="#67c1d6" stroke-width="1.4"/>
+          <polyline points="324,132 334,124 344,128 354,116 366,120" fill="none" stroke="#7fd4a2" stroke-width="1.6"/>
+          <rect class="tbar"   x="326" y="126" width="9" height="6" rx="1" fill="#67c1d6"/>
+          <rect class="tbar b" x="342" y="126" width="9" height="6" rx="1" fill="#7fd4a2"/>
+          <rect class="tbar c" x="358" y="126" width="9" height="6" rx="1" fill="#e0a35a"/>
+          <line x1="348" y1="92" x2="348" y2="82" stroke="#8fbfce" stroke-width="1.5"/><circle cx="348" cy="80" r="2" fill="#a7e0ea"/>
         </g>
-        <text class="lbl-sm" x="150" y="88" text-anchor="middle">satélite · GPS</text>
-        <text class="lbl-sm" x="347" y="132" text-anchor="middle">sala de control · IA</text>
-        <text class="lbl-sm" x="196" y="186" text-anchor="middle">camión autónomo</text>
+        <!-- camión autónomo (CAEX) -->
+        <g id="atruck"><g transform="translate(150,178)">
+          <ellipse cx="26" cy="3" rx="28" ry="4" fill="#000" opacity=".3"/>
+          <path d="M4,-15 L52,-15 L46,-29 L12,-29 Z" fill="url(#iBed)"/>
+          <rect x="2" y="-15" width="48" height="11" rx="2" fill="url(#iTruck)"/>
+          <rect x="46" y="-25" width="10" height="11" rx="1.5" fill="#f0d7b6"/>
+          <circle cx="13" cy="-2" r="7" fill="#15100b"/><circle cx="13" cy="-2" r="2.8" fill="#4a3a2a"/>
+          <circle cx="42" cy="-2" r="7" fill="#15100b"/><circle cx="42" cy="-2" r="2.8" fill="#4a3a2a"/>
+          <line x1="30" y1="-29" x2="30" y2="-36" stroke="#7fd4a2" stroke-width="1.6"/>
+          <circle id="dome" cx="30" cy="-38" r="4.5" fill="none" stroke="#7fd4a2" stroke-width="1.8"/><circle cx="30" cy="-38" r="1.6" fill="#a7f0c8"/>
+        </g></g>
+        <text class="lbl-sm" x="150" y="86" text-anchor="middle">satélite · GPS</text>
+        <text class="lbl-sm" x="348" y="160" text-anchor="middle">sala de control · IA</text>
+        <text class="lbl-sm" x="150" y="201" text-anchor="middle">camión autónomo</text>
       </svg>
       <div class="steps">
         <div class="step s1"><span class="n">1</span><br>Autónomo</div>
