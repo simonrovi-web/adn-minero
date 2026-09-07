@@ -62,7 +62,7 @@
     <!-- ESTADO / TÍTULO -->
     <div class="mt-4 flex items-center justify-between gap-3 flex-wrap">
       <h1 id="estado" class="text-lg sm:text-xl font-extrabold flex items-center gap-2"><i data-lucide="loader" class="w-5 h-5 animate-spin text-stone-400"></i> Buscando transmisión…</h1>
-      <a href="https://www.youtube.com/@ADNMinero?sub_confirmation=1" target="_blank" rel="noopener" class="btn" style="background:#e0303018;border:1px solid #e0303044;color:#ff8577"><i data-lucide="youtube" style="width:18px;height:18px"></i> Suscribirse</a>
+      <a href="https://www.youtube.com/@ADNMinero?sub_confirmation=1" target="_blank" rel="noopener" class="btn" style="background:#e0303018;border:1px solid #e0303044;color:#ff8577"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg> Suscribirse</a>
     </div>
 
     <!-- REPRODUCTOR / FALLBACK -->
@@ -93,7 +93,7 @@
     const watch = videoId ? `https://www.youtube.com/watch?v=${videoId}` : `${CH_URL}/live`;
     $('stage').innerHTML=`<div class="frame"><iframe src="${liveEmbed(videoId)}" title="ADN Minero TV en vivo" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
       <div class="flex items-center justify-center gap-2 flex-wrap mt-3">
-        <a href="${watch}" target="_blank" rel="noopener" class="btn" style="background:#e0303018;border:1px solid #e0303044;color:#ff8577"><i data-lucide="youtube" style="width:18px;height:18px"></i> Ver en YouTube</a>
+        <a href="${watch}" target="_blank" rel="noopener" class="btn" style="background:#e0303018;border:1px solid #e0303044;color:#ff8577"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg> Ver en YouTube</a>
       </div>`;
     $('sub').innerHTML=`Estás viendo la transmisión en directo de ADN Minero. ¿Ves "video no disponible"? Es porque falta activar <b>"Permitir insertar"</b> en YouTube — mientras tanto, <a href="${watch}" target="_blank" rel="noopener" class="lnk">míralo en YouTube →</a>`;
     icons();
@@ -108,7 +108,7 @@
         <p class="text-base font-bold mt-3">La transmisión aparecerá aquí en cuanto empiece 📡</p>
         <p class="text-sm text-stone-400 mt-1 max-w-md mx-auto">Suscríbete y activa la campanita para no perderte el próximo directo de ADN Minero.</p>
         <div class="flex items-center justify-center gap-2 flex-wrap mt-4">
-          <a href="${CH_URL}?sub_confirmation=1" target="_blank" rel="noopener" class="btn" style="background:#e0303018;border:1px solid #e0303044;color:#ff8577"><i data-lucide="youtube" style="width:18px;height:18px"></i> Ir al canal</a>
+          <a href="${CH_URL}?sub_confirmation=1" target="_blank" rel="noopener" class="btn" style="background:#e0303018;border:1px solid #e0303044;color:#ff8577"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg> Ir al canal</a>
           <a href="${CH_URL}/videos" target="_blank" rel="noopener" class="btn" style="background:rgba(255,255,255,.05);border:1px solid rgba(196,168,148,.2);color:#e6d4c4"><i data-lucide="clapperboard" style="width:18px;height:18px"></i> Ver videos</a>
           <a href="adn-minero-alertas.html" class="btn" style="background:#cf9b6f18;border:1px solid #cf9b6f44;color:#e8c9a6"><i data-lucide="bell" style="width:18px;height:18px"></i> Activar alertas</a>
         </div>
