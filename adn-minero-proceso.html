@@ -83,12 +83,14 @@
       <svg class="viz" viewBox="0 0 400 132" role="img" aria-label="Del mineral al cátodo, resumen: la roca se muele, se separa el cobre, se funde y se refina a cátodo de 99,99%">
         <defs>
           <linearGradient id="pBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#241a12"/><stop offset="1" stop-color="#120e0a"/></linearGradient>
+          <radialGradient id="pVig" cx="0.5" cy="0.5" r="0.72"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".38"/></radialGradient>
           <linearGradient id="pTrack" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8a6a48"/><stop offset=".5" stop-color="#cf9b6f"/><stop offset="1" stop-color="#a7d18a"/></linearGradient>
           <radialGradient id="pNodeG" cx="0.35" cy="0.3" r="0.85"><stop offset="0" stop-color="#3a2c1e"/><stop offset="1" stop-color="#1a130d"/></radialGradient>
           <filter id="pSoft" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.5"/></filter>
           <filter id="pGlow" x="-70%" y="-70%" width="240%" height="240%"><feDropShadow dx="0" dy="0" stdDeviation="2.5" flood-color="#f0c079" flood-opacity="0.85"/></filter>
         </defs>
         <rect x="0" y="0" width="400" height="132" fill="url(#pBg)"/>
+        <rect x="0" y="0" width="400" height="132" fill="url(#pVig)"/>
         <line x1="60" y1="58" x2="360" y2="58" stroke="#3a2f24" stroke-width="6" stroke-linecap="round"/>
         <line class="pflow" x1="60" y1="58" x2="360" y2="58" stroke="url(#pTrack)" stroke-width="4" stroke-linecap="round"/>
         <g class="pnode n1" filter="url(#pSoft)"><circle cx="60" cy="58" r="14" fill="url(#pNodeG)" stroke="#cf9b6f" stroke-width="2"/><text x="60" y="63" text-anchor="middle" style="font-size:13px">⛏️</text></g>
