@@ -38,6 +38,25 @@
     .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); backdrop-filter:blur(14px) saturate(130%); -webkit-backdrop-filter:blur(14px) saturate(130%); border:1px solid rgba(196,168,148,0.14); }
     .metric-icon{ filter:drop-shadow(0 0 8px currentColor); }
     a.lnk{ color:#e8c9a6; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .cap{ font-size:13px; line-height:1.55; color:#e2d3ce; } .cap b{ color:#f4ece5; }
+    .lbl-sm{ font-size:9.5px; fill:#d8b3a8; font-weight:600; }
+    .steps{ display:flex; gap:5px; margin-top:11px; }
+    .step{ flex:1; text-align:center; font-size:10.5px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#a08a83; border:1px solid rgba(224,90,63,.16); animation:stepHi 16s infinite; }
+    .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(224,90,63,.18); color:#f0a898; font-size:9px; margin-bottom:4px; }
+    .step.s2{ animation-delay:4s } .step.s3{ animation-delay:8s } .step.s4{ animation-delay:12s }
+    @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#a08a83; border-color:rgba(224,90,63,.16) } 5%,21%{ background:rgba(224,90,63,.2); color:#ffe9e2; border-color:rgba(224,90,63,.6) } 24%,100%{ background:rgba(255,255,255,.035); color:#a08a83; border-color:rgba(224,90,63,.16) } }
+    .narr{ position:relative; min-height:36px; margin-top:9px; }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#e2d3ce; opacity:0; animation:narr 16s infinite; } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:4s } .nl.n3{ animation-delay:8s } .nl.n4{ animation-delay:12s }
+    @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    .epp1{ animation:epp1 16s ease-out infinite } @keyframes epp1{ 0%,3%{opacity:0;transform:translateY(-6px)} 6%,100%{opacity:1;transform:translateY(0)} }
+    .epp2{ animation:epp2 16s ease-out infinite } @keyframes epp2{ 0%,28%{opacity:0} 31%,100%{opacity:1} }
+    .epp3{ animation:epp3 16s ease-out infinite } @keyframes epp3{ 0%,53%{opacity:0} 56%,100%{opacity:1} }
+    .epp4{ animation:epp4 16s ease-out infinite } @keyframes epp4{ 0%,78%{opacity:0} 81%,100%{opacity:1} }
+    .chk{ transform-box:fill-box; transform-origin:center; animation:chk 16s ease-out infinite } @keyframes chk{ 0%,88%{opacity:.85;transform:scale(.97)} 92%,100%{opacity:1;transform:scale(1)} }
+    .eppg{ transform-box:fill-box; transform-origin:center }
+    @media (prefers-reduced-motion:reduce){ .step,.nl,.epp1,.epp2,.epp3,.epp4,.chk{ animation:none !important } .epp1,.epp2,.epp3,.epp4{ opacity:1; transform:none } .chk{ opacity:1; transform:none } .narr{ display:none } }
   </style>
   <script src="adn-ui.js" defer></script>
   <script type="application/ld+json">
@@ -54,6 +73,54 @@
         <p style="margin:0;font-size:11px;color:#9c8f83">Volver a casa sano y salvo es la meta N.º 1</p>
       </div>
     </header>
+
+    <!-- EQUÍPATE (animado) -->
+    <div class="glass rounded-2xl p-4 mt-4">
+      <div class="flex items-center gap-2.5 mb-3">
+        <i data-lucide="hard-hat" style="width:20px;height:20px;color:#e0955f"></i>
+        <h3 class="font-bold text-[15.5px]" style="margin:0">Equípate para volver a casa</h3>
+      </div>
+      <svg class="viz" viewBox="0 0 400 190" role="img" aria-label="Equipo de proteccion personal: casco, lentes, chaleco reflectante y botas; equiparse bien para volver a casa">
+        <defs>
+          <linearGradient id="sBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a1c16"/><stop offset="1" stop-color="#150e0a"/></linearGradient>
+          <filter id="sSoft" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.5"/></filter>
+          <filter id="sGlow" x="-70%" y="-70%" width="240%" height="240%"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#a7d18a" flood-opacity="0.6"/></filter>
+        </defs>
+        <rect x="0" y="0" width="400" height="190" fill="url(#sBg)"/>
+        <rect x="0" y="150" width="400" height="40" fill="#241a12"/>
+        <line x1="0" y1="150" x2="400" y2="150" stroke="#3a2c20" stroke-width="1.5"/>
+        <!-- casa (volver a casa) -->
+        <g class="chk"><path d="M312,150 L312,116 L344,94 L376,116 L376,150 Z" fill="#241a12" stroke="#a7d18a" stroke-width="2" filter="url(#sGlow)"/><rect x="336" y="128" width="16" height="22" fill="#3a2c20"/>
+          <circle cx="370" cy="100" r="10" fill="#a7d18a"/><path d="M365,100 l3.5,3.5 l6.5,-7" stroke="#141110" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+        <text class="lbl-sm" x="344" y="166" text-anchor="middle">volver a casa</text>
+        <!-- figura del minero (base) -->
+        <g fill="#5a4b3e" filter="url(#sSoft)">
+          <circle cx="150" cy="72" r="15"/>
+          <rect x="135" y="88" width="30" height="46" rx="8"/>
+          <rect x="138" y="132" width="11" height="26" rx="3"/><rect x="151" y="132" width="11" height="26" rx="3"/>
+          <rect x="127" y="92" width="9" height="32" rx="4"/><rect x="164" y="92" width="9" height="32" rx="4"/>
+        </g>
+        <!-- EPP que aparece en secuencia -->
+        <g class="epp1"><path d="M132,72 Q150,48 168,72 Z" fill="#f0c020"/><rect x="130" y="70" width="40" height="6" rx="3" fill="#e0a800"/></g>
+        <g class="epp2"><rect x="139" y="68" width="22" height="7" rx="3.5" fill="#7fb0d9"/></g>
+        <g class="epp3"><rect x="135" y="88" width="30" height="46" rx="8" fill="none" stroke="#e0955f" stroke-width="2.5"/><rect x="135" y="102" width="30" height="4.5" fill="#e6e04a"/><rect x="135" y="116" width="30" height="4.5" fill="#e6e04a"/></g>
+        <g class="epp4"><rect x="136" y="154" width="16" height="7" rx="2" fill="#e0955f"/><rect x="150" y="154" width="16" height="7" rx="2" fill="#e0955f"/></g>
+        <text class="lbl-sm" x="150" y="178" text-anchor="middle">EPP · equipo de protección</text>
+      </svg>
+      <div class="steps">
+        <div class="step s1"><span class="n">1</span><br>Casco</div>
+        <div class="step s2"><span class="n">2</span><br>Lentes</div>
+        <div class="step s3"><span class="n">3</span><br>Chaleco</div>
+        <div class="step s4"><span class="n">4</span><br>Botas</div>
+      </div>
+      <div class="narr">
+        <span class="nl n1">El <b>casco</b> protege tu cabeza de golpes y caídas de material.</span>
+        <span class="nl n2">Los <b>lentes de seguridad</b> cuidan tus ojos del polvo y esquirlas.</span>
+        <span class="nl n3">El <b>chaleco reflectante</b> te hace visible entre los equipos.</span>
+        <span class="nl n4">Las <b>botas con punta de acero</b> protegen tus pies.</span>
+      </div>
+      <p class="cap mt-3">El <b>EPP</b> (Equipo de Protección Personal) es obligatorio y no se negocia: casco, lentes, protección auditiva, respirador, guantes, chaleco reflectante y botas con punta de acero. Equiparte bien es lo que te lleva de <b>vuelta a casa</b>.</p>
+    </div>
 
     <!-- EMERGENCIAS -->
     <section class="glass rounded-2xl p-5 mt-4" style="border-color:rgba(224,90,63,.3)">
