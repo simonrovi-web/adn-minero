@@ -40,6 +40,24 @@
     .tip{ display:flex; gap:9px; align-items:flex-start; font-size:13.5px; line-height:1.5; color:#dacfc2; margin-top:8px; }
     .tip b{ color:#f4ece5; }
     h3{ margin:0; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .cap{ font-size:13px; line-height:1.55; color:#dacfc2; } .cap b{ color:#f4ece5; }
+    .lbl{ font-size:10px; font-weight:700; fill:#e6f0d8; } .lbl-sm{ font-size:9.5px; fill:#a9c99a; font-weight:600; }
+    .psteps{ display:flex; gap:5px; margin-top:11px; }
+    .pstep{ flex:1; text-align:center; font-size:10px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#8a9a8c; border:1px solid rgba(167,209,138,.14); animation:pstepHi 8s infinite; }
+    .pstep .pn{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(167,209,138,.16); color:#bfe0a6; font-size:9px; margin-bottom:4px; }
+    .pstep.s2{ animation-delay:2s } .pstep.s3{ animation-delay:4s } .pstep.s4{ animation-delay:6s }
+    @keyframes pstepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#8a9a8c; border-color:rgba(167,209,138,.14) } 5%,21%{ background:rgba(167,209,138,.18); color:#f0f8ea; border-color:rgba(167,209,138,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#8a9a8c; border-color:rgba(167,209,138,.14) } }
+    .pnarr{ position:relative; min-height:34px; margin-top:9px; }
+    .pnl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:pnarr 8s infinite; } .pnl b{ color:#f4ece5; }
+    .pnl.n2{ animation-delay:2s } .pnl.n3{ animation-delay:4s } .pnl.n4{ animation-delay:6s }
+    @keyframes pnarr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    .rflow{ stroke-dasharray:300; stroke-dashoffset:300; animation:rflow 8s ease-in-out infinite; }
+    @keyframes rflow{ 0%,10%{ stroke-dashoffset:300 } 88%,100%{ stroke-dashoffset:0 } }
+    .rnode{ opacity:.35; animation:rnode 8s ease-in-out infinite; } .rnode.n2{ animation-delay:2s } .rnode.n3{ animation-delay:4s } .rnode.n4{ animation-delay:6s }
+    @keyframes rnode{ 0%{ opacity:.35 } 4%{ opacity:1 } 96%,100%{ opacity:1 } }
+    #walker{ animation:walker 8s ease-in-out infinite; } @keyframes walker{ 0%{ transform:translateX(0) } 25%{ transform:translateX(94px) } 50%{ transform:translateX(190px) } 75%,100%{ transform:translateX(286px) } }
+    @media (prefers-reduced-motion:reduce){ .pstep,.pnl,.rflow,.rnode,#walker{ animation:none !important } .pnarr{ display:none } .rflow{ stroke-dashoffset:0 !important } .rnode{ opacity:1 !important } #walker{ transform:translateX(286px) } }
   </style>
   <script src="adn-ui.js" defer></script>
   <script src="adn-recorrido.js" defer></script>
@@ -54,7 +72,41 @@
       </div>
     </header>
 
-    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">Sí se puede empezar sin experiencia. La mayoría entra por <b>empresas de servicios</b> y va sumando cursos, licencias y trayectoria. Esta es la ruta práctica, paso a paso.</p>
+    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">Sí se puede empezar sin experiencia. Esta es la <b>ruta</b> — los hitos se encienden a medida que avanzas hacia tu primera pega.</p>
+
+    <!-- RUTA DE INGRESO (animado) -->
+    <div class="glass rounded-2xl p-4 mt-4">
+      <div class="flex items-center gap-2.5 mb-3">
+        <i data-lucide="route" style="width:20px;height:20px;color:#a7d18a"></i>
+        <h3 class="font-bold text-[15.5px]">Tu ruta a la faena <span class="text-[12px] font-semibold" style="color:#8a9a8c">· sin experiencia</span></h3>
+      </div>
+      <svg class="viz" viewBox="0 0 400 128" role="img" aria-label="Ruta para entrar a la mineria sin experiencia: cursos y licencias, examenes, postular y primera pega">
+        <rect x="0" y="0" width="400" height="128" fill="#161a12"/>
+        <line x1="52" y1="56" x2="348" y2="56" stroke="#3d4a33" stroke-width="3"/>
+        <line class="rflow" x1="52" y1="56" x2="348" y2="56" stroke="#a7d18a" stroke-width="3" stroke-linecap="round"/>
+        <g class="rnode n1"><circle cx="52" cy="56" r="12" fill="#1c2417" stroke="#a7d18a" stroke-width="2"/></g>
+        <g class="rnode n2"><circle cx="148" cy="56" r="12" fill="#1c2417" stroke="#a7d18a" stroke-width="2"/></g>
+        <g class="rnode n3"><circle cx="244" cy="56" r="12" fill="#1c2417" stroke="#a7d18a" stroke-width="2"/></g>
+        <g class="rnode n4"><circle cx="340" cy="56" r="13" fill="#1c2417" stroke="#e0c35a" stroke-width="2"/><text x="340" y="61" text-anchor="middle" style="font-size:13px">⛏️</text></g>
+        <!-- caminante (casco) que avanza -->
+        <g id="walker"><g transform="translate(52,40)"><circle cx="0" cy="0" r="5" fill="#e0955f"/><path d="M-6,-1 a6,6 0 0 1 12,0 z" fill="#f0d7b6"/></g></g>
+        <g class="lbl" text-anchor="middle"><text x="52" y="84">Cursos</text><text x="148" y="84">Exámenes</text><text x="244" y="84">Postular</text><text x="340" y="84" fill="#e6c98f">¡Pega!</text></g>
+        <g class="lbl-sm" text-anchor="middle"><text x="52" y="100">y licencias</text><text x="148" y="100">de salud</text><text x="244" y="100">a contratistas</text><text x="340" y="100">primer trabajo</text></g>
+      </svg>
+      <div class="psteps">
+        <div class="pstep s1"><span class="pn">1</span><br>Cursos</div>
+        <div class="pstep s2"><span class="pn">2</span><br>Exámenes</div>
+        <div class="pstep s3"><span class="pn">3</span><br>Postular</div>
+        <div class="pstep s4"><span class="pn">4</span><br>¡Primera pega!</div>
+      </div>
+      <div class="pnarr">
+        <span class="pnl n1">Saca <b>cursos y licencias</b> (operación, conducción, seguridad).</span>
+        <span class="pnl n2">Ten al día los <b>exámenes</b> (preocupacional, altura).</span>
+        <span class="pnl n3"><b>Postula</b>, sobre todo a empresas de servicios.</span>
+        <span class="pnl n4">Ingresas por servicios y sumas <b>trayectoria</b>.</span>
+      </div>
+      <p class="cap mt-3">La ruta práctica: <b>cursos y licencias</b> al día, <b>exámenes</b> vigentes, <b>postular</b> con constancia (sobre todo a contratistas) y dar el salto a tu <b>primera pega</b>. Abajo, cada paso en detalle.</p>
+    </div>
 
     <div id="topics" class="mt-4 grid gap-2.5"></div>
 
