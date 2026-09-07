@@ -82,14 +82,17 @@
       <svg class="viz" viewBox="0 0 400 220" role="img" aria-label="Corte de Chuquicamata: un rajo enorme escalonado con un camion subiendo la rampa, y abajo el nivel de Chuqui Subterranea">
         <defs>
           <linearGradient id="cqSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22323f"/><stop offset="1" stop-color="#1a2530"/></linearGradient>
-          <linearGradient id="cqRock" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a3a2e"/><stop offset="1" stop-color="#241a13"/></linearGradient>
+          <linearGradient id="cqRock" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#54402f"/><stop offset="1" stop-color="#201711"/></linearGradient>
+          <linearGradient id="cqShade" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe6be" stop-opacity=".12"/><stop offset=".5" stop-color="#000000" stop-opacity="0"/><stop offset="1" stop-color="#000000" stop-opacity=".4"/></linearGradient>
           <linearGradient id="cqPit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b5140"/><stop offset="1" stop-color="#33261d"/></linearGradient>
           <filter id="cqSoft" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.45"/></filter>
           <filter id="cqGlow" x="-70%" y="-70%" width="240%" height="240%"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#7fb0d9" flood-opacity="0.7"/></filter>
         </defs>
         <rect x="0" y="0" width="400" height="58" fill="url(#cqSky)"/>
         <rect x="0" y="56" width="400" height="164" fill="url(#cqRock)"/>
-        <circle cx="350" cy="26" r="10" fill="#e8c98a" opacity=".85"/>
+        <rect x="0" y="56" width="400" height="164" fill="url(#cqShade)"/>
+        <g stroke="#2a1d14" stroke-width="1" opacity=".26"><line x1="0" y1="84" x2="400" y2="88"/><line x1="0" y1="150" x2="400" y2="146"/><line x1="0" y1="200" x2="400" y2="196"/></g>
+        <circle cx="350" cy="26" r="13" fill="#e8c98a" opacity=".35"/><circle cx="350" cy="26" r="9" fill="#f4d38a"/>
         <!-- void del rajo (escalonado, ancho) -->
         <polygon points="34,58 88,58 88,90 120,90 120,120 150,120 150,150 172,150 172,168 228,168 228,150 250,150 250,120 280,120 280,90 312,90 312,58 366,58" fill="url(#cqPit)"/>
         <polyline points="34,58 88,58 88,90 120,90 120,120 150,120 150,150 172,150 172,168 228,168 228,150 250,150 250,120 280,120 280,90 312,90 312,58 366,58" fill="none" stroke="#caa079" stroke-width="1.4" stroke-linejoin="round" opacity=".8"/>
