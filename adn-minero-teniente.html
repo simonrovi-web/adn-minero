@@ -39,6 +39,23 @@
     .tl:last-child .line{ display:none; }
     .yr{ font-size:12px; font-weight:900; color:#e8c9a6; }
     h3{ margin:0; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .cap{ font-size:13px; line-height:1.55; color:#dacfc2; } .cap b{ color:#f4ece5; }
+    .lbl{ font-size:10px; font-weight:700; fill:#f0e2d3; } .lbl-sm{ font-size:9.5px; fill:#c9b7a5; font-weight:600; }
+    .steps{ display:flex; gap:5px; margin-top:11px; }
+    .step{ flex:1; text-align:center; font-size:10px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#8a8079; border:1px solid rgba(196,168,148,.14); animation:stepHi 16s infinite; }
+    .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(196,168,148,.14); color:#c9b7a5; font-size:9px; margin-bottom:4px; }
+    .step.s2{ animation-delay:4s } .step.s3{ animation-delay:8s } .step.s4{ animation-delay:12s }
+    @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#8a8079; border-color:rgba(196,168,148,.14) } 5%,21%{ background:rgba(207,155,111,.18); color:#f6ead9; border-color:rgba(207,155,111,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#8a8079; border-color:rgba(196,168,148,.14) } }
+    .narr{ position:relative; min-height:36px; margin-top:9px; }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:narr 16s infinite; } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:4s } .nl.n3{ animation-delay:8s } .nl.n4{ animation-delay:12s }
+    @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    #tCage{ animation:tcage 5s ease-in-out infinite; } @keyframes tcage{ 0%,8%{ transform:translateY(0) } 50%{ transform:translateY(74px) } 92%,100%{ transform:translateY(0) } }
+    .tore{ animation:tore 2.6s ease-in infinite; } .tore.b{ animation-delay:.6s } .tore.c{ animation-delay:1.2s } .tore.d{ animation-delay:1.8s }
+    @keyframes tore{ 0%{ transform:translateY(0); opacity:0 } 18%{ opacity:1 } 82%{ opacity:1 } 100%{ transform:translateY(30px); opacity:0 } }
+    #tnnm{ animation:tnnm 2.8s ease-in-out infinite; } @keyframes tnnm{ 0%,100%{ opacity:.5 } 50%{ opacity:1 } }
+    @media (prefers-reduced-motion:reduce){ #tCage,.tore,#tnnm,.step,.nl{ animation:none !important } #tnnm{ opacity:1 } .narr{ display:none } }
   </style>
   <script src="adn-ui.js" defer></script>
   <script type="application/ld+json">
@@ -56,6 +73,63 @@
     </header>
 
     <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">En la cordillera de la Región de O'Higgins, cerca de Rancagua, se esconde la <b>mina de cobre subterránea más grande del mundo</b>: miles de kilómetros de galerías excavadas en la montaña por más de un siglo.</p>
+
+    <!-- CORTE SUBTERRÁNEO (animado) -->
+    <div class="glass rounded-2xl p-4 mt-4">
+      <div class="flex items-center gap-2.5 mb-3">
+        <i data-lucide="pickaxe" style="width:20px;height:20px;color:#cf9b6f"></i>
+        <h3 class="font-bold text-[15.5px]" style="margin:0">Por dentro de la montaña</h3>
+      </div>
+      <svg class="viz" viewBox="0 0 400 220" role="img" aria-label="Corte de El Teniente: Sewell en la ladera, galerias en varios niveles bajo la montaña, hundimiento del mineral y el Nuevo Nivel Mina mas profundo">
+        <defs>
+          <linearGradient id="tSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1e2f3c"/><stop offset="1" stop-color="#243036"/></linearGradient>
+          <linearGradient id="tRock" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a3a2e"/><stop offset="1" stop-color="#241a13"/></linearGradient>
+          <filter id="tSoft" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.45"/></filter>
+          <filter id="tGlow" x="-70%" y="-70%" width="240%" height="240%"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#7fd4a2" flood-opacity="0.7"/></filter>
+        </defs>
+        <rect x="0" y="0" width="400" height="118" fill="url(#tSky)"/>
+        <!-- montaña -->
+        <polygon points="20,118 150,26 232,74 300,40 386,118" fill="#37291f"/>
+        <polygon points="138,42 150,26 162,42" fill="#e8eef2"/><polygon points="290,54 300,40 312,54" fill="#e8eef2"/>
+        <!-- Sewell (pueblo de escaleras) -->
+        <g filter="url(#tSoft)">
+          <rect x="243" y="86" width="12" height="10" fill="#c15a44"/><polygon points="243,86 249,80 255,86" fill="#e07a5a"/>
+          <rect x="258" y="80" width="12" height="10" fill="#d6a94f"/><polygon points="258,80 264,74 270,80" fill="#e6c079"/>
+          <rect x="273" y="74" width="12" height="10" fill="#7fb0d9"/><polygon points="273,74 279,68 285,74" fill="#a7c6de"/>
+          <path d="M240,100 l6,-5 l0,-4 l6,-5 l0,-4 l6,-5 l0,-4 l6,-5" fill="none" stroke="#c9b7a5" stroke-width="1.4"/>
+        </g>
+        <!-- superficie + castillete -->
+        <rect x="0" y="116" width="400" height="104" fill="url(#tRock)"/>
+        <g stroke="#caa079" stroke-width="2" fill="none"><path d="M96,116 L108,96 L120,116"/><line x1="108" y1="96" x2="108" y2="116"/></g>
+        <!-- pique + jaula -->
+        <rect x="104" y="116" width="10" height="90" fill="#0f0a07"/>
+        <g id="tCage"><rect x="105.5" y="120" width="7" height="11" rx="1" fill="#e8c9a6"/></g>
+        <!-- galerías (niveles) -->
+        <g fill="#0f0a07"><rect x="150" y="138" width="180" height="8"/><rect x="60" y="162" width="270" height="8"/><rect x="150" y="186" width="180" height="8"/></g>
+        <!-- cuerpo mineralizado + hundimiento -->
+        <path d="M180,138 Q235,96 290,138 Z" fill="#8a6b45" opacity=".9"/>
+        <g fill="#f0d7b6"><circle class="tore" cx="220" cy="140" r="3"/><circle class="tore b" cx="235" cy="138" r="3"/><circle class="tore c" cx="250" cy="140" r="3"/><circle class="tore d" cx="235" cy="146" r="3"/></g>
+        <!-- Nuevo Nivel Mina (más profundo) -->
+        <rect id="tnnm" x="90" y="204" width="240" height="9" rx="2" fill="#3a7f5a" stroke="#7fd4a2" stroke-width="1.5" filter="url(#tGlow)"/>
+        <path d="M348,150 L348,200 M343,192 L348,201 L353,192" stroke="#7fd4a2" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <text class="lbl-sm" x="278" y="112" text-anchor="middle">Sewell (UNESCO)</text>
+        <text class="lbl-sm" x="80" y="158" text-anchor="middle">galerías</text>
+        <text class="lbl-sm" x="210" y="200" text-anchor="middle" style="fill:#a7e0c0">Nuevo Nivel Mina · más profundo</text>
+      </svg>
+      <div class="steps">
+        <div class="step s1"><span class="n">1</span><br>Sewell</div>
+        <div class="step s2"><span class="n">2</span><br>Galerías</div>
+        <div class="step s3"><span class="n">3</span><br>Hundimiento</div>
+        <div class="step s4"><span class="n">4</span><br>Nuevo Nivel</div>
+      </div>
+      <div class="narr">
+        <span class="nl n1">Arriba, <b>Sewell</b>: el pueblo de escaleras, Patrimonio de la Humanidad.</span>
+        <span class="nl n2">Bajo la montaña, <b>miles de km de galerías</b> en varios niveles.</span>
+        <span class="nl n3">El mineral se <b>hunde</b> (caving) y se extrae desde abajo.</span>
+        <span class="nl n4">El <b>Nuevo Nivel Mina</b> excava aún más profundo, por décadas más.</span>
+      </div>
+      <p class="cap mt-3">El Teniente es un laberinto de <b>galerías</b> excavadas por más de un siglo bajo los Andes. Arriba, <b>Sewell</b>. El mineral se extrae por <b>hundimiento</b>, y el <b>Nuevo Nivel Mina</b> va aún más profundo para extender su vida por décadas.</p>
+    </div>
 
     <!-- KPIs -->
     <div class="grid grid-cols-2 gap-2.5 mt-4">
