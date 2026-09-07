@@ -40,14 +40,14 @@
     .cap{ font-size:13px; line-height:1.55; color:#dacfc2; } .cap b{ color:#f4ece5; }
     .lbl-sm{ font-size:9.5px; fill:#a9d3dc; font-weight:600; }
     .steps{ display:flex; gap:5px; margin-top:11px; }
-    .step{ flex:1; text-align:center; font-size:10px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#8a979a; border:1px solid rgba(103,193,214,.14); animation:stepHi 8s infinite; }
+    .step{ flex:1; text-align:center; font-size:10px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#8a979a; border:1px solid rgba(103,193,214,.14); animation:stepHi 16s infinite; }
     .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(103,193,214,.16); color:#a9d3dc; font-size:9px; margin-bottom:4px; }
-    .step.s2{ animation-delay:2s } .step.s3{ animation-delay:4s } .step.s4{ animation-delay:6s }
-    @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#8a979a; border-color:rgba(103,193,214,.14) } 5%,21%{ background:rgba(103,193,214,.18); color:#eafaff; border-color:rgba(103,193,214,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#8a979a; border-color:rgba(103,193,214,.14) } }
+    .step.s2{ animation-delay:4s } .step.s3{ animation-delay:8s } .step.s4{ animation-delay:12s }
+    @keyframes stepHi{ 0%,1%{ background:rgba(255,255,255,.035); color:#8a979a; border-color:rgba(103,193,214,.14) } 3%,24%{ background:rgba(103,193,214,.18); color:#eafaff; border-color:rgba(103,193,214,.55) } 26%,100%{ background:rgba(255,255,255,.035); color:#8a979a; border-color:rgba(103,193,214,.14) } }
     .narr{ position:relative; min-height:36px; margin-top:9px; }
-    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:narr 8s infinite; } .nl b{ color:#f4ece5; }
-    .nl.n2{ animation-delay:2s } .nl.n3{ animation-delay:4s } .nl.n4{ animation-delay:6s }
-    @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:narr 16s infinite; } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:4s } .nl.n3{ animation-delay:8s } .nl.n4{ animation-delay:12s }
+    @keyframes narr{ 0%,1%{opacity:0} 3%,23%{opacity:1} 25%,100%{opacity:0} }
     #atruck{ animation:adr 9s ease-in-out infinite; } @keyframes adr{ 0%{ transform:translateX(-118px) } 50%{ transform:translateX(90px) } 100%{ transform:translateX(-118px) } }
     #dome{ animation:dome 1.4s ease-in-out infinite; } @keyframes dome{ 0%,100%{ opacity:.5 } 50%{ opacity:1 } }
     .sig{ animation:sig 2s ease-in-out infinite; } .sig.s2{ animation-delay:.3s } .sig.s3{ animation-delay:.6s }
