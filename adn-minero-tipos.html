@@ -118,12 +118,35 @@
     .cnode.n1{ animation-delay:0s } .cnode.n2{ animation-delay:2s } .cnode.n3{ animation-delay:4s } .cnode.n4{ animation-delay:6s }
     @keyframes cnode{ 0%{ opacity:.35 } 4%{ opacity:1 } 96%,100%{ opacity:1 } }
 
+    /* ===== narración que cambia con cada paso ===== */
+    .narr{ position:relative; min-height:36px; margin-top:9px; }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#e2d8cb; opacity:0; animation:narr 8s infinite; }
+    .nl b{ color:#f6ead9; }
+    .nl.n2{ animation-delay:2s } .nl.n3{ animation-delay:4s } .nl.n4{ animation-delay:6s }
+    @keyframes narr{ 0%,3%{ opacity:0 } 6%,20%{ opacity:1 } 23%,100%{ opacity:0 } }
+
+    /* refinamientos de proceso */
+    #debris{ animation:debris 8s ease-out infinite; }
+    @keyframes debris{ 0%,26%{ opacity:0; transform:translate(0,0) } 29%{ opacity:1 } 40%{ opacity:0; transform:translate(0,-16px) } 100%{ opacity:0 } }
+    #botDump{ animation:botDump 8s ease-in-out infinite; }
+    @keyframes botDump{ 0%,50%{ opacity:0 } 57%,100%{ opacity:1 } }
+    #lhdLoad{ animation:lhdLoad 6s ease-in-out infinite; }
+    @keyframes lhdLoad{ 0%,14%{ opacity:0 } 18%{ opacity:1 } 40%{ opacity:1 } 44%,100%{ opacity:0 } }
+    #acopio{ animation:acopio 6s ease-in-out infinite; }
+    @keyframes acopio{ 0%,48%{ opacity:.55 } 55%,100%{ opacity:1 } }
+    #pumpHead{ animation:pump 1.5s ease-in-out infinite; }
+    @keyframes pump{ 0%,100%{ transform:translateY(0) } 50%{ transform:translateY(2px) } }
+    #battFill{ animation:battFill 8s ease-in-out infinite; }
+    @keyframes battFill{ 0%{ y:23px; height:2px } 20%{ y:23px; height:2px } 100%{ y:7px; height:18px } }
+
     @media (prefers-reduced-motion: reduce){
-      #truck,#truckLoad,#shovel,#blast,#drill,.digline,#skip,#skipLoad,.ore,#lhd,#cave,
-      #sunGlow,.brine,.flowd,.water,.vapor,#batt,.depdot,.flash-r,.flash-s,.flow,.cnode{ animation:none !important; }
+      #truck,#truckLoad,#shovel,#blast,#drill,.digline,#skip,#skipLoad,.ore,#lhd,#lhdLoad,#cave,#debris,#botDump,#acopio,#pumpHead,#battFill,
+      #sunGlow,.brine,.flowd,.water,.vapor,#batt,.depdot,.flash-r,.flash-s,.flow,.cnode,.nl{ animation:none !important; }
       #truckLoad,#skipLoad{ opacity:1 !important; } .flash-s{ opacity:1 !important; } .flow{ stroke-dashoffset:0 !important; } .cnode{ opacity:1 !important; }
+      #debris,#botDump,#lhdLoad{ opacity:0 !important; } #acopio{ opacity:1 !important; }
       .step{ animation:none !important; color:#c9b7a5 !important; }
-      .water{ y:158px; height:18px; }
+      .narr{ display:none; }
+      .water{ y:158px; height:18px; } #battFill{ y:9px; height:16px; }
     }
   </style>
   <script src="adn-ui.js" defer></script>
@@ -159,10 +182,12 @@
         <polyline points="48,60 96,60 96,98 128,98 128,136 156,136 156,174 178,174 178,208 222,208 222,174 244,174 244,136 272,136 272,98 304,98 304,60 352,60" fill="none" stroke="#caa079" stroke-width="1.5" stroke-linejoin="round" opacity=".8"/>
         <!-- pila de mineral fuera del rajo (botadero) -->
         <path d="M20,60 Q40,44 60,60 Z" fill="#7a5c42"/>
+        <circle id="botDump" cx="40" cy="53" r="4" fill="#c9a06a"/>
         <!-- perforadora (paso 1) -->
         <g id="drill"><rect x="243" y="120" width="3" height="16" fill="#e8c9a6"/><rect x="240" y="116" width="9" height="5" rx="1" fill="#c9b7a5"/></g>
         <!-- tronadura (paso 2) -->
         <circle id="blast" cx="245" cy="134" r="9" fill="#f0b063"/>
+        <g id="debris" fill="#e0955f"><circle cx="240" cy="130" r="2"/><circle cx="250" cy="129" r="1.6"/><circle cx="245" cy="125" r="1.5"/></g>
         <!-- pala que carga (paso 3) -->
         <g id="shovel" transform="translate(196,196)"><rect x="0" y="-7" width="12" height="7" rx="1" fill="#d6a94f"/><path d="M12,-4 l7,-3 l0,7 z" fill="#e8c9a6"/></g>
         <!-- camión: carga abajo, sube la rampa y bota arriba -->
@@ -182,6 +207,12 @@
         <div class="step s2"><span class="n">2</span><br>Tronar</div>
         <div class="step s3"><span class="n">3</span><br>Cargar</div>
         <div class="step s4"><span class="n">4</span><br>Transportar</div>
+      </div>
+      <div class="narr">
+        <span class="nl n1">Se <b>perfora</b> la roca con grandes máquinas.</span>
+        <span class="nl n2">Se <b>trona</b> con explosivos para fracturarla.</span>
+        <span class="nl n3">Una <b>pala carga</b> el mineral en el camión.</span>
+        <span class="nl n4">El camión lo <b>transporta</b> fuera del rajo.</span>
       </div>
       <p class="cap mt-3">Se <b>perfora</b> la roca, se <b>trona</b> con explosivos, una pala <b>carga</b> el mineral en camiones y estos lo <b>transportan</b> subiendo la rampa fuera del rajo. Sirve cuando el yacimiento es <b>grande y superficial</b>.</p>
       <div class="flex flex-wrap gap-1.5 mt-2.5">
@@ -206,7 +237,7 @@
         <rect x="0" y="44" width="400" height="206" fill="url(#under)"/>
         <!-- headframe + acopio superficie -->
         <g stroke="#caa079" stroke-width="2" fill="none"><path d="M300,44 L314,16 L328,44"/><line x1="314" y1="16" x2="314" y2="44"/><circle cx="314" cy="20" r="4" fill="#e0955f" stroke="none"/></g>
-        <path d="M336,44 Q352,30 368,44 Z" fill="#8a6b45"/>
+        <path id="acopio" d="M336,44 Q352,30 368,44 Z" fill="#8a6b45"/>
         <!-- pique -->
         <rect x="308" y="44" width="12" height="176" fill="#0f0a07"/>
         <g id="skip"><rect x="309.5" y="52" width="9" height="13" rx="1" fill="#c9b7a5"/><g id="skipLoad"><rect x="311" y="49" width="6" height="4" rx="1" fill="#e8c9a6"/></g></g>
@@ -218,7 +249,7 @@
         <!-- mineral que baja por puntos de extracción -->
         <g fill="#f0d7b6"><circle class="ore" cx="165" cy="150" r="3"/><circle class="ore b" cx="180" cy="150" r="3"/><circle class="ore c" cx="195" cy="150" r="3"/><circle class="ore d" cx="180" cy="150" r="3"/></g>
         <!-- cargador LHD que lleva mineral al pique -->
-        <g id="lhd"><g transform="translate(210,152)"><rect x="0" y="-8" width="18" height="7" rx="1.5" fill="#7fb0d9"/><path d="M18,-6 l6,-2 l0,6 z" fill="#a7c6de"/><circle cx="5" cy="1" r="2.5" fill="#0f0a07"/><circle cx="14" cy="1" r="2.5" fill="#0f0a07"/></g></g>
+        <g id="lhd"><g transform="translate(210,152)"><rect id="lhdLoad" x="3" y="-11" width="9" height="3" rx="1" fill="#e8c9a6"/><rect x="0" y="-8" width="18" height="7" rx="1.5" fill="#7fb0d9"/><path d="M18,-6 l6,-2 l0,6 z" fill="#a7c6de"/><circle cx="5" cy="1" r="2.5" fill="#0f0a07"/><circle cx="14" cy="1" r="2.5" fill="#0f0a07"/></g></g>
         <text class="lbl-sm" x="175" y="176" text-anchor="middle">nivel de producción</text>
         <text class="lbl-sm" x="314" y="42" text-anchor="middle">pique</text>
         <text class="lbl-sm" x="175" y="70" text-anchor="middle">se fractura</text>
@@ -228,6 +259,12 @@
         <div class="step s2"><span class="n">2</span><br>Hundir</div>
         <div class="step s3"><span class="n">3</span><br>Cargar</div>
         <div class="step s4"><span class="n">4</span><br>Izar</div>
+      </div>
+      <div class="narr">
+        <span class="nl n1">Se <b>fractura</b> el mineral en profundidad.</span>
+        <span class="nl n2">Por gravedad, el mineral <b>se hunde</b> (caving).</span>
+        <span class="nl n3">Un <b>cargador</b> lo lleva hasta el pique.</span>
+        <span class="nl n4">El <b>skip lo iza</b> hasta la superficie.</span>
       </div>
       <p class="cap mt-3">Se <b>fractura</b> el mineral en profundidad; por gravedad se <b>hunde</b> (caving) hacia el nivel de producción; un <b>cargador</b> lo lleva al pique y el <b>skip lo iza</b> a la superficie. Altera menos el paisaje, pero es más compleja.</p>
       <div class="flex flex-wrap gap-1.5 mt-2.5">
@@ -253,7 +290,7 @@
         <circle cx="52" cy="42" r="13" fill="#f0d79a"/>
         <!-- pozo / bomba de salmuera -->
         <rect x="66" y="118" width="9" height="118" fill="#0f0a07"/>
-        <rect x="58" y="110" width="25" height="10" rx="2" fill="#c9b7a5"/>
+        <rect id="pumpHead" x="58" y="110" width="25" height="10" rx="2" fill="#c9b7a5"/>
         <g fill="#5fd1bd"><circle class="brine" cx="70.5" cy="230" r="3"/><circle class="brine b" cx="70.5" cy="230" r="3"/><circle class="brine c" cx="70.5" cy="230" r="3"/></g>
         <!-- tubería superior con flujo hacia las pozas -->
         <line x1="70" y1="112" x2="120" y2="112" stroke="#5a6a70" stroke-width="4"/>
@@ -270,7 +307,7 @@
           <line class="vapor" x1="148" y1="148" x2="148" y2="140"/><line class="vapor v2" x1="228" y1="148" x2="228" y2="140"/><line class="vapor v3" x1="308" y1="148" x2="308" y2="140"/>
         </g>
         <!-- batería / planta -->
-        <g id="batt" transform="translate(360,150)"><rect x="0" y="0" width="22" height="26" rx="3" fill="none" stroke="#a7d18a" stroke-width="2"/><rect x="7" y="-4" width="8" height="4" rx="1" fill="#a7d18a"/><path d="M12,4 l-5,10 l4,0 l-3,8 l8,-12 l-4,0 z" fill="#a7d18a"/></g>
+        <g id="batt" transform="translate(360,150)"><rect id="battFill" x="3" y="23" width="16" height="2" rx="1" fill="#a7d18a" opacity=".55"/><rect x="0" y="0" width="22" height="26" rx="3" fill="none" stroke="#a7d18a" stroke-width="2"/><rect x="7" y="-4" width="8" height="4" rx="1" fill="#a7d18a"/><path d="M12,4 l-5,10 l4,0 l-3,8 l8,-12 l-4,0 z" fill="#a7d18a"/></g>
         <text class="lbl-sm" x="70" y="248" text-anchor="middle">salmuera</text>
         <text class="lbl-sm" x="228" y="192" text-anchor="middle">pozas de evaporación (color = más concentrado)</text>
       </svg>
@@ -279,6 +316,12 @@
         <div class="step s2"><span class="n">2</span><br>Evaporar</div>
         <div class="step s3"><span class="n">3</span><br>Concentrar</div>
         <div class="step s4"><span class="n">4</span><br>Planta</div>
+      </div>
+      <div class="narr">
+        <span class="nl n1">Se <b>bombea la salmuera</b> desde el salar.</span>
+        <span class="nl n2">El sol la <b>evapora</b> durante meses (baja el nivel).</span>
+        <span class="nl n3">El litio <b>se concentra</b>: el color se intensifica.</span>
+        <span class="nl n4">Pasa a la <b>planta</b>: carbonato de litio y baterías.</span>
       </div>
       <p class="cap mt-3">Se <b>bombea la salmuera</b> del salar a pozas; el <b>sol la evapora</b> durante meses (baja el nivel), el litio se va <b>concentrando</b> (el color se intensifica) y pasa a la <b>planta</b> para hacer carbonato de litio y baterías. Es muy distinto a sacar cobre de la roca. Su corazón: el <b>Salar de Atacama</b>.</p>
     </div>
