@@ -33,6 +33,22 @@
     .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
     .kpi b{ display:block; font-weight:900; line-height:1; font-variant-numeric:tabular-nums; }
     h3{ margin:0; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .cap{ font-size:13px; line-height:1.55; color:#dacfc2; } .cap b{ color:#f4ece5; }
+    .lbl-sm{ font-size:9.5px; fill:#bcd0d6; font-weight:600; }
+    .steps{ display:flex; gap:5px; margin-top:11px; }
+    .step{ flex:1; text-align:center; font-size:10px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.04); color:#8a97a0; border:1px solid rgba(150,190,210,.14); animation:stepHi 16s infinite; }
+    .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(150,190,210,.16); color:#bcd8e6; font-size:9px; margin-bottom:4px; }
+    .step.s2{ animation-delay:4s } .step.s3{ animation-delay:8s } .step.s4{ animation-delay:12s }
+    @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.04); color:#8a97a0; border-color:rgba(150,190,210,.14) } 5%,21%{ background:rgba(150,190,210,.2); color:#eef7fb; border-color:rgba(150,190,210,.55) } 24%,100%{ background:rgba(255,255,255,.04); color:#8a97a0; border-color:rgba(150,190,210,.14) } }
+    .narr{ position:relative; min-height:36px; margin-top:9px; }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:narr 16s infinite; } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:4s } .nl.n3{ animation-delay:8s } .nl.n4{ animation-delay:12s }
+    @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    .snf{ animation:snf 4.2s linear infinite; } .snf.s2{ animation-delay:.7s } .snf.s3{ animation-delay:1.4s } .snf.s4{ animation-delay:2.1s } .snf.s5{ animation-delay:2.8s } .snf.s6{ animation-delay:3.5s }
+    @keyframes snf{ 0%{ transform:translate(0,0); opacity:0 } 12%{ opacity:.9 } 88%{ opacity:.9 } 100%{ transform:translate(-10px,116px); opacity:0 } }
+    #coSun{ animation:coSun 4s ease-in-out infinite; } @keyframes coSun{ 0%,100%{ opacity:.5 } 50%{ opacity:.8 } }
+    @media (prefers-reduced-motion:reduce){ .snf,#coSun,.step,.nl{ animation:none !important } .snf{ opacity:.7 } .narr{ display:none } }
   </style>
   <script src="adn-ui.js" defer></script>
   <script type="application/ld+json">
@@ -50,6 +66,51 @@
     </header>
 
     <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">En el altiplano de Tarapacá, a más de <b>4.000 metros</b>, opera una de las <b>mayores minas de cobre del mundo</b>. Trabajar aquí es hacerlo casi en el límite de lo posible por la altura.</p>
+
+    <!-- ALTIPLANO A 4.000 M (animado) -->
+    <div class="glass rounded-2xl p-4 mt-4">
+      <div class="flex items-center gap-2.5 mb-3">
+        <i data-lucide="mountain-snow" style="width:20px;height:20px;color:#a7c6de"></i>
+        <h3 class="font-bold text-[15.5px]" style="margin:0">Minería al límite de la altura</h3>
+      </div>
+      <svg class="viz" viewBox="0 0 400 190" role="img" aria-label="Collahuasi opera en el altiplano a mas de 4000 metros, con frio y nieve; una de las mayores minas de cobre del mundo">
+        <defs>
+          <linearGradient id="coSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a3a48"/><stop offset="1" stop-color="#3a4a52"/></linearGradient>
+          <linearGradient id="coGr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a5548"/><stop offset="1" stop-color="#332f26"/></linearGradient>
+          <filter id="coSoft" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.4"/></filter>
+        </defs>
+        <rect x="0" y="0" width="400" height="150" fill="url(#coSky)"/>
+        <circle id="coSun" cx="330" cy="34" r="15" fill="#d6dbe0"/>
+        <!-- cordillera nevada -->
+        <polygon points="0,150 70,60 130,150" fill="#41505a"/><polygon points="40,150 130,40 220,150" fill="#4a5a64"/><polygon points="180,150 270,54 360,150" fill="#41505a"/><polygon points="300,150 360,74 400,150" fill="#4a5a64"/>
+        <polygon points="112,64 130,40 148,64" fill="#eef4f8"/><polygon points="252,78 270,54 288,78" fill="#eef4f8"/><polygon points="58,84 70,60 82,84" fill="#eef4f8"/>
+        <!-- altiplano -->
+        <rect x="0" y="148" width="400" height="42" fill="url(#coGr)"/>
+        <!-- mina (rajo pequeño en el altiplano) -->
+        <g filter="url(#coSoft)"><polygon points="150,150 168,150 168,160 186,160 186,170 214,170 214,160 232,160 232,150 250,150 250,178 150,178" fill="#4a3a2e"/><polyline points="168,150 168,160 186,160 186,170 214,170 214,160 232,160 232,150" fill="none" stroke="#caa079" stroke-width="1.2"/></g>
+        <!-- camión chico -->
+        <g transform="translate(196,168)"><rect x="0" y="-6" width="13" height="6" rx="1" fill="#e0955f"/><circle cx="3" cy="1" r="2" fill="#1a120c"/><circle cx="10" cy="1" r="2" fill="#1a120c"/></g>
+        <!-- nieve -->
+        <g fill="#eef4f8"><circle class="snf" cx="60" cy="40" r="2"/><circle class="snf s2" cx="120" cy="30" r="1.6"/><circle class="snf s3" cx="190" cy="45" r="2.2"/><circle class="snf s4" cx="250" cy="32" r="1.8"/><circle class="snf s5" cx="310" cy="42" r="2"/><circle class="snf s6" cx="350" cy="30" r="1.6"/></g>
+        <!-- altitud -->
+        <line x1="0" y1="150" x2="400" y2="150" stroke="#8fbfce" stroke-width="1" stroke-dasharray="4 4" opacity=".6"/>
+        <text class="lbl-sm" x="40" y="146" style="fill:#a7d9e6">+4.000 m</text>
+        <text class="lbl-sm" x="200" y="188" text-anchor="middle">faena en el altiplano</text>
+      </svg>
+      <div class="steps">
+        <div class="step s1"><span class="n">1</span><br>+4.000 m</div>
+        <div class="step s2"><span class="n">2</span><br>Frío y nieve</div>
+        <div class="step s3"><span class="n">3</span><br>Poco oxígeno</div>
+        <div class="step s4"><span class="n">4</span><br>Gran mina</div>
+      </div>
+      <div class="narr">
+        <span class="nl n1">Collahuasi está a más de <b>4.000 metros</b> en el altiplano.</span>
+        <span class="nl n2"><b>Frío extremo</b>, viento y nieve buena parte del año.</span>
+        <span class="nl n3">A esa altura hay <b>menos oxígeno</b>: se trabaja con cuidado y aclimatación.</span>
+        <span class="nl n4">Aun así, es una de las <b>mayores minas de cobre</b> del mundo.</span>
+      </div>
+      <p class="cap mt-3">Trabajar en Collahuasi es hacerlo <b>al límite</b>: más de <b>4.000 m</b>, frío, viento, nieve y menos oxígeno, que obliga a exámenes y aclimatación de altura. Pese a todo, es una de las mayores productoras de cobre del planeta.</p>
+    </div>
 
     <div class="grid grid-cols-2 gap-2.5 mt-4">
       <div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="trophy" class="w-4 h-4" style="color:#cf9b6f"></i><span class="text-[11px] font-bold text-stone-400">Escala</span></div><b style="font-size:18px;color:#e8c9a6">Top mundial</b><p class="text-[11px] text-stone-500 mt-1">entre las mayores de cobre</p></div>
