@@ -106,5 +106,19 @@ console.log('== 5) Integridad de banderas (flags.css ↔ flags/*.svg) ==');
   }
 }
 
+console.log('== 6) Integridad de iconos lucide (data-lucide ↔ subset) ==');
+{
+  const lucidePath = path.join(ROOT, 'lucide.min.js');
+  if (fs.existsSync(lucidePath)) {
+    const lucide = fs.readFileSync(lucidePath, 'utf8');
+    const has = name => lucide.includes(`"${name}":`);
+    for (const f of HTML) {
+      const s = fs.readFileSync(path.join(ROOT, f), 'utf8');
+      const names = new Set([...s.matchAll(/data-lucide="([a-z0-9-]+)"/g)].map(m => m[1]));
+      for (const n of names) if (!has(n)) fail(f, `icono lucide "${n}" no está en lucide.min.js (se vería en blanco)`);
+    }
+  }
+}
+
 if (errors) { console.error(`\n${errors} error(es). Falla la validación.`); process.exit(1); }
 console.log(`\n✓ Todo OK · ${HTML.length} archivos validados.`);
