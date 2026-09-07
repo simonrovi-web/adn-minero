@@ -263,11 +263,17 @@
       </div>
       <svg class="viz" viewBox="0 0 400 250" role="img" aria-label="Proceso subterráneo: el mineral se fractura, se hunde por gravedad, un cargador lo lleva al pique y el skip lo iza a superficie">
         <defs>
-          <linearGradient id="skyu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22323f"/><stop offset="1" stop-color="#1a2530"/></linearGradient>
-          <linearGradient id="under" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2c22"/><stop offset="1" stop-color="#241a13"/></linearGradient>
+          <linearGradient id="skyu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16232f"/><stop offset=".6" stop-color="#26313c"/><stop offset="1" stop-color="#3a3226"/></linearGradient>
+          <linearGradient id="under" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a3728"/><stop offset="1" stop-color="#1e150f"/></linearGradient>
+          <linearGradient id="underShade" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe6be" stop-opacity=".08"/><stop offset=".5" stop-color="#000000" stop-opacity="0"/><stop offset="1" stop-color="#000000" stop-opacity=".4"/></linearGradient>
+          <radialGradient id="caveG" cx="0.5" cy="0.72" r="0.72"><stop offset="0" stop-color="#c69a5c"/><stop offset="1" stop-color="#6b4f30"/></radialGradient>
+          <filter id="fGlowU" x="-80%" y="-80%" width="260%" height="260%"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#f0c069" flood-opacity=".65"/></filter>
+          <filter id="fSoftU" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="2" stdDeviation="1.6" flood-color="#000" flood-opacity=".5"/></filter>
         </defs>
         <rect x="0" y="0" width="400" height="46" fill="url(#skyu)"/>
         <rect x="0" y="44" width="400" height="206" fill="url(#under)"/>
+        <rect x="0" y="44" width="400" height="206" fill="url(#underShade)"/>
+        <g stroke="#2a1d14" stroke-width="1" opacity=".3"><line x1="0" y1="72" x2="400" y2="76"/><line x1="0" y1="128" x2="400" y2="124"/><line x1="0" y1="212" x2="400" y2="208"/></g>
         <!-- headframe + acopio superficie -->
         <g stroke="#caa079" stroke-width="2" fill="none"><path d="M300,44 L314,16 L328,44"/><line x1="314" y1="16" x2="314" y2="44"/><circle cx="314" cy="20" r="4" fill="#e0955f" stroke="none"/></g>
         <path id="acopio" d="M336,44 Q352,30 368,44 Z" fill="#8a6b45"/>
@@ -277,7 +283,7 @@
         <!-- niveles -->
         <g fill="#0f0a07"><rect x="60" y="150" width="248" height="9"/><rect x="60" y="110" width="150" height="8"/></g>
         <!-- cuerpo mineralizado que se fractura y hunde -->
-        <path id="cave" class="sh" d="M120,150 Q175,70 230,150 Z" fill="#8a6b45"/>
+        <path id="cave" class="sh" d="M120,150 Q175,70 230,150 Z" fill="url(#caveG)" filter="url(#fGlowU)"/>
         <g stroke="#5a4230" stroke-width="1" opacity=".5"><line x1="150" y1="140" x2="200" y2="90"/><line x1="200" y1="140" x2="170" y2="95"/><line x1="175" y1="150" x2="175" y2="100"/></g>
         <!-- mineral que baja por puntos de extracción -->
         <g fill="#f0d7b6"><circle class="ore" cx="165" cy="150" r="3"/><circle class="ore b" cx="180" cy="150" r="3"/><circle class="ore c" cx="195" cy="150" r="3"/><circle class="ore d" cx="180" cy="150" r="3"/></g>
@@ -314,13 +320,16 @@
       </div>
       <svg class="viz" viewBox="0 0 400 250" role="img" aria-label="Proceso del litio: se bombea salmuera, se evapora en pozas concentrándose, y llega a la planta para baterías">
         <defs>
-          <linearGradient id="skys" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#243447"/><stop offset="1" stop-color="#2a3b3f"/></linearGradient>
-          <linearGradient id="salar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#43535b"/><stop offset="1" stop-color="#28353c"/></linearGradient>
+          <linearGradient id="skys" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#213244"/><stop offset=".7" stop-color="#2a3b3f"/><stop offset="1" stop-color="#4a4436"/></linearGradient>
+          <linearGradient id="salar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fa39c"/><stop offset="1" stop-color="#3a4644"/></linearGradient>
+          <filter id="fSunL" x="-120%" y="-120%" width="340%" height="340%"><feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#f0d079" flood-opacity=".9"/></filter>
+          <filter id="fSoftL" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="2" stdDeviation="1.6" flood-color="#000" flood-opacity=".4"/></filter>
         </defs>
         <rect x="0" y="0" width="400" height="120" fill="url(#skys)"/>
+        <polygon points="0,118 120,98 250,110 400,96 400,120 0,120" fill="#5a5a4e" opacity=".5"/>
         <rect x="0" y="118" width="400" height="132" fill="url(#salar)"/>
         <circle id="sunGlow" cx="52" cy="42" r="22" fill="#e8c98a"/>
-        <circle cx="52" cy="42" r="13" fill="#f0d79a"/>
+        <circle cx="52" cy="42" r="13" fill="#f0d79a" filter="url(#fSunL)"/>
         <!-- pozo / bomba de salmuera -->
         <rect x="66" y="118" width="9" height="118" fill="#0f0a07"/>
         <rect id="pumpHead" x="58" y="110" width="25" height="10" rx="2" fill="#c9b7a5"/>
@@ -329,7 +338,7 @@
         <line x1="70" y1="112" x2="120" y2="112" stroke="#5a6a70" stroke-width="4"/>
         <g fill="#5fd1bd"><circle class="flowd" cx="118" cy="163" r="2.6"/><circle class="flowd f2" cx="118" cy="163" r="2.6"/><circle class="flowd f3" cx="118" cy="163" r="2.6"/></g>
         <!-- 3 pozas con nivel que baja y color que se concentra -->
-        <g stroke="#e6d4c4" stroke-width="1.2" fill="none" opacity=".85">
+        <g stroke="#e6d4c4" stroke-width="1.2" fill="none" opacity=".9" filter="url(#fSoftL)">
           <rect x="112" y="150" width="72" height="26" rx="3"/><rect x="192" y="150" width="72" height="26" rx="3"/><rect x="272" y="150" width="72" height="26" rx="3"/>
         </g>
         <rect class="water"    x="113" y="150" width="70" height="26" rx="2" fill="#2f9fb0"/>
