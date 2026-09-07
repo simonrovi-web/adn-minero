@@ -81,15 +81,18 @@
       <svg class="viz" viewBox="0 0 400 260" role="img" aria-label="Proceso de minería submarina: un vehículo recolecta nódulos del fondo, suben por una tubería al barco, que separa los metales y devuelve el sedimento al mar">
         <defs>
           <linearGradient id="ocean" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f5560"/><stop offset="1" stop-color="#0a1c21"/></linearGradient>
+          <filter id="sSoft" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.45"/></filter>
         </defs>
         <rect x="0" y="0" width="400" height="30" fill="#14303a"/>
         <rect x="0" y="28" width="400" height="232" fill="url(#ocean)"/>
+        <!-- haz de luz submarino -->
+        <polygon points="150,30 250,30 296,214 104,214" fill="#bfe6ee" opacity=".055"/>
         <!-- riser -->
         <line x1="200" y1="40" x2="200" y2="214" stroke="#5a6a70" stroke-width="4"/>
         <!-- nódulos subiendo por el riser -->
         <g fill="#d8c39a"><circle class="rise" cx="200" cy="210" r="3"/><circle class="rise b" cx="200" cy="210" r="3"/><circle class="rise c" cx="200" cy="210" r="3"/></g>
         <!-- barco -->
-        <g id="ship">
+        <g id="ship" filter="url(#sSoft)">
           <path d="M150,26 L250,26 L242,40 L158,40 Z" fill="#c9b7a5"/>
           <rect x="184" y="15" width="30" height="11" rx="2" fill="#e6d4c4"/>
           <rect x="216" y="18" width="4" height="8" fill="#9c8a78"/>
@@ -104,7 +107,7 @@
         <!-- penacho de sedimento (impacto ambiental) -->
         <ellipse id="plume" cx="200" cy="212" rx="34" ry="10" fill="#6b7d80"/>
         <!-- vehículo recolector -->
-        <g id="collector"><g transform="translate(200,206)">
+        <g id="collector" filter="url(#sSoft)"><g transform="translate(200,206)">
           <rect x="-17" y="-11" width="34" height="11" rx="2.5" fill="#5fc7d1"/>
           <path d="M-17,0 l-6,5 l8,0 z" fill="#9fdce2"/>
           <circle cx="-9" cy="2" r="2.6" fill="#0a1c21"/><circle cx="0" cy="2" r="2.6" fill="#0a1c21"/><circle cx="9" cy="2" r="2.6" fill="#0a1c21"/>

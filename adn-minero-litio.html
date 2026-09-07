@@ -100,18 +100,20 @@
         <defs>
           <linearGradient id="skyL" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#243447"/><stop offset="1" stop-color="#2a3b3f"/></linearGradient>
           <linearGradient id="salarL" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#43535b"/><stop offset="1" stop-color="#28353c"/></linearGradient>
+          <filter id="lSoft" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.4"/></filter>
+          <filter id="lSun" x="-90%" y="-90%" width="280%" height="280%"><feDropShadow dx="0" dy="0" stdDeviation="3.5" flood-color="#f0d79a" flood-opacity="0.85"/></filter>
         </defs>
         <rect x="0" y="0" width="400" height="98" fill="url(#skyL)"/>
         <rect x="0" y="96" width="400" height="114" fill="url(#salarL)"/>
         <circle id="sunG" cx="50" cy="40" r="16" fill="#e8c98a"/>
-        <circle cx="50" cy="40" r="10" fill="#f0d79a"/>
+        <circle cx="50" cy="40" r="10" fill="#f0d79a" filter="url(#lSun)"/>
         <!-- pozo / bomba -->
         <rect x="64" y="96" width="9" height="106" fill="#0f0a07"/>
-        <rect x="56" y="88" width="25" height="10" rx="2" fill="#c9b7a5"/>
+        <rect x="56" y="88" width="25" height="10" rx="2" fill="#c9b7a5" filter="url(#lSoft)"/>
         <g fill="#5fd1bd"><circle class="brine" cx="68.5" cy="196" r="3"/><circle class="brine b" cx="68.5" cy="196" r="3"/><circle class="brine c" cx="68.5" cy="196" r="3"/></g>
         <line x1="68" y1="90" x2="112" y2="90" stroke="#5a6a70" stroke-width="4"/>
         <!-- pozas con nivel que baja y color que se concentra -->
-        <g stroke="#e6d4c4" stroke-width="1.2" fill="none" opacity=".85"><rect x="108" y="150" width="70" height="24" rx="3"/><rect x="186" y="150" width="70" height="24" rx="3"/><rect x="264" y="150" width="70" height="24" rx="3"/></g>
+        <g stroke="#e6d4c4" stroke-width="1.2" fill="none" opacity=".85" filter="url(#lSoft)"><rect x="108" y="150" width="70" height="24" rx="3"/><rect x="186" y="150" width="70" height="24" rx="3"/><rect x="264" y="150" width="70" height="24" rx="3"/></g>
         <rect class="water"    x="109" y="150" width="68" height="24" rx="2" fill="#2f9fb0"/>
         <rect class="water w2" x="187" y="150" width="68" height="24" rx="2" fill="#5fb87a"/>
         <rect class="water w3" x="265" y="150" width="68" height="24" rx="2" fill="#d3bd4f"/>

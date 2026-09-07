@@ -82,20 +82,27 @@
         <h3 class="font-bold text-[15.5px]">El agua en la minería <span class="text-[12px] font-semibold" style="color:#8a9a8e">· mar, uso y recirculación</span></h3>
       </div>
       <svg class="viz" viewBox="0 0 400 200" role="img" aria-label="Ciclo del agua en la mineria: se toma agua de mar, se desala, sube por tuberia a la faena y buena parte se recircula desde el relave">
-        <rect x="0" y="0" width="400" height="92" fill="#1b2a2c"/>
-        <rect x="0" y="90" width="400" height="110" fill="#2a2620"/>
+        <defs>
+          <linearGradient id="aSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#20353a"/><stop offset="1" stop-color="#182322"/></linearGradient>
+          <linearGradient id="aGround" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#33291d"/><stop offset="1" stop-color="#17120c"/></linearGradient>
+          <linearGradient id="aSea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a86a0"/><stop offset="1" stop-color="#1c4453"/></linearGradient>
+          <filter id="aSoft" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.45"/></filter>
+          <filter id="aSun" x="-90%" y="-90%" width="280%" height="280%"><feDropShadow dx="0" dy="0" stdDeviation="3.5" flood-color="#f0d79a" flood-opacity="0.85"/></filter>
+        </defs>
+        <rect x="0" y="0" width="400" height="92" fill="url(#aSky)"/>
+        <rect x="0" y="90" width="400" height="110" fill="url(#aGround)"/>
         <!-- sol -->
-        <circle id="sunA" cx="352" cy="30" r="14" fill="#e8c98a"/>
+        <circle id="sunA" cx="352" cy="30" r="14" fill="#e8c98a" filter="url(#aSun)"/>
         <!-- mar -->
-        <rect x="0" y="90" width="92" height="110" fill="#2f6a7a"/>
+        <rect x="0" y="90" width="92" height="110" fill="url(#aSea)"/>
         <g class="wv" stroke="#7fc0cf" stroke-width="2" fill="none" opacity=".6"><path d="M2,100 q10,-5 20,0 t20,0 t20,0 t20,0"/></g>
         <!-- planta desaladora -->
-        <g><rect x="52" y="70" width="34" height="46" rx="2" fill="#3a4a4e" stroke="#6a8a90" stroke-width="1.5"/><rect x="58" y="60" width="8" height="12" fill="#6a8a90"/><rect x="72" y="64" width="8" height="8" fill="#6a8a90"/></g>
+        <g filter="url(#aSoft)"><rect x="52" y="70" width="34" height="46" rx="2" fill="#3a4a4e" stroke="#6a8a90" stroke-width="1.5"/><rect x="58" y="60" width="8" height="12" fill="#6a8a90"/><rect x="72" y="64" width="8" height="8" fill="#6a8a90"/></g>
         <!-- tuberia a la faena -->
         <line x1="88" y1="116" x2="298" y2="64" stroke="#6a7a80" stroke-width="5" stroke-linecap="round"/>
         <g fill="#5fd1e0"><circle class="flowUp" cx="90" cy="114" r="3"/><circle class="flowUp b" cx="90" cy="114" r="3"/><circle class="flowUp c" cx="90" cy="114" r="3"/></g>
         <!-- faena (cerro) -->
-        <path d="M244,150 L300,54 L360,150 Z" fill="#4a3a2e"/>
+        <path d="M244,150 L300,54 L360,150 Z" fill="#4a3a2e" filter="url(#aSoft)"/>
         <path d="M244,150 L300,54 L360,150 Z" fill="none" stroke="#5a4736" stroke-width="1"/>
         <rect x="286" y="62" width="26" height="14" rx="2" fill="#8a6b45"/>
         <!-- relave (tranque) -->
