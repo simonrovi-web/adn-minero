@@ -36,6 +36,27 @@
     .tip{ display:flex; gap:9px; align-items:flex-start; font-size:13.5px; line-height:1.5; color:#dacfc2; margin-top:8px; }
     .tip b{ color:#f4ece5; } h3{ margin:0; }
     .pill{ font-size:10px; font-weight:800; padding:3px 9px; border-radius:999px; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .cap{ font-size:13px; line-height:1.55; color:#dacfc2; } .cap b{ color:#f4ece5; }
+    .lbl-sm{ font-size:9.5px; fill:#a9d3dc; font-weight:600; }
+    .steps{ display:flex; gap:5px; margin-top:11px; }
+    .step{ flex:1; text-align:center; font-size:10px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#8a979a; border:1px solid rgba(103,193,214,.14); animation:stepHi 8s infinite; }
+    .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(103,193,214,.16); color:#a9d3dc; font-size:9px; margin-bottom:4px; }
+    .step.s2{ animation-delay:2s } .step.s3{ animation-delay:4s } .step.s4{ animation-delay:6s }
+    @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#8a979a; border-color:rgba(103,193,214,.14) } 5%,21%{ background:rgba(103,193,214,.18); color:#eafaff; border-color:rgba(103,193,214,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#8a979a; border-color:rgba(103,193,214,.14) } }
+    .narr{ position:relative; min-height:36px; margin-top:9px; }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:narr 8s infinite; } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:2s } .nl.n3{ animation-delay:4s } .nl.n4{ animation-delay:6s }
+    @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    #atruck{ animation:adr 8s ease-in-out infinite; } @keyframes adr{ 0%{ transform:translateX(-118px) } 50%{ transform:translateX(118px) } 100%{ transform:translateX(-118px) } }
+    #dome{ animation:dome 1.4s ease-in-out infinite; } @keyframes dome{ 0%,100%{ opacity:.5 } 50%{ opacity:1 } }
+    .sig{ animation:sig 2s ease-in-out infinite; } .sig.s2{ animation-delay:.3s } .sig.s3{ animation-delay:.6s }
+    @keyframes sig{ 0%,100%{ opacity:.12 } 45%{ opacity:.9 } }
+    .link{ stroke-dasharray:4 5; animation:link 1s linear infinite; } @keyframes link{ to{ stroke-dashoffset:-18 } }
+    .tbar{ animation:tbar 1.6s ease-in-out infinite; } .tbar.b{ animation-delay:.35s } .tbar.c{ animation-delay:.7s }
+    @keyframes tbar{ 0%,100%{ height:8px; y:116px } 50%{ height:26px; y:98px } }
+    #drone{ animation:drone 5s ease-in-out infinite; } @keyframes drone{ 0%,100%{ transform:translate(0,0) } 50%{ transform:translate(22px,-6px) } }
+    @media (prefers-reduced-motion:reduce){ #atruck,#dome,.sig,.link,.tbar,#drone,.step,.nl{ animation:none !important } .narr{ display:none } .sig{ opacity:.6 } .tbar{ height:18px; y:104px } }
   </style>
   <script src="adn-ui.js" defer></script>
 </head>
@@ -49,7 +70,68 @@
       </div>
     </header>
 
-    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">La minería chilena se transforma para ser <b>más segura, eficiente y limpia</b>. Toca cada tema para conocer las tecnologías que ya están cambiando la faena.</p>
+    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">La minería chilena se transforma para ser <b>más segura, eficiente y limpia</b>. Así funciona una <b>faena inteligente</b> — las capas de tecnología se encienden a medida que actúan.</p>
+
+    <!-- FAENA INTELIGENTE (animado) -->
+    <div class="glass rounded-2xl p-4 mt-4">
+      <div class="flex items-center gap-2.5 mb-3">
+        <i data-lucide="cpu" style="width:20px;height:20px;color:#67c1d6"></i>
+        <h3 class="font-bold text-[15.5px]">La faena inteligente <span class="text-[12px] font-semibold" style="color:#8a979a">· autónoma y conectada</span></h3>
+      </div>
+      <svg class="viz" viewBox="0 0 400 190" role="img" aria-label="Faena inteligente: camion autonomo guiado por GPS y sensores, teleoperado desde una sala de control, con datos e IA en tiempo real">
+        <rect x="0" y="0" width="400" height="190" fill="#111819"/>
+        <!-- satélite / GPS -->
+        <g>
+          <rect x="142" y="22" width="16" height="12" rx="1.5" fill="#c9d6da"/>
+          <rect x="126" y="25" width="14" height="6" rx="1" fill="#67c1d6"/><rect x="160" y="25" width="14" height="6" rx="1" fill="#67c1d6"/>
+          <line x1="150" y1="22" x2="150" y2="16" stroke="#c9d6da" stroke-width="1.5"/><circle cx="150" cy="15" r="1.6" fill="#a7e0ea"/>
+        </g>
+        <g stroke="#67c1d6" stroke-width="2" fill="none">
+          <path class="sig" d="M139,42 Q150,49 161,42"/>
+          <path class="sig s2" d="M133,48 Q150,60 167,48"/>
+          <path class="sig s3" d="M127,54 Q150,70 173,54"/>
+        </g>
+        <!-- enlace de datos al centro de control -->
+        <line class="link" x1="166" y1="30" x2="322" y2="92" stroke="#a7d18a" stroke-width="2"/>
+        <!-- dron -->
+        <g id="drone"><g transform="translate(66,58)"><rect x="-8" y="-1" width="16" height="3" rx="1.5" fill="#a9d3dc"/><circle cx="-8" cy="-1" r="3" fill="none" stroke="#67c1d6" stroke-width="1.4"/><circle cx="8" cy="-1" r="3" fill="none" stroke="#67c1d6" stroke-width="1.4"/></g></g>
+        <!-- suelo / camino -->
+        <rect x="0" y="158" width="400" height="32" fill="#241d17"/>
+        <line x1="10" y1="172" x2="390" y2="172" stroke="#4a3d33" stroke-width="2" stroke-dasharray="14 12"/>
+        <!-- camión autónomo -->
+        <g id="atruck"><g transform="translate(196,150)">
+          <circle id="dome" cx="10" cy="-22" r="5" fill="none" stroke="#67c1d6" stroke-width="1.6"/>
+          <line x1="10" y1="-27" x2="10" y2="-31" stroke="#67c1d6" stroke-width="1.4"/><circle cx="10" cy="-32" r="1.4" fill="#a7e0ea"/>
+          <path d="M2,-16 Q12,-22 22,-16 Z" fill="#c9a06a"/>
+          <rect x="0" y="-15" width="34" height="13" rx="2" fill="#e0955f"/>
+          <rect x="26" y="-21" width="9" height="7" rx="1" fill="#c9b7a5"/>
+          <circle cx="8" cy="1" r="4" fill="#1a120c"/><circle cx="27" cy="1" r="4" fill="#1a120c"/>
+        </g></g>
+        <!-- centro de control -->
+        <g><rect x="314" y="70" width="66" height="46" rx="4" fill="#1c2426" stroke="#67c1d6" stroke-width="1.6"/>
+          <rect class="tbar"   x="326" y="116" width="9" height="8" rx="1" fill="#67c1d6"/>
+          <rect class="tbar b" x="342" y="116" width="9" height="8" rx="1" fill="#7fd4a2"/>
+          <rect class="tbar c" x="358" y="116" width="9" height="8" rx="1" fill="#e0a35a"/>
+          <rect x="334" y="118" width="26" height="6" rx="1" fill="#2a3436"/>
+        </g>
+        <text class="lbl-sm" x="150" y="88" text-anchor="middle">satélite · GPS</text>
+        <text class="lbl-sm" x="347" y="132" text-anchor="middle">sala de control · IA</text>
+        <text class="lbl-sm" x="196" y="186" text-anchor="middle">camión autónomo</text>
+      </svg>
+      <div class="steps">
+        <div class="step s1"><span class="n">1</span><br>Autónomo</div>
+        <div class="step s2"><span class="n">2</span><br>GPS y sensores</div>
+        <div class="step s3"><span class="n">3</span><br>Teleoperación</div>
+        <div class="step s4"><span class="n">4</span><br>Datos e IA</div>
+      </div>
+      <div class="narr">
+        <span class="nl n1">Camiones <b>autónomos</b> operan sin conductor, 24/7.</span>
+        <span class="nl n2"><b>GPS y sensores</b> los guían y evitan choques.</span>
+        <span class="nl n3">Desde una <b>sala de control</b> se teleoperan los equipos.</span>
+        <span class="nl n4">Los <b>datos e IA</b> optimizan la faena en tiempo real.</span>
+      </div>
+      <p class="cap mt-3">Una <b>faena inteligente</b>: camiones <b>autónomos</b> guiados por <b>GPS y sensores</b>, equipos <b>teleoperados</b> desde una sala de control lejos del riesgo, y <b>datos e IA</b> que optimizan todo en tiempo real. Más seguridad y eficiencia.</p>
+    </div>
 
     <div id="topics" class="mt-4 grid gap-2.5"></div>
 
