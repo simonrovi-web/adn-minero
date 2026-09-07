@@ -6,19 +6,19 @@
   <meta name="theme-color" content="#141110" />
   <title>ADN Minero · Tipos de Minería</title>
   <link rel="icon" type="image/png" href="icon-192.png" />
-  <meta name="description" content="Tipos de minería en Chile explicados con gráficas animadas: rajo abierto vs subterránea, litio de los salares, cómo se decide el método y el ciclo de una mina." />
+  <meta name="description" content="Tipos de minería en Chile explicados con gráficas animadas paso a paso: rajo abierto, subterránea, litio de los salares, cómo se decide el método y el ciclo de una mina." />
   <link rel="canonical" href="https://simonrovi-web.github.io/adn-minero/adn-minero-tipos.html" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="ADN Minero" />
   <meta property="og:title" content="ADN Minero · Tipos de Minería" />
-  <meta property="og:description" content="Tipos de minería en Chile explicados con gráficas animadas: rajo abierto vs subterránea, litio de los salares, cómo se decide el método y el ciclo de una mina." />
+  <meta property="og:description" content="Tipos de minería en Chile explicados con gráficas animadas paso a paso: rajo abierto, subterránea, litio de los salares, cómo se decide el método y el ciclo de una mina." />
   <meta property="og:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:url" content="https://simonrovi-web.github.io/adn-minero/adn-minero-tipos.html" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="ADN Minero · Tipos de Minería" />
-  <meta name="twitter:description" content="Tipos de minería en Chile explicados con gráficas animadas: rajo abierto vs subterránea, litio de los salares, cómo se decide y el ciclo de una mina." />
+  <meta name="twitter:description" content="Tipos de minería en Chile explicados con gráficas animadas paso a paso: rajo, subterránea, litio, decisión del método y el ciclo de una mina." />
   <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
   <link rel="stylesheet" href="tailwind.min.css">
   <script src="lucide.min.js"></script>
@@ -37,56 +37,93 @@
     .cap{ font-size:13px; line-height:1.55; color:#dacfc2; }
     .cap b{ color:#f4ece5; }
     .lbl{ font-size:11px; font-weight:700; fill:#f0e2d3; }
-    .lbl-sm{ font-size:10px; fill:#c9b7a5; font-weight:600; }
+    .lbl-sm{ font-size:9.5px; fill:#c9b7a5; font-weight:600; }
     .chip{ display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:700; padding:4px 10px; border-radius:999px; }
 
-    /* ===== animaciones ===== */
-    @keyframes truckUp{
-      0%{ transform:translate(0px,0px) }
-      22%{ transform:translate(-14px,-36px) }
-      45%{ transform:translate(-42px,-72px) }
-      68%{ transform:translate(-70px,-110px) }
-      90%,100%{ transform:translate(-118px,-148px) }
+    /* ===== tira de pasos (narra el proceso) ===== */
+    .steps{ display:flex; gap:5px; margin-top:11px; }
+    .step{ flex:1; text-align:center; font-size:10.5px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px;
+      background:rgba(255,255,255,.035); color:#8a8079; border:1px solid rgba(196,168,148,.1); animation:stepHi 8s infinite; }
+    .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(196,168,148,.14); color:#c9b7a5; font-size:9px; margin-bottom:4px; }
+    .step.s2{ animation-delay:2s } .step.s3{ animation-delay:4s } .step.s4{ animation-delay:6s }
+    @keyframes stepHi{
+      0%,3%   { background:rgba(255,255,255,.035); color:#8a8079; border-color:rgba(196,168,148,.1); }
+      5%,21%  { background:rgba(207,155,111,.18); color:#f6ead9; border-color:rgba(207,155,111,.55); }
+      24%,100%{ background:rgba(255,255,255,.035); color:#8a8079; border-color:rgba(196,168,148,.1); }
     }
-    #rajoTruck{ animation:truckUp 7s cubic-bezier(.5,0,.5,1) infinite; }
+
+    /* ===== RAJO: camión que carga, sube y bota ===== */
+    #truck{ animation:truck 8s ease-in-out infinite; }
+    @keyframes truck{
+      0%,9%   { transform:translate(0,0); }
+      30%     { transform:translate(-44px,-66px); }
+      44%,54% { transform:translate(-108px,-146px); }
+      75%     { transform:translate(-44px,-66px); }
+      92%,100%{ transform:translate(0,0); }
+    }
+    #truckLoad{ animation:truckLoad 8s ease-in-out infinite; }
+    @keyframes truckLoad{ 0%,8%{opacity:0} 12%{opacity:1} 52%{opacity:1} 56%,100%{opacity:0} }
+    #shovel{ animation:shovel 1.3s ease-in-out infinite; }
+    @keyframes shovel{ 0%,100%{ transform:translate(0,0) } 50%{ transform:translate(-3px,-4px) } }
+    #blast{ animation:blast 8s ease-out infinite; transform-box:fill-box; transform-origin:center; }
+    @keyframes blast{ 0%,26%{ opacity:0; transform:scale(.2) } 29%{ opacity:.9; transform:scale(1) } 36%{ opacity:0; transform:scale(1.5) } 100%{opacity:0} }
+    #drill{ animation:drill 8s linear infinite; }
+    @keyframes drill{ 0%{opacity:1;transform:translateY(0)} 8%{transform:translateY(4px)} 16%{transform:translateY(0)} 24%{opacity:1} 26%,100%{opacity:0} }
     .digline{ stroke-dasharray:6 7; animation:dig 3.4s linear infinite; }
     @keyframes dig{ to{ stroke-dashoffset:-52 } }
 
-    #cage{ animation:cage 5s ease-in-out infinite; }
-    @keyframes cage{ 0%,8%{ transform:translateY(0) } 50%{ transform:translateY(118px) } 92%,100%{ transform:translateY(0) } }
-    .ore{ animation:oredraw 2.6s ease-in infinite; }
-    .ore.b{ animation-delay:.5s } .ore.c{ animation-delay:1s } .ore.d{ animation-delay:1.5s }
-    @keyframes oredraw{ 0%{ transform:translateY(0); opacity:0 } 15%{ opacity:1 } 80%{ opacity:1 } 100%{ transform:translateY(30px); opacity:0 } }
+    /* ===== SUBTERRÁNEA: hundimiento + izaje ===== */
+    #skip{ animation:skip 6s ease-in-out infinite; }
+    @keyframes skip{ 0%,10%{ transform:translateY(120px) } 48%,52%{ transform:translateY(0) } 90%,100%{ transform:translateY(120px) } }
+    #skipLoad{ animation:skipLoad 6s ease-in-out infinite; }
+    @keyframes skipLoad{ 0%,8%{opacity:0} 12%{opacity:1} 50%{opacity:1} 56%,100%{opacity:0} }
+    .ore{ animation:oredraw 2.4s ease-in infinite; }
+    .ore.b{ animation-delay:.5s } .ore.c{ animation-delay:1s } .ore.d{ animation-delay:1.6s }
+    @keyframes oredraw{ 0%{ transform:translateY(0); opacity:0 } 18%{ opacity:1 } 82%{ opacity:1 } 100%{ transform:translateY(34px); opacity:0 } }
+    #lhd{ animation:lhd 6s ease-in-out infinite; }
+    @keyframes lhd{ 0%,14%{ transform:translateX(0) } 40%{ transform:translateX(56px) } 60%{ transform:translateX(56px) } 86%,100%{ transform:translateX(0) } }
+    #cave{ animation:cave 8s ease-in-out infinite; transform-box:fill-box; transform-origin:bottom; }
+    @keyframes cave{ 0%,100%{ opacity:.55 } 50%{ opacity:.9 } }
 
-    #sunGlow{ transform-origin:center; animation:sun 3.2s ease-in-out infinite; }
-    @keyframes sun{ 0%,100%{ opacity:.35; transform:scale(1) } 50%{ opacity:.7; transform:scale(1.12) } }
-    .brine{ animation:brine 2.4s linear infinite; }
-    .brine.b{ animation-delay:.8s } .brine.c{ animation-delay:1.6s }
-    @keyframes brine{ 0%{ transform:translateY(0); opacity:0 } 12%{ opacity:1 } 88%{ opacity:1 } 100%{ transform:translateY(-92px); opacity:0 } }
-    .pond{ animation:pond 6s ease-in-out infinite; }
-    .pond.p2{ animation-delay:2s } .pond.p3{ animation-delay:4s }
-    @keyframes pond{ 0%,100%{ fill:#2f9fb0 } 33%{ fill:#5fb87a } 66%{ fill:#d3bd4f } }
+    /* ===== LITIO: bombeo + evaporación + concentración ===== */
+    #sunGlow{ animation:sun 3.2s ease-in-out infinite; }
+    @keyframes sun{ 0%,100%{ r:22px; opacity:.32 } 50%{ r:29px; opacity:.62 } }
+    .brine{ animation:brine 2.6s linear infinite; }
+    .brine.b{ animation-delay:.9s } .brine.c{ animation-delay:1.7s }
+    @keyframes brine{ 0%{ transform:translateY(0); opacity:0 } 12%{ opacity:1 } 88%{ opacity:1 } 100%{ transform:translateY(-104px); opacity:0 } }
+    .flowd{ animation:flowd 3s linear infinite; }
+    .flowd.f2{ animation-delay:1s } .flowd.f3{ animation-delay:2s }
+    @keyframes flowd{ 0%{ transform:translateX(0); opacity:0 } 15%{ opacity:1 } 85%{ opacity:1 } 100%{ transform:translateX(150px); opacity:0 } }
+    .water{ animation:evap 5s ease-in-out infinite; }
+    .water.w2{ animation-delay:.6s } .water.w3{ animation-delay:1.2s }
+    @keyframes evap{ 0%{ y:150px; height:26px } 60%,100%{ y:166px; height:10px } }
     .vapor{ animation:vapor 3s ease-out infinite; }
     .vapor.v2{ animation-delay:1s } .vapor.v3{ animation-delay:2s }
-    @keyframes vapor{ 0%{ transform:translateY(0); opacity:0 } 25%{ opacity:.5 } 100%{ transform:translateY(-26px); opacity:0 } }
+    @keyframes vapor{ 0%{ transform:translateY(0); opacity:0 } 25%{ opacity:.55 } 100%{ transform:translateY(-24px); opacity:0 } }
+    #batt{ animation:batt 2.4s ease-in-out infinite; transform-box:fill-box; transform-origin:center; }
+    @keyframes batt{ 0%,100%{ opacity:.6 } 50%{ opacity:1 } }
 
+    /* ===== decisión ===== */
     .depdot{ animation:dep 5s ease-in-out infinite; }
-    @keyframes dep{ 0%,45%{ transform:translateX(0); } 55%,100%{ transform:translateX(150px) } }
+    @keyframes dep{ 0%,40%{ transform:translate(0,0) } 55%,100%{ transform:translate(0,58px) } }
     .flash-r{ animation:flashR 5s ease-in-out infinite; }
     .flash-s{ animation:flashS 5s ease-in-out infinite; }
-    @keyframes flashR{ 0%,45%{ opacity:1 } 55%,100%{ opacity:.18 } }
-    @keyframes flashS{ 0%,45%{ opacity:.18 } 55%,100%{ opacity:1 } }
+    @keyframes flashR{ 0%,40%{ opacity:1 } 55%,100%{ opacity:.16 } }
+    @keyframes flashS{ 0%,40%{ opacity:.16 } 55%,100%{ opacity:1 } }
 
-    .flow{ stroke-dasharray:340; stroke-dashoffset:340; animation:flow 5s ease-in-out infinite; }
-    @keyframes flow{ 0%{ stroke-dashoffset:340 } 70%,100%{ stroke-dashoffset:0 } }
-    .node{ transform-origin:center; animation:node 5s ease-in-out infinite; opacity:.4 }
-    .node.n1{ animation-delay:.2s } .node.n2{ animation-delay:1.4s } .node.n3{ animation-delay:2.6s } .node.n4{ animation-delay:3.8s }
-    @keyframes node{ 0%,12%{ opacity:.4; transform:scale(1) } 20%{ opacity:1; transform:scale(1.18) } 92%,100%{ opacity:1; transform:scale(1) } }
+    /* ===== ciclo ===== */
+    .flow{ stroke-dasharray:330; stroke-dashoffset:330; animation:flow 8s ease-in-out infinite; }
+    @keyframes flow{ 0%{ stroke-dashoffset:330 } 12%{ stroke-dashoffset:330 } 88%,100%{ stroke-dashoffset:0 } }
+    .cnode{ opacity:.35; animation:cnode 8s ease-in-out infinite; }
+    .cnode.n1{ animation-delay:0s } .cnode.n2{ animation-delay:2s } .cnode.n3{ animation-delay:4s } .cnode.n4{ animation-delay:6s }
+    @keyframes cnode{ 0%{ opacity:.35 } 4%{ opacity:1 } 96%,100%{ opacity:1 } }
 
     @media (prefers-reduced-motion: reduce){
-      #rajoTruck,#cage,#sunGlow,.ore,.brine,.pond,.vapor,.depdot,.flash-r,.flash-s,.flow,.node{ animation:none !important; }
-      .flow{ stroke-dashoffset:0 !important; } .node{ opacity:1 !important; }
-      .flash-s{ opacity:1 !important; }
+      #truck,#truckLoad,#shovel,#blast,#drill,.digline,#skip,#skipLoad,.ore,#lhd,#cave,
+      #sunGlow,.brine,.flowd,.water,.vapor,#batt,.depdot,.flash-r,.flash-s,.flow,.cnode{ animation:none !important; }
+      #truckLoad,#skipLoad{ opacity:1 !important; } .flash-s{ opacity:1 !important; } .flow{ stroke-dashoffset:0 !important; } .cnode{ opacity:1 !important; }
+      .step{ animation:none !important; color:#c9b7a5 !important; }
+      .water{ y:158px; height:18px; }
     }
   </style>
   <script src="adn-ui.js" defer></script>
@@ -98,11 +135,11 @@
       <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(207,155,111,.15);border:1px solid rgba(207,155,111,.32)"><i data-lucide="layers" style="width:26px;height:26px;color:#cf9b6f"></i></div>
       <div class="min-w-0">
         <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#e0c3a0;font-weight:800">Tipos de Minería</p>
-        <p style="margin:0;font-size:11px;color:#9c8f83">Explicado con gráficas animadas</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">El proceso, paso a paso</p>
       </div>
     </header>
 
-    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">No toda la minería es igual. Cambia según <b>dónde está el yacimiento</b>, <b>qué mineral</b> se busca y <b>a qué escala</b> se trabaja. Mira cómo funciona cada una.</p>
+    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">No toda la minería es igual. Cambia según <b>dónde está el yacimiento</b>, <b>qué mineral</b> se busca y <b>a qué escala</b> se trabaja. Mira cómo funciona cada proceso — los <b>pasos se van encendiendo</b> a medida que ocurren.</p>
 
     <!-- ========== RAJO ABIERTO ========== -->
     <div class="glass rounded-2xl p-4 mt-4">
@@ -110,34 +147,43 @@
         <i data-lucide="mountain" style="width:20px;height:20px;color:#cf9b6f"></i>
         <h3 class="font-bold text-[15.5px]">Rajo abierto <span class="text-stone-500 font-semibold text-[12px]">· a cielo abierto</span></h3>
       </div>
-      <svg class="viz" viewBox="0 0 400 260" role="img" aria-label="Corte de una mina a rajo abierto: bancos escalonados y un camión subiendo la rampa">
+      <svg class="viz" viewBox="0 0 400 250" role="img" aria-label="Proceso a rajo abierto: perforar, tronar, cargar y transportar el mineral fuera del rajo">
         <defs>
-          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#20303f"/><stop offset="1" stop-color="#1a2530"/></linearGradient>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22323f"/><stop offset="1" stop-color="#1a2530"/></linearGradient>
           <linearGradient id="rock" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a3a2e"/><stop offset="1" stop-color="#2c211a"/></linearGradient>
           <linearGradient id="pit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b5140"/><stop offset="1" stop-color="#3a2b21"/></linearGradient>
         </defs>
-        <rect x="0" y="0" width="400" height="64" fill="url(#sky)"/>
-        <rect x="0" y="62" width="400" height="198" fill="url(#rock)"/>
-        <!-- void escalonado del rajo -->
-        <polygon points="48,64 96,64 96,102 128,102 128,140 156,140 156,178 178,178 178,214 222,214 222,178 244,178 244,140 272,140 272,102 304,102 304,64 352,64" fill="url(#pit)"/>
-        <!-- lineas de bancos -->
-        <polyline points="48,64 96,64 96,102 128,102 128,140 156,140 156,178 178,178 178,214 222,214 222,178 244,178 244,140 272,140 272,102 304,102 304,64 352,64" fill="none" stroke="#caa079" stroke-width="1.6" stroke-linejoin="round" opacity=".85"/>
-        <!-- linea de excavacion activa (animada) -->
-        <polyline class="digline" points="178,214 222,214" fill="none" stroke="#f0d7b6" stroke-width="3" stroke-linecap="round"/>
-        <!-- camion subiendo -->
-        <g id="rajoTruck">
-          <g transform="translate(196,196)">
-            <rect x="0" y="-9" width="20" height="9" rx="1.5" fill="#e0955f"/>
-            <rect x="15" y="-14" width="7" height="6" rx="1" fill="#c9b7a5"/>
-            <circle cx="5" cy="2" r="3" fill="#1a120c"/><circle cx="16" cy="2" r="3" fill="#1a120c"/>
-          </g>
-        </g>
-        <!-- sol -->
-        <circle cx="352" cy="30" r="11" fill="#e8c98a" opacity=".8"/>
-        <text class="lbl-sm" x="118" y="96">bancos</text>
-        <text class="lbl-sm" x="150" y="234" text-anchor="middle">fondo del rajo</text>
+        <rect x="0" y="0" width="400" height="60" fill="url(#sky)"/>
+        <rect x="0" y="58" width="400" height="192" fill="url(#rock)"/>
+        <polygon points="48,60 96,60 96,98 128,98 128,136 156,136 156,174 178,174 178,208 222,208 222,174 244,174 244,136 272,136 272,98 304,98 304,60 352,60" fill="url(#pit)"/>
+        <polyline points="48,60 96,60 96,98 128,98 128,136 156,136 156,174 178,174 178,208 222,208 222,174 244,174 244,136 272,136 272,98 304,98 304,60 352,60" fill="none" stroke="#caa079" stroke-width="1.5" stroke-linejoin="round" opacity=".8"/>
+        <!-- pila de mineral fuera del rajo (botadero) -->
+        <path d="M20,60 Q40,44 60,60 Z" fill="#7a5c42"/>
+        <!-- perforadora (paso 1) -->
+        <g id="drill"><rect x="243" y="120" width="3" height="16" fill="#e8c9a6"/><rect x="240" y="116" width="9" height="5" rx="1" fill="#c9b7a5"/></g>
+        <!-- tronadura (paso 2) -->
+        <circle id="blast" cx="245" cy="134" r="9" fill="#f0b063"/>
+        <!-- pala que carga (paso 3) -->
+        <g id="shovel" transform="translate(196,196)"><rect x="0" y="-7" width="12" height="7" rx="1" fill="#d6a94f"/><path d="M12,-4 l7,-3 l0,7 z" fill="#e8c9a6"/></g>
+        <!-- camión: carga abajo, sube la rampa y bota arriba -->
+        <g id="truck"><g transform="translate(164,198)">
+          <g id="truckLoad"><path d="M1,-10 Q10,-16 19,-10 Z" fill="#c9a06a"/></g>
+          <rect x="0" y="-9" width="20" height="9" rx="1.5" fill="#e0955f"/>
+          <rect x="15" y="-14" width="7" height="6" rx="1" fill="#c9b7a5"/>
+          <circle cx="5" cy="2" r="3" fill="#1a120c"/><circle cx="16" cy="2" r="3" fill="#1a120c"/>
+        </g></g>
+        <polyline class="digline" points="178,208 222,208" fill="none" stroke="#f0d7b6" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="352" cy="28" r="10" fill="#e8c98a" opacity=".8"/>
+        <text class="lbl-sm" x="40" y="40" text-anchor="middle">botadero</text>
+        <text class="lbl-sm" x="150" y="228" text-anchor="middle">fondo del rajo</text>
       </svg>
-      <p class="cap mt-3">Se excava <b>desde la superficie</b> en bancos escalonados, formando un enorme anfiteatro. Sirve cuando el yacimiento es <b>grande y superficial</b>; camiones y palas gigantes mueven millones de toneladas.</p>
+      <div class="steps">
+        <div class="step s1"><span class="n">1</span><br>Perforar</div>
+        <div class="step s2"><span class="n">2</span><br>Tronar</div>
+        <div class="step s3"><span class="n">3</span><br>Cargar</div>
+        <div class="step s4"><span class="n">4</span><br>Transportar</div>
+      </div>
+      <p class="cap mt-3">Se <b>perfora</b> la roca, se <b>trona</b> con explosivos, una pala <b>carga</b> el mineral en camiones y estos lo <b>transportan</b> subiendo la rampa fuera del rajo. Sirve cuando el yacimiento es <b>grande y superficial</b>.</p>
       <div class="flex flex-wrap gap-1.5 mt-2.5">
         <span class="chip" style="background:rgba(207,155,111,.14);color:#e8c9a6">Chuquicamata</span>
         <span class="chip" style="background:rgba(207,155,111,.14);color:#e8c9a6">Escondida</span>
@@ -151,40 +197,39 @@
         <i data-lucide="layers" style="width:20px;height:20px;color:#7fb0d9"></i>
         <h3 class="font-bold text-[15.5px]">Subterránea <span class="text-stone-500 font-semibold text-[12px]">· túneles y niveles</span></h3>
       </div>
-      <svg class="viz" viewBox="0 0 400 260" role="img" aria-label="Corte de una mina subterránea: pique vertical con jaula, niveles y hundimiento del mineral">
+      <svg class="viz" viewBox="0 0 400 250" role="img" aria-label="Proceso subterráneo: el mineral se fractura, se hunde por gravedad, un cargador lo lleva al pique y el skip lo iza a superficie">
         <defs>
-          <linearGradient id="skyu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#20303f"/><stop offset="1" stop-color="#1a2530"/></linearGradient>
+          <linearGradient id="skyu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22323f"/><stop offset="1" stop-color="#1a2530"/></linearGradient>
           <linearGradient id="under" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2c22"/><stop offset="1" stop-color="#241a13"/></linearGradient>
         </defs>
-        <rect x="0" y="0" width="400" height="52" fill="url(#skyu)"/>
-        <rect x="0" y="50" width="400" height="210" fill="url(#under)"/>
-        <!-- headframe -->
-        <g stroke="#caa079" stroke-width="2" fill="none">
-          <path d="M182,50 L196,18 L210,50"/><line x1="196" y1="18" x2="196" y2="50"/>
-          <circle cx="196" cy="22" r="4" fill="#e0955f" stroke="none"/>
-        </g>
+        <rect x="0" y="0" width="400" height="46" fill="url(#skyu)"/>
+        <rect x="0" y="44" width="400" height="206" fill="url(#under)"/>
+        <!-- headframe + acopio superficie -->
+        <g stroke="#caa079" stroke-width="2" fill="none"><path d="M300,44 L314,16 L328,44"/><line x1="314" y1="16" x2="314" y2="44"/><circle cx="314" cy="20" r="4" fill="#e0955f" stroke="none"/></g>
+        <path d="M336,44 Q352,30 368,44 Z" fill="#8a6b45"/>
         <!-- pique -->
-        <rect x="190" y="50" width="12" height="168" fill="#100b08"/>
-        <g id="cage"><rect x="191.5" y="54" width="9" height="12" rx="1" fill="#e8c9a6"/></g>
-        <!-- niveles / tuneles -->
-        <g fill="#100b08">
-          <rect x="70" y="96" width="120" height="9"/><rect x="202" y="96" width="120" height="9"/>
-          <rect x="70" y="146" width="120" height="9"/><rect x="202" y="146" width="120" height="9"/>
-          <rect x="86" y="196" width="104" height="9"/><rect x="202" y="196" width="104" height="9"/>
-        </g>
-        <!-- cuerpo mineralizado + hundimiento (block caving) -->
-        <path d="M150,205 Q200,150 250,205 Q250,230 200,236 Q150,230 150,205 Z" fill="#8a6b45" opacity=".85"/>
-        <g fill="#f0d7b6">
-          <circle class="ore" cx="185" cy="210" r="3.2"/>
-          <circle class="ore b" cx="200" cy="206" r="3.2"/>
-          <circle class="ore c" cx="215" cy="210" r="3.2"/>
-          <circle class="ore d" cx="200" cy="216" r="3.2"/>
-        </g>
-        <text class="lbl-sm" x="196" y="250" text-anchor="middle">el mineral se hunde y se extrae desde abajo</text>
-        <text class="lbl-sm" x="72" y="90">niveles</text>
-        <text class="lbl-sm" x="214" y="46" text-anchor="middle">pique</text>
+        <rect x="308" y="44" width="12" height="176" fill="#0f0a07"/>
+        <g id="skip"><rect x="309.5" y="52" width="9" height="13" rx="1" fill="#c9b7a5"/><g id="skipLoad"><rect x="311" y="49" width="6" height="4" rx="1" fill="#e8c9a6"/></g></g>
+        <!-- niveles -->
+        <g fill="#0f0a07"><rect x="60" y="150" width="248" height="9"/><rect x="60" y="110" width="150" height="8"/></g>
+        <!-- cuerpo mineralizado que se fractura y hunde -->
+        <path id="cave" d="M120,150 Q175,70 230,150 Z" fill="#8a6b45"/>
+        <g stroke="#5a4230" stroke-width="1" opacity=".5"><line x1="150" y1="140" x2="200" y2="90"/><line x1="200" y1="140" x2="170" y2="95"/><line x1="175" y1="150" x2="175" y2="100"/></g>
+        <!-- mineral que baja por puntos de extracción -->
+        <g fill="#f0d7b6"><circle class="ore" cx="165" cy="150" r="3"/><circle class="ore b" cx="180" cy="150" r="3"/><circle class="ore c" cx="195" cy="150" r="3"/><circle class="ore d" cx="180" cy="150" r="3"/></g>
+        <!-- cargador LHD que lleva mineral al pique -->
+        <g id="lhd"><g transform="translate(210,152)"><rect x="0" y="-8" width="18" height="7" rx="1.5" fill="#7fb0d9"/><path d="M18,-6 l6,-2 l0,6 z" fill="#a7c6de"/><circle cx="5" cy="1" r="2.5" fill="#0f0a07"/><circle cx="14" cy="1" r="2.5" fill="#0f0a07"/></g></g>
+        <text class="lbl-sm" x="175" y="176" text-anchor="middle">nivel de producción</text>
+        <text class="lbl-sm" x="314" y="42" text-anchor="middle">pique</text>
+        <text class="lbl-sm" x="175" y="70" text-anchor="middle">se fractura</text>
       </svg>
-      <p class="cap mt-3">Se trabaja con <b>túneles, piques y niveles</b> bajo tierra para llegar al mineral profundo. Con técnicas como el <b>hundimiento (caving)</b>, la roca se derrumba de forma controlada y se extrae desde abajo. Altera menos la superficie, pero es más compleja.</p>
+      <div class="steps">
+        <div class="step s1"><span class="n">1</span><br>Fracturar</div>
+        <div class="step s2"><span class="n">2</span><br>Hundir</div>
+        <div class="step s3"><span class="n">3</span><br>Cargar</div>
+        <div class="step s4"><span class="n">4</span><br>Izar</div>
+      </div>
+      <p class="cap mt-3">Se <b>fractura</b> el mineral en profundidad; por gravedad se <b>hunde</b> (caving) hacia el nivel de producción; un <b>cargador</b> lo lleva al pique y el <b>skip lo iza</b> a la superficie. Altera menos el paisaje, pero es más compleja.</p>
       <div class="flex flex-wrap gap-1.5 mt-2.5">
         <span class="chip" style="background:rgba(127,176,217,.16);color:#a7c6de">El Teniente</span>
         <span class="chip" style="background:rgba(127,176,217,.16);color:#a7c6de">Chuquicamata subterránea</span>
@@ -197,40 +242,45 @@
         <i data-lucide="droplet" style="width:20px;height:20px;color:#5fbdd1"></i>
         <h3 class="font-bold text-[15.5px]">Litio del salar <span class="text-stone-500 font-semibold text-[12px]">· no se excava</span></h3>
       </div>
-      <svg class="viz" viewBox="0 0 400 230" role="img" aria-label="Extracción de litio: se bombea salmuera y se concentra en pozas de evaporación bajo el sol">
+      <svg class="viz" viewBox="0 0 400 250" role="img" aria-label="Proceso del litio: se bombea salmuera, se evapora en pozas concentrándose, y llega a la planta para baterías">
         <defs>
           <linearGradient id="skys" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#243447"/><stop offset="1" stop-color="#2a3b3f"/></linearGradient>
-          <linearGradient id="salar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4a52"/><stop offset="1" stop-color="#243138"/></linearGradient>
+          <linearGradient id="salar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#43535b"/><stop offset="1" stop-color="#28353c"/></linearGradient>
         </defs>
-        <rect x="0" y="0" width="400" height="96" fill="url(#skys)"/>
-        <rect x="0" y="94" width="400" height="136" fill="url(#salar)"/>
-        <!-- sol con glow -->
-        <circle id="sunGlow" cx="60" cy="40" r="26" fill="#e8c98a"/>
-        <circle cx="60" cy="40" r="14" fill="#f0d79a"/>
+        <rect x="0" y="0" width="400" height="120" fill="url(#skys)"/>
+        <rect x="0" y="118" width="400" height="132" fill="url(#salar)"/>
+        <circle id="sunGlow" cx="52" cy="42" r="22" fill="#e8c98a"/>
+        <circle cx="52" cy="42" r="13" fill="#f0d79a"/>
         <!-- pozo / bomba de salmuera -->
-        <rect x="150" y="60" width="10" height="150" fill="#100b08"/>
-        <rect x="140" y="52" width="30" height="12" rx="2" fill="#c9b7a5"/>
-        <g fill="#5fd1bd">
-          <circle class="brine" cx="155" cy="200" r="3"/>
-          <circle class="brine b" cx="155" cy="200" r="3"/>
-          <circle class="brine c" cx="155" cy="200" r="3"/>
+        <rect x="66" y="118" width="9" height="118" fill="#0f0a07"/>
+        <rect x="58" y="110" width="25" height="10" rx="2" fill="#c9b7a5"/>
+        <g fill="#5fd1bd"><circle class="brine" cx="70.5" cy="230" r="3"/><circle class="brine b" cx="70.5" cy="230" r="3"/><circle class="brine c" cx="70.5" cy="230" r="3"/></g>
+        <!-- tubería superior con flujo hacia las pozas -->
+        <line x1="70" y1="112" x2="120" y2="112" stroke="#5a6a70" stroke-width="4"/>
+        <g fill="#5fd1bd"><circle class="flowd" cx="118" cy="163" r="2.6"/><circle class="flowd f2" cx="118" cy="163" r="2.6"/><circle class="flowd f3" cx="118" cy="163" r="2.6"/></g>
+        <!-- 3 pozas con nivel que baja y color que se concentra -->
+        <g stroke="#e6d4c4" stroke-width="1.2" fill="none" opacity=".85">
+          <rect x="112" y="150" width="72" height="26" rx="3"/><rect x="192" y="150" width="72" height="26" rx="3"/><rect x="272" y="150" width="72" height="26" rx="3"/>
         </g>
-        <!-- pozas de evaporacion (cambian de color al concentrarse) -->
-        <g stroke="#e6d4c4" stroke-width="1" opacity=".9">
-          <rect class="pond"    x="205" y="74" width="52" height="16" rx="3"/>
-          <rect class="pond p2" x="266" y="74" width="52" height="16" rx="3"/>
-          <rect class="pond p3" x="327" y="74" width="52" height="16" rx="3"/>
-        </g>
+        <rect class="water"    x="113" y="150" width="70" height="26" rx="2" fill="#2f9fb0"/>
+        <rect class="water w2" x="193" y="150" width="70" height="26" rx="2" fill="#5fb87a"/>
+        <rect class="water w3" x="273" y="150" width="70" height="26" rx="2" fill="#d3bd4f"/>
         <!-- vapor -->
         <g stroke="#bcd0d6" stroke-width="2" stroke-linecap="round" fill="none" opacity=".6">
-          <line class="vapor"    x1="231" y1="72" x2="231" y2="64"/>
-          <line class="vapor v2" x1="292" y1="72" x2="292" y2="64"/>
-          <line class="vapor v3" x1="353" y1="72" x2="353" y2="64"/>
+          <line class="vapor" x1="148" y1="148" x2="148" y2="140"/><line class="vapor v2" x1="228" y1="148" x2="228" y2="140"/><line class="vapor v3" x1="308" y1="148" x2="308" y2="140"/>
         </g>
-        <text class="lbl-sm" x="155" y="224" text-anchor="middle">salmuera</text>
-        <text class="lbl-sm" x="292" y="104" text-anchor="middle">pozas de evaporación</text>
+        <!-- batería / planta -->
+        <g id="batt" transform="translate(360,150)"><rect x="0" y="0" width="22" height="26" rx="3" fill="none" stroke="#a7d18a" stroke-width="2"/><rect x="7" y="-4" width="8" height="4" rx="1" fill="#a7d18a"/><path d="M12,4 l-5,10 l4,0 l-3,8 l8,-12 l-4,0 z" fill="#a7d18a"/></g>
+        <text class="lbl-sm" x="70" y="248" text-anchor="middle">salmuera</text>
+        <text class="lbl-sm" x="228" y="192" text-anchor="middle">pozas de evaporación (color = más concentrado)</text>
       </svg>
-      <p class="cap mt-3">En los salares se <b>bombea la salmuera</b> (agua con sales) y se concentra en <b>pozas de evaporación</b> con el sol y el viento del desierto durante meses. Es <b>muy distinto</b> a sacar cobre de la roca. Su corazón es el <b>Salar de Atacama</b>.</p>
+      <div class="steps">
+        <div class="step s1"><span class="n">1</span><br>Bombear</div>
+        <div class="step s2"><span class="n">2</span><br>Evaporar</div>
+        <div class="step s3"><span class="n">3</span><br>Concentrar</div>
+        <div class="step s4"><span class="n">4</span><br>Planta</div>
+      </div>
+      <p class="cap mt-3">Se <b>bombea la salmuera</b> del salar a pozas; el <b>sol la evapora</b> durante meses (baja el nivel), el litio se va <b>concentrando</b> (el color se intensifica) y pasa a la <b>planta</b> para hacer carbonato de litio y baterías. Es muy distinto a sacar cobre de la roca. Su corazón: el <b>Salar de Atacama</b>.</p>
     </div>
 
     <!-- ========== ¿RAJO O SUBTERRÁNEA? ========== -->
@@ -241,19 +291,15 @@
       </div>
       <svg class="viz" viewBox="0 0 400 150" role="img" aria-label="La profundidad del yacimiento decide el método: superficial va a rajo, profundo va subterránea">
         <rect x="0" y="0" width="400" height="150" fill="#1b1512"/>
-        <!-- eje profundidad -->
         <line x1="40" y1="24" x2="40" y2="130" stroke="#6b5a4c" stroke-width="2"/>
         <text class="lbl-sm" x="48" y="30">superficie</text>
         <text class="lbl-sm" x="48" y="128">profundo</text>
-        <!-- zona rajo -->
         <rect class="flash-r" x="150" y="30" width="220" height="44" rx="8" fill="rgba(207,155,111,.12)" stroke="#cf9b6f" stroke-width="1.4"/>
         <text class="flash-r lbl" x="260" y="49" text-anchor="middle" fill="#e8c9a6">Cerca de la superficie → RAJO</text>
         <text class="flash-r lbl-sm" x="260" y="64" text-anchor="middle">grande y poco profundo</text>
-        <!-- zona subterranea -->
         <rect class="flash-s" x="150" y="86" width="220" height="44" rx="8" fill="rgba(127,176,217,.12)" stroke="#7fb0d9" stroke-width="1.4"/>
         <text class="flash-s lbl" x="260" y="105" text-anchor="middle" fill="#a7c6de">Profundo → SUBTERRÁNEA</text>
         <text class="flash-s lbl-sm" x="260" y="120" text-anchor="middle">concentrado y hondo</text>
-        <!-- yacimiento que baja -->
         <g class="depdot"><ellipse cx="95" cy="52" rx="14" ry="8" fill="#f0d7b6"/></g>
       </svg>
       <p class="cap mt-3">No es al azar: depende de la <b>profundidad</b>, la <b>ley</b> (qué tan rico es), el <b>tamaño</b>, el <b>costo</b>, la <b>seguridad</b> y el <b>medio ambiente</b>. Algunas minas, como <b>Andina</b>, combinan ambos métodos.</p>
@@ -278,31 +324,18 @@
         <h3 class="font-bold text-[15.5px]">El ciclo de una mina</h3>
       </div>
       <svg class="viz" viewBox="0 0 400 120" role="img" aria-label="Ciclo de una mina: exploración, construcción, operación y cierre">
-        <line x1="45" y1="46" x2="355" y2="46" stroke="#4a3d33" stroke-width="3"/>
-        <line class="flow" x1="45" y1="46" x2="355" y2="46" stroke="#d6a94f" stroke-width="3" stroke-linecap="round"/>
-        <g>
-          <g class="node n1"><circle cx="45" cy="46" r="11" fill="#241a13" stroke="#d6a94f" stroke-width="2"/></g>
-          <g class="node n2"><circle cx="148" cy="46" r="11" fill="#241a13" stroke="#d6a94f" stroke-width="2"/></g>
-          <g class="node n3"><circle cx="252" cy="46" r="11" fill="#241a13" stroke="#d6a94f" stroke-width="2"/></g>
-          <g class="node n4"><circle cx="355" cy="46" r="11" fill="#241a13" stroke="#7fbf9a" stroke-width="2"/></g>
-        </g>
-        <g class="lbl" text-anchor="middle">
-          <text x="45" y="80">Exploración</text>
-          <text x="148" y="80">Construcción</text>
-          <text x="252" y="80">Operación</text>
-          <text x="355" y="80" fill="#a7d18a">Cierre</text>
-        </g>
-        <g class="lbl-sm" text-anchor="middle">
-          <text x="45" y="96">sondajes</text>
-          <text x="148" y="96">se levanta</text>
-          <text x="252" y="96">años/décadas</text>
-          <text x="355" y="96">plan de cierre</text>
-        </g>
+        <line x1="45" y1="44" x2="355" y2="44" stroke="#4a3d33" stroke-width="3"/>
+        <line class="flow" x1="45" y1="44" x2="355" y2="44" stroke="#d6a94f" stroke-width="3" stroke-linecap="round"/>
+        <g class="cnode n1"><circle cx="45" cy="44" r="11" fill="#241a13" stroke="#d6a94f" stroke-width="2"/></g>
+        <g class="cnode n2"><circle cx="148" cy="44" r="11" fill="#241a13" stroke="#d6a94f" stroke-width="2"/></g>
+        <g class="cnode n3"><circle cx="252" cy="44" r="11" fill="#241a13" stroke="#d6a94f" stroke-width="2"/></g>
+        <g class="cnode n4"><circle cx="355" cy="44" r="11" fill="#241a13" stroke="#7fbf9a" stroke-width="2"/></g>
+        <g class="lbl" text-anchor="middle"><text x="45" y="78">Exploración</text><text x="148" y="78">Construcción</text><text x="252" y="78">Operación</text><text x="355" y="78" fill="#a7d18a">Cierre</text></g>
+        <g class="lbl-sm" text-anchor="middle"><text x="45" y="94">sondajes</text><text x="148" y="94">se levanta</text><text x="252" y="94">años/décadas</text><text x="355" y="94">plan de cierre</text></g>
       </svg>
       <p class="cap mt-3">Toda mina recorre el mismo camino: se <b>explora</b>, se <b>construye</b>, se <b>opera</b> por años o décadas y, al agotarse, la ley exige un <b>plan de cierre</b> para dejar el lugar seguro y estable.</p>
     </div>
 
-    <!-- resumen + navegación -->
     <div class="glass rounded-2xl p-4 mt-3" style="border-color:rgba(214,169,79,.28)">
       <div class="flex items-center gap-2 mb-1.5"><i data-lucide="lightbulb" style="width:17px;height:17px;color:#d6a94f"></i><h3 class="font-bold text-[13.5px]">En resumen</h3></div>
       <p class="text-[12.5px] text-stone-300 leading-relaxed">Grande y superficial → <b>rajo</b>. Profundo → <b>subterránea</b>. El <b>litio</b> se bombea de la salmuera, no se excava. Y todo termina en un mismo proceso: de la roca al producto final.</p>
