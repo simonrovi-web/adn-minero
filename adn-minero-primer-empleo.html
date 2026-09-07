@@ -44,19 +44,19 @@
     .cap{ font-size:13px; line-height:1.55; color:#dacfc2; } .cap b{ color:#f4ece5; }
     .lbl{ font-size:10px; font-weight:700; fill:#e6f0d8; } .lbl-sm{ font-size:9.5px; fill:#a9c99a; font-weight:600; }
     .psteps{ display:flex; gap:5px; margin-top:11px; }
-    .pstep{ flex:1; text-align:center; font-size:10px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#8a9a8c; border:1px solid rgba(167,209,138,.14); animation:pstepHi 8s infinite; }
+    .pstep{ flex:1; text-align:center; font-size:10px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#8a9a8c; border:1px solid rgba(167,209,138,.14); animation:pstepHi 16s infinite; }
     .pstep .pn{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(167,209,138,.16); color:#bfe0a6; font-size:9px; margin-bottom:4px; }
-    .pstep.s2{ animation-delay:2s } .pstep.s3{ animation-delay:4s } .pstep.s4{ animation-delay:6s }
+    .pstep.s2{ animation-delay:4s } .pstep.s3{ animation-delay:8s } .pstep.s4{ animation-delay:12s }
     @keyframes pstepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#8a9a8c; border-color:rgba(167,209,138,.14) } 5%,21%{ background:rgba(167,209,138,.18); color:#f0f8ea; border-color:rgba(167,209,138,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#8a9a8c; border-color:rgba(167,209,138,.14) } }
     .pnarr{ position:relative; min-height:34px; margin-top:9px; }
-    .pnl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:pnarr 8s infinite; } .pnl b{ color:#f4ece5; }
-    .pnl.n2{ animation-delay:2s } .pnl.n3{ animation-delay:4s } .pnl.n4{ animation-delay:6s }
+    .pnl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:pnarr 16s infinite; } .pnl b{ color:#f4ece5; }
+    .pnl.n2{ animation-delay:4s } .pnl.n3{ animation-delay:8s } .pnl.n4{ animation-delay:12s }
     @keyframes pnarr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
-    .rflow{ stroke-dasharray:300; stroke-dashoffset:300; animation:rflow 8s ease-in-out infinite; }
+    .rflow{ stroke-dasharray:300; stroke-dashoffset:300; animation:rflow 16s ease-in-out infinite; }
     @keyframes rflow{ 0%,10%{ stroke-dashoffset:300 } 88%,100%{ stroke-dashoffset:0 } }
-    .rnode{ opacity:.35; animation:rnode 8s ease-in-out infinite; } .rnode.n2{ animation-delay:2s } .rnode.n3{ animation-delay:4s } .rnode.n4{ animation-delay:6s }
+    .rnode{ opacity:.35; animation:rnode 16s ease-in-out infinite; } .rnode.n2{ animation-delay:4s } .rnode.n3{ animation-delay:8s } .rnode.n4{ animation-delay:12s }
     @keyframes rnode{ 0%{ opacity:.35 } 4%{ opacity:1 } 96%,100%{ opacity:1 } }
-    #walker{ animation:walker 8s ease-in-out infinite; } @keyframes walker{ 0%{ transform:translateX(0) } 25%{ transform:translateX(94px) } 50%{ transform:translateX(190px) } 75%,100%{ transform:translateX(286px) } }
+    #walker{ animation:walker 16s ease-in-out infinite; } @keyframes walker{ 0%{ transform:translateX(0) } 25%{ transform:translateX(94px) } 50%{ transform:translateX(190px) } 75%,100%{ transform:translateX(286px) } }
     @media (prefers-reduced-motion:reduce){ .pstep,.pnl,.rflow,.rnode,#walker{ animation:none !important } .pnarr{ display:none } .rflow{ stroke-dashoffset:0 !important } .rnode{ opacity:1 !important } #walker{ transform:translateX(286px) } }
   </style>
   <script src="adn-ui.js" defer></script>

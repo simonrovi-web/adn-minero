@@ -45,13 +45,13 @@
     .cap{ font-size:13px; line-height:1.55; color:#d6ddce; } .cap b{ color:#f4ece5; }
     .lbl{ font-size:10px; font-weight:700; fill:#e6f0e2; } .lbl-sm{ font-size:9.5px; fill:#9fb0a2; font-weight:600; }
     .steps{ display:flex; gap:5px; margin-top:11px; }
-    .step{ flex:1; text-align:center; font-size:10px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#8a9a8c; border:1px solid rgba(150,190,160,.14); animation:stepHi 8s infinite; }
+    .step{ flex:1; text-align:center; font-size:10px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#8a9a8c; border:1px solid rgba(150,190,160,.14); animation:stepHi 16s infinite; }
     .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(95,191,138,.16); color:#9fd9b8; font-size:9px; margin-bottom:4px; }
-    .step.s2{ animation-delay:2s } .step.s3{ animation-delay:4s } .step.s4{ animation-delay:6s }
+    .step.s2{ animation-delay:4s } .step.s3{ animation-delay:8s } .step.s4{ animation-delay:12s }
     @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#8a9a8c; border-color:rgba(150,190,160,.14) } 5%,21%{ background:rgba(95,191,138,.18); color:#eafaf0; border-color:rgba(95,191,138,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#8a9a8c; border-color:rgba(150,190,160,.14) } }
     .narr{ position:relative; min-height:36px; margin-top:9px; }
-    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#d6ddce; opacity:0; animation:narr 8s infinite; } .nl b{ color:#f4ece5; }
-    .nl.n2{ animation-delay:2s } .nl.n3{ animation-delay:4s } .nl.n4{ animation-delay:6s }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#d6ddce; opacity:0; animation:narr 16s infinite; } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:4s } .nl.n3{ animation-delay:8s } .nl.n4{ animation-delay:12s }
     @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
     #sunG{ animation:sunG 3.2s ease-in-out infinite; } @keyframes sunG{ 0%,100%{ r:16px; opacity:.32 } 50%{ r:21px; opacity:.6 } }
     #blades{ transform-box:fill-box; transform-origin:center; animation:spin 3.6s linear infinite; } @keyframes spin{ to{ transform:rotate(360deg) } }

@@ -44,20 +44,20 @@
     .cap{ font-size:13px; line-height:1.55; color:#dacfc2; } .cap b{ color:#f4ece5; }
     .lbl{ font-size:10px; font-weight:700; fill:#f0e2d3; } .lbl-sm{ font-size:9.5px; fill:#c9b7a5; font-weight:600; }
     .psteps{ display:flex; gap:5px; margin-top:11px; }
-    .pstep{ flex:1; text-align:center; font-size:10.5px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#8a8079; border:1px solid rgba(196,168,148,.1); animation:pstepHi 8s infinite; }
+    .pstep{ flex:1; text-align:center; font-size:10.5px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#8a8079; border:1px solid rgba(196,168,148,.1); animation:pstepHi 16s infinite; }
     .pstep .pn{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(196,168,148,.14); color:#c9b7a5; font-size:9px; margin-bottom:4px; }
-    .pstep.s2{ animation-delay:2s } .pstep.s3{ animation-delay:4s } .pstep.s4{ animation-delay:6s }
+    .pstep.s2{ animation-delay:4s } .pstep.s3{ animation-delay:8s } .pstep.s4{ animation-delay:12s }
     @keyframes pstepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#8a8079; border-color:rgba(196,168,148,.1) } 5%,21%{ background:rgba(207,155,111,.18); color:#f6ead9; border-color:rgba(207,155,111,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#8a8079; border-color:rgba(196,168,148,.1) } }
     .pnarr{ position:relative; min-height:34px; margin-top:9px; }
-    .pnl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:pnarr 8s infinite; } .pnl b{ color:#f6ead9; }
-    .pnl.n2{ animation-delay:2s } .pnl.n3{ animation-delay:4s } .pnl.n4{ animation-delay:6s }
+    .pnl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:pnarr 16s infinite; } .pnl b{ color:#f6ead9; }
+    .pnl.n2{ animation-delay:4s } .pnl.n3{ animation-delay:8s } .pnl.n4{ animation-delay:12s }
     @keyframes pnarr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
-    .pflow{ stroke-dasharray:300; stroke-dashoffset:300; animation:pflow 8s ease-in-out infinite; }
+    .pflow{ stroke-dasharray:300; stroke-dashoffset:300; animation:pflow 16s ease-in-out infinite; }
     @keyframes pflow{ 0%{ stroke-dashoffset:300 } 12%{ stroke-dashoffset:300 } 88%,100%{ stroke-dashoffset:0 } }
-    .pnode{ opacity:.35; animation:pnode 8s ease-in-out infinite; }
-    .pnode.n1{ animation-delay:0s } .pnode.n2{ animation-delay:2s } .pnode.n3{ animation-delay:4s } .pnode.n4{ animation-delay:6s }
+    .pnode{ opacity:.35; animation:pnode 16s ease-in-out infinite; }
+    .pnode.n1{ animation-delay:0s } .pnode.n2{ animation-delay:4s } .pnode.n3{ animation-delay:8s } .pnode.n4{ animation-delay:12s }
     @keyframes pnode{ 0%{ opacity:.35 } 4%{ opacity:1 } 96%,100%{ opacity:1 } }
-    #pore{ animation:pore 8s ease-in-out infinite; }
+    #pore{ animation:pore 16s ease-in-out infinite; }
     @keyframes pore{ 0%{ transform:translateX(0); fill:#6b5a4c } 25%{ transform:translateX(100px); fill:#b5824f } 50%{ transform:translateX(200px); fill:#cf9b6f } 75%{ transform:translateX(300px); fill:#e8c9a6 } 100%{ transform:translateX(300px); fill:#f0d7b6 } }
     @media (prefers-reduced-motion:reduce){ .pstep,.pnl,.pflow,.pnode,#pore{ animation:none !important } .pnarr{ display:none } .pflow{ stroke-dashoffset:0 !important } .pnode{ opacity:1 !important } }
   </style>
