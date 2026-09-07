@@ -176,34 +176,63 @@
       </div>
       <svg class="viz" viewBox="0 0 400 250" role="img" aria-label="Proceso a rajo abierto: perforar, tronar, cargar y transportar el mineral fuera del rajo">
         <defs>
-          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22323f"/><stop offset="1" stop-color="#1a2530"/></linearGradient>
-          <linearGradient id="rock" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a3a2e"/><stop offset="1" stop-color="#2c211a"/></linearGradient>
-          <linearGradient id="pit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b5140"/><stop offset="1" stop-color="#3a2b21"/></linearGradient>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16232f"/><stop offset=".62" stop-color="#26313c"/><stop offset="1" stop-color="#3a3226"/></linearGradient>
+          <linearGradient id="skyWarm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e7a24d" stop-opacity="0"/><stop offset="1" stop-color="#e7a24d" stop-opacity=".28"/></linearGradient>
+          <linearGradient id="rock" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5c4636"/><stop offset="1" stop-color="#271b13"/></linearGradient>
+          <linearGradient id="pit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7c5d45"/><stop offset="1" stop-color="#2a1d14"/></linearGradient>
+          <linearGradient id="pitShade" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe6be" stop-opacity=".14"/><stop offset=".5" stop-color="#000000" stop-opacity="0"/><stop offset="1" stop-color="#000000" stop-opacity=".42"/></linearGradient>
+          <linearGradient id="rimG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f0cf9a"/><stop offset="1" stop-color="#9c744a"/></linearGradient>
+          <radialGradient id="aoG" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#000" stop-opacity=".5"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+          <linearGradient id="moundG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9c7550"/><stop offset="1" stop-color="#5a4230"/></linearGradient>
+          <linearGradient id="bedG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b5824f"/><stop offset="1" stop-color="#7a5334"/></linearGradient>
+          <linearGradient id="cabG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2b57e"/><stop offset="1" stop-color="#cf9b6f"/></linearGradient>
+          <filter id="fSun" x="-120%" y="-120%" width="340%" height="340%"><feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#f0c069" flood-opacity=".9"/></filter>
+          <filter id="fBlast" x="-120%" y="-120%" width="340%" height="340%"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#ffb54a" flood-opacity=".9"/></filter>
+          <filter id="fShadow" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="2" stdDeviation="1.6" flood-color="#000" flood-opacity=".5"/></filter>
         </defs>
+        <!-- cielo con horizonte cálido -->
         <rect x="0" y="0" width="400" height="60" fill="url(#sky)"/>
+        <rect x="0" y="30" width="400" height="30" fill="url(#skyWarm)"/>
+        <!-- montañas lejanas con neblina (profundidad) -->
+        <polygon points="0,60 70,34 150,60" fill="#38434f" opacity=".55"/>
+        <polygon points="120,60 210,28 300,60" fill="#313d49" opacity=".5"/>
+        <polygon points="250,60 330,38 400,60" fill="#38434f" opacity=".55"/>
+        <!-- sol -->
+        <circle cx="352" cy="26" r="9" fill="#f4d38a" filter="url(#fSun)"/>
+        <!-- macizo rocoso -->
         <rect x="0" y="58" width="400" height="192" fill="url(#rock)"/>
+        <!-- strata (textura de roca) -->
+        <g stroke="#2a1d14" stroke-width="1" opacity=".28"><line x1="0" y1="86" x2="400" y2="90"/><line x1="0" y1="120" x2="400" y2="116"/><line x1="0" y1="158" x2="400" y2="162"/><line x1="0" y1="196" x2="400" y2="192"/></g>
+        <!-- rajo: relleno + volumen (luz direccional) -->
         <polygon points="48,60 96,60 96,98 128,98 128,136 156,136 156,174 178,174 178,208 222,208 222,174 244,174 244,136 272,136 272,98 304,98 304,60 352,60" fill="url(#pit)"/>
-        <polyline points="48,60 96,60 96,98 128,98 128,136 156,136 156,174 178,174 178,208 222,208 222,174 244,174 244,136 272,136 272,98 304,98 304,60 352,60" fill="none" stroke="#caa079" stroke-width="1.5" stroke-linejoin="round" opacity=".8"/>
-        <!-- pila de mineral fuera del rajo (botadero) -->
-        <path d="M20,60 Q40,44 60,60 Z" fill="#7a5c42"/>
-        <circle id="botDump" cx="40" cy="53" r="4" fill="#c9a06a"/>
+        <polygon points="48,60 96,60 96,98 128,98 128,136 156,136 156,174 178,174 178,208 222,208 222,174 244,174 244,136 272,136 272,98 304,98 304,60 352,60" fill="url(#pitShade)"/>
+        <!-- oclusión ambiental en el fondo -->
+        <ellipse cx="200" cy="207" rx="34" ry="9" fill="url(#aoG)"/>
+        <!-- rims de los bancos (luz cálida) -->
+        <polyline points="48,60 96,60 96,98 128,98 128,136 156,136 156,174 178,174 178,208 222,208 222,174 244,174 244,136 272,136 272,98 304,98 304,60 352,60" fill="none" stroke="url(#rimG)" stroke-width="1.6" stroke-linejoin="round" opacity=".92"/>
+        <!-- botadero (con volumen) -->
+        <path d="M14,60 Q40,38 66,60 Z" fill="url(#moundG)"/>
+        <path d="M22,58 Q40,45 52,53" fill="none" stroke="#c9a06a" stroke-width="1.4" opacity=".7"/>
+        <circle id="botDump" cx="40" cy="50" r="4.5" fill="#d8b483"/>
         <!-- perforadora (paso 1) -->
-        <g id="drill"><rect x="243" y="120" width="3" height="16" fill="#e8c9a6"/><rect x="240" y="116" width="9" height="5" rx="1" fill="#c9b7a5"/></g>
+        <g id="drill"><rect x="243" y="118" width="3" height="18" rx="1" fill="#e8c9a6"/><rect x="238" y="114" width="13" height="5" rx="1.5" fill="#c9b7a5"/><rect x="245" y="110" width="2" height="6" fill="#c9b7a5"/></g>
         <!-- tronadura (paso 2) -->
-        <circle id="blast" cx="245" cy="134" r="9" fill="#f0b063"/>
-        <g id="debris" fill="#e0955f"><circle cx="240" cy="130" r="2"/><circle cx="250" cy="129" r="1.6"/><circle cx="245" cy="125" r="1.5"/></g>
-        <!-- pala que carga (paso 3) -->
-        <g id="shovel" transform="translate(196,196)"><rect x="0" y="-7" width="12" height="7" rx="1" fill="#d6a94f"/><path d="M12,-4 l7,-3 l0,7 z" fill="#e8c9a6"/></g>
-        <!-- camión: carga abajo, sube la rampa y bota arriba -->
-        <g id="truck" class="sh"><g transform="translate(164,198)">
-          <g id="truckLoad"><path d="M1,-10 Q10,-16 19,-10 Z" fill="#c9a06a"/></g>
-          <rect x="0" y="-9" width="20" height="9" rx="1.5" fill="#e0955f"/>
-          <rect x="15" y="-14" width="7" height="6" rx="1" fill="#c9b7a5"/>
-          <circle cx="5" cy="2" r="3" fill="#1a120c"/><circle cx="16" cy="2" r="3" fill="#1a120c"/>
+        <g id="blast" filter="url(#fBlast)"><circle cx="245" cy="134" r="8" fill="#ffcf72"/><path d="M245,122 l3,9 l9,-1 l-7,6 l4,9 l-9,-5 l-9,5 l4,-9 l-7,-6 l9,1 z" fill="#ffb54a"/></g>
+        <g id="debris" fill="#e0955f"><circle cx="238" cy="128" r="2"/><circle cx="252" cy="127" r="1.6"/><circle cx="245" cy="122" r="1.5"/></g>
+        <!-- pala hidráulica (paso 3) -->
+        <g id="shovel" transform="translate(194,196)"><rect x="0" y="-9" width="13" height="9" rx="1.5" fill="url(#cabG)"/><path d="M12,-6 q9,-4 12,3 l-4,2 q-3,-4 -8,-1 z" fill="#d6a94f"/><path d="M20,-1 l7,-2 l0,6 l-7,-1 z" fill="#e8c9a6"/></g>
+        <!-- camión CAEX (detallado) -->
+        <g id="truck" class="sh"><g transform="translate(162,198)">
+          <ellipse cx="13" cy="5" rx="16" ry="3" fill="#000" opacity=".32"/>
+          <g id="truckLoad"><path d="M0,-11 Q13,-19 26,-11 Z" fill="#caa06a"/><circle cx="9" cy="-13" r="1.6" fill="#b5824f"/><circle cx="17" cy="-13" r="1.4" fill="#dcc08c"/></g>
+          <path d="M-1,-11 L27,-11 L23,-2 L2,-2 Z" fill="url(#bedG)"/>
+          <rect x="21" y="-17" width="9" height="8" rx="1.5" fill="url(#cabG)"/><rect x="23" y="-15" width="4" height="3" rx=".5" fill="#8fc0e0"/>
+          <circle cx="30" cy="-10" r="1.4" fill="#fff2b0"/>
+          <circle cx="6" cy="1" r="4.2" fill="#15100b"/><circle cx="6" cy="1" r="1.7" fill="#4a3a2a"/>
+          <circle cx="22" cy="1" r="4.2" fill="#15100b"/><circle cx="22" cy="1" r="1.7" fill="#4a3a2a"/>
         </g></g>
-        <polyline class="digline" points="178,208 222,208" fill="none" stroke="#f0d7b6" stroke-width="3" stroke-linecap="round"/>
-        <circle cx="352" cy="28" r="10" fill="#e8c98a" opacity=".8"/>
-        <text class="lbl-sm" x="40" y="40" text-anchor="middle">botadero</text>
+        <polyline class="digline" points="178,208 222,208" fill="none" stroke="#f7dfb2" stroke-width="3" stroke-linecap="round"/>
+        <text class="lbl-sm" x="40" y="38" text-anchor="middle">botadero</text>
         <text class="lbl-sm" x="150" y="228" text-anchor="middle">fondo del rajo</text>
       </svg>
       <div class="steps">
