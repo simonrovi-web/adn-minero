@@ -35,6 +35,27 @@
     .topic.open .chev{ transform:rotate(90deg); } .chev{ transition:transform .2s; }
     .tip{ display:flex; gap:9px; align-items:flex-start; font-size:13.5px; line-height:1.5; color:#dacfc2; margin-top:8px; }
     .tip b{ color:#f4ece5; } h3{ margin:0; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .cap{ font-size:13px; line-height:1.55; color:#dacfc2; } .cap b{ color:#f4ece5; }
+    .lbl-sm{ font-size:9.5px; fill:#d8c9a8; font-weight:600; }
+    .steps{ display:flex; gap:5px; margin-top:11px; }
+    .step{ flex:1; text-align:center; font-size:10.5px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#8a8079; border:1px solid rgba(214,169,79,.14); animation:stepHi 8s infinite; }
+    .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(214,169,79,.16); color:#e6c98f; font-size:9px; margin-bottom:4px; }
+    .step.s2{ animation-delay:2s } .step.s3{ animation-delay:4s } .step.s4{ animation-delay:6s }
+    @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#8a8079; border-color:rgba(214,169,79,.14) } 5%,21%{ background:rgba(214,169,79,.18); color:#f6ecd9; border-color:rgba(214,169,79,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#8a8079; border-color:rgba(214,169,79,.14) } }
+    .narr{ position:relative; min-height:36px; margin-top:9px; }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:narr 8s infinite; } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:2s } .nl.n3{ animation-delay:4s } .nl.n4{ animation-delay:6s }
+    @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    .fd1{ animation:fdTL 3s linear infinite } .fd2{ animation:fdTR 3s linear infinite; animation-delay:.4s } .fd3{ animation:fdBL 3s linear infinite; animation-delay:.8s } .fd4{ animation:fdBR 3s linear infinite; animation-delay:1.2s }
+    @keyframes fdTL{ 0%{ transform:translate(0,0); opacity:0 } 15%{ opacity:1 } 85%{ opacity:1 } 100%{ transform:translate(-124px,-46px); opacity:0 } }
+    @keyframes fdTR{ 0%{ transform:translate(0,0); opacity:0 } 15%{ opacity:1 } 85%{ opacity:1 } 100%{ transform:translate(124px,-46px); opacity:0 } }
+    @keyframes fdBL{ 0%{ transform:translate(0,0); opacity:0 } 15%{ opacity:1 } 85%{ opacity:1 } 100%{ transform:translate(-124px,52px); opacity:0 } }
+    @keyframes fdBR{ 0%{ transform:translate(0,0); opacity:0 } 15%{ opacity:1 } 85%{ opacity:1 } 100%{ transform:translate(124px,52px); opacity:0 } }
+    .cn{ opacity:.4; animation:cn 8s ease-in-out infinite } .cn.c2{ animation-delay:2s } .cn.c3{ animation-delay:4s } .cn.c4{ animation-delay:6s }
+    @keyframes cn{ 0%{ opacity:.4 } 4%{ opacity:1 } 22%{ opacity:1 } 30%{ opacity:.55 } 100%{ opacity:.55 } }
+    #hubp{ animation:hubp 3s ease-in-out infinite } @keyframes hubp{ 0%,100%{ opacity:.85 } 50%{ opacity:1 } }
+    @media (prefers-reduced-motion:reduce){ .fd1,.fd2,.fd3,.fd4,.cn,#hubp,.step,.nl{ animation:none !important } .fd1,.fd2,.fd3,.fd4{ opacity:0 } .cn{ opacity:1 } .narr{ display:none } }
   </style>
   <script src="adn-ui.js" defer></script>
 </head>
@@ -48,7 +69,51 @@
       </div>
     </header>
 
-    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">La minería convive con comunidades, territorios y pueblos. Genera empleo y recursos, pero también desafíos que se abordan con diálogo. Toca cada tema para entenderlo.</p>
+    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">La minería convive con comunidades, territorios y pueblos. Mira los <b>frentes</b> que conectan una faena con su entorno — se encienden uno a uno.</p>
+
+    <!-- FLUJOS FAENA ↔ COMUNIDAD (animado) -->
+    <div class="glass rounded-2xl p-4 mt-4">
+      <div class="flex items-center gap-2.5 mb-3">
+        <i data-lucide="users" style="width:20px;height:20px;color:#d6a94f"></i>
+        <h3 class="font-bold text-[15.5px]">Faena y comunidad <span class="text-[12px] font-semibold" style="color:#9c8f83">· lo que fluye entre ambas</span></h3>
+      </div>
+      <svg class="viz" viewBox="0 0 400 200" role="img" aria-label="Relacion entre la faena y su comunidad: empleo, royalty, cuidado del territorio y dialogo">
+        <rect x="0" y="0" width="400" height="200" fill="#191410"/>
+        <!-- lineas hub -> nodos -->
+        <g stroke="#5a4d3a" stroke-width="1.5">
+          <line x1="200" y1="100" x2="76" y2="54"/><line x1="200" y1="100" x2="324" y2="54"/>
+          <line x1="200" y1="100" x2="76" y2="152"/><line x1="200" y1="100" x2="324" y2="152"/>
+        </g>
+        <!-- dots que fluyen desde la faena -->
+        <g><circle class="fd1" cx="200" cy="100" r="3" fill="#a7d18a"/><circle class="fd2" cx="200" cy="100" r="3" fill="#d6a94f"/><circle class="fd3" cx="200" cy="100" r="3" fill="#5fbf9a"/><circle class="fd4" cx="200" cy="100" r="3" fill="#7fb0d9"/></g>
+        <!-- nodos comunidad -->
+        <g class="cn"><circle cx="76" cy="54" r="17" fill="#1f2a19" stroke="#a7d18a" stroke-width="2"/><text x="76" y="59" text-anchor="middle" style="font-size:15px">👷</text></g>
+        <g class="cn c2"><circle cx="324" cy="54" r="17" fill="#2a2410" stroke="#d6a94f" stroke-width="2"/><text x="324" y="59" text-anchor="middle" style="font-size:14px">🏥</text></g>
+        <g class="cn c3"><circle cx="76" cy="152" r="17" fill="#18251f" stroke="#5fbf9a" stroke-width="2"/><text x="76" y="157" text-anchor="middle" style="font-size:14px">💧</text></g>
+        <g class="cn c4"><circle cx="324" cy="152" r="17" fill="#1a2229" stroke="#7fb0d9" stroke-width="2"/><text x="324" y="157" text-anchor="middle" style="font-size:14px">🤝</text></g>
+        <!-- faena (hub) -->
+        <g id="hubp"><circle cx="200" cy="100" r="24" fill="#2b2418" stroke="#e6c98f" stroke-width="2"/>
+          <path d="M186,110 L200,84 L214,110 Z" fill="#cf9b6f"/><rect x="205" y="90" width="5" height="14" fill="#b5824f"/></g>
+        <text class="lbl-sm" x="200" y="138" text-anchor="middle">faena</text>
+        <text class="lbl-sm" x="76" y="82" text-anchor="middle">empleo</text>
+        <text class="lbl-sm" x="324" y="82" text-anchor="middle">royalty</text>
+        <text class="lbl-sm" x="76" y="180" text-anchor="middle">territorio · agua</text>
+        <text class="lbl-sm" x="324" y="180" text-anchor="middle">diálogo</text>
+      </svg>
+      <div class="steps">
+        <div class="step s1"><span class="n">1</span><br>Empleo</div>
+        <div class="step s2"><span class="n">2</span><br>Royalty</div>
+        <div class="step s3"><span class="n">3</span><br>Territorio</div>
+        <div class="step s4"><span class="n">4</span><br>Diálogo</div>
+      </div>
+      <div class="narr">
+        <span class="nl n1">La faena da <b>empleo</b> y compra a proveedores locales.</span>
+        <span class="nl n2">El <b>royalty</b> lleva recursos a las comunas.</span>
+        <span class="nl n3">Se cuida el <b>territorio</b>: agua, tierra y patrimonio.</span>
+        <span class="nl n4">El <b>diálogo</b> con comunidades y pueblos guía las decisiones.</span>
+      </div>
+      <p class="cap mt-3">La minería y su entorno se conectan en varios frentes: <b>empleo</b> y proveedores locales, el <b>royalty</b> que llega a las comunas, el cuidado del <b>territorio</b> (agua, tierra, patrimonio) y el <b>diálogo</b> con las comunidades y pueblos originarios.</p>
+    </div>
 
     <div id="topics" class="mt-4 grid gap-2.5"></div>
 
