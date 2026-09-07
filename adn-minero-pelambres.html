@@ -33,6 +33,24 @@
     .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
     .kpi b{ display:block; font-weight:900; line-height:1; font-variant-numeric:tabular-nums; }
     h3{ margin:0; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .cap{ font-size:13px; line-height:1.55; color:#dacfc2; } .cap b{ color:#f4ece5; }
+    .lbl-sm{ font-size:9.5px; fill:#c9c0b3; font-weight:600; }
+    .steps{ display:flex; gap:5px; margin-top:11px; }
+    .step{ flex:1; text-align:center; font-size:10px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#8a8079; border:1px solid rgba(196,168,148,.14); animation:stepHi 16s infinite; }
+    .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(196,168,148,.14); color:#c9b7a5; font-size:9px; margin-bottom:4px; }
+    .step.s2{ animation-delay:4s } .step.s3{ animation-delay:8s } .step.s4{ animation-delay:12s }
+    @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#8a8079; border-color:rgba(196,168,148,.14) } 5%,21%{ background:rgba(207,155,111,.18); color:#f6ead9; border-color:rgba(207,155,111,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#8a8079; border-color:rgba(196,168,148,.14) } }
+    .narr{ position:relative; min-height:36px; margin-top:9px; }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:narr 16s infinite; } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:4s } .nl.n3{ animation-delay:8s } .nl.n4{ animation-delay:12s }
+    @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    .pmDown{ animation:pmDown 3s linear infinite; } .pmDown.b{ animation-delay:1s } .pmDown.c{ animation-delay:2s }
+    @keyframes pmDown{ 0%{ transform:translate(0,0); opacity:0 } 14%{ opacity:1 } 86%{ opacity:1 } 100%{ transform:translate(-232px,76px); opacity:0 } }
+    .pmUp{ animation:pmUp 3.2s linear infinite; } .pmUp.b{ animation-delay:1.1s }
+    @keyframes pmUp{ 0%{ transform:translate(0,0); opacity:0 } 14%{ opacity:1 } 86%{ opacity:1 } 100%{ transform:translate(226px,-66px); opacity:0 } }
+    #pmSun{ animation:pmSun 3.4s ease-in-out infinite; } @keyframes pmSun{ 0%,100%{ opacity:.55 } 50%{ opacity:.85 } }
+    @media (prefers-reduced-motion:reduce){ .pmDown,.pmUp,#pmSun,.step,.nl{ animation:none !important } .pmDown,.pmUp{ opacity:0 } .narr{ display:none } }
   </style>
   <script src="adn-ui.js" defer></script>
   <script type="application/ld+json">
@@ -50,6 +68,54 @@
     </header>
 
     <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">En la cordillera de la Región de Coquimbo, en el <b>norte chico</b>, opera Los Pelambres: una gran mina de cobre y molibdeno, emblema de la <b>minería de capital chileno</b> (grupo Luksic).</p>
+
+    <!-- MINERODUCTO + AGUA DE MAR (animado) -->
+    <div class="glass rounded-2xl p-4 mt-4">
+      <div class="flex items-center gap-2.5 mb-3">
+        <i data-lucide="route" style="width:20px;height:20px;color:#cf9b6f"></i>
+        <h3 class="font-bold text-[15.5px]" style="margin:0">De la cordillera al mar por tubería</h3>
+      </div>
+      <svg class="viz" viewBox="0 0 400 200" role="img" aria-label="Los Pelambres baja su concentrado de cobre por un mineroducto por gravedad hasta el puerto, y sube agua de mar a la faena">
+        <defs>
+          <linearGradient id="pmSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#213240"/><stop offset="1" stop-color="#2a333a"/></linearGradient>
+          <linearGradient id="pmGr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a3a2e"/><stop offset="1" stop-color="#241a13"/></linearGradient>
+          <linearGradient id="pmSea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a86a0"/><stop offset="1" stop-color="#1c4453"/></linearGradient>
+          <filter id="pmSoft" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.45"/></filter>
+        </defs>
+        <rect x="0" y="0" width="400" height="200" fill="url(#pmSky)"/>
+        <!-- terreno: baja de la cordillera (der) al mar (izq) -->
+        <polygon points="0,150 120,140 240,96 340,58 400,58 400,200 0,200" fill="url(#pmGr)"/>
+        <circle id="pmSun" cx="60" cy="34" r="14" fill="#e8c98a"/>
+        <!-- mar (izq) + puerto -->
+        <rect x="0" y="150" width="90" height="50" fill="url(#pmSea)"/>
+        <g filter="url(#pmSoft)"><rect x="54" y="132" width="30" height="20" rx="2" fill="#3a4a4e" stroke="#6a8a90" stroke-width="1.4"/></g>
+        <!-- mina en la cordillera (der) -->
+        <g filter="url(#pmSoft)"><polygon points="300,58 320,40 356,40 368,58 Z" fill="#6b5140"/><polyline points="304,56 320,46 352,46 362,56" fill="none" stroke="#caa079" stroke-width="1.2"/></g>
+        <!-- mineroducto (concentrado baja) -->
+        <line x1="312" y1="66" x2="80" y2="142" stroke="#5a4a3a" stroke-width="5" stroke-linecap="round"/>
+        <g fill="#cf9b6f"><circle class="pmDown" cx="312" cy="66" r="3.4"/><circle class="pmDown b" cx="312" cy="66" r="3.4"/><circle class="pmDown c" cx="312" cy="66" r="3.4"/></g>
+        <!-- agua de mar (sube) -->
+        <line x1="86" y1="150" x2="312" y2="84" stroke="#3a5a66" stroke-width="4" stroke-linecap="round"/>
+        <g fill="#5fd1e0"><circle class="pmUp" cx="86" cy="150" r="3"/><circle class="pmUp b" cx="86" cy="150" r="3"/></g>
+        <text class="lbl-sm" x="44" y="176" text-anchor="middle">puerto</text>
+        <text class="lbl-sm" x="334" y="34" text-anchor="middle">mina</text>
+        <text class="lbl-sm" x="205" y="128" text-anchor="middle" style="fill:#e2cdb0">mineroducto (baja por gravedad)</text>
+        <text class="lbl-sm" x="150" y="150" text-anchor="middle" style="fill:#a7d9e6">agua de mar ↑</text>
+      </svg>
+      <div class="steps">
+        <div class="step s1"><span class="n">1</span><br>Mina</div>
+        <div class="step s2"><span class="n">2</span><br>Concentrado</div>
+        <div class="step s3"><span class="n">3</span><br>Mineroducto</div>
+        <div class="step s4"><span class="n">4</span><br>Puerto</div>
+      </div>
+      <div class="narr">
+        <span class="nl n1">La mina está en la <b>cordillera</b> de Coquimbo.</span>
+        <span class="nl n2">Produce <b>concentrado</b> de cobre (una pulpa).</span>
+        <span class="nl n3">Un <b>mineroducto</b> lo baja ~100 km <b>por gravedad</b> al puerto.</span>
+        <span class="nl n4">Y sube <b>agua de mar</b> para la operación.</span>
+      </div>
+      <p class="cap mt-3">Los Pelambres, emblema de la <b>minería de capital chileno</b>, baja su <b>concentrado</b> de cobre por un <b>mineroducto</b> de ~100 km que aprovecha la <b>gravedad</b> hasta el puerto, y usa <b>agua de mar</b> bombeada a la faena.</p>
+    </div>
 
     <div class="grid grid-cols-2 gap-2.5 mt-4">
       <div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="flag" class="w-4 h-4" style="color:#e0715a"></i><span class="text-[11px] font-bold text-stone-400">Dueño</span></div><b style="font-size:15px;color:#e8c9a6">Antofagasta Minerals</b><p class="text-[11px] text-stone-500 mt-1">capital chileno (Luksic)</p></div>

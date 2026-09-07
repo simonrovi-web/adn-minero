@@ -33,6 +33,22 @@
     .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
     .kpi b{ display:block; font-weight:900; line-height:1; font-variant-numeric:tabular-nums; }
     h3{ margin:0; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .cap{ font-size:13px; line-height:1.55; color:#dacfc2; } .cap b{ color:#f4ece5; }
+    .lbl-sm{ font-size:9.5px; fill:#c9d3d8; font-weight:600; }
+    .steps{ display:flex; gap:5px; margin-top:11px; }
+    .step{ flex:1; text-align:center; font-size:10px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.04); color:#8a959a; border:1px solid rgba(150,190,210,.14); animation:stepHi 16s infinite; }
+    .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(150,190,210,.16); color:#bcd8e6; font-size:9px; margin-bottom:4px; }
+    .step.s2{ animation-delay:4s } .step.s3{ animation-delay:8s } .step.s4{ animation-delay:12s }
+    @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.04); color:#8a959a; border-color:rgba(150,190,210,.14) } 5%,21%{ background:rgba(150,190,210,.2); color:#eef7fb; border-color:rgba(150,190,210,.55) } 24%,100%{ background:rgba(255,255,255,.04); color:#8a959a; border-color:rgba(150,190,210,.14) } }
+    .narr{ position:relative; min-height:36px; margin-top:9px; }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:narr 16s infinite; } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:4s } .nl.n3{ animation-delay:8s } .nl.n4{ animation-delay:12s }
+    @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    .anore{ animation:anore 2.6s ease-in infinite; } .anore.b{ animation-delay:.6s } .anore.c{ animation-delay:1.2s } .anore.d{ animation-delay:1.8s }
+    @keyframes anore{ 0%{ transform:translateY(0); opacity:0 } 18%{ opacity:1 } 82%{ opacity:1 } 100%{ transform:translateY(28px); opacity:0 } }
+    #anGl{ animation:anGl 4s ease-in-out infinite; } @keyframes anGl{ 0%,100%{ opacity:.85 } 50%{ opacity:1 } }
+    @media (prefers-reduced-motion:reduce){ .anore,#anGl,.step,.nl{ animation:none !important } .narr{ display:none } }
   </style>
   <script src="adn-ui.js" defer></script>
   <script type="application/ld+json">
@@ -50,6 +66,51 @@
     </header>
 
     <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">En la cordillera de la Región de Valparaíso, cerca de Santiago y a gran altura, opera <b>Andina</b>, una de las divisiones de <b>Codelco</b>. Combina rajo y mina subterránea entre glaciares y roca.</p>
+
+    <!-- RAJO + SUBTERRÁNEA ENTRE GLACIARES (animado) -->
+    <div class="glass rounded-2xl p-4 mt-4">
+      <div class="flex items-center gap-2.5 mb-3">
+        <i data-lucide="mountain-snow" style="width:20px;height:20px;color:#a7c6de"></i>
+        <h3 class="font-bold text-[15.5px]" style="margin:0">Dos minas en una, entre glaciares</h3>
+      </div>
+      <svg class="viz" viewBox="0 0 400 200" role="img" aria-label="Andina combina rajo abierto en superficie y mina subterranea mas abajo, en la alta cordillera entre glaciares">
+        <defs>
+          <linearGradient id="anSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#28384a"/><stop offset="1" stop-color="#33434c"/></linearGradient>
+          <linearGradient id="anRock" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a3a2e"/><stop offset="1" stop-color="#241a13"/></linearGradient>
+          <linearGradient id="anPit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b5140"/><stop offset="1" stop-color="#33261d"/></linearGradient>
+          <linearGradient id="anIce" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eaf4f8"/><stop offset="1" stop-color="#bcd6e0"/></linearGradient>
+        </defs>
+        <rect x="0" y="0" width="400" height="72" fill="url(#anSky)"/>
+        <!-- picos con glaciares -->
+        <polygon points="0,72 60,24 120,72" fill="#3e4d57"/><polygon points="280,72 340,28 400,72" fill="#3e4d57"/>
+        <g id="anGl" fill="url(#anIce)"><polygon points="44,44 60,24 76,44 68,72 52,72"/><polygon points="324,46 340,28 356,46 348,72 332,72"/></g>
+        <rect x="0" y="70" width="400" height="130" fill="url(#anRock)"/>
+        <!-- rajo (superficie) -->
+        <polygon points="120,70 158,70 158,92 186,92 186,110 214,110 214,92 242,92 242,70 280,70" fill="url(#anPit)"/>
+        <polyline points="120,70 158,70 158,92 186,92 186,110 214,110 214,92 242,92 242,70 280,70" fill="none" stroke="#caa079" stroke-width="1.3" stroke-linejoin="round" opacity=".8"/>
+        <text class="lbl-sm" x="200" y="86" text-anchor="middle" style="fill:#e2cdb0">rajo</text>
+        <!-- cuerpo mineralizado + subterránea -->
+        <path d="M160,148 Q200,112 240,148 Z" fill="#8a6b45" opacity=".9"/>
+        <g fill="#f0d7b6"><circle class="anore" cx="185" cy="150" r="3"/><circle class="anore b" cx="200" cy="148" r="3"/><circle class="anore c" cx="215" cy="150" r="3"/><circle class="anore d" cx="200" cy="156" r="3"/></g>
+        <rect x="70" y="168" width="260" height="9" fill="#0f0a07"/>
+        <line x1="200" y1="120" x2="200" y2="168" stroke="#0f0a07" stroke-width="7"/>
+        <text class="lbl-sm" x="200" y="192" text-anchor="middle">nivel subterráneo (caving)</text>
+        <text class="lbl-sm" x="60" y="20" text-anchor="middle" style="fill:#dbeaf0">glaciares</text>
+      </svg>
+      <div class="steps">
+        <div class="step s1"><span class="n">1</span><br>Cordillera</div>
+        <div class="step s2"><span class="n">2</span><br>Rajo</div>
+        <div class="step s3"><span class="n">3</span><br>Subterránea</div>
+        <div class="step s4"><span class="n">4</span><br>Glaciares</div>
+      </div>
+      <div class="narr">
+        <span class="nl n1">Andina opera en la <b>alta cordillera</b> cerca de Santiago.</span>
+        <span class="nl n2">Extrae cobre a <b>rajo abierto</b> en la superficie.</span>
+        <span class="nl n3">Y también con <b>mina subterránea</b> (caving) más abajo.</span>
+        <span class="nl n4">Todo entre <b>glaciares</b>, un entorno que exige cuidado.</span>
+      </div>
+      <p class="cap mt-3">Andina, división de Codelco, combina <b>rajo abierto</b> y <b>mina subterránea</b> en la alta cordillera de Valparaíso, entre <b>glaciares</b> y roca — un entorno de altura y alta sensibilidad ambiental.</p>
+    </div>
 
     <div class="grid grid-cols-2 gap-2.5 mt-4"><div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="building" class="w-4 h-4" style="color:#7fbf9a"></i><span class="text-[11px] font-bold text-stone-400">Operador</span></div><b style="font-size:19px;color:#a7d18a">Codelco</b><p class="text-[11px] text-stone-500 mt-1">división estatal</p></div><div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="arrow-up" class="w-4 h-4" style="color:#7fb0d9"></i><span class="text-[11px] font-bold text-stone-400">Altura</span></div><b style="font-size:19px;color:#a7c6de">~3.500 m+</b><p class="text-[11px] text-stone-500 mt-1">en plena cordillera</p></div><div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="layers" class="w-4 h-4" style="color:#cf9b6f"></i><span class="text-[11px] font-bold text-stone-400">Modo</span></div><b style="font-size:19px;color:#e8c9a6">Rajo + mina</b><p class="text-[11px] text-stone-500 mt-1">a cielo abierto y subterránea</p></div><div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="map-pin" class="w-4 h-4" style="color:#e0955f"></i><span class="text-[11px] font-bold text-stone-400">Dónde</span></div><b style="font-size:19px;color:#e8c9a6">Valparaíso</b><p class="text-[11px] text-stone-500 mt-1">cerca de Los Andes</p></div></div>
 
