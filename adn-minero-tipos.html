@@ -33,6 +33,7 @@
     .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
     .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
     h3{ margin:0; }
+    .sh{ filter: drop-shadow(0 2px 2px rgba(0,0,0,.5)); }
     .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
     .cap{ font-size:13px; line-height:1.55; color:#dacfc2; }
     .cap b{ color:#f4ece5; }
@@ -191,7 +192,7 @@
         <!-- pala que carga (paso 3) -->
         <g id="shovel" transform="translate(196,196)"><rect x="0" y="-7" width="12" height="7" rx="1" fill="#d6a94f"/><path d="M12,-4 l7,-3 l0,7 z" fill="#e8c9a6"/></g>
         <!-- camión: carga abajo, sube la rampa y bota arriba -->
-        <g id="truck"><g transform="translate(164,198)">
+        <g id="truck" class="sh"><g transform="translate(164,198)">
           <g id="truckLoad"><path d="M1,-10 Q10,-16 19,-10 Z" fill="#c9a06a"/></g>
           <rect x="0" y="-9" width="20" height="9" rx="1.5" fill="#e0955f"/>
           <rect x="15" y="-14" width="7" height="6" rx="1" fill="#c9b7a5"/>
@@ -244,7 +245,7 @@
         <!-- niveles -->
         <g fill="#0f0a07"><rect x="60" y="150" width="248" height="9"/><rect x="60" y="110" width="150" height="8"/></g>
         <!-- cuerpo mineralizado que se fractura y hunde -->
-        <path id="cave" d="M120,150 Q175,70 230,150 Z" fill="#8a6b45"/>
+        <path id="cave" class="sh" d="M120,150 Q175,70 230,150 Z" fill="#8a6b45"/>
         <g stroke="#5a4230" stroke-width="1" opacity=".5"><line x1="150" y1="140" x2="200" y2="90"/><line x1="200" y1="140" x2="170" y2="95"/><line x1="175" y1="150" x2="175" y2="100"/></g>
         <!-- mineral que baja por puntos de extracción -->
         <g fill="#f0d7b6"><circle class="ore" cx="165" cy="150" r="3"/><circle class="ore b" cx="180" cy="150" r="3"/><circle class="ore c" cx="195" cy="150" r="3"/><circle class="ore d" cx="180" cy="150" r="3"/></g>
@@ -307,7 +308,7 @@
           <line class="vapor" x1="148" y1="148" x2="148" y2="140"/><line class="vapor v2" x1="228" y1="148" x2="228" y2="140"/><line class="vapor v3" x1="308" y1="148" x2="308" y2="140"/>
         </g>
         <!-- batería / planta -->
-        <g id="batt" transform="translate(360,150)"><rect id="battFill" x="3" y="23" width="16" height="2" rx="1" fill="#a7d18a" opacity=".55"/><rect x="0" y="0" width="22" height="26" rx="3" fill="none" stroke="#a7d18a" stroke-width="2"/><rect x="7" y="-4" width="8" height="4" rx="1" fill="#a7d18a"/><path d="M12,4 l-5,10 l4,0 l-3,8 l8,-12 l-4,0 z" fill="#a7d18a"/></g>
+        <g id="batt" class="sh" transform="translate(360,150)"><rect id="battFill" x="3" y="23" width="16" height="2" rx="1" fill="#a7d18a" opacity=".55"/><rect x="0" y="0" width="22" height="26" rx="3" fill="none" stroke="#a7d18a" stroke-width="2"/><rect x="7" y="-4" width="8" height="4" rx="1" fill="#a7d18a"/><path d="M12,4 l-5,10 l4,0 l-3,8 l8,-12 l-4,0 z" fill="#a7d18a"/></g>
         <text class="lbl-sm" x="70" y="248" text-anchor="middle">salmuera</text>
         <text class="lbl-sm" x="228" y="192" text-anchor="middle">pozas de evaporación (color = más concentrado)</text>
       </svg>
@@ -343,7 +344,7 @@
         <rect class="flash-s" x="150" y="86" width="220" height="44" rx="8" fill="rgba(127,176,217,.12)" stroke="#7fb0d9" stroke-width="1.4"/>
         <text class="flash-s lbl" x="260" y="105" text-anchor="middle" fill="#a7c6de">Profundo → SUBTERRÁNEA</text>
         <text class="flash-s lbl-sm" x="260" y="120" text-anchor="middle">concentrado y hondo</text>
-        <g class="depdot"><ellipse cx="95" cy="52" rx="14" ry="8" fill="#f0d7b6"/></g>
+        <g class="depdot sh"><ellipse cx="95" cy="52" rx="14" ry="8" fill="#f0d7b6"/></g>
       </svg>
       <p class="cap mt-3">No es al azar: depende de la <b>profundidad</b>, la <b>ley</b> (qué tan rico es), el <b>tamaño</b>, el <b>costo</b>, la <b>seguridad</b> y el <b>medio ambiente</b>. Algunas minas, como <b>Andina</b>, combinan ambos métodos.</p>
     </div>
