@@ -84,13 +84,16 @@
         <defs>
           <linearGradient id="esSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#213240"/><stop offset="1" stop-color="#26333a"/></linearGradient>
           <linearGradient id="esSea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a86a0"/><stop offset="1" stop-color="#1c4453"/></linearGradient>
-          <linearGradient id="esGr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a3a2e"/><stop offset="1" stop-color="#241a13"/></linearGradient>
+          <linearGradient id="esGr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#54402f"/><stop offset="1" stop-color="#201711"/></linearGradient>
+          <linearGradient id="esShade" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe6be" stop-opacity=".12"/><stop offset=".5" stop-color="#000000" stop-opacity="0"/><stop offset="1" stop-color="#000000" stop-opacity=".38"/></linearGradient>
           <filter id="esSoft" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.45"/></filter>
+          <filter id="esSunF" x="-120%" y="-120%" width="340%" height="340%"><feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#f0d079" flood-opacity="0.9"/></filter>
         </defs>
         <rect x="0" y="0" width="400" height="200" fill="url(#esSky)"/>
         <!-- ladera que sube hacia la faena -->
         <polygon points="0,178 120,168 240,120 400,70 400,200 0,200" fill="url(#esGr)"/>
-        <circle id="esSun" cx="60" cy="34" r="12" fill="#e8c98a"/>
+        <polygon points="0,178 120,168 240,120 400,70 400,200 0,200" fill="url(#esShade)"/>
+        <circle id="esSun" cx="60" cy="34" r="12" fill="#e8c98a" filter="url(#esSunF)"/>
         <!-- mar (costa, abajo-izq) -->
         <rect x="0" y="150" width="96" height="50" fill="url(#esSea)"/>
         <g class="esw" stroke="#7fc0cf" stroke-width="2" fill="none" opacity=".6"><path d="M2,160 q10,-5 20,0 t20,0 t20,0 t20,0"/></g>

@@ -83,13 +83,17 @@
       </div>
       <svg class="viz" viewBox="0 0 400 260" role="img" aria-label="Proceso de minería submarina: un vehículo recolecta nódulos del fondo, suben por una tubería al barco, que separa los metales y devuelve el sedimento al mar">
         <defs>
-          <linearGradient id="ocean" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f5560"/><stop offset="1" stop-color="#0a1c21"/></linearGradient>
+          <linearGradient id="ocean" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a6f7c"/><stop offset=".45" stop-color="#134048"/><stop offset="1" stop-color="#07161b"/></linearGradient>
+          <radialGradient id="oVig" cx="0.5" cy="0.4" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".42"/></radialGradient>
           <filter id="sSoft" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.45"/></filter>
         </defs>
         <rect x="0" y="0" width="400" height="30" fill="#14303a"/>
         <rect x="0" y="28" width="400" height="232" fill="url(#ocean)"/>
-        <!-- haz de luz submarino -->
-        <polygon points="150,30 250,30 296,214 104,214" fill="#bfe6ee" opacity=".055"/>
+        <!-- haces de luz submarina + viñeta -->
+        <polygon points="150,30 250,30 296,214 104,214" fill="#bfe6ee" opacity=".06"/>
+        <polygon points="60,30 92,30 120,214 30,214" fill="#bfe6ee" opacity=".035"/>
+        <polygon points="300,30 340,30 372,214 288,214" fill="#bfe6ee" opacity=".035"/>
+        <rect x="0" y="28" width="400" height="232" fill="url(#oVig)"/>
         <!-- riser -->
         <line x1="200" y1="40" x2="200" y2="214" stroke="#5a6a70" stroke-width="4"/>
         <!-- nódulos subiendo por el riser -->

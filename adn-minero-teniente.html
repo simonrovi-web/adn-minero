@@ -83,7 +83,8 @@
       <svg class="viz" viewBox="0 0 400 220" role="img" aria-label="Corte de El Teniente: Sewell en la ladera, galerias en varios niveles bajo la montaña, hundimiento del mineral y el Nuevo Nivel Mina mas profundo">
         <defs>
           <linearGradient id="tSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1e2f3c"/><stop offset="1" stop-color="#243036"/></linearGradient>
-          <linearGradient id="tRock" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a3a2e"/><stop offset="1" stop-color="#241a13"/></linearGradient>
+          <linearGradient id="tRock" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#54402f"/><stop offset="1" stop-color="#201711"/></linearGradient>
+          <linearGradient id="tShade" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe6be" stop-opacity=".1"/><stop offset=".5" stop-color="#000000" stop-opacity="0"/><stop offset="1" stop-color="#000000" stop-opacity=".4"/></linearGradient>
           <filter id="tSoft" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.45"/></filter>
           <filter id="tGlow" x="-70%" y="-70%" width="240%" height="240%"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#7fd4a2" flood-opacity="0.7"/></filter>
         </defs>
@@ -100,6 +101,8 @@
         </g>
         <!-- superficie + castillete -->
         <rect x="0" y="116" width="400" height="104" fill="url(#tRock)"/>
+        <rect x="0" y="116" width="400" height="104" fill="url(#tShade)"/>
+        <g stroke="#2a1d14" stroke-width="1" opacity=".28"><line x1="0" y1="150" x2="400" y2="154"/><line x1="0" y1="182" x2="400" y2="178"/></g>
         <g stroke="#caa079" stroke-width="2" fill="none"><path d="M96,116 L108,96 L120,116"/><line x1="108" y1="96" x2="108" y2="116"/></g>
         <!-- pique + jaula -->
         <rect x="104" y="116" width="10" height="90" fill="#0f0a07"/>
