@@ -6,19 +6,19 @@
   <meta name="theme-color" content="#141110" />
   <title>ADN Minero · Tipos de Minería</title>
   <link rel="icon" type="image/png" href="icon-192.png" />
-  <meta name="description" content="Tipos de minería en Chile: rajo abierto vs subterránea, metálica y no metálica, el litio de los salares, y la gran, mediana y pequeña minería. Explicado simple." />
+  <meta name="description" content="Tipos de minería en Chile explicados con gráficas animadas: rajo abierto vs subterránea, litio de los salares, cómo se decide el método y el ciclo de una mina." />
   <link rel="canonical" href="https://simonrovi-web.github.io/adn-minero/adn-minero-tipos.html" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="ADN Minero" />
   <meta property="og:title" content="ADN Minero · Tipos de Minería" />
-  <meta property="og:description" content="Tipos de minería en Chile: rajo abierto vs subterránea, metálica y no metálica, el litio de los salares, y la gran, mediana y pequeña minería. Explicado simple." />
+  <meta property="og:description" content="Tipos de minería en Chile explicados con gráficas animadas: rajo abierto vs subterránea, litio de los salares, cómo se decide el método y el ciclo de una mina." />
   <meta property="og:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:url" content="https://simonrovi-web.github.io/adn-minero/adn-minero-tipos.html" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="ADN Minero · Tipos de Minería" />
-  <meta name="twitter:description" content="Tipos de minería en Chile: rajo abierto vs subterránea, metálica y no metálica, el litio de los salares, y la gran, mediana y pequeña minería. Explicado simple." />
+  <meta name="twitter:description" content="Tipos de minería en Chile explicados con gráficas animadas: rajo abierto vs subterránea, litio de los salares, cómo se decide y el ciclo de una mina." />
   <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
   <link rel="stylesheet" href="tailwind.min.css">
   <script src="lucide.min.js"></script>
@@ -32,14 +32,62 @@
     body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(207,155,111,0.13), transparent 60%), #141110; }
     .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
     .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
-    .topic{ cursor:pointer; }
-    .topic .body{ display:none; }
-    .topic.open .body{ display:block; }
-    .topic.open .chev{ transform:rotate(90deg); }
-    .chev{ transition:transform .2s; }
-    .tip{ display:flex; gap:9px; align-items:flex-start; font-size:13.5px; line-height:1.5; color:#dacfc2; margin-top:8px; }
-    .tip b{ color:#f4ece5; }
     h3{ margin:0; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .cap{ font-size:13px; line-height:1.55; color:#dacfc2; }
+    .cap b{ color:#f4ece5; }
+    .lbl{ font-size:11px; font-weight:700; fill:#f0e2d3; }
+    .lbl-sm{ font-size:10px; fill:#c9b7a5; font-weight:600; }
+    .chip{ display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:700; padding:4px 10px; border-radius:999px; }
+
+    /* ===== animaciones ===== */
+    @keyframes truckUp{
+      0%{ transform:translate(0px,0px) }
+      22%{ transform:translate(-14px,-36px) }
+      45%{ transform:translate(-42px,-72px) }
+      68%{ transform:translate(-70px,-110px) }
+      90%,100%{ transform:translate(-118px,-148px) }
+    }
+    #rajoTruck{ animation:truckUp 7s cubic-bezier(.5,0,.5,1) infinite; }
+    .digline{ stroke-dasharray:6 7; animation:dig 3.4s linear infinite; }
+    @keyframes dig{ to{ stroke-dashoffset:-52 } }
+
+    #cage{ animation:cage 5s ease-in-out infinite; }
+    @keyframes cage{ 0%,8%{ transform:translateY(0) } 50%{ transform:translateY(118px) } 92%,100%{ transform:translateY(0) } }
+    .ore{ animation:oredraw 2.6s ease-in infinite; }
+    .ore.b{ animation-delay:.5s } .ore.c{ animation-delay:1s } .ore.d{ animation-delay:1.5s }
+    @keyframes oredraw{ 0%{ transform:translateY(0); opacity:0 } 15%{ opacity:1 } 80%{ opacity:1 } 100%{ transform:translateY(30px); opacity:0 } }
+
+    #sunGlow{ transform-origin:center; animation:sun 3.2s ease-in-out infinite; }
+    @keyframes sun{ 0%,100%{ opacity:.35; transform:scale(1) } 50%{ opacity:.7; transform:scale(1.12) } }
+    .brine{ animation:brine 2.4s linear infinite; }
+    .brine.b{ animation-delay:.8s } .brine.c{ animation-delay:1.6s }
+    @keyframes brine{ 0%{ transform:translateY(0); opacity:0 } 12%{ opacity:1 } 88%{ opacity:1 } 100%{ transform:translateY(-92px); opacity:0 } }
+    .pond{ animation:pond 6s ease-in-out infinite; }
+    .pond.p2{ animation-delay:2s } .pond.p3{ animation-delay:4s }
+    @keyframes pond{ 0%,100%{ fill:#2f9fb0 } 33%{ fill:#5fb87a } 66%{ fill:#d3bd4f } }
+    .vapor{ animation:vapor 3s ease-out infinite; }
+    .vapor.v2{ animation-delay:1s } .vapor.v3{ animation-delay:2s }
+    @keyframes vapor{ 0%{ transform:translateY(0); opacity:0 } 25%{ opacity:.5 } 100%{ transform:translateY(-26px); opacity:0 } }
+
+    .depdot{ animation:dep 5s ease-in-out infinite; }
+    @keyframes dep{ 0%,45%{ transform:translateX(0); } 55%,100%{ transform:translateX(150px) } }
+    .flash-r{ animation:flashR 5s ease-in-out infinite; }
+    .flash-s{ animation:flashS 5s ease-in-out infinite; }
+    @keyframes flashR{ 0%,45%{ opacity:1 } 55%,100%{ opacity:.18 } }
+    @keyframes flashS{ 0%,45%{ opacity:.18 } 55%,100%{ opacity:1 } }
+
+    .flow{ stroke-dasharray:340; stroke-dashoffset:340; animation:flow 5s ease-in-out infinite; }
+    @keyframes flow{ 0%{ stroke-dashoffset:340 } 70%,100%{ stroke-dashoffset:0 } }
+    .node{ transform-origin:center; animation:node 5s ease-in-out infinite; opacity:.4 }
+    .node.n1{ animation-delay:.2s } .node.n2{ animation-delay:1.4s } .node.n3{ animation-delay:2.6s } .node.n4{ animation-delay:3.8s }
+    @keyframes node{ 0%,12%{ opacity:.4; transform:scale(1) } 20%{ opacity:1; transform:scale(1.18) } 92%,100%{ opacity:1; transform:scale(1) } }
+
+    @media (prefers-reduced-motion: reduce){
+      #rajoTruck,#cage,#sunGlow,.ore,.brine,.pond,.vapor,.depdot,.flash-r,.flash-s,.flow,.node{ animation:none !important; }
+      .flow{ stroke-dashoffset:0 !important; } .node{ opacity:1 !important; }
+      .flash-s{ opacity:1 !important; }
+    }
   </style>
   <script src="adn-ui.js" defer></script>
   <script src="adn-recorrido.js" defer></script>
@@ -50,17 +98,214 @@
       <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(207,155,111,.15);border:1px solid rgba(207,155,111,.32)"><i data-lucide="layers" style="width:26px;height:26px;color:#cf9b6f"></i></div>
       <div class="min-w-0">
         <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#e0c3a0;font-weight:800">Tipos de Minería</p>
-        <p style="margin:0;font-size:11px;color:#9c8f83">Cómo se saca el mineral en Chile</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Explicado con gráficas animadas</p>
       </div>
     </header>
 
-    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">No toda la minería es igual. Cambia según <b>dónde está el yacimiento</b>, <b>qué mineral</b> se busca y <b>a qué escala</b> se trabaja. Aquí las grandes familias, explicadas simple.</p>
+    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">No toda la minería es igual. Cambia según <b>dónde está el yacimiento</b>, <b>qué mineral</b> se busca y <b>a qué escala</b> se trabaja. Mira cómo funciona cada una.</p>
 
-    <div id="topics" class="mt-4 grid gap-2.5"></div>
+    <!-- ========== RAJO ABIERTO ========== -->
+    <div class="glass rounded-2xl p-4 mt-4">
+      <div class="flex items-center gap-2.5 mb-3">
+        <i data-lucide="mountain" style="width:20px;height:20px;color:#cf9b6f"></i>
+        <h3 class="font-bold text-[15.5px]">Rajo abierto <span class="text-stone-500 font-semibold text-[12px]">· a cielo abierto</span></h3>
+      </div>
+      <svg class="viz" viewBox="0 0 400 260" role="img" aria-label="Corte de una mina a rajo abierto: bancos escalonados y un camión subiendo la rampa">
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#20303f"/><stop offset="1" stop-color="#1a2530"/></linearGradient>
+          <linearGradient id="rock" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a3a2e"/><stop offset="1" stop-color="#2c211a"/></linearGradient>
+          <linearGradient id="pit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b5140"/><stop offset="1" stop-color="#3a2b21"/></linearGradient>
+        </defs>
+        <rect x="0" y="0" width="400" height="64" fill="url(#sky)"/>
+        <rect x="0" y="62" width="400" height="198" fill="url(#rock)"/>
+        <!-- void escalonado del rajo -->
+        <polygon points="48,64 96,64 96,102 128,102 128,140 156,140 156,178 178,178 178,214 222,214 222,178 244,178 244,140 272,140 272,102 304,102 304,64 352,64" fill="url(#pit)"/>
+        <!-- lineas de bancos -->
+        <polyline points="48,64 96,64 96,102 128,102 128,140 156,140 156,178 178,178 178,214 222,214 222,178 244,178 244,140 272,140 272,102 304,102 304,64 352,64" fill="none" stroke="#caa079" stroke-width="1.6" stroke-linejoin="round" opacity=".85"/>
+        <!-- linea de excavacion activa (animada) -->
+        <polyline class="digline" points="178,214 222,214" fill="none" stroke="#f0d7b6" stroke-width="3" stroke-linecap="round"/>
+        <!-- camion subiendo -->
+        <g id="rajoTruck">
+          <g transform="translate(196,196)">
+            <rect x="0" y="-9" width="20" height="9" rx="1.5" fill="#e0955f"/>
+            <rect x="15" y="-14" width="7" height="6" rx="1" fill="#c9b7a5"/>
+            <circle cx="5" cy="2" r="3" fill="#1a120c"/><circle cx="16" cy="2" r="3" fill="#1a120c"/>
+          </g>
+        </g>
+        <!-- sol -->
+        <circle cx="352" cy="30" r="11" fill="#e8c98a" opacity=".8"/>
+        <text class="lbl-sm" x="118" y="96">bancos</text>
+        <text class="lbl-sm" x="150" y="234" text-anchor="middle">fondo del rajo</text>
+      </svg>
+      <p class="cap mt-3">Se excava <b>desde la superficie</b> en bancos escalonados, formando un enorme anfiteatro. Sirve cuando el yacimiento es <b>grande y superficial</b>; camiones y palas gigantes mueven millones de toneladas.</p>
+      <div class="flex flex-wrap gap-1.5 mt-2.5">
+        <span class="chip" style="background:rgba(207,155,111,.14);color:#e8c9a6">Chuquicamata</span>
+        <span class="chip" style="background:rgba(207,155,111,.14);color:#e8c9a6">Escondida</span>
+        <span class="chip" style="background:rgba(207,155,111,.14);color:#e8c9a6">Collahuasi</span>
+      </div>
+    </div>
 
+    <!-- ========== SUBTERRÁNEA ========== -->
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2.5 mb-3">
+        <i data-lucide="layers" style="width:20px;height:20px;color:#7fb0d9"></i>
+        <h3 class="font-bold text-[15.5px]">Subterránea <span class="text-stone-500 font-semibold text-[12px]">· túneles y niveles</span></h3>
+      </div>
+      <svg class="viz" viewBox="0 0 400 260" role="img" aria-label="Corte de una mina subterránea: pique vertical con jaula, niveles y hundimiento del mineral">
+        <defs>
+          <linearGradient id="skyu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#20303f"/><stop offset="1" stop-color="#1a2530"/></linearGradient>
+          <linearGradient id="under" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2c22"/><stop offset="1" stop-color="#241a13"/></linearGradient>
+        </defs>
+        <rect x="0" y="0" width="400" height="52" fill="url(#skyu)"/>
+        <rect x="0" y="50" width="400" height="210" fill="url(#under)"/>
+        <!-- headframe -->
+        <g stroke="#caa079" stroke-width="2" fill="none">
+          <path d="M182,50 L196,18 L210,50"/><line x1="196" y1="18" x2="196" y2="50"/>
+          <circle cx="196" cy="22" r="4" fill="#e0955f" stroke="none"/>
+        </g>
+        <!-- pique -->
+        <rect x="190" y="50" width="12" height="168" fill="#100b08"/>
+        <g id="cage"><rect x="191.5" y="54" width="9" height="12" rx="1" fill="#e8c9a6"/></g>
+        <!-- niveles / tuneles -->
+        <g fill="#100b08">
+          <rect x="70" y="96" width="120" height="9"/><rect x="202" y="96" width="120" height="9"/>
+          <rect x="70" y="146" width="120" height="9"/><rect x="202" y="146" width="120" height="9"/>
+          <rect x="86" y="196" width="104" height="9"/><rect x="202" y="196" width="104" height="9"/>
+        </g>
+        <!-- cuerpo mineralizado + hundimiento (block caving) -->
+        <path d="M150,205 Q200,150 250,205 Q250,230 200,236 Q150,230 150,205 Z" fill="#8a6b45" opacity=".85"/>
+        <g fill="#f0d7b6">
+          <circle class="ore" cx="185" cy="210" r="3.2"/>
+          <circle class="ore b" cx="200" cy="206" r="3.2"/>
+          <circle class="ore c" cx="215" cy="210" r="3.2"/>
+          <circle class="ore d" cx="200" cy="216" r="3.2"/>
+        </g>
+        <text class="lbl-sm" x="196" y="250" text-anchor="middle">el mineral se hunde y se extrae desde abajo</text>
+        <text class="lbl-sm" x="72" y="90">niveles</text>
+        <text class="lbl-sm" x="214" y="46" text-anchor="middle">pique</text>
+      </svg>
+      <p class="cap mt-3">Se trabaja con <b>túneles, piques y niveles</b> bajo tierra para llegar al mineral profundo. Con técnicas como el <b>hundimiento (caving)</b>, la roca se derrumba de forma controlada y se extrae desde abajo. Altera menos la superficie, pero es más compleja.</p>
+      <div class="flex flex-wrap gap-1.5 mt-2.5">
+        <span class="chip" style="background:rgba(127,176,217,.16);color:#a7c6de">El Teniente</span>
+        <span class="chip" style="background:rgba(127,176,217,.16);color:#a7c6de">Chuquicamata subterránea</span>
+      </div>
+    </div>
+
+    <!-- ========== LITIO / SALAR ========== -->
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2.5 mb-3">
+        <i data-lucide="droplet" style="width:20px;height:20px;color:#5fbdd1"></i>
+        <h3 class="font-bold text-[15.5px]">Litio del salar <span class="text-stone-500 font-semibold text-[12px]">· no se excava</span></h3>
+      </div>
+      <svg class="viz" viewBox="0 0 400 230" role="img" aria-label="Extracción de litio: se bombea salmuera y se concentra en pozas de evaporación bajo el sol">
+        <defs>
+          <linearGradient id="skys" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#243447"/><stop offset="1" stop-color="#2a3b3f"/></linearGradient>
+          <linearGradient id="salar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4a52"/><stop offset="1" stop-color="#243138"/></linearGradient>
+        </defs>
+        <rect x="0" y="0" width="400" height="96" fill="url(#skys)"/>
+        <rect x="0" y="94" width="400" height="136" fill="url(#salar)"/>
+        <!-- sol con glow -->
+        <circle id="sunGlow" cx="60" cy="40" r="26" fill="#e8c98a"/>
+        <circle cx="60" cy="40" r="14" fill="#f0d79a"/>
+        <!-- pozo / bomba de salmuera -->
+        <rect x="150" y="60" width="10" height="150" fill="#100b08"/>
+        <rect x="140" y="52" width="30" height="12" rx="2" fill="#c9b7a5"/>
+        <g fill="#5fd1bd">
+          <circle class="brine" cx="155" cy="200" r="3"/>
+          <circle class="brine b" cx="155" cy="200" r="3"/>
+          <circle class="brine c" cx="155" cy="200" r="3"/>
+        </g>
+        <!-- pozas de evaporacion (cambian de color al concentrarse) -->
+        <g stroke="#e6d4c4" stroke-width="1" opacity=".9">
+          <rect class="pond"    x="205" y="74" width="52" height="16" rx="3"/>
+          <rect class="pond p2" x="266" y="74" width="52" height="16" rx="3"/>
+          <rect class="pond p3" x="327" y="74" width="52" height="16" rx="3"/>
+        </g>
+        <!-- vapor -->
+        <g stroke="#bcd0d6" stroke-width="2" stroke-linecap="round" fill="none" opacity=".6">
+          <line class="vapor"    x1="231" y1="72" x2="231" y2="64"/>
+          <line class="vapor v2" x1="292" y1="72" x2="292" y2="64"/>
+          <line class="vapor v3" x1="353" y1="72" x2="353" y2="64"/>
+        </g>
+        <text class="lbl-sm" x="155" y="224" text-anchor="middle">salmuera</text>
+        <text class="lbl-sm" x="292" y="104" text-anchor="middle">pozas de evaporación</text>
+      </svg>
+      <p class="cap mt-3">En los salares se <b>bombea la salmuera</b> (agua con sales) y se concentra en <b>pozas de evaporación</b> con el sol y el viento del desierto durante meses. Es <b>muy distinto</b> a sacar cobre de la roca. Su corazón es el <b>Salar de Atacama</b>.</p>
+    </div>
+
+    <!-- ========== ¿RAJO O SUBTERRÁNEA? ========== -->
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2.5 mb-3">
+        <i data-lucide="route" style="width:20px;height:20px;color:#a7d18a"></i>
+        <h3 class="font-bold text-[15.5px]">¿Rajo o subterránea?</h3>
+      </div>
+      <svg class="viz" viewBox="0 0 400 150" role="img" aria-label="La profundidad del yacimiento decide el método: superficial va a rajo, profundo va subterránea">
+        <rect x="0" y="0" width="400" height="150" fill="#1b1512"/>
+        <!-- eje profundidad -->
+        <line x1="40" y1="24" x2="40" y2="130" stroke="#6b5a4c" stroke-width="2"/>
+        <text class="lbl-sm" x="48" y="30">superficie</text>
+        <text class="lbl-sm" x="48" y="128">profundo</text>
+        <!-- zona rajo -->
+        <rect class="flash-r" x="150" y="30" width="220" height="44" rx="8" fill="rgba(207,155,111,.12)" stroke="#cf9b6f" stroke-width="1.4"/>
+        <text class="flash-r lbl" x="260" y="49" text-anchor="middle" fill="#e8c9a6">Cerca de la superficie → RAJO</text>
+        <text class="flash-r lbl-sm" x="260" y="64" text-anchor="middle">grande y poco profundo</text>
+        <!-- zona subterranea -->
+        <rect class="flash-s" x="150" y="86" width="220" height="44" rx="8" fill="rgba(127,176,217,.12)" stroke="#7fb0d9" stroke-width="1.4"/>
+        <text class="flash-s lbl" x="260" y="105" text-anchor="middle" fill="#a7c6de">Profundo → SUBTERRÁNEA</text>
+        <text class="flash-s lbl-sm" x="260" y="120" text-anchor="middle">concentrado y hondo</text>
+        <!-- yacimiento que baja -->
+        <g class="depdot"><ellipse cx="95" cy="52" rx="14" ry="8" fill="#f0d7b6"/></g>
+      </svg>
+      <p class="cap mt-3">No es al azar: depende de la <b>profundidad</b>, la <b>ley</b> (qué tan rico es), el <b>tamaño</b>, el <b>costo</b>, la <b>seguridad</b> y el <b>medio ambiente</b>. Algunas minas, como <b>Andina</b>, combinan ambos métodos.</p>
+    </div>
+
+    <!-- ========== METÁLICA / NO METÁLICA + ESCALAS ========== -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+      <div class="glass rounded-2xl p-4">
+        <div class="flex items-center gap-2 mb-2"><i data-lucide="gem" style="width:18px;height:18px;color:#5fd1bd"></i><h3 class="font-bold text-[13.5px]">Metálica y no metálica</h3></div>
+        <p class="cap text-[12.5px]"><b>Metálica:</b> cobre, oro, plata, hierro, molibdeno. <b>No metálica:</b> litio, sales, nitratos, yodo, caliza. El litio es no metálico y hoy es estratégico.</p>
+      </div>
+      <div class="glass rounded-2xl p-4">
+        <div class="flex items-center gap-2 mb-2"><i data-lucide="factory" style="width:18px;height:18px;color:#e0955f"></i><h3 class="font-bold text-[13.5px]">Gran, mediana y pequeña</h3></div>
+        <p class="cap text-[12.5px]"><b>Gran minería:</b> las megaoperaciones. <b>Mediana y pequeña:</b> más chicas, clave en el empleo regional. El <b>pirquén</b> es artesanal; <b>Enami</b> apoya a la pequeña minería.</p>
+      </div>
+    </div>
+
+    <!-- ========== CICLO DE UNA MINA ========== -->
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2.5 mb-3">
+        <i data-lucide="git-branch" style="width:20px;height:20px;color:#d6a94f"></i>
+        <h3 class="font-bold text-[15.5px]">El ciclo de una mina</h3>
+      </div>
+      <svg class="viz" viewBox="0 0 400 120" role="img" aria-label="Ciclo de una mina: exploración, construcción, operación y cierre">
+        <line x1="45" y1="46" x2="355" y2="46" stroke="#4a3d33" stroke-width="3"/>
+        <line class="flow" x1="45" y1="46" x2="355" y2="46" stroke="#d6a94f" stroke-width="3" stroke-linecap="round"/>
+        <g>
+          <g class="node n1"><circle cx="45" cy="46" r="11" fill="#241a13" stroke="#d6a94f" stroke-width="2"/></g>
+          <g class="node n2"><circle cx="148" cy="46" r="11" fill="#241a13" stroke="#d6a94f" stroke-width="2"/></g>
+          <g class="node n3"><circle cx="252" cy="46" r="11" fill="#241a13" stroke="#d6a94f" stroke-width="2"/></g>
+          <g class="node n4"><circle cx="355" cy="46" r="11" fill="#241a13" stroke="#7fbf9a" stroke-width="2"/></g>
+        </g>
+        <g class="lbl" text-anchor="middle">
+          <text x="45" y="80">Exploración</text>
+          <text x="148" y="80">Construcción</text>
+          <text x="252" y="80">Operación</text>
+          <text x="355" y="80" fill="#a7d18a">Cierre</text>
+        </g>
+        <g class="lbl-sm" text-anchor="middle">
+          <text x="45" y="96">sondajes</text>
+          <text x="148" y="96">se levanta</text>
+          <text x="252" y="96">años/décadas</text>
+          <text x="355" y="96">plan de cierre</text>
+        </g>
+      </svg>
+      <p class="cap mt-3">Toda mina recorre el mismo camino: se <b>explora</b>, se <b>construye</b>, se <b>opera</b> por años o décadas y, al agotarse, la ley exige un <b>plan de cierre</b> para dejar el lugar seguro y estable.</p>
+    </div>
+
+    <!-- resumen + navegación -->
     <div class="glass rounded-2xl p-4 mt-3" style="border-color:rgba(214,169,79,.28)">
       <div class="flex items-center gap-2 mb-1.5"><i data-lucide="lightbulb" style="width:17px;height:17px;color:#d6a94f"></i><h3 class="font-bold text-[13.5px]">En resumen</h3></div>
-      <p class="text-[12.5px] text-stone-300 leading-relaxed">Si el yacimiento es <b>grande y superficial</b>, suele ser <b>rajo abierto</b>; si es <b>profundo</b>, <b>subterránea</b>. El <b>litio</b> no se "excava": se bombea de la <b>salmuera</b> del salar. Y todo pasa por un mismo camino: de la roca al producto final.</p>
+      <p class="text-[12.5px] text-stone-300 leading-relaxed">Grande y superficial → <b>rajo</b>. Profundo → <b>subterránea</b>. El <b>litio</b> se bombea de la salmuera, no se excava. Y todo termina en un mismo proceso: de la roca al producto final.</p>
       <a href="adn-minero-proceso.html" class="inline-flex items-center gap-1.5 mt-3 text-[13px] font-bold" style="color:#d6a94f">Ver el proceso: del mineral al cátodo <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
     </div>
 
@@ -69,75 +314,11 @@
       <a href="adn-minero-glosario.html" class="glass rounded-2xl p-3.5 active:scale-95 transition"><i data-lucide="book-open" style="width:19px;height:19px;color:#e8c9a6"></i><p class="text-[13px] font-bold mt-1.5">Glosario</p><p class="text-[11px] text-stone-500">Términos explicados</p></a>
     </div>
 
-    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Explicación de divulgación. · <a href="adn-minero-faenas.html" style="color:#e8c9a6">Faenas</a> · <a href="adn-minero-proceso.html" style="color:#e8c9a6">Proceso</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Explicación de divulgación; cada faena tiene variantes. · <a href="adn-minero-faenas.html" style="color:#e8c9a6">Faenas</a> · <a href="adn-minero-proceso.html" style="color:#e8c9a6">Proceso</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
   </div>
 
 <script>
-  const drawIcons=()=>window.lucide&&lucide.createIcons();
-  const TOPICS=[
-    { ic:'mountain', c:'#cf9b6f', t:'Rajo abierto (a cielo abierto)', s:'La mina en forma de anfiteatro',
-      tips:[
-        ['check','Se excava desde la superficie en <b>bancos escalonados</b>, formando un enorme cráter. Es la imagen clásica de Chuquicamata.'],
-        ['pickaxe','Sirve cuando el yacimiento es <b>grande y está cerca de la superficie</b>. Permite mover mucho material con camiones y palas gigantes.'],
-        ['gem','Ejemplos en Chile: <b>Chuquicamata, Escondida, Collahuasi, Los Pelambres</b>.'],
-        ['triangle-alert','Su desafío: ocupa mucha superficie y genera grandes botaderos de material estéril.']
-      ]},
-    { ic:'layers', c:'#7fb0d9', t:'Minería subterránea', s:'Túneles y niveles bajo tierra',
-      tips:[
-        ['check','Se trabaja con <b>túneles, piques y niveles</b> bajo la superficie para llegar al mineral profundo.'],
-        ['pickaxe','Técnicas como el <b>block/panel caving</b> hacen que la roca se derrumbe de forma controlada para extraerla desde abajo.'],
-        ['gem','Ejemplo emblemático: <b>El Teniente</b>, la mina subterránea de cobre más grande del mundo. Chuquicamata también pasó a subterránea.'],
-        ['triangle-alert','Su desafío: más compleja y con riesgos propios (ventilación, estallidos de roca), pero altera menos la superficie.']
-      ]},
-    { ic:'gem', c:'#5fd1bd', t:'Metálica y no metálica', s:'Según qué se extrae',
-      tips:[
-        ['check','<b>Metálica:</b> se buscan metales como <b>cobre, oro, plata, hierro y molibdeno</b>. Es el grueso de la minería chilena.'],
-        ['droplet','<b>No metálica:</b> minerales industriales como <b>litio, sales, nitratos, yodo, caliza y áridos</b>.'],
-        ['battery-charging','El <b>litio</b> es no metálico y hoy es estratégico para las baterías y la transición energética.']
-      ]},
-    { ic:'droplet', c:'#5fbdd1', t:'Litio: la minería del salar', s:'No se excava, se bombea',
-      tips:[
-        ['check','En los salares se <b>bombea la salmuera</b> (agua con sales) desde bajo la costra del salar.'],
-        ['sun','Esa salmuera se concentra en <b>pozas de evaporación</b> con el sol y el viento del desierto durante meses.'],
-        ['gem','El corazón del litio chileno es el <b>Salar de Atacama</b>. Es muy distinto a sacar cobre de la roca.']
-      ]},
-    { ic:'route', c:'#a7d18a', t:'¿Rajo o subterránea? Cómo se decide', s:'No es al azar',
-      tips:[
-        ['check','Depende de la <b>profundidad</b> del yacimiento, su <b>ley</b> (qué tan rico es), su <b>tamaño</b> y el <b>costo</b>.'],
-        ['layers','Cerca de la superficie y muy extenso → conviene <b>rajo</b>. Profundo y concentrado → conviene <b>subterránea</b>.'],
-        ['leaf','También pesan la <b>seguridad</b> y el <b>impacto ambiental</b>. Algunas minas, como Andina, combinan ambas.']
-      ]},
-    { ic:'factory', c:'#e0955f', t:'Gran, mediana y pequeña minería', s:'Distintas escalas',
-      tips:[
-        ['check','<b>Gran minería:</b> las megaoperaciones (Codelco, BHP, etc.) que producen la mayor parte del cobre.'],
-        ['pickaxe','<b>Mediana y pequeña minería:</b> operaciones más chicas, muchas veces de capital nacional y clave en el empleo regional.'],
-        ['users','El <b>pirquén</b> es la minería artesanal. <b>Enami</b> apoya a la pequeña y mediana minería comprando y procesando su mineral.']
-      ]},
-    { ic:'clipboard-check', c:'#d6a94f', t:'El ciclo de una mina', s:'De la exploración al cierre',
-      tips:[
-        ['search','<b>Exploración:</b> se busca y se mide el yacimiento con sondajes y estudios.'],
-        ['hard-hat','<b>Construcción y operación:</b> se levanta la faena y se extrae y procesa el mineral por años o décadas.'],
-        ['leaf','<b>Cierre:</b> al agotarse, la ley exige un <b>plan de cierre</b> para dejar el lugar seguro y estable.']
-      ]}
-  ];
-
-  document.getElementById('topics').innerHTML=TOPICS.map((x,i)=>`
-    <div class="glass rounded-2xl topic" data-i="${i}">
-      <div class="p-4 flex items-center gap-3">
-        <div class="h-10 w-10 rounded-xl grid place-items-center shrink-0" style="background:${x.c}22;border:1px solid ${x.c}55"><i data-lucide="${x.ic}" class="w-5 h-5" style="color:${x.c}"></i></div>
-        <div class="min-w-0 flex-1"><h3 class="font-bold text-[15px]">${x.t}</h3><p class="text-[11.5px] text-stone-400">${x.s}</p></div>
-        <i data-lucide="chevron-right" class="chev w-5 h-5 text-stone-500 shrink-0"></i>
-      </div>
-      <div class="body px-4 pb-4 -mt-1">
-        ${x.tips.map(t=>`<div class="tip"><i data-lucide="${t[0]}" class="w-4 h-4 shrink-0 mt-0.5" style="color:${x.c}"></i><span>${t[1]}</span></div>`).join('')}
-      </div>
-    </div>`).join('');
-
-  document.getElementById('topics').addEventListener('click', e=>{
-    const t=e.target.closest('.topic'); if(!t) return;
-    t.classList.toggle('open'); drawIcons();
-  });
-  drawIcons();
+  window.lucide && lucide.createIcons();
 </script>
 </body>
 </html>
