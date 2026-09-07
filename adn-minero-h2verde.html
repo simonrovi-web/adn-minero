@@ -90,43 +90,54 @@
         <h3 class="font-bold text-[15.5px]">Cómo se produce <span class="text-[12px] font-semibold" style="color:#8a9a8c">· electrólisis</span></h3>
       </div>
       <svg class="viz" viewBox="0 0 400 190" role="img" aria-label="Producción de hidrógeno verde: el sol y el viento generan electricidad que en un electrolizador separa el agua en hidrógeno y oxígeno, y el hidrógeno se usa en la minería">
-        <rect x="0" y="0" width="400" height="190" fill="#131813"/>
+        <defs>
+          <linearGradient id="hSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#152420"/><stop offset="1" stop-color="#1b2a20"/></linearGradient>
+          <linearGradient id="hGround" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#26301f"/><stop offset="1" stop-color="#141a10"/></linearGradient>
+          <linearGradient id="hCell" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#26362a"/><stop offset="1" stop-color="#141c15"/></linearGradient>
+          <linearGradient id="hWater" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4aa0b8"/><stop offset="1" stop-color="#2a6478"/></linearGradient>
+          <linearGradient id="hTank" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a3a2f"/><stop offset="1" stop-color="#182219"/></linearGradient>
+          <filter id="hSoft" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.5"/></filter>
+          <filter id="hGlow" x="-70%" y="-70%" width="240%" height="240%"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#7fd4a2" flood-opacity="0.6"/></filter>
+          <filter id="hSun" x="-90%" y="-90%" width="280%" height="280%"><feDropShadow dx="0" dy="0" stdDeviation="3.5" flood-color="#f0d79a" flood-opacity="0.85"/></filter>
+        </defs>
+        <rect x="0" y="0" width="400" height="150" fill="url(#hSky)"/>
+        <rect x="0" y="148" width="400" height="42" fill="url(#hGround)"/>
         <!-- sol -->
         <circle id="sunG" cx="42" cy="34" r="16" fill="#e8c98a"/>
-        <circle cx="42" cy="34" r="10" fill="#f0d79a"/>
+        <circle cx="42" cy="34" r="10" fill="#f0d79a" filter="url(#hSun)"/>
         <!-- turbina eólica -->
         <line x1="60" y1="150" x2="60" y2="96" stroke="#9fb4bd" stroke-width="3"/>
-        <g id="blades"><g transform="translate(60,94)">
-          <path d="M0,0 L3,-26 L-3,-26 Z" fill="#67c1d6"/>
-          <path d="M0,0 L24,12 L21,17 Z" fill="#67c1d6"/>
-          <path d="M0,0 L-24,12 L-21,17 Z" fill="#67c1d6"/>
+        <g id="blades" filter="url(#hSoft)"><g transform="translate(60,94)">
+          <path d="M0,0 L3,-26 L-3,-26 Z" fill="#7fd0e0"/>
+          <path d="M0,0 L24,12 L21,17 Z" fill="#7fd0e0"/>
+          <path d="M0,0 L-24,12 L-21,17 Z" fill="#7fd0e0"/>
         </g></g>
-        <circle cx="60" cy="94" r="3.5" fill="#bcd8de"/>
+        <circle cx="60" cy="94" r="3.5" fill="#e0f0f4"/>
         <!-- flujo de electricidad hacia el electrolizador -->
-        <path class="pwr" d="M78,86 L150,104" fill="none" stroke="#e6d47a" stroke-width="2.5" stroke-linecap="round"/>
-        <path class="pwr" d="M76,120 L150,112" fill="none" stroke="#e6d47a" stroke-width="2.5" stroke-linecap="round"/>
+        <path class="pwr" d="M78,86 L150,104" fill="none" stroke="#f0dd82" stroke-width="2.5" stroke-linecap="round"/>
+        <path class="pwr" d="M76,120 L150,112" fill="none" stroke="#f0dd82" stroke-width="2.5" stroke-linecap="round"/>
         <!-- electrolizador -->
-        <rect x="150" y="70" width="82" height="72" rx="8" fill="#1c241d" stroke="#5fbf8a" stroke-width="2"/>
-        <rect x="153" y="112" width="76" height="27" rx="3" fill="#3a7f9a" opacity=".55"/>
-        <line x1="175" y1="82" x2="175" y2="130" stroke="#8aa0a8" stroke-width="2"/>
-        <line x1="207" y1="82" x2="207" y2="130" stroke="#8aa0a8" stroke-width="2"/>
+        <g filter="url(#hSoft)">
+          <rect x="150" y="70" width="82" height="72" rx="8" fill="url(#hCell)" stroke="#5fbf8a" stroke-width="2"/>
+          <rect x="153" y="112" width="76" height="27" rx="3" fill="url(#hWater)" opacity=".7"/>
+          <line x1="175" y1="82" x2="175" y2="130" stroke="#8aa0a8" stroke-width="2"/>
+          <line x1="207" y1="82" x2="207" y2="130" stroke="#8aa0a8" stroke-width="2"/>
+        </g>
         <!-- burbujas O2 (izq, pálidas) y H2 (der, verdes) -->
-        <g fill="#bcd0d6"><circle class="gasb" cx="175" cy="126" r="2.4"/><circle class="gasb c" cx="175" cy="126" r="2.4"/></g>
-        <g fill="#7fd4a2"><circle class="gasb b" cx="207" cy="126" r="2.6"/><circle class="gasb d" cx="207" cy="126" r="2.6"/></g>
-        <!-- salidas -->
+        <g fill="#cfe0e6"><circle class="gasb" cx="175" cy="126" r="2.4"/><circle class="gasb c" cx="175" cy="126" r="2.4"/></g>
+        <g fill="#8fe0b4"><circle class="gasb b" cx="207" cy="126" r="2.6"/><circle class="gasb d" cx="207" cy="126" r="2.6"/></g>
         <line x1="175" y1="70" x2="175" y2="58" stroke="#8aa0a8" stroke-width="2"/>
-        <line x1="207" y1="70" x2="232" y2="70" stroke="#5fbf8a" stroke-width="0"/>
         <!-- H2 fluye a la derecha, al estanque -->
-        <g fill="#7fd4a2"><circle class="h2f" cx="238" cy="86" r="3"/><circle class="h2f b" cx="238" cy="86" r="3"/><circle class="h2f c" cx="238" cy="86" r="3"/></g>
+        <g fill="#8fe0b4"><circle class="h2f" cx="238" cy="86" r="3"/><circle class="h2f b" cx="238" cy="86" r="3"/><circle class="h2f c" cx="238" cy="86" r="3"/></g>
         <!-- estanque H2 + uso -->
-        <g id="tank"><rect x="300" y="70" width="40" height="46" rx="9" fill="none" stroke="#7fd4a2" stroke-width="2"/><text x="320" y="98" text-anchor="middle" style="font-size:15px;font-weight:800;fill:#7fd4a2">H₂</text></g>
+        <g id="tank" filter="url(#hGlow)"><rect x="300" y="70" width="40" height="46" rx="10" fill="url(#hTank)" stroke="#7fd4a2" stroke-width="2"/><text x="320" y="99" text-anchor="middle" style="font-size:16px;font-weight:800;fill:#8fe0b4">H₂</text></g>
         <!-- camión (uso en minería) -->
-        <g transform="translate(300,130)"><rect x="0" y="-11" width="30" height="11" rx="2" fill="#cf9b6f"/><rect x="24" y="-17" width="10" height="7" rx="1" fill="#e8c9a6"/><circle cx="8" cy="3" r="3.2" fill="#0f0a07"/><circle cx="26" cy="3" r="3.2" fill="#0f0a07"/></g>
+        <g filter="url(#hSoft)" transform="translate(300,132)"><rect x="0" y="-11" width="30" height="11" rx="2" fill="#cf9b6f"/><rect x="24" y="-17" width="10" height="7" rx="1" fill="#f0d7b6"/><circle cx="8" cy="3" r="3.4" fill="#0f0a07"/><circle cx="26" cy="3" r="3.4" fill="#0f0a07"/></g>
         <text class="lbl-sm" x="42" y="60" text-anchor="middle">sol</text>
         <text class="lbl-sm" x="60" y="166" text-anchor="middle">viento</text>
         <text class="lbl-sm" x="191" y="158" text-anchor="middle">electrolizador · agua</text>
         <text class="lbl-sm" x="175" y="52" text-anchor="middle">O₂</text>
-        <text class="lbl-sm" x="320" y="130" text-anchor="middle">H₂ verde</text>
+        <text class="lbl-sm" x="320" y="154" text-anchor="middle">H₂ verde</text>
       </svg>
       <div class="steps">
         <div class="step s1"><span class="n">1</span><br>Sol + viento</div>

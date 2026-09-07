@@ -80,18 +80,29 @@
         <i data-lucide="route" style="width:20px;height:20px;color:#a7d18a"></i>
         <h3 class="font-bold text-[15.5px]">Tu ruta a la faena <span class="text-[12px] font-semibold" style="color:#8a9a8c">· sin experiencia</span></h3>
       </div>
-      <svg class="viz" viewBox="0 0 400 128" role="img" aria-label="Ruta para entrar a la mineria sin experiencia: cursos y licencias, examenes, postular y primera pega">
-        <rect x="0" y="0" width="400" height="128" fill="#161a12"/>
-        <line x1="52" y1="56" x2="348" y2="56" stroke="#3d4a33" stroke-width="3"/>
-        <line class="rflow" x1="52" y1="56" x2="348" y2="56" stroke="#a7d18a" stroke-width="3" stroke-linecap="round"/>
-        <g class="rnode n1"><circle cx="52" cy="56" r="12" fill="#1c2417" stroke="#a7d18a" stroke-width="2"/></g>
-        <g class="rnode n2"><circle cx="148" cy="56" r="12" fill="#1c2417" stroke="#a7d18a" stroke-width="2"/></g>
-        <g class="rnode n3"><circle cx="244" cy="56" r="12" fill="#1c2417" stroke="#a7d18a" stroke-width="2"/></g>
-        <g class="rnode n4"><circle cx="340" cy="56" r="13" fill="#1c2417" stroke="#e0c35a" stroke-width="2"/><text x="340" y="61" text-anchor="middle" style="font-size:13px">⛏️</text></g>
-        <!-- caminante (casco) que avanza -->
-        <g id="walker"><g transform="translate(52,40)"><circle cx="0" cy="0" r="5" fill="#e0955f"/><path d="M-6,-1 a6,6 0 0 1 12,0 z" fill="#f0d7b6"/></g></g>
-        <g class="lbl" text-anchor="middle"><text x="52" y="84">Cursos</text><text x="148" y="84">Exámenes</text><text x="244" y="84">Postular</text><text x="340" y="84" fill="#e6c98f">¡Pega!</text></g>
-        <g class="lbl-sm" text-anchor="middle"><text x="52" y="100">y licencias</text><text x="148" y="100">de salud</text><text x="244" y="100">a contratistas</text><text x="340" y="100">primer trabajo</text></g>
+      <svg class="viz" viewBox="0 0 400 132" role="img" aria-label="Ruta para entrar a la mineria sin experiencia: cursos y licencias, examenes, postular y primera pega">
+        <defs>
+          <linearGradient id="rBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a2015"/><stop offset="1" stop-color="#0f120b"/></linearGradient>
+          <linearGradient id="rTrack" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5f7f48"/><stop offset="1" stop-color="#e0c35a"/></linearGradient>
+          <radialGradient id="rNodeG" cx="0.35" cy="0.3" r="0.9"><stop offset="0" stop-color="#26301c"/><stop offset="1" stop-color="#141a10"/></radialGradient>
+          <filter id="rSoft" x="-45%" y="-45%" width="190%" height="190%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.5"/></filter>
+          <filter id="rGlow" x="-70%" y="-70%" width="240%" height="240%"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#e6c98f" flood-opacity="0.7"/></filter>
+        </defs>
+        <rect x="0" y="0" width="400" height="132" fill="url(#rBg)"/>
+        <line x1="52" y1="56" x2="348" y2="56" stroke="#2f3a26" stroke-width="6" stroke-linecap="round"/>
+        <line class="rflow" x1="52" y1="56" x2="348" y2="56" stroke="url(#rTrack)" stroke-width="4" stroke-linecap="round"/>
+        <g class="rnode n1" filter="url(#rSoft)"><circle cx="52" cy="56" r="13" fill="url(#rNodeG)" stroke="#a7d18a" stroke-width="2"/><text x="52" y="61" text-anchor="middle" style="font-size:12px">📚</text></g>
+        <g class="rnode n2" filter="url(#rSoft)"><circle cx="148" cy="56" r="13" fill="url(#rNodeG)" stroke="#a7d18a" stroke-width="2"/><text x="148" y="61" text-anchor="middle" style="font-size:12px">🩺</text></g>
+        <g class="rnode n3" filter="url(#rSoft)"><circle cx="244" cy="56" r="13" fill="url(#rNodeG)" stroke="#a7d18a" stroke-width="2"/><text x="244" y="61" text-anchor="middle" style="font-size:12px">📩</text></g>
+        <g class="rnode n4" filter="url(#rGlow)"><circle cx="340" cy="56" r="14" fill="url(#rNodeG)" stroke="#e0c35a" stroke-width="2.5"/><text x="340" y="61" text-anchor="middle" style="font-size:13px">⛏️</text></g>
+        <!-- caminante con casco que avanza -->
+        <g id="walker" filter="url(#rSoft)"><g transform="translate(52,34)">
+          <rect x="-3" y="1" width="6" height="9" rx="2.5" fill="#a7d18a"/>
+          <circle cx="0" cy="-4" r="4.5" fill="#e0955f"/>
+          <path d="M-6,-4 a6,6 0 0 1 12,0 z" fill="#f0d7b6"/>
+        </g></g>
+        <g class="lbl" text-anchor="middle"><text x="52" y="90">Cursos</text><text x="148" y="90">Exámenes</text><text x="244" y="90">Postular</text><text x="340" y="90" fill="#e6c98f">¡Pega!</text></g>
+        <g class="lbl-sm" text-anchor="middle"><text x="52" y="106">y licencias</text><text x="148" y="106">de salud</text><text x="244" y="106">a contratistas</text><text x="340" y="106">primer trabajo</text></g>
       </svg>
       <div class="psteps">
         <div class="pstep s1"><span class="pn">1</span><br>Cursos</div>
