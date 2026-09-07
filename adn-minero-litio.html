@@ -45,6 +45,27 @@
     .leaflet-popup-content-wrapper,.leaflet-popup-tip{ background:#241d18; color:#f4ece5; border:1px solid rgba(196,168,148,.22); }
     .leaflet-popup-content{ margin:12px 14px; }
     .leaflet-bar a{ background:#2b2520; color:#e6d4c4; border-color:rgba(196,168,148,.2); }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .cap{ font-size:13px; line-height:1.55; color:#d8cfc3; } .cap b{ color:#f4ece5; }
+    .lbl-sm{ font-size:9.5px; fill:#a9cfc7; font-weight:600; }
+    .steps{ display:flex; gap:5px; margin-top:11px; }
+    .step{ flex:1; text-align:center; font-size:10.5px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#8a9a95; border:1px solid rgba(95,209,189,.14); animation:stepHi 8s infinite; }
+    .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(95,209,189,.16); color:#8fd6c8; font-size:9px; margin-bottom:4px; }
+    .step.s2{ animation-delay:2s } .step.s3{ animation-delay:4s } .step.s4{ animation-delay:6s }
+    @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#8a9a95; border-color:rgba(95,209,189,.14) } 5%,21%{ background:rgba(95,209,189,.18); color:#eafbf7; border-color:rgba(95,209,189,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#8a9a95; border-color:rgba(95,209,189,.14) } }
+    .narr{ position:relative; min-height:36px; margin-top:9px; }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#d8cfc3; opacity:0; animation:narr 8s infinite; } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:2s } .nl.n3{ animation-delay:4s } .nl.n4{ animation-delay:6s }
+    @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    #sunG{ animation:sunG 3.2s ease-in-out infinite; } @keyframes sunG{ 0%,100%{ r:16px; opacity:.32 } 50%{ r:21px; opacity:.6 } }
+    .brine{ animation:brine 2.6s linear infinite; } .brine.b{ animation-delay:.9s } .brine.c{ animation-delay:1.7s }
+    @keyframes brine{ 0%{ transform:translateY(0); opacity:0 } 12%{ opacity:1 } 88%{ opacity:1 } 100%{ transform:translateY(-92px); opacity:0 } }
+    .water{ animation:evap 5s ease-in-out infinite; } .water.w2{ animation-delay:.6s } .water.w3{ animation-delay:1.2s }
+    @keyframes evap{ 0%{ y:150px; height:24px } 60%,100%{ y:164px; height:10px } }
+    .vapor{ animation:vapor 3s ease-out infinite; } .vapor.v2{ animation-delay:1s } .vapor.v3{ animation-delay:2s }
+    @keyframes vapor{ 0%{ transform:translateY(0); opacity:0 } 25%{ opacity:.55 } 100%{ transform:translateY(-22px); opacity:0 } }
+    #batt{ animation:batt 2.4s ease-in-out infinite; } @keyframes batt{ 0%,100%{ opacity:.6 } 50%{ opacity:1 } }
+    @media (prefers-reduced-motion:reduce){ #sunG,.brine,.water,.vapor,#batt,.step,.nl{ animation:none !important } .narr{ display:none } .water{ y:158px; height:16px } }
   </style>
   <script src="adn-ui.js" defer></script>
 </head>
@@ -67,6 +88,52 @@
     <div class="mt-5">
       <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight flex items-center gap-3">Litio de Chile <span style="font-size:1.6rem">🔋</span></h1>
       <p class="text-stone-400 text-sm mt-2 max-w-2xl">El mineral que mueve al mundo hacia la energía limpia. Chile tiene las mayores reservas del planeta y es uno de sus principales productores. Te lo explicamos simple.</p>
+    </div>
+
+    <!-- CÓMO SE PRODUCE (animado) -->
+    <div class="glass rounded-2xl p-4 mt-5">
+      <div class="flex items-center gap-2.5 mb-3">
+        <i data-lucide="droplet" style="width:20px;height:20px;color:#5fd1bd"></i>
+        <h3 class="font-bold text-[15.5px]">Cómo se produce el litio <span class="text-[12px] font-semibold" style="color:#8a9a95">· del salar a la batería</span></h3>
+      </div>
+      <svg class="viz" viewBox="0 0 400 210" role="img" aria-label="Producción de litio: se bombea salmuera del salar, el sol la evapora en pozas concentrandola, y pasa a la planta para baterias">
+        <defs>
+          <linearGradient id="skyL" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#243447"/><stop offset="1" stop-color="#2a3b3f"/></linearGradient>
+          <linearGradient id="salarL" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#43535b"/><stop offset="1" stop-color="#28353c"/></linearGradient>
+        </defs>
+        <rect x="0" y="0" width="400" height="98" fill="url(#skyL)"/>
+        <rect x="0" y="96" width="400" height="114" fill="url(#salarL)"/>
+        <circle id="sunG" cx="50" cy="40" r="16" fill="#e8c98a"/>
+        <circle cx="50" cy="40" r="10" fill="#f0d79a"/>
+        <!-- pozo / bomba -->
+        <rect x="64" y="96" width="9" height="106" fill="#0f0a07"/>
+        <rect x="56" y="88" width="25" height="10" rx="2" fill="#c9b7a5"/>
+        <g fill="#5fd1bd"><circle class="brine" cx="68.5" cy="196" r="3"/><circle class="brine b" cx="68.5" cy="196" r="3"/><circle class="brine c" cx="68.5" cy="196" r="3"/></g>
+        <line x1="68" y1="90" x2="112" y2="90" stroke="#5a6a70" stroke-width="4"/>
+        <!-- pozas con nivel que baja y color que se concentra -->
+        <g stroke="#e6d4c4" stroke-width="1.2" fill="none" opacity=".85"><rect x="108" y="150" width="70" height="24" rx="3"/><rect x="186" y="150" width="70" height="24" rx="3"/><rect x="264" y="150" width="70" height="24" rx="3"/></g>
+        <rect class="water"    x="109" y="150" width="68" height="24" rx="2" fill="#2f9fb0"/>
+        <rect class="water w2" x="187" y="150" width="68" height="24" rx="2" fill="#5fb87a"/>
+        <rect class="water w3" x="265" y="150" width="68" height="24" rx="2" fill="#d3bd4f"/>
+        <g stroke="#bcd0d6" stroke-width="2" stroke-linecap="round" fill="none" opacity=".6"><line class="vapor" x1="143" y1="148" x2="143" y2="140"/><line class="vapor v2" x1="221" y1="148" x2="221" y2="140"/><line class="vapor v3" x1="299" y1="148" x2="299" y2="140"/></g>
+        <!-- batería -->
+        <g id="batt" transform="translate(354,148)"><rect x="0" y="0" width="24" height="28" rx="3" fill="none" stroke="#7fd4a2" stroke-width="2"/><rect x="8" y="-4" width="8" height="4" rx="1" fill="#7fd4a2"/><path d="M13,5 l-5,11 l4,0 l-3,8 l8,-13 l-4,0 z" fill="#7fd4a2"/></g>
+        <text class="lbl-sm" x="68" y="208" text-anchor="middle">salmuera</text>
+        <text class="lbl-sm" x="221" y="192" text-anchor="middle">pozas de evaporación (color = más concentrado)</text>
+      </svg>
+      <div class="steps">
+        <div class="step s1"><span class="n">1</span><br>Bombear</div>
+        <div class="step s2"><span class="n">2</span><br>Evaporar</div>
+        <div class="step s3"><span class="n">3</span><br>Concentrar</div>
+        <div class="step s4"><span class="n">4</span><br>Planta</div>
+      </div>
+      <div class="narr">
+        <span class="nl n1">Se <b>bombea la salmuera</b> desde bajo el salar.</span>
+        <span class="nl n2">El sol la <b>evapora</b> durante meses (baja el nivel).</span>
+        <span class="nl n3">El litio <b>se concentra</b>: el color se intensifica.</span>
+        <span class="nl n4">Pasa a la <b>planta</b>: carbonato de litio y baterías.</span>
+      </div>
+      <p class="cap mt-3">A diferencia del cobre, el litio del salar <b>no se excava</b>: se <b>bombea la salmuera</b>, el sol la <b>evapora</b> en pozas durante meses, el litio se <b>concentra</b> y pasa a la <b>planta</b> para hacer carbonato de litio y baterías.</p>
     </div>
 
     <!-- CIFRAS CLAVE -->

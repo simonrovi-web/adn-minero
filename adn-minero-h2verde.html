@@ -41,6 +41,27 @@
     .stat{ text-align:center; padding:12px 8px; }
     .stat .k{ font-size:22px; font-weight:900; color:#7fd4a2; line-height:1.05; }
     .stat .l{ font-size:10.5px; color:#9fb0a2; margin-top:4px; line-height:1.3; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .cap{ font-size:13px; line-height:1.55; color:#d6ddce; } .cap b{ color:#f4ece5; }
+    .lbl{ font-size:10px; font-weight:700; fill:#e6f0e2; } .lbl-sm{ font-size:9.5px; fill:#9fb0a2; font-weight:600; }
+    .steps{ display:flex; gap:5px; margin-top:11px; }
+    .step{ flex:1; text-align:center; font-size:10px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#8a9a8c; border:1px solid rgba(150,190,160,.14); animation:stepHi 8s infinite; }
+    .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(95,191,138,.16); color:#9fd9b8; font-size:9px; margin-bottom:4px; }
+    .step.s2{ animation-delay:2s } .step.s3{ animation-delay:4s } .step.s4{ animation-delay:6s }
+    @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#8a9a8c; border-color:rgba(150,190,160,.14) } 5%,21%{ background:rgba(95,191,138,.18); color:#eafaf0; border-color:rgba(95,191,138,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#8a9a8c; border-color:rgba(150,190,160,.14) } }
+    .narr{ position:relative; min-height:36px; margin-top:9px; }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#d6ddce; opacity:0; animation:narr 8s infinite; } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:2s } .nl.n3{ animation-delay:4s } .nl.n4{ animation-delay:6s }
+    @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    #sunG{ animation:sunG 3.2s ease-in-out infinite; } @keyframes sunG{ 0%,100%{ r:16px; opacity:.32 } 50%{ r:21px; opacity:.6 } }
+    #blades{ transform-box:fill-box; transform-origin:center; animation:spin 3.6s linear infinite; } @keyframes spin{ to{ transform:rotate(360deg) } }
+    .pwr{ stroke-dasharray:5 6; animation:pwr 1.1s linear infinite; } @keyframes pwr{ to{ stroke-dashoffset:-22 } }
+    .gasb{ animation:gasb 2.2s ease-in infinite; } .gasb.b{ animation-delay:.6s } .gasb.c{ animation-delay:1.2s } .gasb.d{ animation-delay:1.6s }
+    @keyframes gasb{ 0%{ transform:translateY(0); opacity:0 } 15%{ opacity:1 } 90%{ opacity:1 } 100%{ transform:translateY(-30px); opacity:0 } }
+    .h2f{ animation:h2f 2.6s linear infinite; } .h2f.b{ animation-delay:.9s } .h2f.c{ animation-delay:1.7s }
+    @keyframes h2f{ 0%{ transform:translateX(0); opacity:0 } 15%{ opacity:1 } 85%{ opacity:1 } 100%{ transform:translateX(58px); opacity:0 } }
+    #tank{ animation:tank 2.4s ease-in-out infinite; } @keyframes tank{ 0%,100%{ opacity:.6 } 50%{ opacity:1 } }
+    @media (prefers-reduced-motion:reduce){ #sunG,#blades,.pwr,.gasb,.h2f,#tank,.step,.nl{ animation:none !important } .narr{ display:none } }
   </style>
   <script src="adn-ui.js" defer></script>
 </head>
@@ -60,7 +81,67 @@
       <div class="stat"><div class="k">Magallanes</div><div class="l">viento de clase mundial</div></div>
     </div>
 
-    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">Chile tiene el <b>mejor sol del mundo</b> en el norte y <b>vientos excepcionales</b> en el sur. Con esa energía puede producir hidrógeno verde barato — y descarbonizar la minería. Toca cada tema para entenderlo.</p>
+    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">Chile tiene el <b>mejor sol del mundo</b> en el norte y <b>vientos excepcionales</b> en el sur. Con esa energía puede producir hidrógeno verde barato. Mira <b>cómo se produce</b> — los pasos se encienden a medida que ocurren.</p>
+
+    <!-- ===== electrólisis (animado) ===== -->
+    <div class="glass rounded-2xl p-4 mt-4">
+      <div class="flex items-center gap-2.5 mb-3">
+        <i data-lucide="zap" style="width:20px;height:20px;color:#7fd4a2"></i>
+        <h3 class="font-bold text-[15.5px]">Cómo se produce <span class="text-[12px] font-semibold" style="color:#8a9a8c">· electrólisis</span></h3>
+      </div>
+      <svg class="viz" viewBox="0 0 400 190" role="img" aria-label="Producción de hidrógeno verde: el sol y el viento generan electricidad que en un electrolizador separa el agua en hidrógeno y oxígeno, y el hidrógeno se usa en la minería">
+        <rect x="0" y="0" width="400" height="190" fill="#131813"/>
+        <!-- sol -->
+        <circle id="sunG" cx="42" cy="34" r="16" fill="#e8c98a"/>
+        <circle cx="42" cy="34" r="10" fill="#f0d79a"/>
+        <!-- turbina eólica -->
+        <line x1="60" y1="150" x2="60" y2="96" stroke="#9fb4bd" stroke-width="3"/>
+        <g id="blades"><g transform="translate(60,94)">
+          <path d="M0,0 L3,-26 L-3,-26 Z" fill="#67c1d6"/>
+          <path d="M0,0 L24,12 L21,17 Z" fill="#67c1d6"/>
+          <path d="M0,0 L-24,12 L-21,17 Z" fill="#67c1d6"/>
+        </g></g>
+        <circle cx="60" cy="94" r="3.5" fill="#bcd8de"/>
+        <!-- flujo de electricidad hacia el electrolizador -->
+        <path class="pwr" d="M78,86 L150,104" fill="none" stroke="#e6d47a" stroke-width="2.5" stroke-linecap="round"/>
+        <path class="pwr" d="M76,120 L150,112" fill="none" stroke="#e6d47a" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- electrolizador -->
+        <rect x="150" y="70" width="82" height="72" rx="8" fill="#1c241d" stroke="#5fbf8a" stroke-width="2"/>
+        <rect x="153" y="112" width="76" height="27" rx="3" fill="#3a7f9a" opacity=".55"/>
+        <line x1="175" y1="82" x2="175" y2="130" stroke="#8aa0a8" stroke-width="2"/>
+        <line x1="207" y1="82" x2="207" y2="130" stroke="#8aa0a8" stroke-width="2"/>
+        <!-- burbujas O2 (izq, pálidas) y H2 (der, verdes) -->
+        <g fill="#bcd0d6"><circle class="gasb" cx="175" cy="126" r="2.4"/><circle class="gasb c" cx="175" cy="126" r="2.4"/></g>
+        <g fill="#7fd4a2"><circle class="gasb b" cx="207" cy="126" r="2.6"/><circle class="gasb d" cx="207" cy="126" r="2.6"/></g>
+        <!-- salidas -->
+        <line x1="175" y1="70" x2="175" y2="58" stroke="#8aa0a8" stroke-width="2"/>
+        <line x1="207" y1="70" x2="232" y2="70" stroke="#5fbf8a" stroke-width="0"/>
+        <!-- H2 fluye a la derecha, al estanque -->
+        <g fill="#7fd4a2"><circle class="h2f" cx="238" cy="86" r="3"/><circle class="h2f b" cx="238" cy="86" r="3"/><circle class="h2f c" cx="238" cy="86" r="3"/></g>
+        <!-- estanque H2 + uso -->
+        <g id="tank"><rect x="300" y="70" width="40" height="46" rx="9" fill="none" stroke="#7fd4a2" stroke-width="2"/><text x="320" y="98" text-anchor="middle" style="font-size:15px;font-weight:800;fill:#7fd4a2">H₂</text></g>
+        <!-- camión (uso en minería) -->
+        <g transform="translate(300,130)"><rect x="0" y="-11" width="30" height="11" rx="2" fill="#cf9b6f"/><rect x="24" y="-17" width="10" height="7" rx="1" fill="#e8c9a6"/><circle cx="8" cy="3" r="3.2" fill="#0f0a07"/><circle cx="26" cy="3" r="3.2" fill="#0f0a07"/></g>
+        <text class="lbl-sm" x="42" y="60" text-anchor="middle">sol</text>
+        <text class="lbl-sm" x="60" y="166" text-anchor="middle">viento</text>
+        <text class="lbl-sm" x="191" y="158" text-anchor="middle">electrolizador · agua</text>
+        <text class="lbl-sm" x="175" y="52" text-anchor="middle">O₂</text>
+        <text class="lbl-sm" x="320" y="130" text-anchor="middle">H₂ verde</text>
+      </svg>
+      <div class="steps">
+        <div class="step s1"><span class="n">1</span><br>Sol + viento</div>
+        <div class="step s2"><span class="n">2</span><br>Electricidad</div>
+        <div class="step s3"><span class="n">3</span><br>Electrólisis</div>
+        <div class="step s4"><span class="n">4</span><br>A la minería</div>
+      </div>
+      <div class="narr">
+        <span class="nl n1">El <b>sol y el viento</b> generan electricidad renovable.</span>
+        <span class="nl n2">Esa <b>electricidad</b> llega al electrolizador.</span>
+        <span class="nl n3">Se <b>separa el agua</b>: sale hidrógeno (H₂) y oxígeno (O₂).</span>
+        <span class="nl n4">El <b>H₂ verde</b> mueve camiones, explosivos y faenas.</span>
+      </div>
+      <p class="cap mt-3">Con <b>sol y viento</b> se genera electricidad limpia; en el <b>electrolizador</b> esa energía <b>separa el agua</b> (H₂O) en <b>hidrógeno</b> y oxígeno; el <b>H₂ verde</b> reemplaza al diésel y al amoníaco fósil en la minería. Cero CO₂.</p>
+    </div>
 
     <div class="glass rounded-2xl p-4 mt-4">
       <p class="text-[11px] font-extrabold uppercase tracking-wider mb-3" style="color:#9fd9b8">Los 3 “colores” del hidrógeno · emisiones</p>
