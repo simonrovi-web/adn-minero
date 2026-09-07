@@ -95,7 +95,7 @@
       var mountBack=function(){
         if(!document.body || document.getElementById('adnui-back')) return;
         var st=document.createElement('style');
-        st.textContent='#adnui-back{position:fixed;left:14px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:2147482998;'+
+        st.textContent='#adnui-back{position:fixed;left:14px;bottom:calc(16px + var(--adn-fabgap,0px) + env(safe-area-inset-bottom,0px));z-index:2147482998;'+
           'width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;'+
           'background:linear-gradient(150deg,#2b221c,#1a1310);color:#e8c9a6;'+
           'box-shadow:0 6px 20px rgba(0,0,0,.45),0 0 0 1px rgba(196,168,148,.28);'+
@@ -142,7 +142,7 @@
       var mountRead=function(){
         if(!document.body || document.getElementById('adnui-read')) return;
         var st=document.createElement('style');
-        st.textContent='#adnui-read{position:fixed;right:14px;bottom:calc(68px + env(safe-area-inset-bottom,0px));z-index:2147482999;'+
+        st.textContent='#adnui-read{position:fixed;right:14px;bottom:calc(68px + var(--adn-fabgap,0px) + env(safe-area-inset-bottom,0px));z-index:2147482999;'+
           'width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;background:linear-gradient(150deg,#3a2c22,#241a13);'+
           'color:#e8c9a6;font-size:19px;box-shadow:0 6px 20px rgba(0,0,0,.45),0 0 0 1px rgba(207,155,111,.35);display:grid;place-items:center}'+
           '#adnui-read:active{transform:scale(.94)}';
@@ -163,6 +163,20 @@
         window.addEventListener('pagehide', stop); document.addEventListener('visibilitychange', function(){ if(document.hidden) stop(); });
       };
       if(document.body) mountRead(); else document.addEventListener('DOMContentLoaded', mountRead);
+
+      // Sube los botones flotantes por encima de la barra de controles fija de los paneles kiosco (#*PP)
+      var adjustFabGap=function(){
+        try{
+          var bar=document.querySelector('[id$="PP"][role="group"]'); var gap=0;
+          if(bar){ var cs=getComputedStyle(bar);
+            if(cs.position==='fixed' && cs.display!=='none' && cs.visibility!=='hidden' && bar.offsetHeight>0) gap=bar.offsetHeight+10; }
+          document.documentElement.style.setProperty('--adn-fabgap', gap+'px');
+        }catch(e){}
+      };
+      if(document.body) adjustFabGap(); else document.addEventListener('DOMContentLoaded', adjustFabGap);
+      window.addEventListener('load', adjustFabGap);
+      window.addEventListener('resize', adjustFabGap);
+      window.addEventListener('orientationchange', adjustFabGap);
     }
   }catch(e){}
 

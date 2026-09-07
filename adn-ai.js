@@ -40,7 +40,7 @@
     // ---- Estilos (aislados) ----
     var css=document.createElement('style'); css.id='adnai-css';
     css.textContent=
-      '#adnai-fab{position:fixed;right:14px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:2147483000;'+
+      '#adnai-fab{position:fixed;right:14px;bottom:calc(16px + var(--adn-fabgap,0px) + env(safe-area-inset-bottom,0px));z-index:2147483000;'+
         'display:inline-flex;align-items:center;gap:8px;padding:11px 15px;border-radius:999px;cursor:pointer;'+
         'font:700 13px/1 system-ui,-apple-system,"Segoe UI",sans-serif;color:#211a15;border:0;'+
         'background:linear-gradient(150deg,#e8c9a6,#cf9b6f);box-shadow:0 8px 26px rgba(0,0,0,.45),0 0 0 1px rgba(232,201,166,.4);'+
