@@ -82,12 +82,13 @@
       </div>
       <svg class="viz" viewBox="0 0 400 210" role="img" aria-label="Del salar de Atacama: se bombea salmuera, el sol la evapora en pozas concentrando el litio, y pasa a la planta para baterias">
         <defs>
-          <linearGradient id="saSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#243447"/><stop offset="1" stop-color="#2a3b3f"/></linearGradient>
+          <linearGradient id="saSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#213244"/><stop offset=".7" stop-color="#2a3b3f"/><stop offset="1" stop-color="#4a4436"/></linearGradient>
           <linearGradient id="saSalar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9d6d2"/><stop offset="1" stop-color="#8fa39c"/></linearGradient>
           <filter id="saSoft" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.35"/></filter>
           <filter id="saSunF" x="-90%" y="-90%" width="280%" height="280%"><feDropShadow dx="0" dy="0" stdDeviation="3.5" flood-color="#f0d79a" flood-opacity="0.85"/></filter>
         </defs>
         <rect x="0" y="0" width="400" height="98" fill="url(#saSky)"/>
+        <polygon points="0,98 90,74 170,90 260,68 340,86 400,72 400,98" fill="#4a4a44" opacity=".55"/>
         <rect x="0" y="96" width="400" height="114" fill="url(#saSalar)"/>
         <circle id="saSun" cx="50" cy="40" r="16" fill="#e8c98a"/>
         <circle cx="50" cy="40" r="10" fill="#f0d79a" filter="url(#saSunF)"/>

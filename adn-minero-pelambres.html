@@ -78,14 +78,18 @@
       <svg class="viz" viewBox="0 0 400 200" role="img" aria-label="Los Pelambres baja su concentrado de cobre por un mineroducto por gravedad hasta el puerto, y sube agua de mar a la faena">
         <defs>
           <linearGradient id="pmSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#213240"/><stop offset="1" stop-color="#2a333a"/></linearGradient>
-          <linearGradient id="pmGr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a3a2e"/><stop offset="1" stop-color="#241a13"/></linearGradient>
+          <linearGradient id="pmGr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#54402f"/><stop offset="1" stop-color="#201711"/></linearGradient>
+          <linearGradient id="pmShade" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe6be" stop-opacity=".1"/><stop offset=".5" stop-color="#000000" stop-opacity="0"/><stop offset="1" stop-color="#000000" stop-opacity=".38"/></linearGradient>
+          <filter id="pmSunF" x="-120%" y="-120%" width="340%" height="340%"><feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#f0d079" flood-opacity="0.9"/></filter>
           <linearGradient id="pmSea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a86a0"/><stop offset="1" stop-color="#1c4453"/></linearGradient>
           <filter id="pmSoft" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.45"/></filter>
         </defs>
         <rect x="0" y="0" width="400" height="200" fill="url(#pmSky)"/>
         <!-- terreno: baja de la cordillera (der) al mar (izq) -->
         <polygon points="0,150 120,140 240,96 340,58 400,58 400,200 0,200" fill="url(#pmGr)"/>
-        <circle id="pmSun" cx="60" cy="34" r="14" fill="#e8c98a"/>
+        <polygon points="0,150 120,140 240,96 340,58 400,58 400,200 0,200" fill="url(#pmShade)"/>
+        <g stroke="#2a1d14" stroke-width="1" opacity=".24"><line x1="0" y1="176" x2="400" y2="172"/></g>
+        <circle id="pmSun" cx="60" cy="34" r="14" fill="#e8c98a" filter="url(#pmSunF)"/>
         <!-- mar (izq) + puerto -->
         <rect x="0" y="150" width="90" height="50" fill="url(#pmSea)"/>
         <g filter="url(#pmSoft)"><rect x="54" y="132" width="30" height="20" rx="2" fill="#3a4a4e" stroke="#6a8a90" stroke-width="1.4"/></g>
