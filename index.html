@@ -464,6 +464,7 @@
         try{ const r=await fetch(api(q),{signal:ctl.signal}).then(x=>x.json()); clearTimeout(to); if(r&&r.status==='ok'&&Array.isArray(r.items)) items=r.items; }catch(e){ clearTimeout(to); }
         const seen=new Set(), out=[];
         for(const x of items){ const c=clean(x.title); if(c.t.length<20) continue; const k=c.t.toLowerCase().slice(0,50); if(seen.has(k)) continue; seen.add(k); out.push({t:c.t,s:c.s,link:x.link||'#',ts:x.pubDate?Date.parse(x.pubDate):0}); }
+        const now=Date.now(); out=out.filter(x=>x.ts && (now-x.ts)<=6048e5); // solo últimos 7 días
         out.sort((a,b)=>b.ts-a.ts); return out.slice(0,n);
       }
       const rowH=(x,lead)=>'<a class="tit-row" href="'+esc(x.link)+'" target="_blank" rel="noopener"><p class="tit-t" style="font-weight:'+(lead?800:700)+';font-size:'+(lead?'15px':'13px')+';color:#f4ece5">'+esc(x.t)+'</p><p style="font-size:11px;color:#9c8f83;margin:3px 0 0">'+(x.s?esc(x.s)+' · ':'')+rel(x.ts)+'</p></a>';

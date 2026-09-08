@@ -355,8 +355,8 @@
     }}
     if(!all.length) return null;
     all.sort((a,b)=>b.t0-a.t0);                                // más recientes primero
-    const fresh=all.filter(x=>x.t0 && (now-x.t0)<=MAX_AGE_MS);  // preferir última semana
-    return (fresh.length>=MIN ? fresh : all).slice(0,MAX);      // siempre ≥15 si la fuente los tiene
+    const fresh=all.filter(x=>x.t0 && (now-x.t0)<=MAX_AGE_MS);  // SOLO últimos 7 días
+    return fresh.length ? fresh.slice(0,MAX) : null;            // nada viejo; si no hay frescos, usa el respaldo
   }
   async function load(){
     let list=await fetchNews();
