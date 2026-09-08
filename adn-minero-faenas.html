@@ -35,6 +35,15 @@
     .tag{ font-size:9.5px; font-weight:800; letter-spacing:.03em; text-transform:uppercase; padding:2px 7px; border-radius:999px; }
     .lbl{ font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:#9c8f83; margin:18px 2px 8px; }
     h3{ margin:0; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .cap{ font-size:13px; line-height:1.55; color:#dacfc2; } .cap b{ color:#f4ece5; }
+    .lbl-sm{ font-size:9.5px; fill:#c9b7a5; font-weight:600; }
+    #fnSun{ animation:fnsun 3.4s ease-in-out infinite; } @keyframes fnsun{ 0%,100%{ opacity:.55 } 50%{ opacity:.9 } }
+    .fnMk{ transform-box:fill-box; transform-origin:center; animation:fnmk 3.2s ease-in-out infinite; } .fnMk.b{ animation-delay:.8s } .fnMk.c{ animation-delay:1.6s } .fnMk.d{ animation-delay:2.4s }
+    @keyframes fnmk{ 0%,100%{ opacity:.5; transform:scale(.85) } 50%{ opacity:1; transform:scale(1.15) } }
+    #fnTruck{ animation:fntruck 7s ease-in-out infinite; } @keyframes fntruck{ 0%,8%{ transform:translate(0,0) } 50%{ transform:translate(-18px,-16px) } 92%,100%{ transform:translate(0,0) } }
+    #fnPond{ animation:fnpond 3s ease-in-out infinite; } @keyframes fnpond{ 0%,100%{ opacity:.8 } 50%{ opacity:1 } }
+    @media (prefers-reduced-motion:reduce){ #fnSun,.fnMk,#fnTruck,#fnPond{ animation:none !important } .fnMk{ opacity:1 } }
   </style>
   <script src="adn-ui.js" defer></script>
   <script type="application/ld+json">
@@ -52,6 +61,42 @@
     </header>
 
     <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">Cada gran mina tiene su historia, su gente y su rol en el país. Esta es la colección de fichas de las faenas más importantes de Chile. Toca una para conocerla.</p>
+
+    <!-- PANORAMA MINERO (animado) -->
+    <div class="glass rounded-2xl p-4 mt-4">
+      <svg class="viz" viewBox="0 0 400 150" role="img" aria-label="Paisaje minero de Chile: mar y desaladora, cordillera con un rajo, y un salar de litio">
+        <defs>
+          <linearGradient id="fnSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c2a3a"/><stop offset=".6" stop-color="#33313a"/><stop offset="1" stop-color="#7a5030"/></linearGradient>
+          <linearGradient id="fnGr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#54402f"/><stop offset="1" stop-color="#201711"/></linearGradient>
+          <linearGradient id="fnPitG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7c5d45"/><stop offset="1" stop-color="#2a1d14"/></linearGradient>
+          <linearGradient id="fnSea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a86a0"/><stop offset="1" stop-color="#1c4453"/></linearGradient>
+          <filter id="fnSunF" x="-120%" y="-120%" width="340%" height="340%"><feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#f7b45a" flood-opacity=".9"/></filter>
+          <filter id="fnMkF" x="-120%" y="-120%" width="340%" height="340%"><feDropShadow dx="0" dy="0" stdDeviation="2.5" flood-color="#f0c069" flood-opacity=".9"/></filter>
+        </defs>
+        <rect x="0" y="0" width="400" height="95" fill="url(#fnSky)"/>
+        <circle id="fnSun" cx="326" cy="26" r="12" fill="#f7c56a" filter="url(#fnSunF)"/>
+        <!-- cordillera con neblina (capas) -->
+        <polygon points="70,95 150,44 230,95" fill="#3a4652" opacity=".55"/>
+        <polygon points="200,95 290,38 380,95" fill="#333f4a" opacity=".6"/>
+        <polygon points="132,52 150,44 168,52" fill="#eef4f8"/><polygon points="272,46 290,38 308,46" fill="#eef4f8"/>
+        <rect x="0" y="92" width="400" height="58" fill="url(#fnGr)"/>
+        <!-- mar + desaladora (izq) -->
+        <rect x="0" y="118" width="46" height="32" fill="url(#fnSea)"/>
+        <rect x="18" y="108" width="16" height="12" rx="1.5" fill="#3a4a4e" stroke="#6a8a90" stroke-width="1"/>
+        <!-- rajo (centro) -->
+        <polygon points="120,92 150,92 150,108 176,108 176,120 208,120 208,108 234,108 234,92 264,92" fill="url(#fnPitG)"/>
+        <polyline points="120,92 150,92 150,108 176,108 176,120 208,120 208,108 234,108 234,92 264,92" fill="none" stroke="#caa079" stroke-width="1.2" stroke-linejoin="round" opacity=".8"/>
+        <g id="fnTruck"><g transform="translate(196,118)"><rect x="0" y="-5" width="12" height="5" rx="1" fill="#e0955f"/><circle cx="3" cy="1" r="1.8" fill="#15100b"/><circle cx="9" cy="1" r="1.8" fill="#15100b"/></g></g>
+        <!-- salar (der) -->
+        <rect id="fnPond" x="300" y="128" width="72" height="16" rx="3" fill="#2f9fb0" stroke="#e6d4c4" stroke-width="1"/>
+        <!-- marcadores de minas -->
+        <g fill="#f0c069"><circle class="fnMk" cx="30" cy="112" r="3.4" filter="url(#fnMkF)"/><circle class="fnMk b" cx="192" cy="96" r="3.4" filter="url(#fnMkF)"/><circle class="fnMk c" cx="290" cy="90" r="3.4" filter="url(#fnMkF)"/><circle class="fnMk d" cx="336" cy="126" r="3.4" filter="url(#fnMkF)"/></g>
+        <text class="lbl-sm" x="30" y="146" text-anchor="middle">mar</text>
+        <text class="lbl-sm" x="192" y="140" text-anchor="middle" style="fill:#e2cdb0">rajo</text>
+        <text class="lbl-sm" x="336" y="124" text-anchor="middle" style="fill:#bfeaf0">salar</text>
+      </svg>
+      <p class="cap mt-3">De norte a sur, Chile es una potencia minera: <b>cobre</b> en el desierto, <b>litio</b> en los salares, faenas a <b>rajo abierto</b> y <b>subterráneas</b>, muchas con <b>agua de mar</b>. Toca una faena para conocer su historia.</p>
+    </div>
 
     <p class="lbl">Las gigantes de Codelco (estatales)</p>
     <div id="g1" class="grid gap-2.5"></div>
