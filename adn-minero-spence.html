@@ -33,6 +33,22 @@
     .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
     .kpi b{ display:block; font-weight:900; line-height:1; font-variant-numeric:tabular-nums; }
     h3{ margin:0; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .cap{ font-size:13px; line-height:1.55; color:#dacfc2; } .cap b{ color:#f4ece5; }
+    .lbl-sm{ font-size:9.5px; fill:#bcd0d6; font-weight:600; }
+    .steps{ display:flex; gap:5px; margin-top:11px; }
+    .step{ flex:1; text-align:center; font-size:10px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#8a8079; border:1px solid rgba(196,168,148,.14); animation:stepHi 16s infinite; }
+    .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(95,189,209,.16); color:#a7d9e6; font-size:9px; margin-bottom:4px; }
+    .step.s2{ animation-delay:4s } .step.s3{ animation-delay:8s } .step.s4{ animation-delay:12s }
+    @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#8a8079; border-color:rgba(196,168,148,.14) } 5%,21%{ background:rgba(95,189,209,.18); color:#eafaff; border-color:rgba(95,189,209,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#8a8079; border-color:rgba(196,168,148,.14) } }
+    .narr{ position:relative; min-height:36px; margin-top:9px; }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:narr 16s infinite; } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:4s } .nl.n3{ animation-delay:8s } .nl.n4{ animation-delay:12s }
+    @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    .spUp{ animation:spup 3s linear infinite; } .spUp.b{ animation-delay:1s } .spUp.c{ animation-delay:2s }
+    @keyframes spup{ 0%{ transform:translate(0,0); opacity:0 } 14%{ opacity:1 } 86%{ opacity:1 } 100%{ transform:translate(214px,-70px); opacity:0 } }
+    #spSun{ animation:spsun 3.4s ease-in-out infinite; } @keyframes spsun{ 0%,100%{ opacity:.55 } 50%{ opacity:.85 } }
+    @media (prefers-reduced-motion:reduce){ .spUp,#spSun,.step,.nl{ animation:none !important } .spUp{ opacity:0 } .narr{ display:none } }
   </style>
   <script src="adn-ui.js" defer></script>
   <script type="application/ld+json">
@@ -50,6 +66,52 @@
     </header>
 
     <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">En Sierra Gorda, Región de Antofagasta, <b>Spence</b> es una operación de <b>BHP</b>. Con su expansión (Spence Growth Option) sumó una concentradora y opera con <b>agua de mar desalada</b>.</p>
+
+    <!-- AGUA DE MAR + CONCENTRADORA (animado) -->
+    <div class="glass rounded-2xl p-4 mt-4">
+      <div class="flex items-center gap-2.5 mb-3">
+        <i data-lucide="droplets" style="width:20px;height:20px;color:#5fbdd1"></i>
+        <h3 class="font-bold text-[15.5px]" style="margin:0">Agua de mar y concentradora</h3>
+      </div>
+      <svg class="viz" viewBox="0 0 400 190" role="img" aria-label="Spence usa agua de mar desalada bombeada a la faena, con una nueva concentradora de su expansion">
+        <defs>
+          <linearGradient id="spSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#213240"/><stop offset="1" stop-color="#2a333a"/></linearGradient>
+          <linearGradient id="spSea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a86a0"/><stop offset="1" stop-color="#1c4453"/></linearGradient>
+          <linearGradient id="spGr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#54402f"/><stop offset="1" stop-color="#201711"/></linearGradient>
+          <linearGradient id="spShade" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe6be" stop-opacity=".1"/><stop offset=".5" stop-color="#000000" stop-opacity="0"/><stop offset="1" stop-color="#000000" stop-opacity=".36"/></linearGradient>
+          <linearGradient id="spPlant" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9b7a5"/><stop offset="1" stop-color="#7a6a5a"/></linearGradient>
+          <filter id="spSoft" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.45"/></filter>
+          <filter id="spSunF" x="-120%" y="-120%" width="340%" height="340%"><feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#f0d079" flood-opacity="0.9"/></filter>
+        </defs>
+        <rect x="0" y="0" width="400" height="190" fill="url(#spSky)"/>
+        <polygon points="0,170 120,160 250,110 400,66 400,190 0,190" fill="url(#spGr)"/>
+        <polygon points="0,170 120,160 250,110 400,66 400,190 0,190" fill="url(#spShade)"/>
+        <circle id="spSun" cx="56" cy="30" r="12" fill="#e8c98a" filter="url(#spSunF)"/>
+        <rect x="0" y="150" width="88" height="40" fill="url(#spSea)"/>
+        <g filter="url(#spSoft)"><rect x="52" y="130" width="28" height="20" rx="2" fill="#3a4a4e" stroke="#6a8a90" stroke-width="1.4"/></g>
+        <line x1="90" y1="150" x2="304" y2="80" stroke="#6a7a80" stroke-width="5" stroke-linecap="round"/>
+        <g fill="#5fd1e0"><circle class="spUp" cx="92" cy="148" r="3"/><circle class="spUp b" cx="92" cy="148" r="3"/><circle class="spUp c" cx="92" cy="148" r="3"/></g>
+        <!-- concentradora + rajo en la faena -->
+        <g filter="url(#spSoft)"><rect x="300" y="70" width="46" height="26" rx="3" fill="url(#spPlant)"/><rect x="308" y="60" width="7" height="10" fill="#9c8a78"/><rect x="326" y="64" width="7" height="6" fill="#9c8a78"/></g>
+        <path d="M350,96 L362,80 L386,96 Z" fill="#6b5140"/>
+        <text class="lbl-sm" x="44" y="176" text-anchor="middle">mar</text>
+        <text class="lbl-sm" x="66" y="164" text-anchor="middle">desaladora</text>
+        <text class="lbl-sm" x="323" y="110" text-anchor="middle">concentradora</text>
+      </svg>
+      <div class="steps">
+        <div class="step s1"><span class="n">1</span><br>Agua de mar</div>
+        <div class="step s2"><span class="n">2</span><br>Desalar</div>
+        <div class="step s3"><span class="n">3</span><br>Bombear</div>
+        <div class="step s4"><span class="n">4</span><br>Concentradora</div>
+      </div>
+      <div class="narr">
+        <span class="nl n1">Spence toma <b>agua de mar</b> en la costa de Antofagasta.</span>
+        <span class="nl n2">La <b>desala</b> para dejarla utilizable.</span>
+        <span class="nl n3">La <b>bombea</b> a la faena en el desierto.</span>
+        <span class="nl n4">Su expansión sumó una <b>concentradora</b> (Spence Growth Option).</span>
+      </div>
+      <p class="cap mt-3">Spence (BHP) opera con <b>agua de mar desalada</b> bombeada desde la costa, y con su expansión <b>Spence Growth Option</b> sumó una <b>concentradora</b> para producir más cobre sin tocar el agua del desierto.</p>
+    </div>
 
     <div class="grid grid-cols-2 gap-2.5 mt-4"><div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="building" class="w-4 h-4" style="color:#7fbf9a"></i><span class="text-[11px] font-bold text-stone-400">Operador</span></div><b style="font-size:19px;color:#a7d18a">BHP</b><p class="text-[11px] text-stone-500 mt-1">minería privada</p></div><div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="waves" class="w-4 h-4" style="color:#67c1d6"></i><span class="text-[11px] font-bold text-stone-400">Agua</span></div><b style="font-size:19px;color:#7fbfd1">De mar</b><p class="text-[11px] text-stone-500 mt-1">desalada</p></div><div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="trending-up" class="w-4 h-4" style="color:#cf9b6f"></i><span class="text-[11px] font-bold text-stone-400">Hito</span></div><b style="font-size:19px;color:#e8c9a6">Expansión SGO</b><p class="text-[11px] text-stone-500 mt-1">nueva concentradora</p></div><div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="map-pin" class="w-4 h-4" style="color:#e0955f"></i><span class="text-[11px] font-bold text-stone-400">Dónde</span></div><b style="font-size:19px;color:#e8c9a6">Antofagasta</b><p class="text-[11px] text-stone-500 mt-1">Sierra Gorda</p></div></div>
 

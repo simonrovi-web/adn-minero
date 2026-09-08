@@ -33,6 +33,22 @@
     .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
     .kpi b{ display:block; font-weight:900; line-height:1; font-variant-numeric:tabular-nums; }
     h3{ margin:0; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .cap{ font-size:13px; line-height:1.55; color:#dacfc2; } .cap b{ color:#f4ece5; }
+    .lbl-sm{ font-size:9.5px; fill:#bcd0d6; font-weight:600; }
+    .steps{ display:flex; gap:5px; margin-top:11px; }
+    .step{ flex:1; text-align:center; font-size:10px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#8a8079; border:1px solid rgba(196,168,148,.14); animation:stepHi 16s infinite; }
+    .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(95,189,209,.16); color:#a7d9e6; font-size:9px; margin-bottom:4px; }
+    .step.s2{ animation-delay:4s } .step.s3{ animation-delay:8s } .step.s4{ animation-delay:12s }
+    @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#8a8079; border-color:rgba(196,168,148,.14) } 5%,21%{ background:rgba(95,189,209,.18); color:#eafaff; border-color:rgba(95,189,209,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#8a8079; border-color:rgba(196,168,148,.14) } }
+    .narr{ position:relative; min-height:36px; margin-top:9px; }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:narr 16s infinite; } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:4s } .nl.n3{ animation-delay:8s } .nl.n4{ animation-delay:12s }
+    @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    .qbUp{ animation:qbup 3s linear infinite; } .qbUp.b{ animation-delay:1s } .qbUp.c{ animation-delay:2s }
+    @keyframes qbup{ 0%{ transform:translate(0,0); opacity:0 } 14%{ opacity:1 } 86%{ opacity:1 } 100%{ transform:translate(214px,-64px); opacity:0 } }
+    #qbGlow{ animation:qbg 2.8s ease-in-out infinite; } @keyframes qbg{ 0%,100%{ opacity:.4 } 50%{ opacity:.9 } }
+    @media (prefers-reduced-motion:reduce){ .qbUp,#qbGlow,.step,.nl{ animation:none !important } #qbGlow{ opacity:.7 } .narr{ display:none } }
   </style>
   <script src="adn-ui.js" defer></script>
   <script type="application/ld+json">
@@ -50,6 +66,52 @@
     </header>
 
     <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">En el altiplano de Tarapacá, <b>Quebrada Blanca</b> dio un salto enorme con <b>QB2</b>, una de las mayores inversiones mineras recientes de Chile. Es operada por la canadiense <b>Teck</b>.</p>
+
+    <!-- QB2: EL GRAN SALTO (animado) -->
+    <div class="glass rounded-2xl p-4 mt-4">
+      <div class="flex items-center gap-2.5 mb-3">
+        <i data-lucide="factory" style="width:20px;height:20px;color:#67c1d6"></i>
+        <h3 class="font-bold text-[15.5px]" style="margin:0">QB2: el gran salto en el altiplano</h3>
+      </div>
+      <svg class="viz" viewBox="0 0 400 190" role="img" aria-label="Quebrada Blanca dio un salto con QB2, una gran concentradora nueva en el altiplano que opera con agua de mar">
+        <defs>
+          <linearGradient id="qbSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#26384a"/><stop offset="1" stop-color="#33434c"/></linearGradient>
+          <linearGradient id="qbSea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a86a0"/><stop offset="1" stop-color="#1c4453"/></linearGradient>
+          <linearGradient id="qbGr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#54402f"/><stop offset="1" stop-color="#201711"/></linearGradient>
+          <linearGradient id="qbShade" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe6be" stop-opacity=".1"/><stop offset=".5" stop-color="#000000" stop-opacity="0"/><stop offset="1" stop-color="#000000" stop-opacity=".36"/></linearGradient>
+          <linearGradient id="qbPlant" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fd0e0"/><stop offset="1" stop-color="#3a7f9a"/></linearGradient>
+          <radialGradient id="qbGlowG" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#7fd0e6" stop-opacity=".8"/><stop offset="1" stop-color="#7fd0e6" stop-opacity="0"/></radialGradient>
+          <filter id="qbSoft" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.45"/></filter>
+        </defs>
+        <rect x="0" y="0" width="400" height="190" fill="url(#qbSky)"/>
+        <!-- cumbres nevadas (altiplano) -->
+        <polygon points="180,74 240,40 300,74" fill="#41505a"/><polygon points="240,54 256,40 272,54" fill="#eef4f8"/>
+        <polygon points="0,170 120,158 250,108 400,64 400,190 0,190" fill="url(#qbGr)"/>
+        <polygon points="0,170 120,158 250,108 400,64 400,190 0,190" fill="url(#qbShade)"/>
+        <rect x="0" y="150" width="80" height="40" fill="url(#qbSea)"/>
+        <g filter="url(#qbSoft)"><rect x="48" y="132" width="26" height="18" rx="2" fill="#3a4a4e" stroke="#6a8a90" stroke-width="1.3"/></g>
+        <line x1="82" y1="150" x2="300" y2="86" stroke="#6a7a80" stroke-width="5" stroke-linecap="round"/>
+        <g fill="#5fd1e0"><circle class="qbUp" cx="84" cy="148" r="3"/><circle class="qbUp b" cx="84" cy="148" r="3"/><circle class="qbUp c" cx="84" cy="148" r="3"/></g>
+        <!-- QB2: gran concentradora nueva con glow -->
+        <ellipse id="qbGlow" cx="322" cy="92" rx="70" ry="34" fill="url(#qbGlowG)"/>
+        <g filter="url(#qbSoft)"><rect x="298" y="74" width="52" height="30" rx="3" fill="url(#qbPlant)"/><rect x="306" y="62" width="8" height="12" fill="#67c1d6"/><rect x="326" y="66" width="8" height="8" fill="#67c1d6"/></g>
+        <text class="lbl-sm" x="322" y="118" text-anchor="middle" style="fill:#a7e0ea">QB2 · concentradora</text>
+        <text class="lbl-sm" x="40" y="176" text-anchor="middle">agua de mar</text>
+      </svg>
+      <div class="steps">
+        <div class="step s1"><span class="n">1</span><br>Altiplano</div>
+        <div class="step s2"><span class="n">2</span><br>Agua de mar</div>
+        <div class="step s3"><span class="n">3</span><br>QB2</div>
+        <div class="step s4"><span class="n">4</span><br>Gran salto</div>
+      </div>
+      <div class="narr">
+        <span class="nl n1">Quebrada Blanca está en el <b>altiplano</b> de Tarapacá.</span>
+        <span class="nl n2">Opera con <b>agua de mar</b> bombeada desde la costa.</span>
+        <span class="nl n3"><b>QB2</b> sumó una enorme <b>concentradora</b> nueva.</span>
+        <span class="nl n4">Fue una de las <b>mayores inversiones</b> mineras recientes de Chile.</span>
+      </div>
+      <p class="cap mt-3">Quebrada Blanca (Teck) dio un <b>salto enorme</b> con <b>QB2</b>: una gran <b>concentradora</b> nueva en el altiplano que opera con <b>agua de mar</b>, una de las mayores inversiones mineras recientes del país.</p>
+    </div>
 
     <div class="grid grid-cols-2 gap-2.5 mt-4"><div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="building" class="w-4 h-4" style="color:#7fbf9a"></i><span class="text-[11px] font-bold text-stone-400">Operador</span></div><b style="font-size:19px;color:#a7d18a">Teck</b><p class="text-[11px] text-stone-500 mt-1">capital extranjero</p></div><div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="hard-hat" class="w-4 h-4" style="color:#cf9b6f"></i><span class="text-[11px] font-bold text-stone-400">Hito</span></div><b style="font-size:19px;color:#e8c9a6">QB2</b><p class="text-[11px] text-stone-500 mt-1">megaproyecto reciente</p></div><div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="waves" class="w-4 h-4" style="color:#67c1d6"></i><span class="text-[11px] font-bold text-stone-400">Agua</span></div><b style="font-size:19px;color:#7fbfd1">De mar</b><p class="text-[11px] text-stone-500 mt-1">desalada, con ducto</p></div><div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="map-pin" class="w-4 h-4" style="color:#e0955f"></i><span class="text-[11px] font-bold text-stone-400">Dónde</span></div><b style="font-size:19px;color:#e8c9a6">Tarapacá</b><p class="text-[11px] text-stone-500 mt-1">altiplano norte</p></div></div>
 

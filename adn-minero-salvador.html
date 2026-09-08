@@ -33,6 +33,21 @@
     .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
     .kpi b{ display:block; font-weight:900; line-height:1; font-variant-numeric:tabular-nums; }
     h3{ margin:0; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .cap{ font-size:13px; line-height:1.55; color:#dacfc2; } .cap b{ color:#f4ece5; }
+    .lbl-sm{ font-size:9.5px; fill:#c9b7a5; font-weight:600; }
+    .steps{ display:flex; gap:5px; margin-top:11px; }
+    .step{ flex:1; text-align:center; font-size:10px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#8a8079; border:1px solid rgba(196,168,148,.14); animation:stepHi 16s infinite; }
+    .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(196,168,148,.14); color:#c9b7a5; font-size:9px; margin-bottom:4px; }
+    .step.s2{ animation-delay:4s } .step.s3{ animation-delay:8s } .step.s4{ animation-delay:12s }
+    @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#8a8079; border-color:rgba(196,168,148,.14) } 5%,21%{ background:rgba(207,155,111,.18); color:#f6ead9; border-color:rgba(207,155,111,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#8a8079; border-color:rgba(196,168,148,.14) } }
+    .narr{ position:relative; min-height:36px; margin-top:9px; }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:narr 16s infinite; } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:4s } .nl.n3{ animation-delay:8s } .nl.n4{ animation-delay:12s }
+    @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    #esaTruck{ animation:esat 9s cubic-bezier(.5,0,.5,1) infinite; } @keyframes esat{ 0%,8%{ transform:translate(0,0) } 40%{ transform:translate(-40px,-40px) } 78%,100%{ transform:translate(-96px,-76px) } }
+    #esaGlow{ animation:esag 3.4s ease-in-out infinite; } @keyframes esag{ 0%,100%{ opacity:.3 } 50%{ opacity:.75 } }
+    @media (prefers-reduced-motion:reduce){ #esaTruck,#esaGlow,.step,.nl{ animation:none !important } #esaGlow{ opacity:.5 } .narr{ display:none } }
   </style>
   <script src="adn-ui.js" defer></script>
   <script type="application/ld+json">
@@ -50,6 +65,55 @@
     </header>
 
     <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">En la Región de Atacama, <b>El Salvador</b> es una histórica división de <b>Codelco</b> que estuvo cerca del cierre. El proyecto <b>Rajo Inca</b> la reconvirtió a cielo abierto para darle décadas más de vida.</p>
+
+    <!-- RAJO INCA: EL RENACER (animado) -->
+    <div class="glass rounded-2xl p-4 mt-4">
+      <div class="flex items-center gap-2.5 mb-3">
+        <i data-lucide="sunrise" style="width:20px;height:20px;color:#e0a35a"></i>
+        <h3 class="font-bold text-[15.5px]" style="margin:0">Rajo Inca: el renacer</h3>
+      </div>
+      <svg class="viz" viewBox="0 0 400 185" role="img" aria-label="El Salvador renacio con el proyecto Rajo Inca, que la reconvirtio a mina a cielo abierto por decadas mas">
+        <defs>
+          <linearGradient id="esaSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2438"/><stop offset=".55" stop-color="#5a4436"/><stop offset="1" stop-color="#c8783a"/></linearGradient>
+          <linearGradient id="esaRock" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#54402f"/><stop offset="1" stop-color="#201711"/></linearGradient>
+          <linearGradient id="esaPit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7c5d45"/><stop offset="1" stop-color="#2a1d14"/></linearGradient>
+          <linearGradient id="esaShade" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe6be" stop-opacity=".14"/><stop offset=".5" stop-color="#000000" stop-opacity="0"/><stop offset="1" stop-color="#000000" stop-opacity=".4"/></linearGradient>
+          <radialGradient id="esaGlowG" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#f0c069" stop-opacity=".8"/><stop offset="1" stop-color="#f0c069" stop-opacity="0"/></radialGradient>
+          <filter id="esaSunF" x="-120%" y="-120%" width="340%" height="340%"><feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#f7b45a" flood-opacity=".95"/></filter>
+        </defs>
+        <rect x="0" y="0" width="400" height="62" fill="url(#esaSky)"/>
+        <!-- sol naciente (renacer) -->
+        <circle cx="200" cy="60" r="15" fill="#f7c56a" filter="url(#esaSunF)"/>
+        <rect x="0" y="60" width="400" height="125" fill="url(#esaRock)"/>
+        <!-- resplandor del renacer sobre el nuevo rajo -->
+        <ellipse id="esaGlow" cx="200" cy="120" rx="120" ry="46" fill="url(#esaGlowG)"/>
+        <!-- nuevo rajo (Rajo Inca) -->
+        <polygon points="56,62 104,62 104,96 140,96 140,128 168,128 168,150 232,150 232,128 260,128 260,96 296,96 296,62 344,62" fill="url(#esaPit)"/>
+        <polygon points="56,62 104,62 104,96 140,96 140,128 168,128 168,150 232,150 232,128 260,128 260,96 296,96 296,62 344,62" fill="url(#esaShade)"/>
+        <polyline points="56,62 104,62 104,96 140,96 140,128 168,128 168,150 232,150 232,128 260,128 260,96 296,96 296,62 344,62" fill="none" stroke="#e0b884" stroke-width="1.5" stroke-linejoin="round" opacity=".9"/>
+        <!-- camión que vuelve a trabajar -->
+        <g id="esaTruck"><g transform="translate(178,150)">
+          <path d="M1,-9 Q10,-15 19,-9 Z" fill="#c9a06a"/>
+          <rect x="0" y="-9" width="20" height="9" rx="1.5" fill="#e0955f"/>
+          <rect x="15" y="-14" width="7" height="6" rx="1" fill="#f0d7b6"/>
+          <circle cx="5" cy="2" r="3" fill="#15100b"/><circle cx="16" cy="2" r="3" fill="#15100b"/>
+        </g></g>
+        <text class="lbl-sm" x="200" y="140" text-anchor="middle" style="fill:#f0d7b6">nuevo rajo · Rajo Inca</text>
+      </svg>
+      <div class="steps">
+        <div class="step s1"><span class="n">1</span><br>Histórica</div>
+        <div class="step s2"><span class="n">2</span><br>Casi cierre</div>
+        <div class="step s3"><span class="n">3</span><br>Rajo Inca</div>
+        <div class="step s4"><span class="n">4</span><br>Décadas más</div>
+      </div>
+      <div class="narr">
+        <span class="nl n1">El Salvador es una <b>histórica</b> división de Codelco.</span>
+        <span class="nl n2">Su cobre subterráneo se agotó: estuvo <b>cerca del cierre</b>.</span>
+        <span class="nl n3">El proyecto <b>Rajo Inca</b> la reconvirtió a cielo abierto.</span>
+        <span class="nl n4">Eso le da <b>décadas más</b> de vida.</span>
+      </div>
+      <p class="cap mt-3">El Salvador estuvo <b>cerca del cierre</b> al agotarse su mina subterránea. El proyecto <b>Rajo Inca</b> la <b>reconvirtió a cielo abierto</b>, dándole <b>décadas más</b> de producción — un verdadero renacer.</p>
+    </div>
 
     <div class="grid grid-cols-2 gap-2.5 mt-4"><div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="building" class="w-4 h-4" style="color:#7fbf9a"></i><span class="text-[11px] font-bold text-stone-400">Operador</span></div><b style="font-size:19px;color:#a7d18a">Codelco</b><p class="text-[11px] text-stone-500 mt-1">división estatal</p></div><div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="refresh-cw" class="w-4 h-4" style="color:#cf9b6f"></i><span class="text-[11px] font-bold text-stone-400">Hito</span></div><b style="font-size:19px;color:#e8c9a6">Rajo Inca</b><p class="text-[11px] text-stone-500 mt-1">le dio nueva vida</p></div><div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="calendar" class="w-4 h-4" style="color:#d6a94f"></i><span class="text-[11px] font-bold text-stone-400">Historia</span></div><b style="font-size:19px;color:#e8c9a6">Desde 1959</b><p class="text-[11px] text-stone-500 mt-1">reemplazó a Potrerillos</p></div><div class="glass rounded-2xl p-3.5 kpi"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="map-pin" class="w-4 h-4" style="color:#e0955f"></i><span class="text-[11px] font-bold text-stone-400">Dónde</span></div><b style="font-size:19px;color:#e8c9a6">Atacama</b><p class="text-[11px] text-stone-500 mt-1">Diego de Almagro</p></div></div>
 
