@@ -40,6 +40,22 @@
     .tip{ display:flex; gap:9px; align-items:flex-start; font-size:13.5px; line-height:1.5; color:#dacfc2; margin-top:8px; }
     .tip b{ color:#f4ece5; }
     h3{ margin:0; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .lbl{ font-size:10.5px; font-weight:800; fill:#eaf4ee; } .lbl-sm{ font-size:9.5px; fill:#a9c9d9; font-weight:600; }
+    .steps{ display:flex; gap:5px; margin-top:11px; }
+    .step{ flex:1; text-align:center; font-size:10.5px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#8a998f; border:1px solid rgba(127,191,154,.14); animation:stepHi 16s infinite; }
+    .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(127,191,154,.16); color:#a7d1b6; font-size:9px; margin-bottom:4px; }
+    .step.s2{ animation-delay:4s } .step.s3{ animation-delay:8s } .step.s4{ animation-delay:12s }
+    @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#8a998f; border-color:rgba(127,191,154,.14) } 5%,21%{ background:rgba(127,191,154,.18); color:#eef7f1; border-color:rgba(127,191,154,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#8a998f; border-color:rgba(127,191,154,.14) } }
+    .narr{ position:relative; min-height:36px; margin-top:9px; }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:narr 16s infinite; } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:4s } .nl.n3{ animation-delay:8s } .nl.n4{ animation-delay:12s }
+    @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    .climber{ animation:climb 16s ease-in-out infinite }
+    @keyframes climb{ 0%,25%{ transform:translate(0,0) } 33%,50%{ transform:translate(64px,-36px) } 58%,75%{ transform:translate(126px,-72px) } 83%,100%{ transform:translate(186px,-110px) } }
+    .o2fill{ transform-box:fill-box; transform-origin:bottom; animation:o2drop 16s ease-in-out infinite }
+    @keyframes o2drop{ 0%,25%{ transform:scaleY(1) } 33%,50%{ transform:scaleY(.8) } 58%,75%{ transform:scaleY(.64) } 83%,100%{ transform:scaleY(.52) } }
+    @media (prefers-reduced-motion:reduce){ .climber,.o2fill,.step,.nl{ animation:none !important } .climber{ transform:translate(126px,-72px) } .o2fill{ transform:scaleY(.64) } .nl{ opacity:1 } .narr{ display:none } }
   </style>
   <script src="adn-ui.js" defer></script>
   <script type="application/ld+json">
@@ -58,6 +74,62 @@
 
     <div class="glass rounded-2xl p-3.5 mt-4" style="border-color:rgba(224,113,90,.3);background:rgba(224,113,90,.06)">
       <p class="text-[12px] text-stone-300 leading-relaxed"><b style="color:#f0b8a6">⚠️ Información de divulgación.</b> No reemplaza la indicación de tu médico ni del policlínico de la faena. Ante síntomas, consulta siempre a un profesional de salud.</p>
+    </div>
+
+    <div class="glass rounded-2xl p-3.5 mt-3">
+      <svg class="viz" viewBox="0 0 340 214" role="img" aria-label="Cómo aclimatarse a la altura: subir gradual desde el nivel del mar hasta la faena, donde hay menos oxígeno, cuidando hidratación y señales de alerta">
+        <defs>
+          <linearGradient id="hSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0f1a26"/><stop offset=".6" stop-color="#182634"/><stop offset="1" stop-color="#16110d"/></linearGradient>
+          <linearGradient id="hMtn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a6b7a"/><stop offset="1" stop-color="#2b3540"/></linearGradient>
+          <linearGradient id="hSnow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eaf2f6"/><stop offset="1" stop-color="#b7cad6"/></linearGradient>
+          <linearGradient id="hO2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9be0b6"/><stop offset="1" stop-color="#5ab98a"/></linearGradient>
+          <filter id="hSh" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.8" flood-color="#000" flood-opacity=".45"/></filter>
+        </defs>
+        <rect x="0" y="0" width="340" height="214" fill="url(#hSky)"/>
+
+        <!-- mountain -->
+        <path d="M20 190 L150 40 L200 78 L260 26 L320 190 Z" fill="url(#hMtn)"/>
+        <path d="M150 40 L172 65 L158 68 L166 80 L150 72 L138 84 L146 66 L134 62 Z" fill="url(#hSnow)" opacity=".9"/>
+        <path d="M260 26 L276 45 L266 48 L272 58 L260 52 L250 60 L256 47 L246 44 Z" fill="url(#hSnow)" opacity=".9"/>
+
+        <!-- altitude lines -->
+        <g stroke="#8fb0c4" stroke-width=".8" stroke-dasharray="3 4" opacity=".5">
+          <line x1="20" y1="70" x2="300" y2="70"/><line x1="20" y1="108" x2="300" y2="108"/><line x1="20" y1="146" x2="300" y2="146"/>
+        </g>
+        <text class="lbl-sm" x="24" y="66">4.500 m · faena</text>
+        <text class="lbl-sm" x="24" y="104">3.500 m</text>
+        <text class="lbl-sm" x="24" y="142">2.500 m</text>
+        <text class="lbl-sm" x="24" y="184" style="fill:#7fbf9a">nivel del mar</text>
+
+        <!-- O2 gauge -->
+        <g transform="translate(300,44)">
+          <rect x="0" y="0" width="16" height="118" rx="5" fill="rgba(255,255,255,.06)" stroke="rgba(127,191,154,.3)"/>
+          <rect class="o2fill" x="3" y="3" width="10" height="112" rx="3" fill="url(#hO2)"/>
+          <text class="lbl-sm" x="8" y="-6" text-anchor="middle" style="fill:#a7d1b6">O₂</text>
+        </g>
+
+        <!-- climber (starts at sea level, bottom-left) -->
+        <g class="climber">
+          <g transform="translate(46,176)" filter="url(#hSh)">
+            <circle cx="0" cy="-16" r="5.5" fill="#f4ece5"/>
+            <path d="M0 -11 L0 2 M0 -7 L-7 -1 M0 -7 L7 -2 M0 2 L-6 12 M0 2 L6 12" stroke="#f4ece5" stroke-width="3" stroke-linecap="round" fill="none"/>
+          </g>
+        </g>
+
+        <text class="lbl-sm" x="170" y="206" text-anchor="middle" style="fill:#c7b79f">Más altura = menos oxígeno: sube gradual y aclimátate</text>
+      </svg>
+      <div class="steps mt-1">
+        <div class="step s1"><span class="n">1</span>Nivel del mar</div>
+        <div class="step s2"><span class="n">2</span>Subes gradual</div>
+        <div class="step s3"><span class="n">3</span>Faena en altura</div>
+        <div class="step s4"><span class="n">4</span>Cuídate</div>
+      </div>
+      <div class="narr">
+        <p class="nl n1">Sales desde el <b>nivel del mar</b>, con oxígeno de sobra: el cuerpo trabaja tranquilo.</p>
+        <p class="nl n2">Subes de forma <b>gradual</b>. Aclimatarse por etapas evita el golpe del soroche.</p>
+        <p class="nl n3">En la <b>faena en altura</b> hay <b>menos oxígeno</b>: cansancio, dolor de cabeza y falta de aire son señales.</p>
+        <p class="nl n4"><b>Hidrátate</b>, come liviano y descansa. Si el malestar no cede o hay confusión, <b>avisa de inmediato</b>.</p>
+      </div>
     </div>
 
     <div id="topics" class="mt-4 grid gap-2.5"></div>

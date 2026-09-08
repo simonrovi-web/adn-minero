@@ -39,6 +39,20 @@
     .metric-icon{ filter:drop-shadow(0 0 8px currentColor); }
     a.lnk{ color:#e8c9a6; }
     .chip{ font-size:11px; font-weight:700; padding:3px 9px; border-radius:6px; display:inline-flex; align-items:center; gap:5px; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; max-width:520px; margin:0 auto; }
+    .nlbl{ font-size:11px; font-weight:800; fill:#eaf4f7; } .nsub{ font-size:8.5px; fill:#a9c9d4; font-weight:600; }
+    .steps{ display:flex; gap:5px; margin-top:11px; max-width:520px; margin-left:auto; margin-right:auto; }
+    .step{ flex:1; text-align:center; font-size:10px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#89989e; border:1px solid rgba(127,191,209,.14); animation:stepHi 16s infinite; }
+    .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(127,191,209,.16); color:#a7cfdd; font-size:9px; margin-bottom:4px; }
+    .step.s2{ animation-delay:4s } .step.s3{ animation-delay:8s } .step.s4{ animation-delay:12s }
+    @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#89989e; border-color:rgba(127,191,209,.14) } 5%,21%{ background:rgba(127,191,209,.18); color:#eef6f8; border-color:rgba(127,191,209,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#89989e; border-color:rgba(127,191,209,.14) } }
+    .narr{ position:relative; min-height:38px; margin-top:9px; max-width:520px; margin-left:auto; margin-right:auto; }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:narr 16s infinite; text-align:center } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:4s } .nl.n3{ animation-delay:8s } .nl.n4{ animation-delay:12s }
+    @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    .aura{ opacity:0; animation:auraOn 16s infinite } .a2{ animation-delay:4s } .a3{ animation-delay:8s } .a4{ animation-delay:12s }
+    @keyframes auraOn{ 0%,3%{opacity:0} 6%,22%{opacity:1} 25%,100%{opacity:0} }
+    @media (prefers-reduced-motion:reduce){ .aura,.step,.nl{ animation:none !important } .aura{ opacity:.6 } .nl{ opacity:1 } .narr{ display:none } }
   </style>
   <script src="adn-ui.js" defer></script>
   <script type="application/ld+json">
@@ -60,6 +74,74 @@
       <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">¿Qué exige la ley en una faena? ⚖️</h1>
       <p class="text-stone-400 text-sm mt-2 max-w-2xl">La seguridad minera en Chile no es opcional: está regulada por ley. Aquí te explicamos, en simple, el marco legal que protege a quienes trabajan en la minería.</p>
     </div>
+
+    <!-- CÓMO FUNCIONA (animado) -->
+    <section class="glass rounded-2xl p-4 sm:p-5 mt-5">
+      <h2 class="text-sm font-bold text-stone-300 flex items-center gap-2 mb-3"><i data-lucide="repeat" class="w-4 h-4" style="color:var(--blue)"></i> Cómo funciona, en simple</h2>
+      <svg class="viz" viewBox="0 0 340 214" role="img" aria-label="El ciclo de la seguridad minera: la ley exige, la faena cumple, el Estado fiscaliza y, ante un accidente grave, se suspende y se notifica">
+        <defs>
+          <linearGradient id="nBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16202a"/><stop offset="1" stop-color="#14100c"/></linearGradient>
+          <filter id="nGlow" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#7fbfd1" flood-opacity=".85"/></filter>
+          <marker id="nArw" markerWidth="8" markerHeight="8" refX="5.5" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#7fbfd1"/></marker>
+        </defs>
+        <rect x="0" y="0" width="340" height="214" fill="url(#nBg)"/>
+
+        <!-- connecting arrows -->
+        <line x1="106" y1="70" x2="120" y2="70" stroke="#7fbfd1" stroke-width="2.2" marker-end="url(#nArw)"/>
+        <line x1="220" y1="70" x2="234" y2="70" stroke="#7fbfd1" stroke-width="2.2" marker-end="url(#nArw)"/>
+        <path d="M284 112 C 284 138, 56 138, 56 114" fill="none" stroke="#6aa7b8" stroke-width="1.8" stroke-dasharray="4 4" marker-end="url(#nArw)" opacity=".8"/>
+        <text class="nsub" x="170" y="150" text-anchor="middle" style="fill:#8fb6c2">cumplimiento permanente</text>
+
+        <!-- node 1: la ley -->
+        <g>
+          <rect x="8" y="38" width="96" height="74" rx="12" fill="rgba(127,191,209,.08)" stroke="rgba(127,191,209,.28)"/>
+          <rect class="aura" x="8" y="38" width="96" height="74" rx="12" fill="none" stroke="#7fbfd1" stroke-width="2" filter="url(#nGlow)"/>
+          <g transform="translate(56,58)" stroke="#a7cfdd" stroke-width="1.8" fill="none" stroke-linecap="round"><line x1="0" y1="-8" x2="0" y2="8"/><line x1="-11" y1="-6" x2="11" y2="-6"/><path d="M-11 -6 L-15 3 L-7 3 Z" fill="rgba(127,191,209,.35)"/><path d="M11 -6 L7 3 L15 3 Z" fill="rgba(127,191,209,.35)"/><line x1="-4" y1="9" x2="4" y2="9"/></g>
+          <text class="nlbl" x="56" y="84" text-anchor="middle">La ley</text>
+          <text class="nlbl" x="56" y="95" text-anchor="middle">exige</text>
+          <text class="nsub" x="56" y="107" text-anchor="middle">DS 132 · L.16.744</text>
+        </g>
+        <!-- node 2: la faena cumple -->
+        <g>
+          <rect x="122" y="38" width="96" height="74" rx="12" fill="rgba(207,155,111,.08)" stroke="rgba(207,155,111,.28)"/>
+          <rect class="aura a2" x="122" y="38" width="96" height="74" rx="12" fill="none" stroke="#cf9b6f" stroke-width="2" filter="url(#nGlow)"/>
+          <g transform="translate(170,58)"><path d="M-13 4 Q-13 -12 0 -12 Q13 -12 13 4 Z" fill="rgba(207,155,111,.9)"/><rect x="-16" y="4" width="32" height="4" rx="2" fill="#e0b184"/><rect x="-3" y="-12" width="6" height="5" rx="2" fill="#e0b184"/></g>
+          <text class="nlbl" x="170" y="84" text-anchor="middle">La faena</text>
+          <text class="nlbl" x="170" y="95" text-anchor="middle">cumple</text>
+          <text class="nsub" x="170" y="107" text-anchor="middle">reglamento · EPP</text>
+        </g>
+        <!-- node 3: el estado fiscaliza -->
+        <g>
+          <rect x="236" y="38" width="96" height="74" rx="12" fill="rgba(127,191,209,.08)" stroke="rgba(127,191,209,.28)"/>
+          <rect class="aura a3" x="236" y="38" width="96" height="74" rx="12" fill="none" stroke="#7fbfd1" stroke-width="2" filter="url(#nGlow)"/>
+          <g transform="translate(284,58)"><path d="M0 -12 L11 -8 L11 2 Q11 11 0 14 Q-11 11 -11 2 L-11 -8 Z" fill="rgba(127,191,209,.9)"/><path d="M-4 0 L-1 4 L5 -4" stroke="#16202a" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+          <text class="nlbl" x="284" y="84" text-anchor="middle">El Estado</text>
+          <text class="nlbl" x="284" y="95" text-anchor="middle">fiscaliza</text>
+          <text class="nsub" x="284" y="107" text-anchor="middle">Sernageomin · DT</text>
+        </g>
+
+        <!-- accident bar (step 4) -->
+        <g>
+          <rect x="8" y="164" width="324" height="40" rx="11" fill="rgba(224,90,63,.1)" stroke="rgba(224,90,63,.3)"/>
+          <rect class="aura a4" x="8" y="164" width="324" height="40" rx="11" fill="none" stroke="#e05a3f" stroke-width="2"/>
+          <circle cx="30" cy="184" r="9" fill="rgba(224,90,63,.85)"/><text x="30" y="188" text-anchor="middle" style="font-size:12px;font-weight:800;fill:#fff">!</text>
+          <text class="nsub" x="48" y="181" style="fill:#f0b8a6;font-size:9.5px;font-weight:800">Ante accidente grave o fatal</text>
+          <text class="nsub" x="48" y="194" style="fill:#dfc8bf">suspende faena · no altera el sitio · notifica a Sernageomin</text>
+        </g>
+      </svg>
+      <div class="steps">
+        <div class="step s1"><span class="n">1</span>La ley exige</div>
+        <div class="step s2"><span class="n">2</span>La faena cumple</div>
+        <div class="step s3"><span class="n">3</span>El Estado fiscaliza</div>
+        <div class="step s4"><span class="n">4</span>Ante accidente</div>
+      </div>
+      <div class="narr">
+        <p class="nl n1">La <b>ley</b> (DS 132, Ley 16.744) fija las reglas de seguridad para toda faena.</p>
+        <p class="nl n2">La <b>empresa</b> debe cumplirlas: reglamento interno, comité paritario, EPP y capacitación.</p>
+        <p class="nl n3">El <b>Estado</b> fiscaliza: Sernageomin y la Dirección del Trabajo inspeccionan y sancionan.</p>
+        <p class="nl n4">Ante un <b>accidente grave o fatal</b>: se suspende la faena, no se altera el sitio y se notifica de inmediato.</p>
+      </div>
+    </section>
 
     <!-- MARCO LEGAL -->
     <section class="mt-6">

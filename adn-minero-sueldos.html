@@ -40,6 +40,24 @@
     .tip{ display:flex; gap:9px; align-items:flex-start; font-size:13.5px; line-height:1.5; color:#dacfc2; margin-top:8px; }
     .tip b{ color:#f4ece5; }
     h3{ margin:0; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .cap{ font-size:13px; line-height:1.55; color:#dacfc2; } .cap b{ color:#f4ece5; }
+    .lbl{ font-size:10px; font-weight:700; fill:#eef6e6; } .lbl-sm{ font-size:9.5px; fill:#b7d2a6; font-weight:600; }
+    .steps{ display:flex; gap:5px; margin-top:11px; }
+    .step{ flex:1; text-align:center; font-size:10.5px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#8a9a82; border:1px solid rgba(167,209,138,.14); animation:stepHi 16s infinite; }
+    .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(167,209,138,.16); color:#bfe0a6; font-size:9px; margin-bottom:4px; }
+    .step.s2{ animation-delay:4s } .step.s3{ animation-delay:8s } .step.s4{ animation-delay:12s }
+    @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#8a9a82; border-color:rgba(167,209,138,.14) } 5%,21%{ background:rgba(167,209,138,.18); color:#f0f8ea; border-color:rgba(167,209,138,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#8a9a82; border-color:rgba(167,209,138,.14) } }
+    .narr{ position:relative; min-height:36px; margin-top:9px; }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:narr 16s infinite; } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:4s } .nl.n3{ animation-delay:8s } .nl.n4{ animation-delay:12s }
+    @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    .sgb{ animation:sgAppear 16s ease-out infinite } .sge1{ animation:sgAppear 16s ease-out infinite; animation-delay:3.5s } .sge2{ animation:sgAppear 16s ease-out infinite; animation-delay:4.3s } .sge3{ animation:sgAppear 16s ease-out infinite; animation-delay:5.1s }
+    @keyframes sgAppear{ 0%,1%{ opacity:0 } 4%,100%{ opacity:1 } }
+    .liq{ animation:liqAppear 16s ease-out infinite } .desc{ animation:descAppear 16s ease-in-out infinite }
+    @keyframes liqAppear{ 0%,73%{ opacity:0 } 77%,100%{ opacity:1 } }
+    @keyframes descAppear{ 0%,73%{ opacity:0 } 77%,96%{ opacity:.8 } 100%{ opacity:.8 } }
+    @media (prefers-reduced-motion:reduce){ .sgb,.sge1,.sge2,.sge3,.liq,.desc,.step,.nl{ animation:none !important; opacity:1 } .narr{ display:none } }
   </style>
   <script src="adn-ui.js" defer></script>
   <script src="adn-recorrido.js" defer></script>
@@ -59,6 +77,63 @@
 
     <div class="glass rounded-2xl p-3.5 mt-4" style="border-color:rgba(214,169,79,.3);background:rgba(214,169,79,.06)">
       <p class="text-[12px] text-stone-300 leading-relaxed"><b style="color:#e6c079">⚠️ Sin cifras exactas.</b> Los sueldos varían mucho según el <b>rol, la empresa, la faena, la experiencia y el ciclo del cobre</b>, y cambian cada año. Aquí te explicamos <b>qué los determina</b> y <b>dónde ver montos reales y actuales</b>, en vez de darte una cifra que quede vieja.</p>
+    </div>
+
+    <div class="glass rounded-2xl p-3.5 mt-3">
+      <svg class="viz" viewBox="0 0 340 214" role="img" aria-label="Cómo se arma el sueldo bruto y por qué el líquido es menor tras los descuentos">
+        <defs>
+          <linearGradient id="sgSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c2418"/><stop offset="1" stop-color="#12170f"/></linearGradient>
+          <linearGradient id="sgBase" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6bf6a"/><stop offset="1" stop-color="#c69537"/></linearGradient>
+          <linearGradient id="sgGrat" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fc177"/><stop offset="1" stop-color="#6a9d53"/></linearGradient>
+          <linearGradient id="sgBon" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#66b6c0"/><stop offset="1" stop-color="#4a929c"/></linearGradient>
+          <linearGradient id="sgAsig" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a996cf"/><stop offset="1" stop-color="#8571b0"/></linearGradient>
+          <linearGradient id="sgLiq" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a3e086"/><stop offset="1" stop-color="#6fb84f"/></linearGradient>
+          <linearGradient id="sgDesc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b98686"/><stop offset="1" stop-color="#8a5757"/></linearGradient>
+          <linearGradient id="sgShade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".28"/></linearGradient>
+          <filter id="sgSh" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2.5" stdDeviation="3" flood-color="#000" flood-opacity=".45"/></filter>
+          <marker id="sgArw" markerWidth="9" markerHeight="9" refX="6" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 Z" fill="#cbb489"/></marker>
+        </defs>
+        <rect x="0" y="0" width="340" height="214" fill="url(#sgSky)"/>
+        <line x1="18" y1="176" x2="322" y2="176" stroke="#3a3428" stroke-width="1.4"/>
+
+        <!-- BRUTO bar (x 40-112) built bottom-up -->
+        <g filter="url(#sgSh)">
+          <g class="sgb"><rect x="40" y="106" width="72" height="70" fill="url(#sgBase)"/><rect x="40" y="106" width="72" height="70" fill="url(#sgShade)"/></g>
+          <g class="sge1"><rect x="40" y="78"  width="72" height="28" fill="url(#sgGrat)"/><rect x="40" y="78"  width="72" height="28" fill="url(#sgShade)"/></g>
+          <g class="sge2"><rect x="40" y="54"  width="72" height="24" fill="url(#sgBon)"/><rect x="40" y="54"  width="72" height="24" fill="url(#sgShade)"/></g>
+          <g class="sge3"><rect x="40" y="34"  width="72" height="20" fill="url(#sgAsig)"/><rect x="40" y="34"  width="72" height="20" fill="url(#sgShade)"/></g>
+        </g>
+        <text class="lbl" x="76" y="122" text-anchor="middle">Base</text>
+        <text class="lbl-sm sge1" x="76" y="96" text-anchor="middle" style="fill:#e6f2dc">Gratificación</text>
+        <text class="lbl-sm sge2" x="76" y="70" text-anchor="middle" style="fill:#dcf1f4">Bonos</text>
+        <text class="lbl-sm sge3" x="76" y="47" text-anchor="middle" style="fill:#ece6f6">Asig.</text>
+        <text class="lbl" x="76" y="192" text-anchor="middle" style="font-size:11px">= BRUTO</text>
+
+        <!-- arrow -->
+        <line class="liq" x1="126" y1="105" x2="196" y2="105" stroke="#cbb489" stroke-width="2.4" marker-end="url(#sgArw)"/>
+        <text class="lbl-sm liq" x="161" y="98" text-anchor="middle" style="fill:#cbb489">− descuentos</text>
+
+        <!-- LÍQUIDO bar (x 210-282) -->
+        <g filter="url(#sgSh)">
+          <g class="desc"><rect x="210" y="34" width="72" height="70" fill="url(#sgDesc)"/><rect x="210" y="34" width="72" height="70" fill="url(#sgShade)"/></g>
+          <g class="liq"><rect x="210" y="104" width="72" height="72" fill="url(#sgLiq)"/><rect x="210" y="104" width="72" height="72" fill="url(#sgShade)"/></g>
+        </g>
+        <text class="lbl-sm desc" x="246" y="72" text-anchor="middle" style="fill:#f0dede;font-size:8.5px">AFP · salud<tspan x="246" dy="11">impuesto</tspan></text>
+        <text class="lbl liq" x="246" y="145" text-anchor="middle">Líquido</text>
+        <text class="lbl liq" x="246" y="192" text-anchor="middle" style="font-size:11px;fill:#a3e086">lo que llega</text>
+      </svg>
+      <div class="steps mt-1">
+        <div class="step s1"><span class="n">1</span>Sueldo base</div>
+        <div class="step s2"><span class="n">2</span>+ bonos y asig.</div>
+        <div class="step s3"><span class="n">3</span>= bruto</div>
+        <div class="step s4"><span class="n">4</span>− desc. = líquido</div>
+      </div>
+      <div class="narr">
+        <p class="nl n1">Todo parte del <b>sueldo base</b> pactado en tu contrato.</p>
+        <p class="nl n2">Sobre él se suman <b>gratificación, bonos y asignaciones</b> (turno, zona, colación…).</p>
+        <p class="nl n3">La suma es tu <b>sueldo bruto</b>: el total antes de descuentos.</p>
+        <p class="nl n4">Se restan <b>AFP, salud e impuesto</b> → queda el <b>líquido</b>, lo que llega a tu cuenta.</p>
+      </div>
     </div>
 
     <div id="topics" class="mt-4 grid gap-2.5"></div>

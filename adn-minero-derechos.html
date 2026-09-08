@@ -40,6 +40,24 @@
     .tip{ display:flex; gap:9px; align-items:flex-start; font-size:13.5px; line-height:1.5; color:#dacfc2; margin-top:8px; }
     .tip b{ color:#f4ece5; }
     h3{ margin:0; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .lbl{ font-size:10.5px; font-weight:800; fill:#f6ead9; } .lbl-sm{ font-size:9.5px; fill:#e6c79b; font-weight:600; }
+    .cell-t{ font-size:12px; font-weight:800; fill:#3a2a14; }
+    .steps{ display:flex; gap:5px; margin-top:11px; }
+    .step{ flex:1; text-align:center; font-size:10.5px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#9a8b78; border:1px solid rgba(224,163,90,.14); animation:stepHi 16s infinite; }
+    .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(224,163,90,.16); color:#eabf86; font-size:9px; margin-bottom:4px; }
+    .step.s2{ animation-delay:4s } .step.s3{ animation-delay:8s } .step.s4{ animation-delay:12s }
+    @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#9a8b78; border-color:rgba(224,163,90,.14) } 5%,21%{ background:rgba(224,163,90,.18); color:#fbeede; border-color:rgba(224,163,90,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#9a8b78; border-color:rgba(224,163,90,.14) } }
+    .narr{ position:relative; min-height:36px; margin-top:9px; }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:narr 16s infinite; } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:4s } .nl.n3{ animation-delay:8s } .nl.n4{ animation-delay:12s }
+    @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    .wcell{ animation:wGlow 16s ease-in-out infinite } .rcell{ animation:rGlow 16s ease-in-out infinite }
+    @keyframes wGlow{ 0%,2%{opacity:.28} 7%,45%{opacity:1} 50%,100%{opacity:.28} }
+    @keyframes rGlow{ 0%,52%{opacity:.28} 57%,94%{opacity:1} 98%,100%{opacity:.28} }
+    .plane{ animation:planeGo 16s ease-in-out infinite; opacity:0 }
+    @keyframes planeGo{ 0%,44%{ transform:translateX(0); opacity:0 } 48%{ opacity:1 } 52%{ transform:translateX(96px); opacity:1 } 56%,100%{ transform:translateX(96px); opacity:0 } }
+    @media (prefers-reduced-motion:reduce){ .wcell,.rcell,.plane,.step,.nl{ animation:none !important; opacity:1 } .plane{ transform:translateX(48px) } .narr{ display:none } }
   </style>
   <script src="adn-ui.js" defer></script>
   <script src="adn-recorrido.js" defer></script>
@@ -59,6 +77,58 @@
 
     <div class="glass rounded-2xl p-3.5 mt-4" style="border-color:rgba(224,113,90,.3);background:rgba(224,113,90,.06)">
       <p class="text-[12px] text-stone-300 leading-relaxed"><b style="color:#f0b8a6">⚠️ Información de divulgación.</b> Es una guía general y no reemplaza asesoría legal ni la información oficial de la Dirección del Trabajo. Ante un caso concreto, consulta a la Inspección del Trabajo o a un abogado.</p>
+    </div>
+
+    <div class="glass rounded-2xl p-3.5 mt-3">
+      <svg class="viz" viewBox="0 0 340 214" role="img" aria-label="Cómo funciona un ciclo de turno 7x7: siete días de trabajo en faena y siete de descanso, autorizado por la Dirección del Trabajo">
+        <defs>
+          <linearGradient id="dSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#221a12"/><stop offset="1" stop-color="#14100c"/></linearGradient>
+          <linearGradient id="dWork" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0b768"/><stop offset="1" stop-color="#d68f3c"/></linearGradient>
+          <linearGradient id="dRest" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fd0ad"/><stop offset="1" stop-color="#5aa583"/></linearGradient>
+          <filter id="dSh" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.6" flood-color="#000" flood-opacity=".4"/></filter>
+        </defs>
+        <rect x="0" y="0" width="340" height="214" fill="url(#dSky)"/>
+
+        <text class="lbl" x="20" y="26"><tspan style="fill:#eabf86">◗</tspan> 7 días de trabajo · en faena</text>
+        <g class="wcell" filter="url(#dSh)">
+          <rect x="20"  y="36" width="40" height="40" rx="7" fill="url(#dWork)"/><text class="cell-t" x="40"  y="61" text-anchor="middle">1</text>
+          <rect x="63"  y="36" width="40" height="40" rx="7" fill="url(#dWork)"/><text class="cell-t" x="83"  y="61" text-anchor="middle">2</text>
+          <rect x="106" y="36" width="40" height="40" rx="7" fill="url(#dWork)"/><text class="cell-t" x="126" y="61" text-anchor="middle">3</text>
+          <rect x="149" y="36" width="40" height="40" rx="7" fill="url(#dWork)"/><text class="cell-t" x="169" y="61" text-anchor="middle">4</text>
+          <rect x="192" y="36" width="40" height="40" rx="7" fill="url(#dWork)"/><text class="cell-t" x="212" y="61" text-anchor="middle">5</text>
+          <rect x="235" y="36" width="40" height="40" rx="7" fill="url(#dWork)"/><text class="cell-t" x="255" y="61" text-anchor="middle">6</text>
+          <rect x="278" y="36" width="40" height="40" rx="7" fill="url(#dWork)"/><text class="cell-t" x="298" y="61" text-anchor="middle">7</text>
+        </g>
+
+        <text class="lbl" x="20" y="112"><tspan style="fill:#8fd0ad">☾</tspan> 7 días de descanso · en tu casa</text>
+        <g class="rcell" filter="url(#dSh)">
+          <rect x="20"  y="122" width="40" height="40" rx="7" fill="url(#dRest)"/><text class="cell-t" x="40"  y="147" text-anchor="middle">8</text>
+          <rect x="63"  y="122" width="40" height="40" rx="7" fill="url(#dRest)"/><text class="cell-t" x="83"  y="147" text-anchor="middle">9</text>
+          <rect x="106" y="122" width="40" height="40" rx="7" fill="url(#dRest)"/><text class="cell-t" x="126" y="147" text-anchor="middle">10</text>
+          <rect x="149" y="122" width="40" height="40" rx="7" fill="url(#dRest)"/><text class="cell-t" x="169" y="147" text-anchor="middle">11</text>
+          <rect x="192" y="122" width="40" height="40" rx="7" fill="url(#dRest)"/><text class="cell-t" x="212" y="147" text-anchor="middle">12</text>
+          <rect x="235" y="122" width="40" height="40" rx="7" fill="url(#dRest)"/><text class="cell-t" x="255" y="147" text-anchor="middle">13</text>
+          <rect x="278" y="122" width="40" height="40" rx="7" fill="url(#dRest)"/><text class="cell-t" x="298" y="147" text-anchor="middle">14</text>
+        </g>
+
+        <g class="plane" transform="translate(112,92)">
+          <path d="M0 6 L20 0 L24 4 L10 8 L14 16 L9 17 L2 9 L-2 10 Z" fill="#f6ead9" filter="url(#dSh)"/>
+        </g>
+
+        <text class="lbl-sm" x="170" y="190" text-anchor="middle" style="fill:#c7b79f">Un sistema excepcional autorizado por la Dirección del Trabajo</text>
+      </svg>
+      <div class="steps mt-1">
+        <div class="step s1"><span class="n">1</span>7 días trabajo</div>
+        <div class="step s2"><span class="n">2</span>Bajada</div>
+        <div class="step s3"><span class="n">3</span>7 días descanso</div>
+        <div class="step s4"><span class="n">4</span>Se repite</div>
+      </div>
+      <div class="narr">
+        <p class="nl n1">En un <b>7x7</b> trabajas siete días seguidos en la faena, alojado en campamento.</p>
+        <p class="nl n2">Al terminar el turno viajas de <b>bajada</b> a tu casa (traslados a cargo de la empresa).</p>
+        <p class="nl n3">Vienen <b>siete días de descanso</b>: es el compensatorio por los festivos y domingos trabajados.</p>
+        <p class="nl n4">El ciclo se repite. Debe estar <b>autorizado</b> y respetar las horas y descansos de la ley.</p>
+      </div>
     </div>
 
     <div id="topics" class="mt-4 grid gap-2.5"></div>
