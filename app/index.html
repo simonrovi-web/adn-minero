@@ -749,23 +749,31 @@
 
     document.getElementById('q').addEventListener('input', applyFilter);
     document.getElementById('qx').addEventListener('click', ()=>{ document.getElementById('q').value=''; applyFilter(); document.getElementById('q').focus(); });
-    // Tocar una tarjeta de categoría → ver sus paneles
+    // Categoría desde el hash de la URL (para volver atrás y restaurar la categoría)
+    function catFromHash(){ try{ var h=(location.hash||'').replace(/^#/,''); return (h && CATS.some(c=>c.k===h)) ? h : 'home'; }catch(e){ return 'home'; } }
+    // Tocar una tarjeta de categoría → ver sus paneles (agrega entrada de historial)
     document.getElementById('homeCats').addEventListener('click', e=>{
       const b=e.target.closest('.cattile'); if(!b) return;
       activeCat = b.dataset.cat;
       document.getElementById('q').value='';
+      try{ history.pushState({cat:activeCat}, '', '#'+activeCat); }catch(err){}
       applyFilter();
       window.scrollTo({top:0, behavior:'smooth'});
     });
+    // Botón atrás del teléfono / navegador estando dentro de la app → sincroniza categoría
+    window.addEventListener('popstate', ()=>{ activeCat = catFromHash(); document.getElementById('q').value=''; applyFilter(); window.scrollTo({top:0}); });
     // Perfil "Mi Faena"
     document.getElementById('miFaena').addEventListener('click', e=>{ if(e.target.closest('#mfSet')||e.target.closest('#mfEdit')) openProfileEditor(); });
-    // Volver a las categorías
+    // Volver a las categorías (barra "volver" dentro de una categoría)
     document.getElementById('backBtn').addEventListener('click', ()=>{
+      if(history.state && history.state.cat){ history.back(); return; }
       activeCat = 'home';
       document.getElementById('q').value='';
+      try{ history.replaceState(null, '', location.pathname + location.search); }catch(e){}
       applyFilter();
       window.scrollTo({top:0, behavior:'smooth'});
     });
+    activeCat = catFromHash(); // restaura la categoría si venimos con #cat (p. ej. al retroceder desde un panel)
     renderAll();
 
     // ===== Modo faena (texto grande / contraste) =====
