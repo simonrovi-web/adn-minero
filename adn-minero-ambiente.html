@@ -89,9 +89,13 @@
           <linearGradient id="aSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#20353a"/><stop offset="1" stop-color="#182322"/></linearGradient>
           <linearGradient id="aGround" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#33291d"/><stop offset="1" stop-color="#17120c"/></linearGradient>
           <radialGradient id="aVig" cx="0.5" cy="0.45" r="0.72"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></radialGradient>
-          <linearGradient id="aSea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a86a0"/><stop offset="1" stop-color="#1c4453"/></linearGradient>
-          <filter id="aSoft" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.45"/></filter>
+          <linearGradient id="aSea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3f8ea8"/><stop offset="1" stop-color="#1a414f"/></linearGradient>
+          <linearGradient id="aMtn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7d6042"/><stop offset=".55" stop-color="#4e3c2a"/><stop offset="1" stop-color="#2c2116"/></linearGradient>
+          <linearGradient id="aShade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".36"/></linearGradient>
+          <linearGradient id="aPlant" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#51636a"/><stop offset="1" stop-color="#26302f"/></linearGradient>
+          <filter id="aSoft" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2.5" stdDeviation="2.2" flood-color="#000" flood-opacity="0.5"/></filter>
           <filter id="aSun" x="-90%" y="-90%" width="280%" height="280%"><feDropShadow dx="0" dy="0" stdDeviation="3.5" flood-color="#f0d79a" flood-opacity="0.85"/></filter>
+          <filter id="aWater" x="-140%" y="-140%" width="380%" height="380%"><feDropShadow dx="0" dy="0" stdDeviation="1.8" flood-color="#9fe8f2" flood-opacity="0.85"/></filter>
         </defs>
         <rect x="0" y="0" width="400" height="92" fill="url(#aSky)"/>
         <rect x="0" y="90" width="400" height="110" fill="url(#aGround)"/>
@@ -102,14 +106,19 @@
         <rect x="0" y="90" width="92" height="110" fill="url(#aSea)"/>
         <g class="wv" stroke="#7fc0cf" stroke-width="2" fill="none" opacity=".6"><path d="M2,100 q10,-5 20,0 t20,0 t20,0 t20,0"/></g>
         <!-- planta desaladora -->
-        <g filter="url(#aSoft)"><rect x="52" y="70" width="34" height="46" rx="2" fill="#3a4a4e" stroke="#6a8a90" stroke-width="1.5"/><rect x="58" y="60" width="8" height="12" fill="#6a8a90"/><rect x="72" y="64" width="8" height="8" fill="#6a8a90"/></g>
-        <!-- tuberia a la faena -->
+        <g filter="url(#aSoft)"><rect x="52" y="70" width="34" height="46" rx="2" fill="url(#aPlant)" stroke="#6a8a90" stroke-width="1.5"/><rect x="54" y="72" width="30" height="3" rx="1.5" fill="#fff" opacity=".14"/><rect x="58" y="60" width="8" height="12" fill="#6a8a90"/><rect x="72" y="64" width="8" height="8" fill="#6a8a90"/></g>
+        <!-- tuberia a la faena: glow + trazo + brillo -->
+        <line x1="88" y1="116" x2="298" y2="64" stroke="#5fd1e0" stroke-width="9" stroke-linecap="round" opacity=".12"/>
         <line x1="88" y1="116" x2="298" y2="64" stroke="#6a7a80" stroke-width="5" stroke-linecap="round"/>
-        <g fill="#5fd1e0"><circle class="flowUp" cx="90" cy="114" r="3"/><circle class="flowUp b" cx="90" cy="114" r="3"/><circle class="flowUp c" cx="90" cy="114" r="3"/></g>
-        <!-- faena (cerro) -->
-        <path d="M244,150 L300,54 L360,150 Z" fill="#4a3a2e" filter="url(#aSoft)"/>
-        <path d="M244,150 L300,54 L360,150 Z" fill="none" stroke="#5a4736" stroke-width="1"/>
-        <rect x="286" y="62" width="26" height="14" rx="2" fill="#8a6b45"/>
+        <line x1="88" y1="114.5" x2="298" y2="62.5" stroke="#c8d6db" stroke-width="1" stroke-linecap="round" opacity=".45"/>
+        <g><circle class="flowUp" cx="90" cy="114" r="3" fill="#8fe4f0" filter="url(#aWater)"/><circle class="flowUp b" cx="90" cy="114" r="3" fill="#8fe4f0" filter="url(#aWater)"/><circle class="flowUp c" cx="90" cy="114" r="3" fill="#8fe4f0" filter="url(#aWater)"/></g>
+        <!-- faena (cerro) con volumen -->
+        <ellipse cx="302" cy="151" rx="58" ry="6" fill="#000" opacity=".34"/>
+        <path d="M244,150 L300,54 L360,150 Z" fill="url(#aMtn)" filter="url(#aSoft)"/>
+        <path d="M266,150 Q286,120 300,54" fill="none" stroke="#5a4634" stroke-width="1" opacity=".6"/>
+        <path d="M300,54 L360,150 L326,150 Z" fill="url(#aShade)"/>
+        <path d="M244,150 L300,54" stroke="#e6c79b" stroke-width="1.1" opacity=".4" fill="none"/>
+        <rect x="286" y="62" width="26" height="14" rx="2" fill="#9a7a52"/><rect x="286" y="62" width="26" height="3" rx="1.5" fill="#fff" opacity=".16"/>
         <!-- relave (tranque) -->
         <ellipse cx="330" cy="152" rx="26" ry="8" fill="#6b6250"/>
         <ellipse cx="330" cy="151" rx="20" ry="5" fill="#7f8a6a" opacity=".7"/>

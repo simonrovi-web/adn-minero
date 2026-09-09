@@ -56,7 +56,9 @@
     @keyframes disc{ 0%{ transform:translate(0,0); opacity:0 } 15%{ opacity:.6 } 100%{ transform:translate(26px,64px); opacity:0 } }
     .bub{ animation:bub 3.5s ease-in infinite; } .bub.b{ animation-delay:1.2s } .bub.c{ animation-delay:2.4s }
     @keyframes bub{ 0%{ transform:translateY(0); opacity:0 } 20%{ opacity:.5 } 100%{ transform:translateY(-42px); opacity:0 } }
-    @media (prefers-reduced-motion: reduce){ #ship,#collector,.rise,#plume,.disc,.bub,.step,.nl{ animation:none !important } .narr{ display:none } }
+    .beam{ animation:beamSh 6s ease-in-out infinite; } .beam.bb{ animation-delay:2s } .beam.bc{ animation-delay:4s }
+    @keyframes beamSh{ 0%,100%{ opacity:.03 } 50%{ opacity:.09 } }
+    @media (prefers-reduced-motion: reduce){ #ship,#collector,.rise,#plume,.disc,.bub,.beam,.step,.nl{ animation:none !important } .narr{ display:none } }
   </style>
   <script src="adn-ui.js" defer></script>
   <script type="application/ld+json">
@@ -83,40 +85,57 @@
       </div>
       <svg class="viz" viewBox="0 0 400 260" role="img" aria-label="Proceso de minería submarina: un vehículo recolecta nódulos del fondo, suben por una tubería al barco, que separa los metales y devuelve el sedimento al mar">
         <defs>
-          <linearGradient id="ocean" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a6f7c"/><stop offset=".45" stop-color="#134048"/><stop offset="1" stop-color="#07161b"/></linearGradient>
-          <radialGradient id="oVig" cx="0.5" cy="0.4" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".42"/></radialGradient>
-          <filter id="sSoft" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.45"/></filter>
+          <linearGradient id="ocean" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f7885"/><stop offset=".45" stop-color="#123f47"/><stop offset="1" stop-color="#061318"/></linearGradient>
+          <radialGradient id="oVig" cx="0.5" cy="0.4" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".44"/></radialGradient>
+          <linearGradient id="sHull" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eaddce"/><stop offset="1" stop-color="#93816f"/></linearGradient>
+          <linearGradient id="sRiser" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#39454b"/><stop offset=".5" stop-color="#93a4ab"/><stop offset="1" stop-color="#323d43"/></linearGradient>
+          <linearGradient id="sColl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fe6ef"/><stop offset="1" stop-color="#3d97a1"/></linearGradient>
+          <radialGradient id="sNod" cx="0.35" cy="0.3" r="0.8"><stop offset="0" stop-color="#eeddb4"/><stop offset="1" stop-color="#8a744c"/></radialGradient>
+          <radialGradient id="sPlume" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#93a6a4" stop-opacity=".6"/><stop offset="1" stop-color="#93a6a4" stop-opacity="0"/></radialGradient>
+          <linearGradient id="sFloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2c3b3f"/><stop offset="1" stop-color="#182225"/></linearGradient>
+          <linearGradient id="sBeam" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#d6f2f8" stop-opacity=".55"/><stop offset="1" stop-color="#d6f2f8" stop-opacity="0"/></linearGradient>
+          <filter id="sSoft" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2.5" stdDeviation="2.2" flood-color="#000" flood-opacity="0.5"/></filter>
+          <filter id="sLite" x="-120%" y="-120%" width="340%" height="340%"><feDropShadow dx="0" dy="0" stdDeviation="2.4" flood-color="#bfeef6" flood-opacity="0.9"/></filter>
         </defs>
-        <rect x="0" y="0" width="400" height="30" fill="#14303a"/>
+        <rect x="0" y="0" width="400" height="30" fill="#12333d"/>
+        <rect x="0" y="27" width="400" height="3" fill="#5b98a2" opacity=".5"/>
         <rect x="0" y="28" width="400" height="232" fill="url(#ocean)"/>
         <!-- haces de luz submarina + viñeta -->
-        <polygon points="150,30 250,30 296,214 104,214" fill="#bfe6ee" opacity=".06"/>
-        <polygon points="60,30 92,30 120,214 30,214" fill="#bfe6ee" opacity=".035"/>
-        <polygon points="300,30 340,30 372,214 288,214" fill="#bfe6ee" opacity=".035"/>
+        <polygon class="beam" points="150,30 250,30 296,214 104,214" fill="#bfe6ee" opacity=".07"/>
+        <polygon class="beam bb" points="60,30 92,30 120,214 30,214" fill="#bfe6ee" opacity=".04"/>
+        <polygon class="beam bc" points="300,30 340,30 372,214 288,214" fill="#bfe6ee" opacity=".04"/>
         <rect x="0" y="28" width="400" height="232" fill="url(#oVig)"/>
-        <!-- riser -->
-        <line x1="200" y1="40" x2="200" y2="214" stroke="#5a6a70" stroke-width="4"/>
+        <!-- riser (tubo cilíndrico metálico) -->
+        <rect x="196.5" y="40" width="7" height="176" fill="url(#sRiser)"/>
+        <line x1="199" y1="40" x2="199" y2="216" stroke="#c8d6db" stroke-width="0.8" opacity=".5"/>
         <!-- nódulos subiendo por el riser -->
-        <g fill="#d8c39a"><circle class="rise" cx="200" cy="210" r="3"/><circle class="rise b" cx="200" cy="210" r="3"/><circle class="rise c" cx="200" cy="210" r="3"/></g>
-        <!-- barco -->
+        <g><circle class="rise" cx="200" cy="210" r="3" fill="url(#sNod)"/><circle class="rise b" cx="200" cy="210" r="3" fill="url(#sNod)"/><circle class="rise c" cx="200" cy="210" r="3" fill="url(#sNod)"/></g>
+        <!-- barco con volumen + reflejo + cabina iluminada -->
+        <ellipse cx="200" cy="41" rx="52" ry="4" fill="#000" opacity=".28"/>
         <g id="ship" filter="url(#sSoft)">
-          <path d="M150,26 L250,26 L242,40 L158,40 Z" fill="#c9b7a5"/>
-          <rect x="184" y="15" width="30" height="11" rx="2" fill="#e6d4c4"/>
-          <rect x="216" y="18" width="4" height="8" fill="#9c8a78"/>
+          <path d="M150,26 L250,26 L242,40 L158,40 Z" fill="url(#sHull)"/>
+          <rect x="153" y="27.5" width="94" height="3" rx="1.5" fill="#fff" opacity=".22"/>
+          <rect x="184" y="15" width="30" height="11" rx="2" fill="#efe0d1"/>
+          <rect x="190" y="18" width="7" height="5" rx="1" fill="#ffe6a6" filter="url(#sLite)"/>
+          <rect x="216" y="16" width="4" height="10" fill="#8a7868"/>
         </g>
         <!-- sedimento devuelto al mar (penacho de descarga) -->
-        <g fill="#8a9a90"><circle class="disc" cx="220" cy="42" r="2.4"/><circle class="disc b" cx="220" cy="42" r="2.4"/><circle class="disc c" cx="220" cy="42" r="2.4"/></g>
-        <!-- fondo marino -->
-        <path d="M0,216 Q120,208 220,216 T400,214 L400,260 L0,260 Z" fill="#243034"/>
-        <path d="M0,216 Q120,208 220,216 T400,214" fill="none" stroke="#3a4a4e" stroke-width="1.5"/>
+        <g fill="#95a59b"><circle class="disc" cx="220" cy="42" r="2.4"/><circle class="disc b" cx="220" cy="42" r="2.4"/><circle class="disc c" cx="220" cy="42" r="2.4"/></g>
+        <!-- fondo marino con estratos -->
+        <path d="M0,216 Q120,208 220,216 T400,214 L400,260 L0,260 Z" fill="url(#sFloor)"/>
+        <path d="M0,216 Q120,208 220,216 T400,214" fill="none" stroke="#46595e" stroke-width="1.5"/>
+        <path d="M0,232 Q140,226 260,232 T400,230" fill="none" stroke="#0f1719" stroke-width="1" opacity=".6"/>
         <!-- nódulos en el fondo -->
-        <g fill="#9c8a68"><circle cx="60" cy="222" r="3.5"/><circle cx="98" cy="226" r="3"/><circle cx="300" cy="224" r="3.5"/><circle cx="336" cy="221" r="3"/><circle cx="370" cy="226" r="3.2"/></g>
+        <g><circle cx="60" cy="222" r="3.5" fill="url(#sNod)"/><circle cx="98" cy="226" r="3" fill="url(#sNod)"/><circle cx="300" cy="224" r="3.5" fill="url(#sNod)"/><circle cx="336" cy="221" r="3" fill="url(#sNod)"/><circle cx="370" cy="226" r="3.2" fill="url(#sNod)"/></g>
         <!-- penacho de sedimento (impacto ambiental) -->
-        <ellipse id="plume" cx="200" cy="212" rx="34" ry="10" fill="#6b7d80"/>
-        <!-- vehículo recolector -->
+        <ellipse id="plume" cx="200" cy="212" rx="40" ry="13" fill="url(#sPlume)"/>
+        <!-- vehículo recolector con faro -->
         <g id="collector" filter="url(#sSoft)"><g transform="translate(200,206)">
-          <rect x="-17" y="-11" width="34" height="11" rx="2.5" fill="#5fc7d1"/>
-          <path d="M-17,0 l-6,5 l8,0 z" fill="#9fdce2"/>
+          <polygon points="-17,-4 -52,1 -52,11 -17,3" fill="url(#sBeam)"/>
+          <rect x="-17" y="-11" width="34" height="11" rx="2.5" fill="url(#sColl)"/>
+          <rect x="-14" y="-9.5" width="28" height="3" rx="1.5" fill="#fff" opacity=".28"/>
+          <path d="M-17,0 l-6,5 l8,0 z" fill="#a6e2e8"/>
+          <circle cx="-19" cy="-4" r="2.2" fill="#ffe9a6" filter="url(#sLite)"/>
           <circle cx="-9" cy="2" r="2.6" fill="#0a1c21"/><circle cx="0" cy="2" r="2.6" fill="#0a1c21"/><circle cx="9" cy="2" r="2.6" fill="#0a1c21"/>
         </g></g>
         <!-- burbujas -->
