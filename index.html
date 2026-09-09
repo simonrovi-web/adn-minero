@@ -477,13 +477,15 @@
         h+='</div>'; el.innerHTML=h; el.classList.remove('hidden'); if(window.lucide) lucide.createIcons(); try{ applyFilter(); }catch(e){}
       }
       let cached=null; try{ cached=JSON.parse(localStorage.getItem('adn_titulares')||'null'); }catch(e){}
-      if(cached && (cached.min||cached.geo)){ paint(cached.min||[], cached.geo||[]); }
+      const _fresh=arr=>(arr||[]).filter(x=>x&&x.ts&&(Date.now()-x.ts)<=6048e5); // descarta titulares de más de 7 días
+      if(cached){ cached.min=_fresh(cached.min); cached.geo=_fresh(cached.geo); }
+      if(cached && (cached.min.length||cached.geo.length)){ paint(cached.min, cached.geo); }
       else { el.classList.remove('hidden'); el.innerHTML='<div class="glass rounded-2xl p-4" style="border-color:rgba(207,155,111,.2)"><div class="flex items-center gap-2 mb-3"><span class="tit-dot"></span><span class="text-[12px] font-extrabold uppercase tracking-wider text-stone-200">Titulares en vivo</span></div><div class="tit-sk" style="width:34%;margin-bottom:11px"></div><div class="tit-sk" style="height:16px;width:92%;margin-bottom:9px"></div><div class="tit-sk" style="width:78%;margin-bottom:9px"></div><div class="tit-sk" style="width:72%"></div></div>'; }
-      if(cached && cached.at && (Date.now()-cached.at)<15*60000) return;
+      if(cached && cached.at && (Date.now()-cached.at)<15*60000 && (cached.min.length||cached.geo.length)) return;
       const [min,geo]=await Promise.all([ feed('minería Chile cobre litio', 4), feed('geopolítica minerales críticos litio cobre Chile', 3) ]);
-      const fMin=min.length?min:((cached&&cached.min)||[]), fGeo=geo.length?geo:((cached&&cached.geo)||[]);
+      const fMin=min.length?min:((cached&&cached.min)||[]), fGeo=geo.length?geo:((cached&&cached.geo)||[]); // fallback ya filtrado por antigüedad
       paint(fMin,fGeo);
-      if(min.length||geo.length){ try{ localStorage.setItem('adn_titulares', JSON.stringify({min:fMin,geo:fGeo,at:Date.now()})); }catch(e){} }
+      if(fMin.length||fGeo.length){ try{ localStorage.setItem('adn_titulares', JSON.stringify({min:fMin,geo:fGeo,at:Date.now()})); }catch(e){} }
     }
 
     // ===== Racha de días (retención) =====
