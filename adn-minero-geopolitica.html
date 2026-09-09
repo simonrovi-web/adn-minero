@@ -92,31 +92,49 @@
       </div>
       <svg class="viz" viewBox="0 0 400 190" role="img" aria-label="Chile exporta cobre y litio principalmente a China, y tambien a Estados Unidos, Europa y Asia">
         <defs>
-          <radialGradient id="gBg" cx="0.5" cy="0.5" r="0.75"><stop offset="0" stop-color="#17222f"/><stop offset="1" stop-color="#0d141d"/></radialGradient>
-          <radialGradient id="gClG" cx="0.35" cy="0.3" r="0.85"><stop offset="0" stop-color="#e8c98a"/><stop offset="1" stop-color="#a9743f"/></radialGradient>
-          <radialGradient id="gNodeG" cx="0.35" cy="0.3" r="0.9"><stop offset="0" stop-color="#24313f"/><stop offset="1" stop-color="#121a24"/></radialGradient>
-          <filter id="gSoft" x="-45%" y="-45%" width="190%" height="190%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.5"/></filter>
-          <filter id="gGlow" x="-70%" y="-70%" width="240%" height="240%"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#e6c98f" flood-opacity="0.55"/></filter>
+          <radialGradient id="gBg" cx="0.5" cy="0.48" r="0.78"><stop offset="0" stop-color="#1b2a3a"/><stop offset=".62" stop-color="#111c28"/><stop offset="1" stop-color="#0b1017"/></radialGradient>
+          <radialGradient id="gVig" cx="0.5" cy="0.5" r="0.62"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset=".78" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".48"/></radialGradient>
+          <radialGradient id="gNodeG" cx="0.36" cy="0.28" r="0.95"><stop offset="0" stop-color="#2b3a4a"/><stop offset="1" stop-color="#101923"/></radialGradient>
+          <linearGradient id="gMtn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2dcbb"/><stop offset=".5" stop-color="#d3a06a"/><stop offset="1" stop-color="#9c6636"/></linearGradient>
+          <linearGradient id="gShade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".34"/></linearGradient>
+          <linearGradient id="gCap" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6e8"/><stop offset="1" stop-color="#e8c9a6"/></linearGradient>
+          <radialGradient id="gHub" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#f0d7b6" stop-opacity=".5"/><stop offset="1" stop-color="#f0d7b6" stop-opacity="0"/></radialGradient>
+          <filter id="gSoft" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="0" dy="2.5" stdDeviation="2.4" flood-color="#000" flood-opacity="0.55"/></filter>
+          <filter id="gGlow" x="-90%" y="-90%" width="280%" height="280%"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#f0d7b6" flood-opacity="0.6"/></filter>
+          <filter id="gPart" x="-160%" y="-160%" width="420%" height="420%"><feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="#bfeede" flood-opacity="0.9"/></filter>
         </defs>
         <rect x="0" y="0" width="400" height="190" fill="url(#gBg)"/>
-        <!-- rutas -->
-        <g stroke="#3a536a" stroke-width="2" fill="none" stroke-linecap="round" opacity=".7">
-          <path d="M84,98 Q210,60 316,42"/><path d="M86,100 Q210,88 316,82"/><path d="M86,104 Q210,116 316,122"/><path d="M84,106 Q210,144 316,162"/>
+        <!-- rutas: glow suave + trazo nitido -->
+        <g fill="none" stroke-linecap="round">
+          <g stroke="#5fd1bd" stroke-width="5" opacity=".1"><path d="M84,98 Q210,60 316,42"/><path d="M86,100 Q210,88 316,82"/><path d="M86,104 Q210,116 316,122"/><path d="M84,106 Q210,144 316,162"/></g>
+          <g stroke="#456781" stroke-width="1.8" opacity=".8"><path d="M84,98 Q210,60 316,42"/><path d="M86,100 Q210,88 316,82"/><path d="M86,104 Q210,116 316,122"/><path d="M84,106 Q210,144 316,162"/></g>
         </g>
-        <!-- flujos (cobre/litio) -->
-        <g><circle class="gf1" cx="78" cy="102" r="3.2" fill="#cf9b6f"/><circle class="gf2" cx="78" cy="102" r="3.2" fill="#5fd1bd"/><circle class="gf3" cx="78" cy="102" r="3.2" fill="#cf9b6f"/><circle class="gf4" cx="78" cy="102" r="3.2" fill="#5fd1bd"/></g>
-        <!-- destinos -->
-        <g class="gn" filter="url(#gSoft)"><circle cx="334" cy="42" r="16" fill="url(#gNodeG)" stroke="#e05a3f" stroke-width="2.5"/><text x="334" y="46" text-anchor="middle" class="lbl">CN</text></g>
-        <g class="gn c2" filter="url(#gSoft)"><circle cx="334" cy="82" r="16" fill="url(#gNodeG)" stroke="#7fb0d9" stroke-width="2.5"/><text x="334" y="86" text-anchor="middle" class="lbl">US</text></g>
-        <g class="gn c3" filter="url(#gSoft)"><circle cx="334" cy="122" r="16" fill="url(#gNodeG)" stroke="#a7d18a" stroke-width="2.5"/><text x="334" y="126" text-anchor="middle" class="lbl">EU</text></g>
-        <g class="gn c4" filter="url(#gSoft)"><circle cx="334" cy="162" r="16" fill="url(#gNodeG)" stroke="#e0c35a" stroke-width="2.5"/><text x="334" y="166" text-anchor="middle" class="lbl">JP</text></g>
-        <!-- Chile (hub) -->
-        <g id="gCl" filter="url(#gGlow)"><circle cx="60" cy="102" r="24" fill="url(#gClG)" stroke="#f0d7b6" stroke-width="2"/><path d="M46,112 L60,86 L74,112 Z" fill="#8a5a34"/><path d="M55,98 L60,88 L65,98 Z" fill="#fff" opacity=".3"/></g>
-        <text class="lbl-sm" x="60" y="138" text-anchor="middle">Chile · cobre + litio</text>
+        <!-- flujos (cobre/litio) con halo -->
+        <g><g class="gf1"><circle cx="78" cy="102" r="6" fill="#cf9b6f" opacity=".22"/><circle cx="78" cy="102" r="3.4" fill="#eec39a" filter="url(#gPart)"/></g>
+           <g class="gf2"><circle cx="78" cy="102" r="6" fill="#5fd1bd" opacity=".22"/><circle cx="78" cy="102" r="3.4" fill="#95e8d6" filter="url(#gPart)"/></g>
+           <g class="gf3"><circle cx="78" cy="102" r="6" fill="#cf9b6f" opacity=".22"/><circle cx="78" cy="102" r="3.4" fill="#eec39a" filter="url(#gPart)"/></g>
+           <g class="gf4"><circle cx="78" cy="102" r="6" fill="#5fd1bd" opacity=".22"/><circle cx="78" cy="102" r="3.4" fill="#95e8d6" filter="url(#gPart)"/></g></g>
+        <!-- destinos: disco satinado + halo + luz especular -->
+        <g class="gn"><circle cx="334" cy="42" r="24" fill="#e05a3f" opacity=".1"/><g filter="url(#gSoft)"><circle cx="334" cy="42" r="16" fill="url(#gNodeG)" stroke="#e05a3f" stroke-width="2.5"/><ellipse cx="329" cy="37" rx="7" ry="4.5" fill="#fff" opacity=".14"/></g><text x="334" y="46" text-anchor="middle" class="lbl">CN</text></g>
+        <g class="gn c2"><circle cx="334" cy="82" r="24" fill="#7fb0d9" opacity=".1"/><g filter="url(#gSoft)"><circle cx="334" cy="82" r="16" fill="url(#gNodeG)" stroke="#7fb0d9" stroke-width="2.5"/><ellipse cx="329" cy="77" rx="7" ry="4.5" fill="#fff" opacity=".14"/></g><text x="334" y="86" text-anchor="middle" class="lbl">US</text></g>
+        <g class="gn c3"><circle cx="334" cy="122" r="24" fill="#a7d18a" opacity=".1"/><g filter="url(#gSoft)"><circle cx="334" cy="122" r="16" fill="url(#gNodeG)" stroke="#a7d18a" stroke-width="2.5"/><ellipse cx="329" cy="117" rx="7" ry="4.5" fill="#fff" opacity=".14"/></g><text x="334" y="126" text-anchor="middle" class="lbl">EU</text></g>
+        <g class="gn c4"><circle cx="334" cy="162" r="24" fill="#e0c35a" opacity=".1"/><g filter="url(#gSoft)"><circle cx="334" cy="162" r="16" fill="url(#gNodeG)" stroke="#e0c35a" stroke-width="2.5"/><ellipse cx="329" cy="157" rx="7" ry="4.5" fill="#fff" opacity=".14"/></g><text x="334" y="166" text-anchor="middle" class="lbl">JP</text></g>
+        <!-- Chile (hub) ilustrado: cerro con volumen -->
+        <ellipse cx="60" cy="126" rx="26" ry="5.5" fill="#000" opacity=".38"/>
+        <g id="gCl" filter="url(#gGlow)">
+          <circle cx="60" cy="102" r="30" fill="url(#gHub)"/>
+          <circle cx="60" cy="102" r="24" fill="#182430" stroke="#f0d7b6" stroke-width="2"/>
+          <path d="M44 116 L60 82 L76 116 Z" fill="url(#gMtn)"/>
+          <path d="M60 82 L67 94 L61 95 L65 102 L60 98 L54 103 L58 94 L52 93 Z" fill="url(#gCap)"/>
+          <path d="M44 116 L60 82 L76 116 Z" fill="url(#gShade)"/>
+          <path d="M44 116 L60 82" stroke="#ffe9c8" stroke-width="1.1" opacity=".45" fill="none"/>
+        </g>
+        <text class="lbl-sm" x="60" y="140" text-anchor="middle">Chile · cobre + litio</text>
         <text class="lbl-sm" x="360" y="42" text-anchor="middle">China</text>
         <text class="lbl-sm" x="360" y="82" text-anchor="middle">EE.UU.</text>
         <text class="lbl-sm" x="360" y="122" text-anchor="middle">Europa</text>
         <text class="lbl-sm" x="360" y="162" text-anchor="middle">Asia</text>
+        <rect x="0" y="0" width="400" height="190" fill="url(#gVig)" pointer-events="none"/>
       </svg>
       <div class="steps">
         <div class="step s1"><span class="n">1</span><br>China</div>

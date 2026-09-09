@@ -82,32 +82,49 @@
       </div>
       <svg class="viz" viewBox="0 0 400 200" role="img" aria-label="Relacion entre la faena y su comunidad: empleo, royalty, cuidado del territorio y dialogo">
         <defs>
-          <radialGradient id="cBg" cx="0.5" cy="0.48" r="0.72"><stop offset="0" stop-color="#241c12"/><stop offset="1" stop-color="#120e0a"/></radialGradient>
-          <radialGradient id="cNode" cx="0.35" cy="0.3" r="0.9"><stop offset="0" stop-color="#2c2c22"/><stop offset="1" stop-color="#14140e"/></radialGradient>
-          <filter id="cSoft" x="-45%" y="-45%" width="190%" height="190%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.5"/></filter>
-          <filter id="cGlow" x="-70%" y="-70%" width="240%" height="240%"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#e6c98f" flood-opacity="0.55"/></filter>
+          <radialGradient id="cBg" cx="0.5" cy="0.46" r="0.75"><stop offset="0" stop-color="#2a2115"/><stop offset=".62" stop-color="#191209"/><stop offset="1" stop-color="#0f0b07"/></radialGradient>
+          <radialGradient id="cVig" cx="0.5" cy="0.5" r="0.62"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset=".78" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".5"/></radialGradient>
+          <radialGradient id="cNode" cx="0.36" cy="0.28" r="0.95"><stop offset="0" stop-color="#3a382c"/><stop offset="1" stop-color="#141209"/></radialGradient>
+          <linearGradient id="cMtn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2dcbb"/><stop offset=".5" stop-color="#d3a06a"/><stop offset="1" stop-color="#9c6636"/></linearGradient>
+          <linearGradient id="cShade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".34"/></linearGradient>
+          <linearGradient id="cCap" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6e8"/><stop offset="1" stop-color="#e8c9a6"/></linearGradient>
+          <radialGradient id="cHub" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#e6c98f" stop-opacity=".5"/><stop offset="1" stop-color="#e6c98f" stop-opacity="0"/></radialGradient>
+          <filter id="cSoft" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="0" dy="2.5" stdDeviation="2.4" flood-color="#000" flood-opacity="0.55"/></filter>
+          <filter id="cGlow" x="-90%" y="-90%" width="280%" height="280%"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#f0d7b6" flood-opacity="0.6"/></filter>
+          <filter id="cPart" x="-160%" y="-160%" width="420%" height="420%"><feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="#ffe6b0" flood-opacity="0.9"/></filter>
         </defs>
         <rect x="0" y="0" width="400" height="200" fill="url(#cBg)"/>
-        <!-- lineas hub -> nodos -->
-        <g stroke="#6b5a3f" stroke-width="2" stroke-linecap="round" opacity=".7">
-          <line x1="200" y1="100" x2="76" y2="54"/><line x1="200" y1="100" x2="324" y2="54"/>
-          <line x1="200" y1="100" x2="76" y2="152"/><line x1="200" y1="100" x2="324" y2="152"/>
+        <!-- lineas hub -> nodos: glow suave + trazo nitido -->
+        <g stroke-linecap="round" fill="none">
+          <g stroke="#e6c98f" stroke-width="5" opacity=".12"><line x1="200" y1="100" x2="76" y2="54"/><line x1="200" y1="100" x2="324" y2="54"/><line x1="200" y1="100" x2="76" y2="152"/><line x1="200" y1="100" x2="324" y2="152"/></g>
+          <g stroke="#836b46" stroke-width="1.8" opacity=".85"><line x1="200" y1="100" x2="76" y2="54"/><line x1="200" y1="100" x2="324" y2="54"/><line x1="200" y1="100" x2="76" y2="152"/><line x1="200" y1="100" x2="324" y2="152"/></g>
         </g>
-        <!-- dots que fluyen desde la faena -->
-        <g><circle class="fd1" cx="200" cy="100" r="3.2" fill="#a7d18a"/><circle class="fd2" cx="200" cy="100" r="3.2" fill="#d6a94f"/><circle class="fd3" cx="200" cy="100" r="3.2" fill="#5fbf9a"/><circle class="fd4" cx="200" cy="100" r="3.2" fill="#7fb0d9"/></g>
-        <!-- nodos comunidad -->
-        <g class="cn" filter="url(#cSoft)"><circle cx="76" cy="54" r="18" fill="url(#cNode)" stroke="#a7d18a" stroke-width="2.5"/><text x="76" y="59" text-anchor="middle" style="font-size:15px">👷</text></g>
-        <g class="cn c2" filter="url(#cSoft)"><circle cx="324" cy="54" r="18" fill="url(#cNode)" stroke="#d6a94f" stroke-width="2.5"/><text x="324" y="59" text-anchor="middle" style="font-size:14px">🏥</text></g>
-        <g class="cn c3" filter="url(#cSoft)"><circle cx="76" cy="152" r="18" fill="url(#cNode)" stroke="#5fbf9a" stroke-width="2.5"/><text x="76" y="157" text-anchor="middle" style="font-size:14px">💧</text></g>
-        <g class="cn c4" filter="url(#cSoft)"><circle cx="324" cy="152" r="18" fill="url(#cNode)" stroke="#7fb0d9" stroke-width="2.5"/><text x="324" y="157" text-anchor="middle" style="font-size:14px">🤝</text></g>
-        <!-- faena (hub) -->
-        <g id="hubp" filter="url(#cGlow)"><circle cx="200" cy="100" r="25" fill="#2b2418" stroke="#f0d7b6" stroke-width="2.5"/>
-          <path d="M184,111 L200,82 L216,111 Z" fill="#e0b487"/><path d="M195,96 L200,86 L205,96 Z" fill="#fff" opacity=".25"/><rect x="206" y="90" width="5" height="15" rx="1" fill="#b5824f"/></g>
-        <text class="lbl-sm" x="200" y="138" text-anchor="middle">faena</text>
-        <text class="lbl-sm" x="76" y="82" text-anchor="middle">empleo</text>
-        <text class="lbl-sm" x="324" y="82" text-anchor="middle">royalty</text>
-        <text class="lbl-sm" x="76" y="180" text-anchor="middle">territorio · agua</text>
-        <text class="lbl-sm" x="324" y="180" text-anchor="middle">diálogo</text>
+        <!-- particulas que fluyen desde la faena, con halo -->
+        <g><g class="fd1"><circle cx="200" cy="100" r="6" fill="#a7d18a" opacity=".22"/><circle cx="200" cy="100" r="3.4" fill="#c7ecac" filter="url(#cPart)"/></g>
+           <g class="fd2"><circle cx="200" cy="100" r="6" fill="#d6a94f" opacity=".22"/><circle cx="200" cy="100" r="3.4" fill="#f0cd86" filter="url(#cPart)"/></g>
+           <g class="fd3"><circle cx="200" cy="100" r="6" fill="#5fbf9a" opacity=".22"/><circle cx="200" cy="100" r="3.4" fill="#8fe0c2" filter="url(#cPart)"/></g>
+           <g class="fd4"><circle cx="200" cy="100" r="6" fill="#7fb0d9" opacity=".22"/><circle cx="200" cy="100" r="3.4" fill="#aed2ee" filter="url(#cPart)"/></g></g>
+        <!-- nodos comunidad: disco satinado + halo + luz especular -->
+        <g class="cn"><circle cx="76" cy="54" r="26" fill="#a7d18a" opacity=".1"/><g filter="url(#cSoft)"><circle cx="76" cy="54" r="18" fill="url(#cNode)" stroke="#a7d18a" stroke-width="2.5"/><ellipse cx="71" cy="48" rx="8" ry="5" fill="#fff" opacity=".13"/></g><text x="76" y="59" text-anchor="middle" style="font-size:15px">👷</text></g>
+        <g class="cn c2"><circle cx="324" cy="54" r="26" fill="#d6a94f" opacity=".1"/><g filter="url(#cSoft)"><circle cx="324" cy="54" r="18" fill="url(#cNode)" stroke="#d6a94f" stroke-width="2.5"/><ellipse cx="319" cy="48" rx="8" ry="5" fill="#fff" opacity=".13"/></g><text x="324" y="59" text-anchor="middle" style="font-size:14px">🏥</text></g>
+        <g class="cn c3"><circle cx="76" cy="152" r="26" fill="#5fbf9a" opacity=".1"/><g filter="url(#cSoft)"><circle cx="76" cy="152" r="18" fill="url(#cNode)" stroke="#5fbf9a" stroke-width="2.5"/><ellipse cx="71" cy="146" rx="8" ry="5" fill="#fff" opacity=".13"/></g><text x="76" y="157" text-anchor="middle" style="font-size:14px">💧</text></g>
+        <g class="cn c4"><circle cx="324" cy="152" r="26" fill="#7fb0d9" opacity=".1"/><g filter="url(#cSoft)"><circle cx="324" cy="152" r="18" fill="url(#cNode)" stroke="#7fb0d9" stroke-width="2.5"/><ellipse cx="319" cy="146" rx="8" ry="5" fill="#fff" opacity=".13"/></g><text x="324" y="157" text-anchor="middle" style="font-size:14px">🤝</text></g>
+        <!-- faena (hub) ilustrada: cerro con volumen -->
+        <ellipse cx="200" cy="126" rx="30" ry="6" fill="#000" opacity=".38"/>
+        <g id="hubp" filter="url(#cGlow)">
+          <circle cx="200" cy="100" r="30" fill="url(#cHub)"/>
+          <circle cx="200" cy="100" r="24" fill="#241c12" stroke="#f0d7b6" stroke-width="2.5"/>
+          <path d="M180 116 L200 80 L220 116 Z" fill="url(#cMtn)"/>
+          <path d="M200 80 L207 92 L201 93 L205 100 L200 96 L194 101 L198 92 L192 91 Z" fill="url(#cCap)"/>
+          <path d="M180 116 L200 80 L220 116 Z" fill="url(#cShade)"/>
+          <path d="M180 116 L200 80" stroke="#ffe9c8" stroke-width="1.1" opacity=".45" fill="none"/>
+        </g>
+        <text class="lbl-sm" x="200" y="140" text-anchor="middle">faena</text>
+        <text class="lbl-sm" x="76" y="83" text-anchor="middle">empleo</text>
+        <text class="lbl-sm" x="324" y="83" text-anchor="middle">royalty</text>
+        <text class="lbl-sm" x="76" y="181" text-anchor="middle">territorio · agua</text>
+        <text class="lbl-sm" x="324" y="181" text-anchor="middle">diálogo</text>
+        <rect x="0" y="0" width="400" height="200" fill="url(#cVig)" pointer-events="none"/>
       </svg>
       <div class="steps">
         <div class="step s1"><span class="n">1</span><br>Empleo</div>
