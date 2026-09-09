@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · Planifica tu Sueldo de Faena</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="Planificador para ingresos cíclicos de la minería: reparte tu líquido en necesidades, gustos y ahorro/deuda, calcula tu fondo colchón en meses y proyecta cuánto tardas en formarlo. Educación financiera general." />
+  <link rel="canonical" href="https://simonrovi-web.github.io/adn-minero/adn-minero-presupuesto.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ADN Minero" />
+  <meta property="og:title" content="ADN Minero · Planifica tu Sueldo de Faena" />
+  <meta property="og:description" content="Reparte tu sueldo, arma tu fondo colchón y proyéctalo. Educación financiera general para ingresos cíclicos." />
+  <meta property="og:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://simonrovi-web.github.io/adn-minero/adn-minero-presupuesto.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ADN Minero · Planifica tu Sueldo de Faena" />
+  <meta name="twitter:description" content="Reparte tu sueldo, arma tu fondo colchón y proyéctalo." />
+  <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(167,209,138,0.13), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    h3{ margin:0; }
+    .inp{ width:100%; margin-top:6px; background:rgba(20,16,12,.7); border:1px solid rgba(196,168,148,.22); border-radius:11px; padding:11px 13px; color:#f4ece5; font-size:16px; font-weight:700; font-variant-numeric:tabular-nums; }
+    .inp:focus{ outline:none; border-color:#a7d18a; box-shadow:0 0 0 3px rgba(167,209,138,.15); }
+    .k{ font-size:12px; color:#c9bcae; font-weight:600; }
+    .seg{ display:flex; height:20px; border-radius:8px; overflow:hidden; border:1px solid rgba(196,168,148,.16); background:rgba(255,255,255,.05); }
+    .seg i{ height:100%; display:block; }
+    .cat{ display:flex; align-items:center; gap:11px; padding:12px 0; border-bottom:1px solid rgba(196,168,148,.1); }
+    .cat:last-child{ border-bottom:0; }
+    .cat .ic{ width:36px; height:36px; border-radius:10px; display:grid; place-items:center; flex:none; }
+    .cat .amt{ font-weight:800; font-variant-numeric:tabular-nums; font-size:16px; margin-left:auto; }
+    .pctinp{ width:52px; text-align:center; background:rgba(20,16,12,.7); border:1px solid rgba(196,168,148,.22); border-radius:8px; padding:5px 4px; color:#f4ece5; font-weight:700; font-size:13px; }
+  </style>
+  <script src="adn-ui.js" defer></script>
+  <script src="adn-recorrido.js" defer></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","@id":"https://simonrovi-web.github.io/adn-minero/adn-minero-presupuesto.html#app","name":"ADN Minero · Planifica tu Sueldo de Faena","applicationCategory":"FinanceApplication","operatingSystem":"Web","url":"https://simonrovi-web.github.io/adn-minero/adn-minero-presupuesto.html","description":"Planificador de presupuesto para ingresos cíclicos de la minería. Educación financiera general.","isPartOf":{"@id":"https://simonrovi-web.github.io/adn-minero/#site"},"offers":{"@type":"Offer","price":"0","priceCurrency":"CLP"}}
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(167,209,138,.15);border:1px solid rgba(167,209,138,.34)"><i data-lucide="hand-coins" style="width:26px;height:26px;color:#a7d18a"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#bfe0a6;font-weight:800">Planifica tu Sueldo de Faena</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Que el sueldo dure, en las buenas y en las malas</p>
+      </div>
+    </header>
+
+    <div class="glass rounded-2xl p-3.5 mt-4" style="border-color:rgba(214,169,79,.3);background:rgba(214,169,79,.06)">
+      <p class="text-[12px] text-stone-300 leading-relaxed"><b style="color:#e6c079">💡 El sueldo minero es cíclico.</b> Cuando el cobre está alto llegan bonos; cuando baja, pueden faltar. La clave: <b>guardar en las buenas para las malas</b>. Esto es <b>educación financiera general</b>, no asesoría ni recomendación de productos.</p>
+    </div>
+
+    <!-- Ingreso -->
+    <div class="glass rounded-2xl p-4 mt-4">
+      <label class="k">Tu sueldo líquido del mes</label>
+      <input class="inp" id="liq" inputmode="numeric" placeholder="Ej: 1.200.000" />
+      <p class="text-[11px] text-stone-500 mt-2">¿No sabes tu líquido? Estímalo en el <a href="adn-minero-sueldo-calc.html" style="color:#a7d18a;font-weight:700">Simulador de Sueldo Líquido</a>.</p>
+    </div>
+
+    <!-- Reparto -->
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center justify-between mb-1">
+        <h3 class="font-bold text-[14px]">Cómo repartirlo</h3>
+        <span class="text-[11px]" id="sumTag" style="color:#9c8f83">suma 100%</span>
+      </div>
+      <div class="seg mt-2 mb-3"><i id="segN" style="background:#7fb0d9;width:50%"></i><i id="segG" style="background:#e0a35a;width:30%"></i><i id="segA" style="background:#a7d18a;width:20%"></i></div>
+      <div class="cat">
+        <div class="ic" style="background:rgba(127,176,217,.2);border:1px solid rgba(127,176,217,.4)"><i data-lucide="home" class="w-5 h-5" style="color:#7fb0d9"></i></div>
+        <div class="min-w-0"><p class="text-[13.5px] font-bold">Necesidades</p><p class="text-[11px] text-stone-400">arriendo, comida, cuentas, transporte, deudas mínimas</p></div>
+        <input class="pctinp" id="pN" inputmode="numeric" value="50"><span class="text-[12px] text-stone-400 ml-1">%</span>
+        <span class="amt" id="aN" style="color:#7fb0d9">$0</span>
+      </div>
+      <div class="cat">
+        <div class="ic" style="background:rgba(224,163,90,.2);border:1px solid rgba(224,163,90,.4)"><i data-lucide="coffee" class="w-5 h-5" style="color:#e0a35a"></i></div>
+        <div class="min-w-0"><p class="text-[13.5px] font-bold">Gustos</p><p class="text-[11px] text-stone-400">salidas, hobbies, lo que disfrutas</p></div>
+        <input class="pctinp" id="pG" inputmode="numeric" value="30"><span class="text-[12px] text-stone-400 ml-1">%</span>
+        <span class="amt" id="aG" style="color:#e0a35a">$0</span>
+      </div>
+      <div class="cat">
+        <div class="ic" style="background:rgba(167,209,138,.2);border:1px solid rgba(167,209,138,.4)"><i data-lucide="trending-up" class="w-5 h-5" style="color:#a7d18a"></i></div>
+        <div class="min-w-0"><p class="text-[13.5px] font-bold">Ahorro y deuda extra</p><p class="text-[11px] text-stone-400">fondo colchón, pagar deudas, metas</p></div>
+        <input class="pctinp" id="pA" inputmode="numeric" value="20"><span class="text-[12px] text-stone-400 ml-1">%</span>
+        <span class="amt" id="aA" style="color:#a7d18a">$0</span>
+      </div>
+      <p class="text-[11px] text-stone-500 mt-2.5">La regla <b>50/30/20</b> es solo un punto de partida: ajústala a tu realidad. En meses con bono, sube el ahorro.</p>
+    </div>
+
+    <!-- Fondo colchón -->
+    <div class="glass rounded-2xl p-4 mt-3" style="border-color:rgba(167,209,138,.3)">
+      <div class="flex items-center gap-2 mb-2"><i data-lucide="shield-check" style="width:17px;height:17px;color:#a7d18a"></i><h3 class="font-bold text-[14px]">Tu fondo colchón</h3></div>
+      <p class="text-[12.5px] text-stone-300 leading-relaxed">Es el dinero para vivir si se corta el ingreso. Se mide en <b>meses de tus necesidades</b>.</p>
+      <div class="flex items-center gap-2 mt-3">
+        <span class="k">Quiero cubrir</span>
+        <input class="pctinp" id="meses" inputmode="numeric" value="3" style="width:46px">
+        <span class="k">meses de gastos</span>
+      </div>
+      <div class="mt-3 rounded-xl p-3.5" style="background:rgba(167,209,138,.1);border:1px solid rgba(167,209,138,.3)">
+        <div class="flex items-baseline justify-between"><span class="text-[13px] font-bold text-stone-200">Meta del fondo</span><span class="text-[22px] font-extrabold tabnum" style="color:#bfe0a6" id="meta">$0</span></div>
+        <p class="text-[12.5px] text-stone-300 mt-2" id="proj">Ingresa tu sueldo para ver el plan.</p>
+      </div>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Herramienta de educación financiera de divulgación; no es asesoría ni recomienda productos. Tus datos quedan solo en este teléfono. · <a href="adn-minero-sueldo-calc.html" style="color:#e8c9a6">Simulador de sueldo</a> · <a href="adn-minero-sueldos.html" style="color:#e8c9a6">Sueldos</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const money=n=>'$'+Math.round(n).toLocaleString('es-CL');
+  const num=s=>{ const v=parseFloat(String(s==null?'':s).replace(/[^\d.,-]/g,'').replace(/\./g,'').replace(',','.')); return isFinite(v)?v:0; };
+  const int=s=>{ const v=parseInt(String(s==null?'':s).replace(/[^\d]/g,''),10); return isFinite(v)?v:0; };
+  const KEY='adn_presupuesto';
+  const F=['liq','pN','pG','pA','meses'];
+  function load(){ let s={}; try{ s=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){} F.forEach(k=>{ if(s[k]!=null && $(k)) $(k).value=s[k]; }); }
+  function save(){ const o={}; F.forEach(k=>o[k]=$(k).value); try{ localStorage.setItem(KEY, JSON.stringify(o)); }catch(e){} }
+
+  function calc(){
+    const liq=num($('liq').value);
+    let pN=int($('pN').value), pG=int($('pG').value), pA=int($('pA').value);
+    const sum=pN+pG+pA;
+    $('sumTag').textContent = sum===100?'suma 100% ✓':('suma '+sum+'%');
+    $('sumTag').style.color = sum===100?'#a7d18a':'#e0a35a';
+    const aN=liq*pN/100, aG=liq*pG/100, aA=liq*pA/100;
+    $('aN').textContent=money(aN); $('aG').textContent=money(aG); $('aA').textContent=money(aA);
+    const t=Math.max(sum,1);
+    $('segN').style.width=(pN/t*100)+'%'; $('segG').style.width=(pG/t*100)+'%'; $('segA').style.width=(pA/t*100)+'%';
+    // fondo colchón
+    const meses=Math.max(1,int($('meses').value)||1);
+    const meta=aN*meses;
+    $('meta').textContent=money(meta);
+    if(liq<=0){ $('proj').textContent='Ingresa tu sueldo para ver el plan.'; }
+    else if(aA<=0){ $('proj').innerHTML='Asigna algo a <b>ahorro</b> para empezar a formar tu fondo.'; }
+    else { const n=Math.ceil(meta/aA); const anos=n>=12?(' (~'+(Math.round(n/12*10)/10)+' años)'):'';
+      $('proj').innerHTML='Guardando <b>'+money(aA)+'</b> al mes, formas tu fondo de <b>'+money(meta)+'</b> en <b>'+n+(n===1?' mes':' meses')+'</b>'+anos+'. En meses con bono llegarás antes.'; }
+    save();
+  }
+  F.forEach(k=>$(k).addEventListener('input', calc));
+  load(); calc();
+  window.lucide && lucide.createIcons();
+</script>
+</body>
+</html>

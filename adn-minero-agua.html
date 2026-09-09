@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · Agua y Minería en Chile</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="El agua en la minería chilena: por qué el agua de mar pasó a ser la fuente principal (de 40,7% a ~67,6% al 2034), la caída del agua continental, la desalación y la recirculación. Cifras de COCHILCO." />
+  <link rel="canonical" href="https://simonrovi-web.github.io/adn-minero/adn-minero-agua.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ADN Minero" />
+  <meta property="og:title" content="ADN Minero · Agua y Minería en Chile" />
+  <meta property="og:description" content="El giro al agua de mar en la minería chilena, la desalación y el cuidado del agua continental. Cifras de COCHILCO." />
+  <meta property="og:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://simonrovi-web.github.io/adn-minero/adn-minero-agua.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ADN Minero · Agua y Minería en Chile" />
+  <meta name="twitter:description" content="El giro al agua de mar en la minería chilena y la desalación. Cifras de COCHILCO." />
+  <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(103,193,214,0.13), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    h3{ margin:0; }
+    .kpi{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); border-radius:16px; padding:15px 14px; }
+    .kpi .n{ font-size:23px; font-weight:800; line-height:1; letter-spacing:-.02em; color:#f4ece5; }
+    .kpi .n small{ font-size:.55em; color:#a9d3dc; font-weight:700; }
+    .kpi .l{ font-size:11px; color:#c9bcae; margin-top:7px; line-height:1.35; }
+    .kpi .s{ font-size:9.5px; color:#9c8f83; margin-top:6px; letter-spacing:.02em; text-transform:uppercase; font-weight:700; }
+    .fact{ display:flex; gap:12px; align-items:flex-start; padding:12px 0; border-bottom:1px solid rgba(196,168,148,.12); }
+    .fact:last-child{ border-bottom:none; }
+    .fact .b{ font-size:15px; font-weight:800; color:#a9d3dc; min-width:76px; line-height:1.15; }
+    .fact .t{ font-size:13.5px; line-height:1.5; color:#dacfc2; } .fact .t b{ color:#f4ece5; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .lbl{ font-size:10.5px; font-weight:800; fill:#eaf4f7; } .lbl-sm{ font-size:9.5px; fill:#a9c9d4; font-weight:600; }
+    .steps{ display:flex; gap:5px; margin-top:11px; }
+    .step{ flex:1; text-align:center; font-size:10px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#89989e; border:1px solid rgba(103,193,214,.14); animation:stepHi 16s infinite; }
+    .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(103,193,214,.16); color:#a9d3dc; font-size:9px; margin-bottom:4px; }
+    .step.s2{ animation-delay:4s } .step.s3{ animation-delay:8s } .step.s4{ animation-delay:12s }
+    @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#89989e; border-color:rgba(103,193,214,.14) } 5%,21%{ background:rgba(103,193,214,.18); color:#eef7fa; border-color:rgba(103,193,214,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#89989e; border-color:rgba(103,193,214,.14) } }
+    .narr{ position:relative; min-height:38px; margin-top:9px; }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:narr 16s infinite; } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:4s } .nl.n3{ animation-delay:8s } .nl.n4{ animation-delay:12s }
+    @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    .cont{ transform-box:fill-box; transform-origin:bottom; animation:contShrink 16s ease-in-out infinite }
+    @keyframes contShrink{ 0%,30%{ transform:scaleY(1) } 55%,100%{ transform:scaleY(.54) } }
+    .mar{ transform-box:fill-box; transform-origin:bottom; animation:marGrow 16s ease-in-out infinite }
+    @keyframes marGrow{ 0%,30%{ transform:scaleY(.6) } 55%,100%{ transform:scaleY(1) } }
+    .flow{ animation:flow 16s ease-in-out infinite; opacity:0 }
+    @keyframes flow{ 0%,50%{opacity:0} 60%,96%{opacity:1} 100%{opacity:0} }
+    @media (prefers-reduced-motion:reduce){ .cont,.mar,.flow,.step,.nl{ animation:none !important } .cont{ transform:scaleY(.54) } .mar,.flow{ opacity:1 } .nl{ opacity:1 } .narr{ display:none } }
+  </style>
+  <script src="adn-ui.js" defer></script>
+  <script src="adn-recorrido.js" defer></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","@id":"https://simonrovi-web.github.io/adn-minero/adn-minero-agua.html#webpage","url":"https://simonrovi-web.github.io/adn-minero/adn-minero-agua.html","name":"ADN Minero · Agua y Minería en Chile","description":"El agua en la minería chilena: el giro al agua de mar, la desalación y el cuidado del agua continental. Cifras de COCHILCO.","isPartOf":{"@id":"https://simonrovi-web.github.io/adn-minero/#site"},"inLanguage":"es-CL","publisher":{"@id":"https://simonrovi-web.github.io/adn-minero/#org"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://simonrovi-web.github.io/adn-minero/"},{"@type":"ListItem","position":2,"name":"Agua y Minería en Chile","item":"https://simonrovi-web.github.io/adn-minero/adn-minero-agua.html"}]}}
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(103,193,214,.15);border:1px solid rgba(103,193,214,.34)"><i data-lucide="droplets" style="width:26px;height:26px;color:#67c1d6"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#a9d3dc;font-weight:800">Agua y Minería en Chile</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Del río al mar: el gran cambio</p>
+      </div>
+    </header>
+
+    <div class="glass rounded-2xl p-3.5 mt-4" style="border-color:rgba(103,193,214,.3);background:rgba(103,193,214,.06)">
+      <p class="text-[12px] text-stone-300 leading-relaxed">El agua es <b>el tema más sensible</b> de la minería, sobre todo en el norte seco. La gran respuesta de la industria: dejar de depender del agua continental y pasar al <b>agua de mar</b> (muchas veces desalada). Cifras de <b>COCHILCO</b>.</p>
+    </div>
+
+    <!-- KPIs -->
+    <div class="grid grid-cols-2 gap-2.5 mt-4">
+      <div class="kpi"><div class="n">67,6<small>%</small></div><div class="l">Del agua de la minería del cobre será de mar al 2034 (era 40,7% en 2024)</div><div class="s">COCHILCO</div></div>
+      <div class="kpi"><div class="n">−37<small>%</small></div><div class="l">Caería el uso de agua continental 2024→2034</div><div class="s">COCHILCO</div></div>
+      <div class="kpi"><div class="n">~75<small>%</small></div><div class="l">Del agua de mar usada será desalada al 2034</div><div class="s">COCHILCO</div></div>
+      <div class="kpi"><div class="n">20,6 <small>m³/s</small></div><div class="l">Consumo total de agua proyectado al 2034</div><div class="s">COCHILCO</div></div>
+    </div>
+
+    <!-- ANIMACIÓN -->
+    <div class="glass rounded-2xl p-3.5 mt-4">
+      <div class="flex items-center gap-2 mb-2.5"><i data-lucide="waves" style="width:17px;height:17px;color:#67c1d6"></i><h3 class="font-bold text-[13.5px]">El giro del agua continental al mar</h3></div>
+      <svg class="viz" viewBox="0 0 340 200" role="img" aria-label="La minería del cobre reduce el uso de agua continental y aumenta el agua de mar, que pasa de 40,7% en 2024 a cerca de 67,6% en 2034, en gran parte desalada">
+        <defs>
+          <linearGradient id="wBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#132430"/><stop offset="1" stop-color="#12100c"/></linearGradient>
+          <linearGradient id="wCont" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9a06a"/><stop offset="1" stop-color="#8a6a44"/></linearGradient>
+          <linearGradient id="wMar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fd6e6"/><stop offset="1" stop-color="#3f97a8"/></linearGradient>
+          <filter id="wSh" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.6" flood-color="#000" flood-opacity=".4"/></filter>
+        </defs>
+        <rect x="0" y="0" width="340" height="200" fill="url(#wBg)"/>
+        <line x1="24" y1="160" x2="316" y2="160" stroke="#3a4a52" stroke-width="1.4"/>
+
+        <!-- barra agua continental (baja) -->
+        <rect class="cont" x="54" y="52" width="54" height="108" rx="4" fill="url(#wCont)" filter="url(#wSh)"/>
+        <text class="lbl-sm" x="81" y="176" text-anchor="middle" style="fill:#e0c39b">Continental</text>
+        <text class="lbl-sm" x="81" y="45" text-anchor="middle" style="fill:#c9a06a">baja ~37%</text>
+
+        <!-- barra agua de mar (sube) -->
+        <rect class="mar" x="150" y="52" width="54" height="108" rx="4" fill="url(#wMar)" filter="url(#wSh)"/>
+        <text class="lbl-sm" x="177" y="176" text-anchor="middle" style="fill:#a9d3dc">De mar</text>
+        <text class="lbl-sm" x="177" y="45" text-anchor="middle" style="fill:#7fd6e6">41% → 68%</text>
+
+        <!-- desaladora + faena (aparecen al final) -->
+        <g class="flow">
+          <g filter="url(#wSh)"><rect x="238" y="108" width="30" height="30" rx="3" fill="#3a4a4e" stroke="#67c1d6" stroke-width="1.5"/><rect x="244" y="100" width="7" height="10" fill="#67c1d6"/><rect x="256" y="103" width="7" height="7" fill="#67c1d6"/></g>
+          <text class="lbl-sm" x="253" y="150" text-anchor="middle">desaladora</text>
+          <path d="M210 96 C 232 88, 250 92, 253 106" fill="none" stroke="#7fd6e6" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="3 4"/>
+          <path d="M268 118 C 292 116, 298 108, 300 96" fill="none" stroke="#7fd6e6" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="3 4"/>
+          <path d="M288 92 L302 92 L295 78 Z" fill="#cf9b6f"/>
+          <text class="lbl-sm" x="296" y="106" text-anchor="middle" style="fill:#e6c79b">faena</text>
+        </g>
+      </svg>
+      <div class="steps">
+        <div class="step s1"><span class="n">1</span>Hoy: mezcla</div>
+        <div class="step s2"><span class="n">2</span>Baja el río</div>
+        <div class="step s3"><span class="n">3</span>Sube el mar</div>
+        <div class="step s4"><span class="n">4</span>Desalación</div>
+      </div>
+      <div class="narr">
+        <p class="nl n1">Hoy la minería del cobre usa una <b>mezcla</b>: agua continental y agua de mar.</p>
+        <p class="nl n2">El <b>agua continental baja</b> con fuerza (~37% al 2034), para aliviar a acuíferos y comunidades.</p>
+        <p class="nl n3">El <b>agua de mar</b> pasa a ser la principal: de 40,7% (2024) a ~<b>67,6%</b> (2034).</p>
+        <p class="nl n4">Buena parte se logra con <b>desalación</b>: quitar la sal al agua de mar para usarla en la faena.</p>
+      </div>
+      <p class="text-center text-[10px] text-stone-500 mt-2.5">Fuente: COCHILCO, “Proyección del Consumo de Agua en la Minería del Cobre 2024–2034”.</p>
+    </div>
+
+    <!-- POR QUÉ IMPORTA -->
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="leaf" style="width:17px;height:17px;color:#7fbf9a"></i><h3 class="font-bold text-[13.5px]">Por qué importa</h3></div>
+      <div class="mt-1">
+        <div class="fact"><div class="b">Zona seca</div><div class="t">Gran parte de la minería está en el <b>desierto</b>, donde el agua es escasa y compite con comunidades y agricultura.</div></div>
+        <div class="fact"><div class="b">Menos presión</div><div class="t">Pasar al mar <b>alivia los acuíferos</b> y los ríos del norte, un reclamo histórico de los territorios.</div></div>
+        <div class="fact"><div class="b">Recircular</div><div class="t">Las faenas reutilizan el agua una y otra vez (por ejemplo desde los <b>relaves</b>) para gastar menos.</div></div>
+        <div class="fact"><div class="b">El costo</div><div class="t">Desalar y <b>bombear</b> agua de mar hasta miles de metros de altura usa <b>mucha energía</b>: por eso importa que sea limpia.</div></div>
+      </div>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Cifras de fuentes públicas: COCHILCO (Proyección de Consumo de Agua en la Minería del Cobre 2024–2034). · <a href="adn-minero-ambiente.html" style="color:#e8c9a6">Medio ambiente</a> · <a href="adn-minero-escondida.html" style="color:#e8c9a6">Escondida (agua de mar)</a> · <a href="adn-minero-comunidades.html" style="color:#e8c9a6">Comunidades</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+<script>window.lucide&&lucide.createIcons();</script>
+</body>
+</html>

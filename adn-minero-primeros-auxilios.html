@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · Primeros Auxilios en Faena</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="Guía rápida de primeros auxilios en faena: qué hacer ante golpe de calor, mal de altura, hemorragia, fractura, quemadura, atragantamiento, contacto eléctrico y paro (RCP), y a quién llamar. No reemplaza formación ni atención médica." />
+  <link rel="canonical" href="https://simonrovi-web.github.io/adn-minero/adn-minero-primeros-auxilios.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ADN Minero" />
+  <meta property="og:title" content="ADN Minero · Primeros Auxilios en Faena" />
+  <meta property="og:description" content="Qué hacer en los primeros minutos ante una emergencia en faena. Guía rápida; no reemplaza formación ni atención médica." />
+  <meta property="og:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://simonrovi-web.github.io/adn-minero/adn-minero-primeros-auxilios.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ADN Minero · Primeros Auxilios en Faena" />
+  <meta name="twitter:description" content="Qué hacer en los primeros minutos ante una emergencia en faena." />
+  <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(224,90,63,0.14), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    .topic{ cursor:pointer; } .topic .body{ display:none; } .topic.open .body{ display:block; }
+    .topic.open .chev{ transform:rotate(90deg); } .chev{ transition:transform .2s; }
+    .tip{ display:flex; gap:9px; align-items:flex-start; font-size:13.5px; line-height:1.5; color:#e4d7c8; margin-top:8px; }
+    .tip b{ color:#f6ecdf; } h3{ margin:0; }
+    .num{ display:flex; gap:9px; align-items:center; text-decoration:none; padding:10px 12px; border-radius:12px; background:rgba(224,90,63,.1); border:1px solid rgba(224,90,63,.3); }
+    .num b{ font-size:17px; color:#f4ece5; font-variant-numeric:tabular-nums; } .num span{ font-size:11.5px; color:#c9bcae; }
+  </style>
+  <script src="adn-ui.js" defer></script>
+  <script src="adn-recorrido.js" defer></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","@id":"https://simonrovi-web.github.io/adn-minero/adn-minero-primeros-auxilios.html#webpage","url":"https://simonrovi-web.github.io/adn-minero/adn-minero-primeros-auxilios.html","name":"ADN Minero · Primeros Auxilios en Faena","description":"Guía rápida de primeros auxilios en faena; no reemplaza formación ni atención médica.","isPartOf":{"@id":"https://simonrovi-web.github.io/adn-minero/#site"},"inLanguage":"es-CL","publisher":{"@id":"https://simonrovi-web.github.io/adn-minero/#org"}}
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(224,90,63,.15);border:1px solid rgba(224,90,63,.34)"><i data-lucide="heart-pulse" style="width:26px;height:26px;color:#e0715a"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#f0a898;font-weight:800">Primeros Auxilios en Faena</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Los primeros minutos salvan vidas</p>
+      </div>
+    </header>
+
+    <div class="glass rounded-2xl p-3.5 mt-4" style="border-color:rgba(224,113,90,.34);background:rgba(224,113,90,.08)">
+      <p class="text-[12px] text-stone-300 leading-relaxed"><b style="color:#f0b8a6">⚠️ Esto no reemplaza un curso de primeros auxilios ni la atención médica.</b> Es una guía de recordatorio. Ante una emergencia, <b>avisa de inmediato</b> al policlínico de tu faena y a los servicios de emergencia, y no te expongas tú también.</p>
+    </div>
+
+    <!-- números -->
+    <div class="grid grid-cols-3 gap-2 mt-3">
+      <a class="num" href="tel:131"><i data-lucide="ambulance" class="w-5 h-5" style="color:#e0715a"></i><span><b>131</b><br>SAMU</span></a>
+      <a class="num" href="tel:132"><i data-lucide="flame" class="w-5 h-5" style="color:#e0955f"></i><span><b>132</b><br>Bomberos</span></a>
+      <a class="num" href="tel:133"><i data-lucide="shield" class="w-5 h-5" style="color:#7fb0d9"></i><span><b>133</b><br>Carabineros</span></a>
+    </div>
+    <p class="text-[11px] text-stone-500 mt-2 px-1">Y guarda a mano el número del <b>policlínico / rescate</b> de tu faena. Ver <a href="adn-minero-emergencias.html" style="color:#e8c9a6">Contactos de emergencia</a>.</p>
+
+    <div id="topics" class="mt-4 grid gap-2.5"></div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Contenido de divulgación alineado con recomendaciones generales de primeros auxilios; capacítate con un curso certificado. · <a href="adn-minero-seguridad.html" style="color:#e8c9a6">Seguridad</a> · <a href="adn-minero-salud.html" style="color:#e8c9a6">Salud</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+
+<script>
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const TOPICS=[
+    { ic:'list-ordered', c:'#e0715a', t:'Lo primero: P.A.S.', s:'Proteger · Avisar · Socorrer',
+      tips:[
+        ['shield','<b>Proteger:</b> asegura la zona y protégete tú primero. No te conviertas en la segunda víctima.'],
+        ['phone','<b>Avisar:</b> llama al policlínico de la faena y al 131. Di dónde estás, qué pasó y cuántos lesionados.'],
+        ['heart-pulse','<b>Socorrer:</b> recién entonces ayuda a la persona, según lo que necesite, sin moverla de más.']
+      ]},
+    { ic:'sun', c:'#e0a35a', t:'Golpe de calor', s:'Piel caliente, confusión, desmayo',
+      tips:[
+        ['thermometer','Señales: piel muy caliente, dolor de cabeza, mareo, náuseas, confusión y hasta desmayo.'],
+        ['check','Lleva a la persona a la <b>sombra</b>, aflója su ropa y <b>enfríala</b> (agua, paños húmedos, aire).'],
+        ['droplet','Si está consciente, dale <b>agua</b> de a poco. No des alcohol ni bebidas muy azucaradas.'],
+        ['triangle-alert','Si hay confusión, vómitos o pierde el conocimiento, <b>llama ya</b>: puede ser grave.']
+      ]},
+    { ic:'mountain', c:'#7fb0d9', t:'Mal de altura grave (soroche)', s:'En faenas de altura',
+      tips:[
+        ['triangle-alert','Señales de alarma: dolor de cabeza intenso que no cede, vómitos, falta de aire en reposo, tos, confusión o falta de coordinación.'],
+        ['arrow-down','Lo más efectivo es <b>descender</b> a menor altura apenas se pueda, y dar <b>oxígeno</b> si hay.'],
+        ['phone','Avisa de inmediato: puede ser un <b>edema</b> (pulmonar o cerebral), que es una emergencia.']
+      ]},
+    { ic:'droplet', c:'#e0715a', t:'Hemorragia (sangrado)', s:'Cómo detener el sangrado',
+      tips:[
+        ['check','Haz <b>presión directa</b> sobre la herida con un paño o gasa limpia, firme y sostenida.'],
+        ['arrow-up','Si es en un brazo o pierna y no hay fractura, <b>elévalo</b> mientras mantienes la presión.'],
+        ['triangle-alert','Si el paño se empapa, <b>pon otro encima</b> sin retirar el primero. No saques objetos clavados: inmoviliza alrededor.'],
+        ['phone','Sangrados que no se detienen o son abundantes: llama y traslada urgente.']
+      ]},
+    { ic:'bandage', c:'#e8c9a6', t:'Fractura o golpe fuerte', s:'No mover de más',
+      tips:[
+        ['check','<b>Inmoviliza</b> la zona tal como quedó; no intentes “acomodar” el hueso.'],
+        ['triangle-alert','Si sospechas golpe en <b>cabeza, cuello o columna</b>, <b>no muevas</b> a la persona salvo peligro vital; espera al rescate.'],
+        ['snowflake','Puedes aplicar frío (envuelto en un paño) sobre el golpe para reducir la inflamación.']
+      ]},
+    { ic:'flame', c:'#e0955f', t:'Quemadura', s:'Enfriar, no reventar',
+      tips:[
+        ['droplet','Enfría con <b>agua fría o templada corriente</b> por 10–20 minutos. Quita anillos o ropa no pegada.'],
+        ['x-circle','<b>No</b> revientes ampollas ni apliques pasta de dientes, aceite o cremas caseras.'],
+        ['check','Cubre con un <b>paño limpio</b> y no adherente. Quemaduras extensas, en cara o vías respiratorias: urgencia.']
+      ]},
+    { ic:'heart-pulse', c:'#e0715a', t:'No responde y no respira (RCP)', s:'Reanimación básica',
+      tips:[
+        ['phone','Si <b>no responde y no respira normal</b>: pide ayuda y un <b>DEA</b> (desfibrilador) y llama al 131 ya.'],
+        ['heart-pulse','Inicia <b>compresiones</b> en el centro del pecho, fuerte y rápido (~100–120 por minuto), dejando subir el pecho.'],
+        ['activity','Si estás formado, alterna <b>30 compresiones y 2 ventilaciones</b>. Si no, haz <b>solo compresiones</b> sin parar.'],
+        ['zap','Usa el <b>DEA</b> apenas llegue y sigue sus instrucciones. No te detengas hasta que llegue ayuda.']
+      ]},
+    { ic:'wind', c:'#7fbf9a', t:'Atragantamiento', s:'No puede respirar ni toser',
+      tips:[
+        ['check','Si <b>tose</b>, anímalo a seguir tosiendo. Si <b>no puede toser, hablar ni respirar</b>, actúa.'],
+        ['hand','Dale <b>5 golpes</b> entre los omóplatos y luego <b>compresiones abdominales</b> (maniobra de Heimlich), alternando.'],
+        ['heart-pulse','Si queda inconsciente, bájalo al suelo, llama al 131 e inicia <b>RCP</b>.']
+      ]},
+    { ic:'zap', c:'#e0c35a', t:'Contacto eléctrico', s:'Corta la energía primero',
+      tips:[
+        ['triangle-alert','<b>No toques</b> a la persona si sigue en contacto con la corriente: te electrocutas tú también.'],
+        ['power','<b>Corta la energía</b> (interruptor/bloqueo) o aléjala de la fuente con un elemento no conductor y seco.'],
+        ['heart-pulse','Luego evalúa: si no responde ni respira, inicia RCP y llama. Toda descarga fuerte debe verse en el policlínico.']
+      ]},
+    { ic:'phone', c:'#7fb0d9', t:'Cómo pedir ayuda', s:'Qué decir al llamar',
+      tips:[
+        ['map-pin','Di <b>dónde estás</b> con la mayor precisión (sector, nivel, punto de encuentro).'],
+        ['info','Explica <b>qué pasó</b>, <b>cuántos</b> lesionados y en <b>qué estado</b> (consciente, respira, sangra).'],
+        ['check','No cortes hasta que te lo indiquen y envía a alguien a <b>guiar</b> a la ambulancia o rescate.']
+      ]}
+  ];
+  document.getElementById('topics').innerHTML=TOPICS.map((x,i)=>`
+    <div class="glass rounded-2xl topic" data-i="${i}">
+      <div class="p-4 flex items-center gap-3">
+        <div class="h-10 w-10 rounded-xl grid place-items-center shrink-0" style="background:${x.c}22;border:1px solid ${x.c}55"><i data-lucide="${x.ic}" class="w-5 h-5" style="color:${x.c}"></i></div>
+        <div class="min-w-0 flex-1"><h3 class="font-bold text-[15px]">${x.t}</h3><p class="text-[11.5px] text-stone-400">${x.s}</p></div>
+        <i data-lucide="chevron-right" class="chev w-5 h-5 text-stone-500 shrink-0"></i>
+      </div>
+      <div class="body px-4 pb-4 -mt-1">
+        ${x.tips.map(t=>`<div class="tip"><i data-lucide="${t[0]}" class="w-4 h-4 shrink-0 mt-0.5" style="color:${x.c}"></i><span>${t[1]}</span></div>`).join('')}
+      </div>
+    </div>`).join('');
+  document.getElementById('topics').addEventListener('click', e=>{ const t=e.target.closest('.topic'); if(!t) return; t.classList.toggle('open'); drawIcons(); });
+  drawIcons();
+</script>
+</body>
+</html>
