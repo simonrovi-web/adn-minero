@@ -100,7 +100,7 @@
           <label class="fld"><span class="k">Seguro cesantía (%)</span><span class="h">0,6% si es indefinido</span><input class="inp" id="pCes" inputmode="decimal" /></label>
           <label class="fld"><span class="k">Tope imponible ($)</span><span class="h">0 = sin tope</span><input class="inp" id="tope" inputmode="numeric" /></label>
         </div>
-        <label class="fld"><span class="k">UTM del mes ($)</span><span class="h">para el impuesto de 2ª categoría — actualízala (SII)</span><input class="inp" id="utm" inputmode="numeric" /></label>
+        <label class="fld"><span class="k">UTM del mes ($)</span><span class="h" id="utmHint">para el impuesto de 2ª categoría</span><input class="inp" id="utm" inputmode="numeric" /></label>
         <button id="reset" class="mt-3 text-[12px] font-semibold text-stone-400 underline">Restablecer valores por defecto</button>
       </div>
     </div>
@@ -136,12 +136,28 @@
   function impuesto(baseTrib, utm){ if(utm<=0||baseTrib<=0) return 0; const u=baseTrib/utm; let t=TRAMOS[0]; for(const x of TRAMOS){ if(u>x.d) t=x; } return Math.max(0, baseTrib*t.f - t.r*utm); }
 
   const IN=['base','grat','bonos','noimp','pAfp','pSalud','pCes','tope','utm'];
+  let utmManual=false;
   function load(){ let s={}; try{ s=JSON.parse(localStorage.getItem('adn_sueldocalc')||'{}')||{}; }catch(e){}
     $('pAfp').value = s.pAfp!=null?s.pAfp:DEF.pAfp; $('pSalud').value = s.pSalud!=null?s.pSalud:DEF.pSalud;
     $('pCes').value = s.pCes!=null?s.pCes:DEF.pCes; $('tope').value = s.tope!=null?s.tope:DEF.tope; $('utm').value = s.utm!=null?s.utm:DEF.utm;
+    utmManual = !!s.utmManual;
     if(s.base!=null) $('base').value=s.base; if(s.grat!=null) $('grat').value=s.grat; if(s.bonos!=null) $('bonos').value=s.bonos; if(s.noimp!=null) $('noimp').value=s.noimp;
   }
-  function save(){ const o={}; IN.forEach(k=>o[k]=$(k).value); try{ localStorage.setItem('adn_sueldocalc', JSON.stringify(o)); }catch(e){} }
+  function save(){ const o={}; IN.forEach(k=>o[k]=$(k).value); o.utmManual=utmManual; try{ localStorage.setItem('adn_sueldocalc', JSON.stringify(o)); }catch(e){} }
+
+  // UTM del mes en vivo (mindicador.cl); solo si el usuario no la fijó a mano
+  async function fetchUTM(){
+    if(utmManual) return;
+    try{
+      const r=await fetch('https://mindicador.cl/api/utm',{cache:'no-store'});
+      const d=await r.json(); const v=d&&d.serie&&d.serie[0]&&d.serie[0].valor;
+      if(v){ $('utm').value=Math.round(v);
+        const f=d.serie[0].fecha?new Date(d.serie[0].fecha):null;
+        $('utmHint').textContent='UTM de '+(f?f.toLocaleDateString('es-CL',{month:'long',year:'numeric'}):'este mes')+' · en vivo (mindicador.cl)';
+        calc();
+      }
+    }catch(e){ /* sin conexión: queda el valor por defecto, editable */ }
+  }
 
   function calc(){
     const base=num($('base').value), grat=num($('grat').value), bonos=num($('bonos').value), noimp=num($('noimp').value);
@@ -169,10 +185,11 @@
   }
 
   IN.forEach(k=>$(k).addEventListener('input', calc));
+  $('utm').addEventListener('input', ()=>{ utmManual=true; $('utmHint').textContent='UTM fijada por ti'; save(); });
   $('adj').addEventListener('click', e=>{ if(e.target.closest('.body')) return; $('adj').classList.toggle('open'); if(window.lucide) lucide.createIcons(); });
-  $('reset').addEventListener('click', ()=>{ $('pAfp').value=DEF.pAfp; $('pSalud').value=DEF.pSalud; $('pCes').value=DEF.pCes; $('tope').value=DEF.tope; $('utm').value=DEF.utm; calc(); });
+  $('reset').addEventListener('click', ()=>{ $('pAfp').value=DEF.pAfp; $('pSalud').value=DEF.pSalud; $('pCes').value=DEF.pCes; $('tope').value=DEF.tope; $('utm').value=DEF.utm; utmManual=false; $('utmHint').textContent='para el impuesto de 2ª categoría'; calc(); fetchUTM(); });
 
-  load(); calc();
+  load(); calc(); fetchUTM();
   window.lucide && lucide.createIcons();
 </script>
 </body>
