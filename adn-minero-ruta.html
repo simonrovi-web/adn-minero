@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · De Cero a la Faena</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="Ruta interactiva para entrar a trabajar en minería sin experiencia: roles de entrada, documentos y exámenes, cursos y licencias, cómo postular, cuidado con las estafas y tu primer turno. Con checklist que guarda tu avance." />
+  <link rel="canonical" href="https://simonrovi-web.github.io/adn-minero/adn-minero-ruta.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ADN Minero" />
+  <meta property="og:title" content="ADN Minero · De Cero a la Faena" />
+  <meta property="og:description" content="Ruta interactiva para entrar a la minería sin experiencia, paso a paso, con checklist que guarda tu avance." />
+  <meta property="og:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://simonrovi-web.github.io/adn-minero/adn-minero-ruta.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ADN Minero · De Cero a la Faena" />
+  <meta name="twitter:description" content="Ruta interactiva para entrar a la minería sin experiencia, con checklist que guarda tu avance." />
+  <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(167,209,138,0.13), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    h3{ margin:0; }
+    .stage{ position:relative; padding-left:14px; }
+    .stage::before{ content:''; position:absolute; left:0; top:6px; bottom:6px; width:3px; border-radius:3px; background:var(--sc,#a7d18a); opacity:.5; }
+    .it{ display:flex; gap:11px; align-items:flex-start; padding:10px 0; border-top:1px solid rgba(196,168,148,.1); cursor:pointer; }
+    .it:first-child{ border-top:0; }
+    .ck{ width:22px; height:22px; border-radius:7px; border:2px solid rgba(196,168,148,.35); flex:none; margin-top:1px; display:grid; place-items:center; transition:background .15s, border-color .15s; }
+    .ck i{ width:14px; height:14px; color:#10231a; opacity:0; transition:opacity .15s; }
+    .it.done .ck{ background:#a7d18a; border-color:#a7d18a; } .it.done .ck i{ opacity:1; }
+    .it .tx{ font-size:14px; line-height:1.45; color:#e4d7c8; } .it.done .tx{ color:#8f9a83; text-decoration:line-through; }
+    .it .tx b{ color:#f4ece5; }
+    .lnk{ display:inline-flex; align-items:center; gap:4px; font-size:11.5px; font-weight:700; color:#a7d18a; margin-top:4px; text-decoration:none; }
+    .lnk:active{ opacity:.6; }
+    .barwrap{ height:10px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; }
+    .barwrap i{ display:block; height:100%; background:linear-gradient(90deg,#a7d18a,#7fbf6a); transition:width .4s cubic-bezier(.22,1,.36,1); }
+    .warn{ background:rgba(224,113,90,.1); border:1px solid rgba(224,113,90,.32); border-radius:12px; padding:11px 13px; }
+  </style>
+  <script src="adn-ui.js" defer></script>
+  <script src="adn-recorrido.js" defer></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"HowTo","@id":"https://simonrovi-web.github.io/adn-minero/adn-minero-ruta.html#howto","name":"De cero a la faena: cómo entrar a trabajar en minería sin experiencia","description":"Ruta paso a paso para entrar a la minería en Chile sin experiencia previa.","inLanguage":"es-CL","isPartOf":{"@id":"https://simonrovi-web.github.io/adn-minero/#site"},"step":[{"@type":"HowToStep","name":"Conoce los roles de entrada"},{"@type":"HowToStep","name":"Ordena tus documentos y tu salud"},{"@type":"HowToStep","name":"Haz los cursos y licencias que pide tu rol"},{"@type":"HowToStep","name":"Arma tu CV y postula"},{"@type":"HowToStep","name":"Cuídate de las estafas"},{"@type":"HowToStep","name":"Prepárate para tu primer turno"}]}
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(167,209,138,.15);border:1px solid rgba(167,209,138,.34)"><i data-lucide="route" style="width:26px;height:26px;color:#a7d18a"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#bfe0a6;font-weight:800">De Cero a la Faena</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Tu ruta para entrar a la minería</p>
+      </div>
+    </header>
+
+    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">No necesitas experiencia para partir. Sigue esta ruta paso a paso y <b>marca lo que vas logrando</b> — tu avance se guarda en este teléfono. Es una guía referencial: cada empresa y rol pide requisitos distintos.</p>
+
+    <!-- PROGRESO -->
+    <div class="glass rounded-2xl p-4 mt-4">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-[13px] font-bold text-stone-200">Tu avance</span>
+        <span class="text-[13px] font-extrabold" style="color:#bfe0a6"><span id="pctN">0</span>%</span>
+      </div>
+      <div class="barwrap"><i id="bar" style="width:0%"></i></div>
+      <p class="text-[12px] text-stone-400 mt-2" id="progMsg">Marca tu primer paso para comenzar.</p>
+      <button id="reset" class="text-[11.5px] font-semibold text-stone-500 underline mt-2">Reiniciar mi avance</button>
+    </div>
+
+    <div id="stages" class="mt-3 grid gap-3"></div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Guía de divulgación; los requisitos exactos los define cada empresa y la normativa vigente. Volver a casa es la meta N.º1. · <a href="adn-minero-primer-empleo.html" style="color:#e8c9a6">Guía Primer Empleo</a> · <a href="adn-minero-empleos.html" style="color:#e8c9a6">Trabajos</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const KEY='adn_ruta';
+  const STAGES=[
+    { t:'Conoce los roles de entrada', ic:'compass', c:'#a7d18a', items:[
+      { x:'Entiende que a la minería <b>se entra mucho por empresas contratistas</b>, no solo por la gran minera.' },
+      { x:'Identifica <b>roles de entrada</b> sin experiencia: ayudante, aseo industrial, servicios, casino, bodega, nochero, apoyo a operaciones.' },
+      { x:'Elige hacia dónde quieres crecer (operador de equipos, mantención, procesos) para enfocar tus cursos.', l:{f:'adn-minero-primer-empleo.html',t:'Guía: cómo entrar'} }
+    ]},
+    { t:'Ordena tus documentos y tu salud', ic:'badge-check', c:'#7fbfd1', items:[
+      { x:'Ten al día tu <b>cédula de identidad</b> y tus antecedentes; revisa tu situación militar si corresponde.' },
+      { x:'Prepárate para el <b>examen preocupacional</b> (y el de <b>altura</b> si la faena está en la cordillera).', l:{f:'adn-minero-salud.html',t:'Salud del minero'} },
+      { x:'Guarda tus certificados y vencimientos en un solo lugar para tenerlos a mano.', l:{f:'adn-minero-documentos.html',t:'Mis Documentos'} }
+    ]},
+    { t:'Haz los cursos y licencias de tu rol', ic:'graduation-cap', c:'#e0a35a', items:[
+      { x:'Averigua qué <b>cursos</b> pide tu rol (inducción, trabajo en altura física, manejo defensivo, primeros auxilios, etc.).', l:{f:'adn-minero-educacion.html',t:'Educación minera'} },
+      { x:'Saca o actualiza tu <b>licencia de conducir</b> si postulas a conducción.' },
+      { x:'Aprende las bases de <b>seguridad</b>: EPP, autocuidado y por qué se puede detener una tarea insegura.', l:{f:'adn-minero-seguridad.html',t:'Seguridad'} }
+    ]},
+    { t:'Arma tu CV y postula', ic:'file-text', c:'#cf9b6f', items:[
+      { x:'Haz un <b>CV simple y claro</b>: tus datos, cursos, licencias y cualquier experiencia (aunque no sea minera).' },
+      { x:'Postula en <b>bolsas de trabajo</b> y directamente a <b>empresas contratistas</b>; revisa avisos seguido.', l:{f:'adn-minero-empleos.html',t:'Trabajos y servicios'} },
+      { x:'Participa en <b>ferias laborales</b> y activa el <b>boca a boca</b> con gente que ya trabaja en faena.' }
+    ]},
+    { t:'Cuídate de las estafas', ic:'shield-alert', c:'#e0715a', warn:true, items:[
+      { x:'<b>Nunca pagues por un puesto de trabajo.</b> Si te piden dinero por un “cupo”, es estafa.' },
+      { x:'Desconfía de ofertas que exigen <b>pagar cursos “obligatorios”</b> por adelantado para ser contratado.' },
+      { x:'Verifica la empresa y el aviso; no entregues datos bancarios ni copias sin estar seguro.' }
+    ]},
+    { t:'Prepárate para tu primer turno', ic:'hard-hat', c:'#7fbf9a', items:[
+      { x:'Conoce tu <b>sistema de turnos</b> (7x7, 4x3…) y planifica tu bajada y descanso.', l:{f:'adn-minero-turnos.html',t:'Calculadora de turnos'} },
+      { x:'Ten claro tu <b>sueldo</b> (bruto vs líquido) y tus <b>derechos</b> en faena.', l:{f:'adn-minero-sueldos.html',t:'Sueldos'} },
+      { x:'Haz tu <b>autochequeo pre-turno</b> y usa tu EPP: la meta es volver bien a casa.', l:{f:'adn-minero-checklist.html',t:'Autochequeo'} }
+    ]}
+  ];
+
+  let done={}; try{ done=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){}
+  const total=STAGES.reduce((a,s)=>a+s.items.length,0);
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(done)); }catch(e){} }
+  function count(){ return Object.keys(done).filter(k=>done[k]).length; }
+  function updateProgress(){
+    const n=count(), p=Math.round(n/total*100);
+    $('pctN').textContent=p; $('bar').style.width=p+'%';
+    let m;
+    if(p===0) m='Marca tu primer paso para comenzar.';
+    else if(p<34) m='¡Buen comienzo! Sigue avanzando.';
+    else if(p<67) m='Vas a la mitad del camino. 💪';
+    else if(p<100) m='Casi listo/a para postular con todo.';
+    else m='¡Completaste la ruta! Ahora a postular y a la faena. 🦺';
+    $('progMsg').textContent=m;
+  }
+  function render(){
+    $('stages').innerHTML=STAGES.map((s,si)=>`
+      <div class="glass rounded-2xl p-4">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="h-10 w-10 rounded-xl grid place-items-center shrink-0" style="background:${s.c}22;border:1px solid ${s.c}55"><i data-lucide="${s.ic}" class="w-5 h-5" style="color:${s.c}"></i></div>
+          <div class="min-w-0"><p class="text-[11px] font-bold uppercase tracking-wider" style="color:${s.c}">Paso ${si+1}</p><h3 class="font-bold text-[15px] leading-tight">${s.t}</h3></div>
+        </div>
+        <div class="stage" style="--sc:${s.c}">
+          ${s.items.map((it,ii)=>{ const id='s'+si+'i'+ii; const dn=done[id]?'done':'';
+            return `<div class="it ${dn}" data-id="${id}">
+              <div class="ck"><i data-lucide="check"></i></div>
+              <div class="min-w-0"><div class="tx">${it.x}</div>${it.l?`<a class="lnk" href="${it.l.f}"><i data-lucide="arrow-right" style="width:13px;height:13px"></i> ${it.l.t}</a>`:''}</div>
+            </div>`; }).join('')}
+        </div>
+        ${s.warn?'<div class="warn mt-2 text-[12px] text-stone-300"><b style="color:#f0a898">⚠️ Regla de oro:</b> un trabajo serio <b>nunca</b> te cobra por contratarte.</div>':''}
+      </div>`).join('');
+    drawIcons();
+  }
+  $('stages').addEventListener('click', e=>{
+    const a=e.target.closest('a'); if(a) return; // dejar pasar los enlaces
+    const it=e.target.closest('.it'); if(!it) return;
+    const id=it.dataset.id; done[id]=!done[id]; it.classList.toggle('done', !!done[id]);
+    save(); updateProgress();
+  });
+  $('reset').addEventListener('click', ()=>{ done={}; save(); render(); updateProgress(); });
+
+  render(); updateProgress();
+  window.lucide && lucide.createIcons();
+</script>
+</body>
+</html>
