@@ -42,6 +42,33 @@
     .lead{ font-size:13px; font-weight:800; }
     .note{ font-size:12.5px; color:#b7a794; line-height:1.4; margin-top:2px; }
     .chip{ font-size:9.5px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; padding:2px 7px; border-radius:999px; background:rgba(207,155,111,.18); color:#e8c9a6; border:1px solid rgba(207,155,111,.4); }
+    /* ---- animación didáctica: la transición ---- */
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .glbl{ font-size:10px; font-weight:800; fill:#f6ead9; } .glbl-sm{ font-size:9px; fill:#c9b79e; font-weight:600; }
+    .steps{ display:flex; gap:5px; margin-top:11px; }
+    .step{ flex:1; text-align:center; font-size:10px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#9a8b78; border:1px solid rgba(214,169,79,.14); animation:stepHi 16s infinite; }
+    .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(214,169,79,.16); color:#e6c98f; font-size:9px; margin-bottom:4px; }
+    .step.s2{ animation-delay:4s } .step.s3{ animation-delay:8s } .step.s4{ animation-delay:12s }
+    @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#9a8b78; border-color:rgba(214,169,79,.14) } 5%,21%{ background:rgba(214,169,79,.18); color:#fbeede; border-color:rgba(214,169,79,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#9a8b78; border-color:rgba(214,169,79,.14) } }
+    .narr{ position:relative; min-height:38px; margin-top:9px; }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:narr 16s infinite; } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:4s } .nl.n3{ animation-delay:8s } .nl.n4{ animation-delay:12s }
+    @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    .fossil{ animation:fossilFade 16s ease-in-out infinite }
+    @keyframes fossilFade{ 0%,24%{opacity:1} 42%,100%{opacity:.3} }
+    .smoke{ animation:smokeRise 4.5s ease-in-out infinite }
+    @keyframes smokeRise{ 0%{opacity:.55;transform:translateY(2px)} 50%{opacity:.85;transform:translateY(-3px)} 100%{opacity:.55;transform:translateY(2px)} }
+    .clean{ animation:cleanRise 16s ease-in-out infinite }
+    @keyframes cleanRise{ 0%,50%{opacity:.28} 58%,100%{opacity:1} }
+    .turbine{ transform-box:fill-box; transform-origin:center; animation:spin 6s linear infinite }
+    @keyframes spin{ to{ transform:rotate(360deg) } }
+    .sunb{ transform-box:fill-box; transform-origin:center; animation:sunPulse 5s ease-in-out infinite }
+    @keyframes sunPulse{ 0%,100%{opacity:.8} 50%{opacity:1} }
+    .feed{ opacity:0; animation:feedOn 16s infinite } .feed.f2{ animation-delay:.4s }
+    @keyframes feedOn{ 0%,72%{opacity:0} 78%,97%{opacity:1} 100%{opacity:.2} }
+    .chileN{ animation:chilePulse 16s ease-in-out infinite }
+    @keyframes chilePulse{ 0%,71%{opacity:.55} 78%,97%{opacity:1} 100%{opacity:.55} }
+    @media (prefers-reduced-motion:reduce){ .fossil,.smoke,.clean,.turbine,.sunb,.feed,.chileN,.step,.nl{ animation:none !important } .clean,.feed,.chileN{ opacity:1 } .nl{ opacity:1 } .narr{ display:none } }
   </style>
   <script src="adn-ui.js" defer></script>
   <script type="application/ld+json">
@@ -60,7 +87,97 @@
 
     <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">El mundo se mueve con energía, y cada fuente tiene sus potencias. Chile no lidera el petróleo ni el gas… pero sí los minerales que necesita la <b>energía del futuro</b>.</p>
 
-    <section class="glass rounded-2xl p-4 mt-4">
+    <div class="glass rounded-2xl p-3.5 mt-4">
+      <div class="flex items-center gap-2 mb-2.5"><i data-lucide="zap" style="width:17px;height:17px;color:#d6a94f"></i><h3 class="font-bold text-[13.5px]">La transición energética, en simple</h3></div>
+      <svg class="viz" viewBox="0 0 340 200" role="img" aria-label="La transición energética: del petróleo, gas y carbón hacia sol, viento y baterías; Chile aporta el cobre y el litio que la hacen posible">
+        <defs>
+          <linearGradient id="eBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#221a12"/><stop offset="1" stop-color="#12100c"/></linearGradient>
+          <radialGradient id="eSun" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffdca0"/><stop offset="1" stop-color="#e0a35a"/></radialGradient>
+          <linearGradient id="eFac" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9a8f84"/><stop offset="1" stop-color="#5f574f"/></linearGradient>
+          <linearGradient id="eBat" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fe0a8"/><stop offset="1" stop-color="#4fae7c"/></linearGradient>
+          <linearGradient id="eChile" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0d7b6"/><stop offset="1" stop-color="#cf9b6f"/></linearGradient>
+          <filter id="eSh" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.8" flood-color="#000" flood-opacity=".45"/></filter>
+        </defs>
+        <rect x="0" y="0" width="340" height="200" fill="url(#eBg)"/>
+
+        <!-- FÓSIL (izq) -->
+        <g class="fossil">
+          <g class="smoke" fill="#b7ada2">
+            <circle cx="48" cy="70" r="7" opacity=".7"/><circle cx="57" cy="62" r="9" opacity=".55"/><circle cx="46" cy="56" r="6" opacity=".4"/>
+          </g>
+          <g filter="url(#eSh)">
+            <rect x="26" y="104" width="58" height="52" rx="4" fill="url(#eFac)"/>
+            <rect x="40" y="80" width="12" height="26" fill="url(#eFac)"/>
+            <rect x="60" y="88" width="12" height="18" fill="url(#eFac)"/>
+            <rect x="33" y="116" width="12" height="12" rx="2" fill="#3f3a34"/><rect x="52" y="116" width="12" height="12" rx="2" fill="#3f3a34"/>
+          </g>
+        </g>
+        <text class="glbl-sm" x="55" y="172" text-anchor="middle" style="fill:#b7ada2">Petróleo · gas · carbón</text>
+
+        <!-- transición: flecha con destello -->
+        <line x1="92" y1="118" x2="238" y2="118" stroke="rgba(214,169,79,.3)" stroke-width="2" stroke-dasharray="4 5"/>
+        <path class="feed" d="M232 118 l-9 -4 v8 z" fill="#e6c98f"/>
+
+        <!-- LIMPIO (der) -->
+        <g class="clean">
+          <!-- sol -->
+          <g class="sunb" filter="url(#eSh)">
+            <circle cx="304" cy="44" r="14" fill="url(#eSun)"/>
+            <g stroke="#e6b352" stroke-width="1.8" stroke-linecap="round">
+              <line x1="304" y1="22" x2="304" y2="28"/><line x1="304" y1="60" x2="304" y2="66"/>
+              <line x1="282" y1="44" x2="288" y2="44"/><line x1="320" y1="44" x2="326" y2="44"/>
+              <line x1="289" y1="29" x2="293" y2="33"/><line x1="315" y1="55" x2="319" y2="59"/>
+              <line x1="319" y1="29" x2="315" y2="33"/><line x1="293" y1="55" x2="289" y2="59"/>
+            </g>
+          </g>
+          <!-- aerogenerador -->
+          <g filter="url(#eSh)">
+            <line x1="255" y1="156" x2="255" y2="96" stroke="#d8cdbf" stroke-width="3.5" stroke-linecap="round"/>
+            <g transform="translate(255,96)">
+              <g class="turbine">
+                <path d="M0 0 L-3 -26 L3 -26 Z" fill="#eef4f6"/>
+                <path d="M0 0 L23 12 L20 17 Z" fill="#eef4f6"/>
+                <path d="M0 0 L-20 17 L-23 12 Z" fill="#eef4f6"/>
+              </g>
+              <circle cx="0" cy="0" r="3.5" fill="#c9d4d8"/>
+            </g>
+          </g>
+          <!-- batería -->
+          <g filter="url(#eSh)">
+            <rect x="292" y="120" width="34" height="22" rx="4" fill="url(#eBat)"/>
+            <rect x="326" y="126" width="4" height="10" rx="1.5" fill="#4fae7c"/>
+            <path d="M307 124 l-4 8 h4 l-2 8 8 -10 h-4 l3 -6 z" fill="#1f3a2b"/>
+          </g>
+          <text class="glbl-sm" x="290" y="172" text-anchor="middle" style="fill:#a7d1b6">Sol · viento · baterías</text>
+        </g>
+
+        <!-- CHILE (centro) aporta cobre y litio -->
+        <g class="chileN">
+          <path class="feed" d="M172 108 C 210 96, 236 70, 292 50" fill="none" stroke="#cf9b6f" stroke-width="2" stroke-dasharray="3 4" stroke-linecap="round"/>
+          <path class="feed f2" d="M172 122 C 205 130, 235 132, 288 130" fill="none" stroke="#5fd1bd" stroke-width="2" stroke-dasharray="3 4" stroke-linecap="round"/>
+          <g filter="url(#eSh)">
+            <rect x="140" y="98" width="46" height="34" rx="9" fill="url(#eChile)" opacity=".2"/>
+            <rect x="146" y="102" width="34" height="26" rx="7" fill="url(#eChile)"/>
+            <text class="glbl" x="163" y="119" text-anchor="middle" style="fill:#2a1c0f">Cu·Li</text>
+          </g>
+          <text class="glbl-sm" x="163" y="146" text-anchor="middle" style="fill:#e6c98f">Chile 🇨🇱</text>
+        </g>
+      </svg>
+      <div class="steps">
+        <div class="step s1"><span class="n">1</span>Hoy · fósiles</div>
+        <div class="step s2"><span class="n">2</span>La transición</div>
+        <div class="step s3"><span class="n">3</span>Energía limpia</div>
+        <div class="step s4"><span class="n">4</span>Chile aporta</div>
+      </div>
+      <div class="narr">
+        <p class="nl n1">Hoy el mundo todavía se mueve mucho con <b>petróleo, gas y carbón</b>.</p>
+        <p class="nl n2">Pero se está <b>electrificando todo</b>: la energía empieza a volverse limpia.</p>
+        <p class="nl n3">El <b>sol, el viento y las baterías</b> toman la delantera de a poco.</p>
+        <p class="nl n4">Chile aporta el <b>cobre y el litio</b> que hacen posible esa transición.</p>
+      </div>
+    </div>
+
+    <section class="glass rounded-2xl p-4 mt-3">
       <p class="lbl mb-1">⛽ Energía tradicional</p>
       <div id="trad"></div>
     </section>
