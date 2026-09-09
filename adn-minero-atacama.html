@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · Atacama: el Nuevo Ciclo</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="Atacama en su nuevo ciclo minero-energético: territorio, la mayor radiación solar del mundo, la cartera de inversión 2025–2034 y por qué el desafío es anclar el valor en la región. Cifras de fuentes públicas." />
+  <link rel="canonical" href="https://simonrovi-web.github.io/adn-minero/adn-minero-atacama.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ADN Minero" />
+  <meta property="og:title" content="ADN Minero · Atacama: el Nuevo Ciclo" />
+  <meta property="og:description" content="Territorio, sol, minerales e inversión: el nuevo ciclo de Atacama y el desafío de anclar el valor en la región. Cifras de fuentes públicas." />
+  <meta property="og:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://simonrovi-web.github.io/adn-minero/adn-minero-atacama.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ADN Minero · Atacama: el Nuevo Ciclo" />
+  <meta name="twitter:description" content="Territorio, sol, minerales e inversión: el nuevo ciclo de Atacama y el desafío de anclar el valor en la región." />
+  <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(224,163,90,0.14), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    h3{ margin:0; }
+    .kpi{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); border-radius:16px; padding:15px 14px; }
+    .kpi .n{ font-size:23px; font-weight:800; line-height:1; letter-spacing:-.02em; color:#f4ece5; }
+    .kpi .n small{ font-size:.55em; color:#e8c9a6; font-weight:700; }
+    .kpi .l{ font-size:11px; color:#c9bcae; margin-top:7px; line-height:1.35; }
+    .kpi .s{ font-size:9.5px; color:#9c8f83; margin-top:6px; letter-spacing:.02em; text-transform:uppercase; font-weight:700; }
+    .fact{ display:flex; gap:12px; align-items:flex-start; padding:12px 0; border-bottom:1px solid rgba(196,168,148,.12); }
+    .fact:last-child{ border-bottom:none; }
+    .fact .b{ font-size:16px; font-weight:800; color:#e8c9a6; min-width:78px; line-height:1.1; }
+    .fact .t{ font-size:13.5px; line-height:1.5; color:#dacfc2; } .fact .t b{ color:#f4ece5; }
+    .chip{ display:inline-flex; align-items:center; gap:7px; border:1px solid rgba(196,168,148,.22); background:rgba(43,37,32,.5); border-radius:999px; padding:8px 13px; font-size:12.5px; color:#dacfc2; }
+    .chip b{ color:#f4ece5; font-weight:700; } .chip .d{ width:7px; height:7px; border-radius:50%; background:#cf9b6f; flex:none; }
+    /* ---- animación didáctica ---- */
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .lbl{ font-size:10.5px; font-weight:800; fill:#f6ead9; } .lbl-sm{ font-size:9.5px; fill:#e6c79b; font-weight:600; }
+    .steps{ display:flex; gap:5px; margin-top:11px; }
+    .step{ flex:1; text-align:center; font-size:10px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#9a8b78; border:1px solid rgba(207,155,111,.14); animation:stepHi 16s infinite; }
+    .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(207,155,111,.16); color:#eabf86; font-size:9px; margin-bottom:4px; }
+    .step.s2{ animation-delay:4s } .step.s3{ animation-delay:8s } .step.s4{ animation-delay:12s }
+    @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#9a8b78; border-color:rgba(207,155,111,.14) } 5%,21%{ background:rgba(207,155,111,.18); color:#fbeede; border-color:rgba(207,155,111,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#9a8b78; border-color:rgba(207,155,111,.14) } }
+    .narr{ position:relative; min-height:38px; margin-top:9px; }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:narr 16s infinite; } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:4s } .nl.n3{ animation-delay:8s } .nl.n4{ animation-delay:12s }
+    @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    .beam{ animation:beamOn 16s ease-in-out infinite; opacity:.25 } .beam.b2{ animation-delay:4s }
+    @keyframes beamOn{ 0%,3%{opacity:.2} 6%,45%{opacity:1} 50%,100%{opacity:.2} }
+    .core{ animation:coreFill 16s ease-in-out infinite }
+    @keyframes coreFill{ 0%,50%{ opacity:.35 } 58%,96%{ opacity:1 } 100%{ opacity:.35 } }
+    .sunb{ transform-origin:center; animation:sunPulse 5s ease-in-out infinite }
+    @keyframes sunPulse{ 0%,100%{ opacity:.75 } 50%{ opacity:1 } }
+    @media (prefers-reduced-motion:reduce){ .step,.nl,.beam,.core,.sunb{ animation:none !important } .beam,.core{ opacity:1 } .nl{ opacity:1 } .narr{ display:none } }
+  </style>
+  <script src="adn-ui.js" defer></script>
+  <script src="adn-recorrido.js" defer></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","@id":"https://simonrovi-web.github.io/adn-minero/adn-minero-atacama.html#webpage","url":"https://simonrovi-web.github.io/adn-minero/adn-minero-atacama.html","name":"ADN Minero · Atacama: el Nuevo Ciclo","description":"Territorio, sol, minerales e inversión: el nuevo ciclo de Atacama y el desafío de anclar el valor en la región. Cifras de fuentes públicas.","isPartOf":{"@id":"https://simonrovi-web.github.io/adn-minero/#site"},"inLanguage":"es-CL","publisher":{"@id":"https://simonrovi-web.github.io/adn-minero/#org"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://simonrovi-web.github.io/adn-minero/"},{"@type":"ListItem","position":2,"name":"Atacama: el Nuevo Ciclo","item":"https://simonrovi-web.github.io/adn-minero/adn-minero-atacama.html"}]}}
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(207,155,111,.15);border:1px solid rgba(207,155,111,.34)"><i data-lucide="mountain" style="width:26px;height:26px;color:#cf9b6f"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#eabf86;font-weight:800">Atacama · El Nuevo Ciclo</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Sol, minerales e inversión en la región</p>
+      </div>
+    </header>
+
+    <div class="glass rounded-2xl p-3.5 mt-4" style="border-color:rgba(207,155,111,.3);background:rgba(207,155,111,.06)">
+      <p class="text-[12px] text-stone-300 leading-relaxed">Atacama entra en la mayor ola de inversión minera de la última década, con la <b>radiación solar más intensa del planeta</b> a su favor. La pregunta no es si llegará el capital, sino <b>cuánto de ese valor logra anclarse en la región</b>. Todas las cifras de este panel provienen de <b>fuentes públicas y oficiales</b>.</p>
+    </div>
+
+    <!-- KPIs -->
+    <div class="grid grid-cols-2 gap-2.5 mt-4">
+      <div class="kpi"><div class="n">75.176 <small>km²</small></div><div class="l">9,94% del territorio nacional</div><div class="s">BCN / INE</div></div>
+      <div class="kpi"><div class="n">US$16.992<small>M</small></div><div class="l">Cartera de inversión minera 2025–2034 en la región</div><div class="s">COCHILCO · dic-2025</div></div>
+      <div class="kpi"><div class="n">949 <small>MW</small></div><div class="l">Capacidad solar FV instalada — líder nacional</div><div class="s">Min. de Energía</div></div>
+      <div class="kpi"><div class="n">≈35,9<small>%</small></div><div class="l">Peso de la minería en el PIB regional (2019)</div><div class="s">BCN</div></div>
+    </div>
+
+    <!-- ANIMACIÓN DIDÁCTICA -->
+    <div class="glass rounded-2xl p-3.5 mt-4">
+      <div class="flex items-center gap-2 mb-2.5"><i data-lucide="zap" style="width:17px;height:17px;color:#e0a35a"></i><h3 class="font-bold text-[13.5px]">El doble motor de Atacama</h3></div>
+      <svg class="viz" viewBox="0 0 340 200" role="img" aria-label="El doble motor de Atacama: los minerales y la energía solar impulsan el nuevo ciclo de inversión, y el desafío es anclar ese valor en la región">
+        <defs>
+          <linearGradient id="aSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#241a12"/><stop offset="1" stop-color="#14100c"/></linearGradient>
+          <radialGradient id="aSun" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffdca0"/><stop offset="1" stop-color="#e0a35a"/></radialGradient>
+          <linearGradient id="aOre" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0975f"/><stop offset="1" stop-color="#a9642f"/></linearGradient>
+          <linearGradient id="aCore" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0c98a"/><stop offset="1" stop-color="#cf9b6f"/></linearGradient>
+          <filter id="aSh" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.8" flood-color="#000" flood-opacity=".45"/></filter>
+        </defs>
+        <rect x="0" y="0" width="340" height="200" fill="url(#aSky)"/>
+
+        <!-- sun (energy motor, top-left) -->
+        <g class="sunb" filter="url(#aSh)">
+          <circle cx="52" cy="44" r="17" fill="url(#aSun)"/>
+          <g stroke="#e6b352" stroke-width="2" stroke-linecap="round">
+            <line x1="52" y1="16" x2="52" y2="24"/><line x1="52" y1="64" x2="52" y2="72"/>
+            <line x1="24" y1="44" x2="32" y2="44"/><line x1="72" y1="44" x2="80" y2="44"/>
+            <line x1="32" y1="24" x2="37" y2="29"/><line x1="67" y1="59" x2="72" y2="64"/>
+            <line x1="72" y1="24" x2="67" y2="29"/><line x1="37" y1="59" x2="32" y2="64"/>
+          </g>
+        </g>
+        <text class="lbl-sm" x="52" y="88" text-anchor="middle" style="fill:#eabf86">Sol · N.º1 mundial</text>
+
+        <!-- ore/mine (mineral motor, bottom-left) -->
+        <g filter="url(#aSh)">
+          <path d="M20 168 L52 118 L84 168 Z" fill="url(#aOre)"/>
+          <path d="M52 118 L66 140 L58 142 L64 152 L52 146 L40 154 L46 141 L38 138 Z" fill="#f0c98a" opacity=".85"/>
+        </g>
+        <text class="lbl-sm" x="52" y="182" text-anchor="middle" style="fill:#e6c79b">Cu · Li · Fe · Au</text>
+
+        <!-- beams converging to core -->
+        <path class="beam" d="M74 50 C 140 60, 170 78, 205 96" fill="none" stroke="#e6b352" stroke-width="3" stroke-linecap="round"/>
+        <path class="beam b2" d="M78 150 C 140 140, 170 118, 205 104" fill="none" stroke="#cf9b6f" stroke-width="3" stroke-linecap="round"/>
+
+        <!-- core: región / valor -->
+        <g class="core" filter="url(#aSh)">
+          <circle cx="248" cy="100" r="40" fill="url(#aCore)" opacity=".22"/>
+          <circle cx="248" cy="100" r="27" fill="url(#aCore)"/>
+          <text class="lbl" x="248" y="96" text-anchor="middle" style="fill:#2a1c0f">VALOR</text>
+          <text class="lbl-sm" x="248" y="108" text-anchor="middle" style="fill:#3a2a14;font-weight:800">regional</text>
+        </g>
+        <text class="lbl-sm" x="248" y="156" text-anchor="middle" style="fill:#c7b79f">US$16.992M · 2025–2034</text>
+      </svg>
+      <div class="steps">
+        <div class="step s1"><span class="n">1</span>El mineral</div>
+        <div class="step s2"><span class="n">2</span>El sol</div>
+        <div class="step s3"><span class="n">3</span>El nuevo ciclo</div>
+        <div class="step s4"><span class="n">4</span>Anclar el valor</div>
+      </div>
+      <div class="narr">
+        <p class="nl n1">Un motor es <b>el mineral</b>: cobre, litio, hierro y oro sostienen la economía regional.</p>
+        <p class="nl n2">El otro es <b>el sol</b>: Atacama tiene la mayor radiación del mundo y lidera la energía solar del país.</p>
+        <p class="nl n3">Ambos empujan <b>el nuevo ciclo</b>: US$16.992M de cartera de inversión 2025–2034.</p>
+        <p class="nl n4">El desafío: que ese <b>valor se ancle en la región</b> — proveedores, talento y diversificación.</p>
+      </div>
+      <p class="text-center text-[10px] text-stone-500 mt-2.5">Fuentes: COCHILCO y Ministerio de Energía.</p>
+    </div>
+
+    <!-- TERRITORIO -->
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="map-pin" style="width:17px;height:17px;color:#cf9b6f"></i><h3 class="font-bold text-[13.5px]">El territorio</h3></div>
+      <div class="mt-1">
+        <div class="fact"><div class="b">299.180</div><div class="t"><b>habitantes</b> (Censo 2024), con una densidad de apenas 3,98 hab/km² — de las más bajas del país.</div></div>
+        <div class="fact"><div class="b">3 · 9</div><div class="t"><b>provincias y comunas.</b> Chañaral, Copiapó y Huasco; capital regional en Copiapó.</div></div>
+        <div class="fact"><div class="b">N.º1</div><div class="t"><b>radiación solar del mundo.</b> El desierto de Atacama registra la mayor irradiancia global.</div></div>
+      </div>
+    </div>
+
+    <!-- EL CICLO -->
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="trending-up" style="width:17px;height:17px;color:#e8c9a6"></i><h3 class="font-bold text-[13.5px]">El nuevo ciclo de inversión</h3></div>
+      <div class="mt-1">
+        <div class="fact"><div class="b">US$104.549M</div><div class="t">es la cartera minera <b>nacional</b> 2025–2034: <b>el mayor nivel en más de una década</b> (+25,7%). Atacama capta ≈16% de ese total.</div></div>
+        <div class="fact"><div class="b">Cu 89,8%</div><div class="t">El <b>cobre</b> concentra la inversión nacional; el <b>litio</b> gana peso al alero de la Estrategia Nacional.</div></div>
+        <div class="fact"><div class="b">~US$1.700M</div><div class="t">Solo la modernización de la <b>Fundición Hernán Videla Lira (Nueva Paipote)</b> moviliza esa cifra en la región.</div></div>
+      </div>
+      <p class="text-[11px] text-stone-500 mt-2">Fuente: COCHILCO, Informe Cartera de Proyectos de Inversión Minera 2025–2034.</p>
+    </div>
+
+    <!-- ANCLAR EL VALOR -->
+    <div class="glass rounded-2xl p-4 mt-3" style="border-color:rgba(127,191,154,.24)">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="anchor" style="width:17px;height:17px;color:#7fbf9a"></i><h3 class="font-bold text-[13.5px]">La inversión no ancla valor por sí sola</h3></div>
+      <p class="text-[12.5px] text-stone-300 leading-relaxed">La experiencia nacional e internacional muestra que los grandes flujos de capital no se traducen <b>automáticamente</b> en más proveedores locales, más empleo calificado ni más diversificación. Anclar ese valor depende de condiciones habilitantes concretas:</p>
+      <div class="grid grid-cols-2 gap-2 mt-3">
+        <div class="chip"><span class="d"></span><b>Capital humano</b></div>
+        <div class="chip"><span class="d" style="background:#7fbf9a"></span><b>Proveedores locales</b></div>
+        <div class="chip"><span class="d" style="background:#e0a35a"></span><b>Innovación</b></div>
+        <div class="chip"><span class="d" style="background:#7fbfd1"></span><b>Energía y agua</b></div>
+      </div>
+    </div>
+
+    <!-- QUIÉN GANA -->
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2 mb-2.5"><i data-lucide="users" style="width:17px;height:17px;color:#cf9b6f"></i><h3 class="font-bold text-[13.5px]">Un mismo objetivo para sectores distintos</h3></div>
+      <div class="flex flex-wrap gap-2">
+        <div class="chip"><span class="d"></span> <b>Minería</b> · proveedores confiables</div>
+        <div class="chip"><span class="d" style="background:#e0a35a"></span> <b>Energía</b> · demanda y talento</div>
+        <div class="chip"><span class="d" style="background:#7fbf9a"></span> <b>Estado regional</b> · diversificación</div>
+        <div class="chip"><span class="d" style="background:#7fbfd1"></span> <b>Academia</b> · investigación aplicada</div>
+        <div class="chip"><span class="d" style="background:#a7d18a"></span> <b>MiPyMEs</b> · contratos que quedan</div>
+        <div class="chip"><span class="d" style="background:#e08aa8"></span> <b>Comunidades</b> · bienestar</div>
+      </div>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Cifras de fuentes públicas: BCN, INE (Censo 2024), COCHILCO (Cartera 2025–2034) y Ministerio de Energía. · Faenas de la región: <a href="adn-minero-escondida.html" style="color:#e8c9a6">Escondida</a> · <a href="adn-minero-candelaria.html" style="color:#e8c9a6">Candelaria</a> · <a href="adn-minero-salvador.html" style="color:#e8c9a6">El Salvador</a> · <a href="adn-minero-salar.html" style="color:#e8c9a6">Salar de Atacama</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+<script>window.lucide&&lucide.createIcons();</script>
+</body>
+</html>
