@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · Alerta de Precio del Cobre</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="Vigila el precio del cobre y recibe un aviso cuando cruza el umbral que elijas. Aviso local mientras la app está abierta; precio diario de mindicador.cl." />
+  <link rel="canonical" href="https://simonrovi-web.github.io/adn-minero/adn-minero-cobre-alerta.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ADN Minero" />
+  <meta property="og:title" content="ADN Minero · Alerta de Precio del Cobre" />
+  <meta property="og:description" content="Recibe un aviso cuando el cobre cruza el precio que elijas. Aviso local mientras la app está abierta." />
+  <meta property="og:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://simonrovi-web.github.io/adn-minero/adn-minero-cobre-alerta.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ADN Minero · Alerta de Precio del Cobre" />
+  <meta name="twitter:description" content="Recibe un aviso cuando el cobre cruza el precio que elijas." />
+  <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(214,169,79,0.14), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    h3{ margin:0; }
+    .inp{ width:100%; margin-top:6px; background:rgba(20,16,12,.7); border:1px solid rgba(196,168,148,.22); border-radius:11px; padding:11px 13px; color:#f4ece5; font-size:16px; font-weight:700; font-variant-numeric:tabular-nums; }
+    .inp:focus{ outline:none; border-color:#d6a94f; box-shadow:0 0 0 3px rgba(214,169,79,.15); }
+    .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:800; border-radius:12px; padding:12px 16px; cursor:pointer; border:0; }
+    .btn-primary{ background:linear-gradient(135deg,#f0d090,#d6a94f 55%,#b5842f); color:#2a1c0f; }
+    .btn-ghost{ background:rgba(255,255,255,.05); color:#e8c9a6; border:1px solid rgba(196,168,148,.2); }
+    .sw{ position:relative; width:46px; height:26px; border-radius:999px; background:rgba(255,255,255,.12); border:1px solid rgba(196,168,148,.2); cursor:pointer; transition:background .2s; flex:none; }
+    .sw i{ position:absolute; top:2px; left:2px; width:20px; height:20px; border-radius:50%; background:#c9bcae; transition:transform .2s, background .2s; }
+    .sw.on{ background:rgba(214,169,79,.5); } .sw.on i{ transform:translateX(20px); background:#f0d090; }
+    .row{ display:flex; align-items:center; gap:12px; }
+    .tabnum{ font-variant-numeric:tabular-nums; }
+    [hidden]{ display:none !important; }
+  </style>
+  <script src="adn-ui.js" defer></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","@id":"https://simonrovi-web.github.io/adn-minero/adn-minero-cobre-alerta.html#app","name":"ADN Minero · Alerta de Precio del Cobre","applicationCategory":"FinanceApplication","operatingSystem":"Web","url":"https://simonrovi-web.github.io/adn-minero/adn-minero-cobre-alerta.html","description":"Vigila el precio del cobre y avisa cuando cruza un umbral. Aviso local mientras la app está abierta.","isPartOf":{"@id":"https://simonrovi-web.github.io/adn-minero/#site"},"offers":{"@type":"Offer","price":"0","priceCurrency":"CLP"}}
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(214,169,79,.15);border:1px solid rgba(214,169,79,.34)"><i data-lucide="bell-ring" style="width:26px;height:26px;color:#d6a94f"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#e6c98f;font-weight:800">Alerta de Precio del Cobre</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Avísame cuando cruce mi precio</p>
+      </div>
+    </header>
+
+    <!-- Precio actual -->
+    <div class="glass rounded-2xl p-5 mt-4 text-center">
+      <p class="text-[11px] uppercase tracking-wider text-stone-400">Cobre hoy · US$/libra</p>
+      <p class="text-[56px] font-black leading-none mt-1 tabnum" style="color:#f0d090" id="price">—</p>
+      <p class="text-[12px] text-stone-400 mt-2" id="meta">Cargando precio…</p>
+      <p class="text-[11px] mt-1" id="trend"></p>
+    </div>
+
+    <!-- Aviso en pantalla -->
+    <div id="banner" class="rounded-2xl p-4 mt-3 fade" hidden style="background:rgba(214,169,79,.14);border:1px solid rgba(214,169,79,.4)">
+      <div class="flex items-start gap-3">
+        <i data-lucide="bell-ring" class="w-6 h-6 shrink-0" style="color:#f0d090"></i>
+        <div class="min-w-0 flex-1"><p class="font-bold text-[14px]" id="bTitle">—</p><p class="text-[12.5px] text-stone-300 mt-0.5" id="bBody">—</p></div>
+        <button id="bClose" class="text-stone-400 text-[12px] font-bold shrink-0">✕</button>
+      </div>
+    </div>
+
+    <!-- Configurar umbrales -->
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2 mb-1"><i data-lucide="bell-ring" style="width:17px;height:17px;color:#d6a94f"></i><h3 class="font-bold text-[13.5px]">Mis umbrales</h3></div>
+      <div class="row mt-3">
+        <div class="sw" id="swHi" role="switch" aria-label="Activar aviso al subir"><i></i></div>
+        <div class="flex-1 min-w-0">
+          <label class="text-[13px] font-semibold text-stone-200 flex items-center gap-1.5"><i data-lucide="arrow-up" class="w-4 h-4 text-[#a7d18a]"></i> Avísame si SUBE de</label>
+          <input class="inp" id="hi" inputmode="decimal" placeholder="Ej: 4.50" />
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="sw" id="swLo" role="switch" aria-label="Activar aviso al bajar"><i></i></div>
+        <div class="flex-1 min-w-0">
+          <label class="text-[13px] font-semibold text-stone-200 flex items-center gap-1.5"><i data-lucide="arrow-down" class="w-4 h-4 text-[#e0715a]"></i> Avísame si BAJA de</label>
+          <input class="inp" id="lo" inputmode="decimal" placeholder="Ej: 4.00" />
+        </div>
+      </div>
+      <button class="btn btn-primary w-full mt-4" id="btnPerm"><i data-lucide="bell" class="w-5 h-5"></i> <span id="permLbl">Activar avisos del navegador</span></button>
+      <button class="btn btn-ghost w-full mt-2 text-[12.5px]" id="btnTest"><i data-lucide="check" class="w-4 h-4"></i> Probar un aviso</button>
+      <p class="text-[11px] text-stone-500 mt-3 leading-relaxed" id="status">—</p>
+    </div>
+
+    <div class="glass rounded-2xl p-3.5 mt-3" style="border-color:rgba(127,191,209,.24)">
+      <p class="text-[12px] text-stone-300 leading-relaxed"><i data-lucide="info" class="w-4 h-4 inline -mt-0.5" style="color:#7fbfd1"></i> <b>Cómo funciona:</b> es un aviso <b>local</b>: vigila el precio <b>mientras esta pestaña está abierta</b> (aunque sea en segundo plano) y te avisa al cruzar tu umbral. Usa el <b>precio diario del cobre</b> de mindicador.cl, que se actualiza una vez al día. Para avisos con la app cerrada, usaríamos notificaciones push (requiere activarlas aparte).</p>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Precio referencial diario (mindicador.cl); no es asesoría financiera. · <a href="adn-minero-commodities.html" style="color:#e8c9a6">Commodities</a> · <a href="adn-minero-historico.html" style="color:#e8c9a6">Histórico</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const KEY='adn_cualert';
+  const fmt=v=>v.toLocaleString('es-CL',{minimumFractionDigits:2,maximumFractionDigits:3});
+  const numv=s=>{ const v=parseFloat(String(s==null?'':s).replace(',','.').replace(/[^\d.]/g,'')); return isFinite(v)?v:null; };
+
+  let cfg={ hi:null, lo:null, hiOn:false, loOn:false, firedHi:false, firedLo:false };
+  let price=null, prevPrice=null;
+
+  function load(){ try{ const s=JSON.parse(localStorage.getItem(KEY)||'null'); if(s) cfg=Object.assign(cfg,s); }catch(e){}
+    if(cfg.hi!=null) $('hi').value=cfg.hi; if(cfg.lo!=null) $('lo').value=cfg.lo;
+    $('swHi').classList.toggle('on', !!cfg.hiOn); $('swLo').classList.toggle('on', !!cfg.loOn);
+  }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(cfg)); }catch(e){} }
+
+  function notify(title, body){
+    // 1) notificación del navegador si hay permiso
+    try{ if('Notification' in window && Notification.permission==='granted'){ new Notification(title, {body:body, icon:'icon-192.png', badge:'icon-192.png', tag:'adn-cobre'}); } }catch(e){}
+    // 2) aviso en pantalla siempre
+    $('bTitle').textContent=title; $('bBody').textContent=body; $('banner').hidden=false; drawIcons();
+    // 3) vibración si el dispositivo la soporta
+    try{ if(navigator.vibrate) navigator.vibrate([120,60,120]); }catch(e){}
+  }
+
+  function evaluate(){
+    if(price==null) return;
+    // SUBE de hi: dispara al cruzar hacia arriba; se re-arma al bajar del umbral
+    if(cfg.hiOn && cfg.hi!=null){
+      if(price>=cfg.hi && !cfg.firedHi){ cfg.firedHi=true; save(); notify('🔺 El cobre subió', 'US$'+fmt(price)+'/lb — cruzó tu umbral de US$'+fmt(cfg.hi)+'.'); }
+      else if(price<cfg.hi && cfg.firedHi){ cfg.firedHi=false; save(); }
+    }
+    // BAJA de lo
+    if(cfg.loOn && cfg.lo!=null){
+      if(price<=cfg.lo && !cfg.firedLo){ cfg.firedLo=true; save(); notify('🔻 El cobre bajó', 'US$'+fmt(price)+'/lb — cruzó tu umbral de US$'+fmt(cfg.lo)+'.'); }
+      else if(price>cfg.lo && cfg.firedLo){ cfg.firedLo=false; save(); }
+    }
+  }
+
+  function paintPrice(){
+    if(price==null){ $('price').textContent='—'; return; }
+    $('price').textContent=fmt(price);
+    if(prevPrice!=null && prevPrice!==price){
+      const up=price>prevPrice; $('trend').innerHTML=(up?'▲':'▼')+' '+fmt(Math.abs(price-prevPrice))+' vs. dato anterior';
+      $('trend').style.color=up?'#a7d18a':'#e0715a';
+    }
+  }
+
+  async function fetchPrice(){
+    try{
+      const r=await fetch('https://mindicador.cl/api/libra_cobre',{cache:'no-store'});
+      const d=await r.json(); const v=d&&d.serie&&d.serie[0]&&d.serie[0].valor;
+      if(v){ prevPrice=price; price=v; paintPrice();
+        const fecha=d.serie[0].fecha?new Date(d.serie[0].fecha):null;
+        $('meta').textContent='Dato oficial'+(fecha?(' · '+fecha.toLocaleDateString('es-CL',{day:'2-digit',month:'long',year:'numeric'})):'')+' · mindicador.cl';
+        evaluate();
+      }
+    }catch(e){ $('meta').textContent='No se pudo actualizar el precio ahora. Reintentando…'; }
+  }
+
+  function refreshStatus(){
+    let s='';
+    if(!('Notification' in window)){ s='Este navegador no soporta avisos; igual verás el aviso en pantalla.'; }
+    else if(Notification.permission==='granted'){ s='✓ Avisos del navegador activados.'; $('permLbl').textContent='Avisos del navegador: activados'; }
+    else if(Notification.permission==='denied'){ s='Los avisos del navegador están bloqueados; verás el aviso en pantalla. Actívalos en los ajustes del sitio.'; }
+    else { s='Toca “Activar avisos” para que te avise aunque estés en otra pestaña.'; }
+    const on=[]; if(cfg.hiOn&&cfg.hi!=null) on.push('sube de US$'+fmt(cfg.hi)); if(cfg.loOn&&cfg.lo!=null) on.push('baja de US$'+fmt(cfg.lo));
+    if(on.length) s+=' · Vigilando: '+on.join(' y ')+'.';
+    $('status').textContent=s;
+  }
+
+  // eventos
+  $('swHi').addEventListener('click',()=>{ cfg.hiOn=!cfg.hiOn; cfg.firedHi=false; $('swHi').classList.toggle('on',cfg.hiOn); save(); evaluate(); refreshStatus(); });
+  $('swLo').addEventListener('click',()=>{ cfg.loOn=!cfg.loOn; cfg.firedLo=false; $('swLo').classList.toggle('on',cfg.loOn); save(); evaluate(); refreshStatus(); });
+  $('hi').addEventListener('input',()=>{ cfg.hi=numv($('hi').value); cfg.firedHi=false; save(); evaluate(); refreshStatus(); });
+  $('lo').addEventListener('input',()=>{ cfg.lo=numv($('lo').value); cfg.firedLo=false; save(); evaluate(); refreshStatus(); });
+  $('bClose').addEventListener('click',()=>{ $('banner').hidden=true; });
+  $('btnTest').addEventListener('click',()=>{ notify('🔔 Aviso de prueba', price!=null?('El cobre está en US$'+fmt(price)+'/lb ahora mismo.'):'Así se verá tu aviso de cobre.'); });
+  $('btnPerm').addEventListener('click',async()=>{
+    if(!('Notification' in window)){ refreshStatus(); return; }
+    try{ await Notification.requestPermission(); }catch(e){}
+    refreshStatus(); drawIcons();
+  });
+
+  load(); refreshStatus(); drawIcons();
+  fetchPrice(); setInterval(fetchPrice, 5*60*1000);
+  document.addEventListener('visibilitychange',()=>{ if(!document.hidden) fetchPrice(); });
+</script>
+</body>
+</html>
