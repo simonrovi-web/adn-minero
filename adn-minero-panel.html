@@ -334,13 +334,13 @@
             </div>
             <div class="flex-1 flex items-center justify-between gap-4">
               <div class="fade-el">
-                <div class="flex items-start gap-3">
+                <div class="flex items-start gap-1">
                   <span id="temp" class="text-[92px] font-extrabold tracking-tighter leading-none">--</span>
-                  <span class="mt-3 flex items-start text-4xl font-semibold text-stone-400">°<span class="ml-1">C</span></span>
+                  <span class="mt-2 text-4xl font-semibold text-stone-400 leading-none">°C</span>
                 </div>
                 <p class="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
                   <span class="text-stone-300 text-lg" id="skyText">Cargando…</span>
-                  <span class="text-sm text-stone-400">Sensación térmica <span id="feels" class="text-stone-100 font-semibold">-- °C</span></span>
+                  <span class="text-sm text-stone-400">Sensación térmica <span id="feels" class="text-stone-100 font-semibold">--°C</span></span>
                 </p>
               </div>
               <div class="text-center shrink-0">
@@ -348,8 +348,8 @@
                   <i id="skyIcon" data-lucide="loader" class="w-14 h-14 text-[#e2c4a3] metric-icon animate-spinSlow fade-el"></i>
                 </div>
                 <div class="mt-2 flex items-center justify-center gap-3 text-xs text-stone-400 fade-el">
-                  <span class="inline-flex items-center gap-1"><i data-lucide="arrow-down" class="w-4 h-4 text-sky-300"></i> Mín <span id="tmin" class="text-stone-200 font-medium">-- °</span></span>
-                  <span class="inline-flex items-center gap-1"><i data-lucide="arrow-up" class="w-4 h-4 text-amber-300"></i> Máx <span id="tmax" class="text-stone-200 font-medium">-- °</span></span>
+                  <span class="inline-flex items-center gap-1"><i data-lucide="arrow-down" class="w-4 h-4 text-sky-300"></i> Mín <span id="tmin" class="text-stone-200 font-medium">--°</span></span>
+                  <span class="inline-flex items-center gap-1"><i data-lucide="arrow-up" class="w-4 h-4 text-amber-300"></i> Máx <span id="tmax" class="text-stone-200 font-medium">--°</span></span>
                 </div>
               </div>
             </div>
@@ -404,7 +404,7 @@
 
           <div class="glass accent-top rounded-2xl p-5 flex flex-col justify-between" id="card-freeze" style="--accent:#7fb8c4">
             <div class="flex items-center justify-between"><p class="text-xs uppercase tracking-wider text-stone-400">Riesgo congelamiento</p><i data-lucide="snowflake" class="w-7 h-7 text-cyan-200 metric-icon"></i></div>
-            <div class="fade-el"><p id="freezeText" class="text-3xl font-bold text-emerald-300">—</p><p class="text-xs text-stone-500 mt-2">Punto de rocío <span id="dew" class="text-stone-300">-- °</span></p></div>
+            <div class="fade-el"><p id="freezeText" class="text-3xl font-bold text-emerald-300">—</p><p class="text-xs text-stone-500 mt-2">Punto de rocío <span id="dew" class="text-stone-300">--°</span></p></div>
           </div>
 
           <div class="glass accent-top rounded-2xl p-5 flex flex-col justify-between" id="card-vis" style="--accent:#a68a6a">
@@ -597,11 +597,11 @@
       const [skyText, skyIcon, isSnow] = wmo(c.weather_code);
 
       $('temp').textContent = round(c.temperature_2m);
-      $('feels').textContent = round(c.apparent_temperature) + ' °C';
+      $('feels').textContent = round(c.apparent_temperature) + '°C';
       $('skyText').textContent = skyText;
       setSkyIcon(iconDN(skyIcon, c.is_day));
-      $('tmax').textContent = round(data.daily.temperature_2m_max[0]) + ' °';
-      $('tmin').textContent = round(data.daily.temperature_2m_min[0]) + ' °';
+      $('tmax').textContent = round(data.daily.temperature_2m_max[0]) + '°';
+      $('tmin').textContent = round(data.daily.temperature_2m_min[0]) + '°';
 
       $('wind').textContent = round(c.wind_speed_10m);
       $('windDir').textContent = dirName(c.wind_direction_10m) + ` (${round(c.wind_direction_10m)}°)`;
@@ -626,7 +626,7 @@
       $('uvLabel').textContent = uvLbl;
       $('uvLabel').className = `text-xs mt-2 font-medium ${uvCls}`;
 
-      $('dew').textContent = round(c.dew_point_2m) + ' °';
+      $('dew').textContent = round(c.dew_point_2m) + '°';
       const frio = c.temperature_2m <= 0 || c.apparent_temperature <= 0;
       $('freezeText').textContent = frio ? 'ALTO' : (c.temperature_2m <= 3 ? 'MODERADO' : 'BAJO');
       $('freezeText').className = 'text-3xl font-bold ' + (frio ? 'text-red-400' : (c.temperature_2m <= 3 ? 'text-amber-300' : 'text-emerald-300'));
@@ -668,7 +668,7 @@
         el.className = 'glass-strong rounded-xl p-2.5 text-center';
         el.innerHTML = `<p class="text-xs text-stone-400">${hora}</p>
           <i data-lucide="${icon}" class="w-8 h-8 mx-auto my-1.5 ${snow ? 'text-cyan-200' : 'text-stone-200'}"></i>
-          <p class="text-lg font-bold">${round(hourly.temperature_2m[i])} °</p>
+          <p class="text-lg font-bold">${round(hourly.temperature_2m[i])}°</p>
           <p class="text-[11px] text-[#cf9b6f] mt-0.5 flex items-center justify-center gap-0.5"><i data-lucide="${snow ? 'snowflake' : 'droplet'}" class="w-4 h-4"></i> ${round(hourly.precipitation_probability[i])}%</p>
           <p class="text-[10px] text-stone-500 mt-0.5 leading-tight truncate" title="${txt}">${txt}</p>`;
         box.appendChild(el);
