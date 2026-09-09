@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · Coquimbo: Cobre y Valles</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="Coquimbo y su minería: territorio, la cartera de inversión minera 2025–2034, el cobre de Los Pelambres, los valles del pisco y el desafío de anclar el valor. Cifras de fuentes públicas." />
+  <link rel="canonical" href="https://simonrovi-web.github.io/adn-minero/adn-minero-coquimbo.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ADN Minero" />
+  <meta property="og:title" content="ADN Minero · Coquimbo: Cobre y Valles" />
+  <meta property="og:description" content="Territorio, minería e inversión: el cobre de Los Pelambres y los valles de Coquimbo, y el desafío de anclar el valor. Cifras de fuentes públicas." />
+  <meta property="og:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://simonrovi-web.github.io/adn-minero/adn-minero-coquimbo.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ADN Minero · Coquimbo: Cobre y Valles" />
+  <meta name="twitter:description" content="Territorio, minería e inversión: el cobre de Los Pelambres y los valles de Coquimbo. Cifras de fuentes públicas." />
+  <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(207,155,111,0.14), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    h3{ margin:0; }
+    .kpi{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); border-radius:16px; padding:15px 14px; }
+    .kpi .n{ font-size:23px; font-weight:800; line-height:1; letter-spacing:-.02em; color:#f4ece5; }
+    .kpi .n small{ font-size:.55em; color:#e8c9a6; font-weight:700; }
+    .kpi .l{ font-size:11px; color:#c9bcae; margin-top:7px; line-height:1.35; }
+    .kpi .s{ font-size:9.5px; color:#9c8f83; margin-top:6px; letter-spacing:.02em; text-transform:uppercase; font-weight:700; }
+    .fact{ display:flex; gap:12px; align-items:flex-start; padding:12px 0; border-bottom:1px solid rgba(196,168,148,.12); }
+    .fact:last-child{ border-bottom:none; }
+    .fact .b{ font-size:16px; font-weight:800; color:#e8c9a6; min-width:82px; line-height:1.1; }
+    .fact .t{ font-size:13.5px; line-height:1.5; color:#dacfc2; } .fact .t b{ color:#f4ece5; }
+    .chip{ display:inline-flex; align-items:center; gap:7px; border:1px solid rgba(196,168,148,.22); background:rgba(43,37,32,.5); border-radius:999px; padding:8px 13px; font-size:12.5px; color:#dacfc2; }
+    .chip b{ color:#f4ece5; font-weight:700; } .chip .d{ width:7px; height:7px; border-radius:50%; background:#cf9b6f; flex:none; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .lbl{ font-size:10.5px; font-weight:800; fill:#f6ead9; } .lbl-sm{ font-size:9.5px; fill:#e6c79b; font-weight:600; }
+    .steps{ display:flex; gap:5px; margin-top:11px; }
+    .step{ flex:1; text-align:center; font-size:10px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#9a8b78; border:1px solid rgba(207,155,111,.14); animation:stepHi 16s infinite; }
+    .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(207,155,111,.16); color:#eabf86; font-size:9px; margin-bottom:4px; }
+    .step.s2{ animation-delay:4s } .step.s3{ animation-delay:8s } .step.s4{ animation-delay:12s }
+    @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#9a8b78; border-color:rgba(207,155,111,.14) } 5%,21%{ background:rgba(207,155,111,.18); color:#fbeede; border-color:rgba(207,155,111,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#9a8b78; border-color:rgba(207,155,111,.14) } }
+    .narr{ position:relative; min-height:38px; margin-top:9px; }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:narr 16s infinite; } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:4s } .nl.n3{ animation-delay:8s } .nl.n4{ animation-delay:12s }
+    @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    .beam{ animation:beamOn 16s ease-in-out infinite; opacity:.25 } .beam.b2{ animation-delay:4s }
+    @keyframes beamOn{ 0%,3%{opacity:.2} 6%,45%{opacity:1} 50%,100%{opacity:.2} }
+    .core{ animation:coreFill 16s ease-in-out infinite }
+    @keyframes coreFill{ 0%,50%{ opacity:.35 } 58%,96%{ opacity:1 } 100%{ opacity:.35 } }
+    .vid{ transform-origin:center; animation:vidPulse 5s ease-in-out infinite }
+    @keyframes vidPulse{ 0%,100%{ opacity:.8 } 50%{ opacity:1 } }
+    @media (prefers-reduced-motion:reduce){ .step,.nl,.beam,.core,.vid{ animation:none !important } .beam,.core{ opacity:1 } .nl{ opacity:1 } .narr{ display:none } }
+  </style>
+  <script src="adn-ui.js" defer></script>
+  <script src="adn-recorrido.js" defer></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","@id":"https://simonrovi-web.github.io/adn-minero/adn-minero-coquimbo.html#webpage","url":"https://simonrovi-web.github.io/adn-minero/adn-minero-coquimbo.html","name":"ADN Minero · Coquimbo: Cobre y Valles","description":"Territorio, minería e inversión: el cobre de Los Pelambres y los valles de Coquimbo, y el desafío de anclar el valor. Cifras de fuentes públicas.","isPartOf":{"@id":"https://simonrovi-web.github.io/adn-minero/#site"},"inLanguage":"es-CL","publisher":{"@id":"https://simonrovi-web.github.io/adn-minero/#org"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://simonrovi-web.github.io/adn-minero/"},{"@type":"ListItem","position":2,"name":"Coquimbo: Cobre y Valles","item":"https://simonrovi-web.github.io/adn-minero/adn-minero-coquimbo.html"}]}}
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(207,155,111,.15);border:1px solid rgba(207,155,111,.34)"><i data-lucide="mountain" style="width:26px;height:26px;color:#cf9b6f"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#eabf86;font-weight:800">Coquimbo · Cobre y Valles</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Minería y campo, mano a mano</p>
+      </div>
+    </header>
+
+    <div class="glass rounded-2xl p-3.5 mt-4" style="border-color:rgba(207,155,111,.3);background:rgba(207,155,111,.06)">
+      <p class="text-[12px] text-stone-300 leading-relaxed">Coquimbo combina el <b>cobre</b> —con Los Pelambres, la gran minera de capital chileno— y sus <b>valles fértiles</b> de uva y pisco. Una economía más diversificada que el norte, donde el reto sigue siendo <b>anclar el valor en la región</b>. Todas las cifras provienen de <b>fuentes públicas y oficiales</b>.</p>
+    </div>
+
+    <!-- KPIs -->
+    <div class="grid grid-cols-2 gap-2.5 mt-4">
+      <div class="kpi"><div class="n">40.580 <small>km²</small></div><div class="l">5,37% del territorio nacional</div><div class="s">BCN / INE</div></div>
+      <div class="kpi"><div class="n">US$7.800<small>M</small></div><div class="l">Cartera de inversión minera 2025–2034</div><div class="s">COCHILCO · dic-2025</div></div>
+      <div class="kpi"><div class="n">≈22–24<small>%</small></div><div class="l">Peso de la minería en el PIB regional (2016–2019)</div><div class="s">BCN</div></div>
+      <div class="kpi"><div class="n">832.864</div><div class="l">Habitantes (Censo 2024) — densidad 20,52 hab/km²</div><div class="s">INE / BCN</div></div>
+    </div>
+
+    <!-- ANIMACIÓN DIDÁCTICA -->
+    <div class="glass rounded-2xl p-3.5 mt-4">
+      <div class="flex items-center gap-2 mb-2.5"><i data-lucide="zap" style="width:17px;height:17px;color:#a7d18a"></i><h3 class="font-bold text-[13.5px]">El doble motor de Coquimbo</h3></div>
+      <svg class="viz" viewBox="0 0 340 200" role="img" aria-label="El doble motor de Coquimbo: el cobre de Los Pelambres y los valles de uva y pisco impulsan la economía regional, y el desafío es anclar ese valor en la región">
+        <defs>
+          <linearGradient id="aSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1e241a"/><stop offset="1" stop-color="#14100c"/></linearGradient>
+          <radialGradient id="aGrape" cx="0.4" cy="0.32" r="0.75"><stop offset="0" stop-color="#b79ad8"/><stop offset="1" stop-color="#6b4e94"/></radialGradient>
+          <linearGradient id="aOre" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0975f"/><stop offset="1" stop-color="#a9642f"/></linearGradient>
+          <linearGradient id="aCore" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0c98a"/><stop offset="1" stop-color="#cf9b6f"/></linearGradient>
+          <filter id="aSh" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.8" flood-color="#000" flood-opacity=".45"/></filter>
+        </defs>
+        <rect x="0" y="0" width="340" height="200" fill="url(#aSky)"/>
+        <!-- motor 1: la vid (uva/pisco) -->
+        <g class="vid" filter="url(#aSh)">
+          <path d="M52 42 C 52 32, 59 30, 63 32" fill="none" stroke="#7fbf6a" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M61 31 q 11 -6 17 2 q -9 7 -17 -2 z" fill="#7fbf6a"/>
+          <g fill="url(#aGrape)">
+            <circle cx="44" cy="46" r="5.2"/><circle cx="54" cy="46" r="5.2"/><circle cx="64" cy="46" r="5.2"/>
+            <circle cx="49" cy="54" r="5.2"/><circle cx="59" cy="54" r="5.2"/>
+            <circle cx="54" cy="62" r="5.2"/>
+          </g>
+        </g>
+        <text class="lbl-sm" x="52" y="88" text-anchor="middle" style="fill:#bfe0a6">Valles · uva y pisco</text>
+        <!-- motor 2: el cobre -->
+        <g filter="url(#aSh)">
+          <path d="M20 168 L52 118 L84 168 Z" fill="url(#aOre)"/>
+          <path d="M52 118 L66 140 L58 142 L64 152 L52 146 L40 154 L46 141 L38 138 Z" fill="#f0c98a" opacity=".85"/>
+        </g>
+        <text class="lbl-sm" x="52" y="182" text-anchor="middle" style="fill:#e6c79b">Cobre · Cu</text>
+        <path class="beam" d="M74 52 C 140 62, 170 80, 205 96" fill="none" stroke="#9a78c0" stroke-width="3" stroke-linecap="round"/>
+        <path class="beam b2" d="M78 150 C 140 140, 170 118, 205 104" fill="none" stroke="#cf9b6f" stroke-width="3" stroke-linecap="round"/>
+        <g class="core" filter="url(#aSh)">
+          <circle cx="248" cy="100" r="40" fill="url(#aCore)" opacity=".22"/>
+          <circle cx="248" cy="100" r="27" fill="url(#aCore)"/>
+          <text class="lbl" x="248" y="96" text-anchor="middle" style="fill:#2a1c0f">VALOR</text>
+          <text class="lbl-sm" x="248" y="108" text-anchor="middle" style="fill:#3a2a14;font-weight:800">regional</text>
+        </g>
+        <text class="lbl-sm" x="248" y="156" text-anchor="middle" style="fill:#c7b79f">cobre + campo</text>
+      </svg>
+      <div class="steps">
+        <div class="step s1"><span class="n">1</span>El cobre</div>
+        <div class="step s2"><span class="n">2</span>Los valles</div>
+        <div class="step s3"><span class="n">3</span>El nuevo ciclo</div>
+        <div class="step s4"><span class="n">4</span>Anclar el valor</div>
+      </div>
+      <div class="narr">
+        <p class="nl n1">Un motor es <b>el cobre</b>: Los Pelambres, la mayor minera de capital chileno.</p>
+        <p class="nl n2">El otro son <b>los valles</b>: uva de mesa, pisco y fruta de exportación.</p>
+        <p class="nl n3">En el nuevo ciclo la región suma <b>US$7.800M</b> de cartera de inversión.</p>
+        <p class="nl n4">El desafío: que ese <b>valor se ancle en la región</b> — proveedores, talento y agua.</p>
+      </div>
+      <p class="text-center text-[10px] text-stone-500 mt-2.5">Fuente: COCHILCO (Cartera 2025–2034).</p>
+    </div>
+
+    <!-- TERRITORIO -->
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="map-pin" style="width:17px;height:17px;color:#cf9b6f"></i><h3 class="font-bold text-[13.5px]">El territorio</h3></div>
+      <div class="mt-1">
+        <div class="fact"><div class="b">3 · 15</div><div class="t"><b>provincias y comunas.</b> Elqui, Limarí y Choapa; capital regional en La Serena.</div></div>
+        <div class="fact"><div class="b">40.580</div><div class="t"><b>km² (5,37% del país):</b> transición del desierto al semiárido, con valles fértiles y cielos limpios.</div></div>
+        <div class="fact"><div class="b">Valles</div><div class="t">Elqui, Limarí y Choapa: <b>uva, pisco y fruta</b> de exportación, y astroturismo — una economía diversificada.</div></div>
+      </div>
+    </div>
+
+    <!-- EL CICLO -->
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="trending-up" style="width:17px;height:17px;color:#e8c9a6"></i><h3 class="font-bold text-[13.5px]">El nuevo ciclo de inversión</h3></div>
+      <div class="mt-1">
+        <div class="fact"><div class="b">US$7.800M</div><div class="t">concentra la región en cartera minera 2025–2034 (COCHILCO), en un país que proyecta US$104.549M en total.</div></div>
+        <div class="fact"><div class="b">Los Pelambres</div><div class="t">La gran minera de <b>capital chileno</b> (Antofagasta Minerals) opera aquí con <b>agua de mar</b> y mineroducto.</div></div>
+        <div class="fact"><div class="b">≈22–24%</div><div class="t">de la economía regional es <b>minería</b> (PIB 2016–2019), junto a la agricultura y los servicios.</div></div>
+      </div>
+      <p class="text-[11px] text-stone-500 mt-2">Fuentes: COCHILCO (Cartera 2025–2034) y BCN.</p>
+    </div>
+
+    <!-- ANCLAR EL VALOR -->
+    <div class="glass rounded-2xl p-4 mt-3" style="border-color:rgba(127,191,154,.24)">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="anchor" style="width:17px;height:17px;color:#7fbf9a"></i><h3 class="font-bold text-[13.5px]">La inversión no ancla valor por sí sola</h3></div>
+      <p class="text-[12.5px] text-stone-300 leading-relaxed">Para que la inversión se traduzca en desarrollo local hacen falta <b>condiciones habilitantes</b> concretas.</p>
+      <div class="grid grid-cols-2 gap-2 mt-3">
+        <div class="chip"><span class="d"></span><b>Capital humano</b></div>
+        <div class="chip"><span class="d" style="background:#7fbf9a"></span><b>Proveedores locales</b></div>
+        <div class="chip"><span class="d" style="background:#e0a35a"></span><b>Innovación</b></div>
+        <div class="chip"><span class="d" style="background:#7fbfd1"></span><b>Agua y energía</b></div>
+      </div>
+    </div>
+
+    <!-- QUIÉN GANA -->
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2 mb-2.5"><i data-lucide="users" style="width:17px;height:17px;color:#cf9b6f"></i><h3 class="font-bold text-[13.5px]">Un mismo objetivo para sectores distintos</h3></div>
+      <div class="flex flex-wrap gap-2">
+        <div class="chip"><span class="d"></span> <b>Minería</b> · proveedores confiables</div>
+        <div class="chip"><span class="d" style="background:#a7d18a"></span> <b>Agro y pisco</b> · agua y valor agregado</div>
+        <div class="chip"><span class="d" style="background:#7fbf9a"></span> <b>Estado regional</b> · diversificación</div>
+        <div class="chip"><span class="d" style="background:#7fbfd1"></span> <b>Academia</b> · investigación aplicada</div>
+        <div class="chip"><span class="d" style="background:#e0a35a"></span> <b>MiPyMEs</b> · contratos que quedan</div>
+        <div class="chip"><span class="d" style="background:#e08aa8"></span> <b>Comunidades</b> · bienestar</div>
+      </div>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Cifras de fuentes públicas: BCN, INE (Censo 2024) y COCHILCO (Cartera 2025–2034). · Faena de la región: <a href="adn-minero-pelambres.html" style="color:#e8c9a6">Los Pelambres</a> · Otras regiones: <a href="adn-minero-atacama.html" style="color:#e8c9a6">Atacama</a> · <a href="adn-minero-antofagasta.html" style="color:#e8c9a6">Antofagasta</a> · <a href="adn-minero-tarapaca.html" style="color:#e8c9a6">Tarapacá</a> · <a href="adn-minero-ohiggins.html" style="color:#e8c9a6">O'Higgins</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+<script>window.lucide&&lucide.createIcons();</script>
+</body>
+</html>
