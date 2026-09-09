@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · Adivina la Faena</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="Juego: adivina la faena minera de Chile con pistas. Mientras menos pistas uses, más puntos. Chuquicamata, El Teniente, Escondida y más." />
+  <link rel="canonical" href="https://simonrovi-web.github.io/adn-minero/adn-minero-adivina-faena.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ADN Minero" />
+  <meta property="og:title" content="ADN Minero · Adivina la Faena" />
+  <meta property="og:description" content="Adivina la faena minera de Chile con pistas. Mientras menos pistas uses, más puntos." />
+  <meta property="og:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://simonrovi-web.github.io/adn-minero/adn-minero-adivina-faena.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ADN Minero · Adivina la Faena" />
+  <meta name="twitter:description" content="Adivina la faena minera de Chile con pistas." />
+  <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(207,155,111,0.15), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    h3{ margin:0; }
+    .opt{ width:100%; text-align:left; display:flex; gap:10px; align-items:center; padding:13px 14px; border-radius:13px; background:rgba(20,16,12,.55); border:1px solid rgba(196,168,148,.18); color:#f0e7db; font-size:14.5px; font-weight:700; cursor:pointer; transition:border-color .15s, background .15s, transform .1s; }
+    .opt:hover{ border-color:rgba(207,155,111,.5); } .opt:active{ transform:scale(.99); }
+    .opt .ix{ width:22px; height:22px; border-radius:7px; background:rgba(207,155,111,.16); color:#e6c98f; font-weight:800; font-size:12px; display:grid; place-items:center; flex:none; }
+    .opt.ok{ border-color:#7fbf9a; background:rgba(127,191,154,.16); } .opt.ok .ix{ background:#7fbf9a; color:#10231a; }
+    .opt.bad{ border-color:#e0715a; background:rgba(224,90,63,.16); } .opt.bad .ix{ background:#e0715a; color:#2a1210; }
+    .opt.dim{ opacity:.5; } .opt[disabled]{ cursor:default; }
+    .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:800; border-radius:13px; padding:13px 18px; cursor:pointer; border:0; }
+    .btn-primary{ background:linear-gradient(135deg,#f0d090,#cf9b6f 55%,#b5842f); color:#2a1c0f; box-shadow:0 4px 16px rgba(207,155,111,.35); }
+    .btn-ghost{ background:rgba(255,255,255,.05); color:#e8c9a6; border:1px solid rgba(196,168,148,.2); }
+    .pill{ font-size:11px; font-weight:800; padding:4px 10px; border-radius:999px; background:rgba(207,155,111,.16); color:#e6c98f; border:1px solid rgba(207,155,111,.3); }
+    .clue{ display:flex; gap:10px; align-items:flex-start; padding:10px 0; border-top:1px solid rgba(196,168,148,.1); font-size:14px; line-height:1.45; color:#e4d7c8; }
+    .clue:first-child{ border-top:0; } .clue .cn{ width:20px; height:20px; border-radius:6px; background:rgba(230,201,143,.16); color:#e6c98f; font-weight:800; font-size:11px; display:grid; place-items:center; flex:none; margin-top:1px; }
+    .bar{ height:6px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; } .bar i{ display:block; height:100%; background:linear-gradient(90deg,#cf9b6f,#f0d090); transition:width .3s ease; }
+    .fade{ animation:fade .35s ease both; } @keyframes fade{ from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none} }
+    [hidden]{ display:none !important; }
+  </style>
+  <script src="adn-ui.js" defer></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","@id":"https://simonrovi-web.github.io/adn-minero/adn-minero-adivina-faena.html#app","name":"ADN Minero · Adivina la Faena","applicationCategory":"GameApplication","operatingSystem":"Web","url":"https://simonrovi-web.github.io/adn-minero/adn-minero-adivina-faena.html","description":"Juego para adivinar la faena minera de Chile con pistas.","isPartOf":{"@id":"https://simonrovi-web.github.io/adn-minero/#site"},"offers":{"@type":"Offer","price":"0","priceCurrency":"CLP"}}
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(207,155,111,.15);border:1px solid rgba(207,155,111,.34)"><i data-lucide="mountain" style="width:26px;height:26px;color:#cf9b6f"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#eabf86;font-weight:800">Adivina la Faena</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">¿Qué mina de Chile es?</p>
+      </div>
+    </header>
+
+    <!-- INICIO -->
+    <div id="start" class="glass rounded-2xl p-5 mt-4 text-center fade">
+      <div class="mx-auto h-16 w-16 rounded-2xl grid place-items-center mb-3" style="background:rgba(207,155,111,.14);border:1px solid rgba(207,155,111,.3)"><i data-lucide="search" style="width:34px;height:34px;color:#cf9b6f"></i></div>
+      <h3 class="text-xl font-extrabold">10 faenas, muchas pistas</h3>
+      <p class="text-[13.5px] text-stone-300 mt-2 leading-relaxed">Te damos pistas de una mina de Chile. Adivina cuál es entre 4 opciones. <b>Mientras menos pistas uses, más puntos:</b> 3 con la primera, 2 con la segunda, 1 con la tercera.</p>
+      <p class="mt-3 text-[12px] text-stone-400">Récord: <span id="bestStart" class="font-extrabold text-[#e6c98f]">0</span>/30 pts</p>
+      <button class="btn btn-primary mt-4 w-full" id="btnStart"><i data-lucide="play" class="w-5 h-5"></i> Jugar</button>
+    </div>
+
+    <!-- JUEGO -->
+    <div id="game" hidden>
+      <div class="glass rounded-2xl p-4 mt-4">
+        <div class="flex items-center justify-between text-[12px] text-stone-400 mb-2">
+          <span>Faena <b id="qNum" class="text-stone-200">1</b>/10</span>
+          <span class="flex items-center gap-3"><span class="pill" id="ptsPill">vale +3</span><span>Puntaje <b id="score" class="text-[#e6c98f]">0</b></span></span>
+        </div>
+        <div class="bar mb-4"><i id="prog" style="width:10%"></i></div>
+        <div id="qCard" class="fade">
+          <p class="text-[11px] font-bold uppercase tracking-wider mb-1" style="color:#e6c98f">Pistas</p>
+          <div id="clues" class="mb-2"></div>
+          <button class="btn btn-ghost w-full text-[13px] mb-3" id="btnClue"><i data-lucide="lightbulb" class="w-4 h-4"></i> Otra pista (–1 punto)</button>
+          <p class="text-[12px] font-bold text-stone-300 mb-2">¿Qué faena es?</p>
+          <div id="opts" class="grid gap-2"></div>
+          <div id="expl" class="mt-3 rounded-xl p-3.5 text-[13px] leading-relaxed" hidden></div>
+          <button class="btn btn-primary mt-3 w-full" id="btnNext" hidden><span id="nextLbl">Siguiente</span> <i data-lucide="arrow-right" class="w-5 h-5"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FIN -->
+    <div id="end" hidden>
+      <div class="glass rounded-2xl p-5 mt-4 text-center fade">
+        <div class="mx-auto h-16 w-16 rounded-2xl grid place-items-center mb-3" id="endIconWrap" style="background:rgba(207,155,111,.14);border:1px solid rgba(207,155,111,.3)"><i id="endIcon" data-lucide="award" style="width:34px;height:34px;color:#e6c98f"></i></div>
+        <p class="text-[13px] text-stone-400">Tu puntaje</p>
+        <p class="text-5xl font-black mt-1" id="finalScore" style="color:#e6c98f">0<span class="text-2xl text-stone-500">/30</span></p>
+        <p class="text-[14px] text-stone-200 font-semibold mt-2" id="endMsg">—</p>
+        <p class="mt-2 text-[12px] text-stone-400">Récord: <span id="bestEnd" class="font-extrabold text-[#e6c98f]">0</span>/30 <span id="newBest" class="pill ml-1" hidden>¡nuevo récord!</span></p>
+        <div class="flex gap-2.5 mt-4">
+          <button class="btn btn-primary flex-1" id="btnAgain"><i data-lucide="rotate-ccw" class="w-5 h-5"></i> Jugar de nuevo</button>
+          <a class="btn btn-ghost flex-1" href="adn-minero-faenas.html"><i data-lucide="layers-3" class="w-5 h-5"></i> Ver faenas</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Datos de divulgación sobre faenas reales de Chile. · <a href="adn-minero-faenas.html" style="color:#e8c9a6">Faenas</a> · <a href="adn-minero-mapa.html" style="color:#e8c9a6">Mapa</a> · <a href="adn-minero-juegos.html" style="color:#e8c9a6">Más juegos</a></p>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  // Banco de faenas (datos de divulgación). clues: de más difícil a más fácil.
+  const BANK=[
+    { n:'Chuquicamata', f:'adn-minero-chuqui.html', reg:'Antofagasta', min:'Cobre', emp:'Codelco',
+      clues:['Fui uno de los rajos de cobre más icónicos del mundo y ahora me transformo en mina subterránea.','Estoy junto a Calama, en el norte grande.','Soy de Codelco y marqué la nacionalización del cobre.'] },
+    { n:'El Teniente', f:'adn-minero-teniente.html', reg:"O'Higgins", min:'Cobre', emp:'Codelco',
+      clues:['Soy la mina de cobre subterránea más grande del mundo.','Sobre mí estuvo Sewell, “la ciudad de las escaleras”.','Codelco me opera en la Región de O’Higgins.'] },
+    { n:'Escondida', f:'adn-minero-escondida.html', reg:'Antofagasta', min:'Cobre', emp:'BHP',
+      clues:['Soy la mina de cobre más grande del mundo por producción.','Opero con agua 100% de mar.','BHP me opera en la Región de Antofagasta.'] },
+    { n:'Collahuasi', f:'adn-minero-collahuasi.html', reg:'Tarapacá', min:'Cobre', emp:'Anglo American y Glencore',
+      clues:['Opero a más de 4.400 metros de altura, en el altiplano.','Estoy en la Región de Tarapacá.','Me operan Anglo American y Glencore.'] },
+    { n:'Los Pelambres', f:'adn-minero-pelambres.html', reg:'Coquimbo', min:'Cobre', emp:'Antofagasta Minerals',
+      clues:['Soy la gran minera de capital chileno del grupo Luksic.','Uso agua de mar que sube por un mineroducto.','Estoy en la Región de Coquimbo (Choapa).'] },
+    { n:'Andina', f:'adn-minero-andina.html', reg:'Valparaíso', min:'Cobre', emp:'Codelco',
+      clues:['Opero en la alta cordillera, entre glaciares.','Combino rajo y mina subterránea.','Soy la división de Codelco en la Región de Valparaíso.'] },
+    { n:'El Salvador', f:'adn-minero-salvador.html', reg:'Atacama', min:'Cobre', emp:'Codelco',
+      clues:['Renací con el proyecto Rajo Inca a cielo abierto.','Soy una división de Codelco en la Región de Atacama.','Mi nombre suena a “salvación”.'] },
+    { n:'Spence', f:'adn-minero-spence.html', reg:'Antofagasta', min:'Cobre', emp:'BHP',
+      clues:['Estoy en Sierra Gorda y crecí con mi expansión SGO.','Uso agua de mar en mis procesos.','BHP me opera en la Región de Antofagasta.'] },
+    { n:'Candelaria', f:'adn-minero-candelaria.html', reg:'Atacama', min:'Cobre', emp:'Lundin',
+      clues:['Estoy cerca de Copiapó, junto a un valle agrícola.','Combino rajo y mina subterránea.','Me opera Lundin, en la Región de Atacama.'] },
+    { n:'Quebrada Blanca', f:'adn-minero-qb.html', reg:'Tarapacá', min:'Cobre', emp:'Teck',
+      clues:['Di un gran salto con mi fase 2, conocida como QB2.','Estoy en la Región de Tarapacá.','Me opera Teck.'] },
+    { n:'Salar de Atacama', f:'adn-minero-salar.html', reg:'Antofagasta', min:'Litio', emp:'SQM y Albemarle',
+      clues:['No soy de cobre: de mí sale el litio de Chile.','El mineral se extrae de salmuera en pozas de evaporación.','Estoy en la Región de Antofagasta.'] }
+  ];
+  const N=10, bestKey='adn_faenajuego_best';
+  const getBest=()=>{ try{ return parseInt(localStorage.getItem(bestKey)||'0',10)||0; }catch(e){ return 0; } };
+  const setBest=v=>{ try{ localStorage.setItem(bestKey,String(v)); }catch(e){} };
+  function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+  let quiz=[], idx=0, score=0, clues=1, answered=false, opts=[];
+  function start(){ quiz=shuffle(BANK.slice()).slice(0,N); idx=0; score=0; $('score').textContent='0';
+    $('start').hidden=true; $('end').hidden=true; $('game').hidden=false; render(); }
+  function render(){
+    answered=false; clues=1;
+    const t=quiz[idx];
+    $('qNum').textContent=(idx+1); $('prog').style.width=((idx+1)/N*100)+'%';
+    // opciones: target + 3 distractores
+    const others=shuffle(BANK.filter(x=>x.n!==t.n)).slice(0,3);
+    opts=shuffle([t,...others]);
+    renderClues(); renderPts();
+    const box=$('opts'); box.innerHTML='';
+    opts.forEach((o,i)=>{ const b=document.createElement('button'); b.className='opt'; b.type='button';
+      b.innerHTML='<span class="ix">'+String.fromCharCode(65+i)+'</span><span>'+o.n+'</span>';
+      b.addEventListener('click',()=>choose(o,b)); box.appendChild(b); });
+    $('btnClue').hidden=false; $('btnClue').disabled=false;
+    $('expl').hidden=true; $('btnNext').hidden=true;
+    $('qCard').classList.remove('fade'); void $('qCard').offsetWidth; $('qCard').classList.add('fade');
+    drawIcons();
+  }
+  function renderClues(){ const t=quiz[idx]; const box=$('clues'); box.innerHTML='';
+    for(let i=0;i<clues;i++){ const d=document.createElement('div'); d.className='clue';
+      d.innerHTML='<span class="cn">'+(i+1)+'</span><span>'+t.clues[i]+'</span>'; box.appendChild(d); } }
+  function renderPts(){ const p=Math.max(1,4-clues); $('ptsPill').textContent='vale +'+p; }
+  function moreClue(){ if(answered||clues>=3) return; clues++; renderClues(); renderPts(); if(clues>=3) $('btnClue').disabled=true; }
+  function choose(o,btn){ if(answered) return; answered=true;
+    const t=quiz[idx]; const pts=(o.n===t.n)?Math.max(1,4-clues):0; if(pts>0){ score+=pts; $('score').textContent=score; }
+    [...$('opts').children].forEach((b,k)=>{ b.setAttribute('disabled','');
+      if(opts[k].n===t.n) b.classList.add('ok'); else if(opts[k]===o) b.classList.add('bad'); else b.classList.add('dim'); });
+    $('btnClue').disabled=true;
+    const ok=(o.n===t.n); const ex=$('expl');
+    ex.style.background=ok?'rgba(127,191,154,.12)':'rgba(224,90,63,.12)';
+    ex.style.border='1px solid '+(ok?'rgba(127,191,154,.32)':'rgba(224,90,63,.32)');
+    ex.innerHTML='<b style="color:'+(ok?'#a7d9b8':'#f0a898')+'">'+(ok?('✓ ¡Correcto! +'+pts+(pts===1?' punto':' puntos')):('✗ Era '+t.n))+'</b><br>'+
+      '<span style="color:#c9bcae">📍 '+t.reg+' · ⛏️ '+t.min+' · 🏭 '+t.emp+'</span><br>'+
+      '<a href="'+t.f+'" style="color:#e8c9a6;font-weight:700">Ver la ficha de '+t.n+' →</a>';
+    ex.hidden=false;
+    $('nextLbl').textContent=(idx===N-1)?'Ver resultado':'Siguiente'; $('btnNext').hidden=false; drawIcons();
+  }
+  function next(){ if(idx<N-1){ idx++; render(); } else finish(); }
+  function finish(){ $('game').hidden=true; $('end').hidden=false;
+    $('finalScore').innerHTML=score+'<span class="text-2xl text-stone-500">/30</span>';
+    const best=getBest(); const nb=score>best; if(nb) setBest(score);
+    $('bestEnd').textContent=nb?score:best; $('newBest').hidden=!nb;
+    let msg,col;
+    if(score>=25){ msg='¡Eres un/a experto/a en faenas!'; col='#7fbf9a'; }
+    else if(score>=18){ msg='Muy bien, conoces la minería de Chile.'; col='#a7d18a'; }
+    else if(score>=10){ msg='Vas bien; explora las fichas para subir.'; col='#e0a35a'; }
+    else { msg='A recorrer las faenas de Chile.'; col='#e0715a'; }
+    $('endMsg').textContent=msg; $('finalScore').style.color=col; $('endIcon').style.color=col;
+    drawIcons();
+  }
+  $('btnStart').addEventListener('click',start);
+  $('btnAgain').addEventListener('click',start);
+  $('btnClue').addEventListener('click',moreClue);
+  $('btnNext').addEventListener('click',next);
+  $('bestStart').textContent=getBest();
+  drawIcons();
+</script>
+</body>
+</html>

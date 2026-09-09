@@ -71,7 +71,8 @@
     { t:'Verdadero o Falso', f:'adn-minero-vf.html', e:'⚡', c:'#e0955f', badge:'Contrarreloj', d:'60 segundos para acertar la mayor cantidad de afirmaciones.', best:()=>{ const b=gv('adn_vf_best'); return b?('Mejor: '+b+' aciertos'):null; } },
     { t:'Wordle Minero', f:'adn-minero-wordle.html', e:'🟩', c:'#6aaa64', badge:'Diario', d:'Adivina la palabra minera de 5 letras del día.', best:()=>{ try{ const s=JSON.parse(gv('adn_wordle')||'{}'); return s.streak?('Racha: '+s.streak+' días'):null; }catch(e){ return null; } } },
     { t:'Memoria Minera', f:'adn-minero-memoria.html', e:'🧠', c:'#cf9b6f', badge:'Pares', d:'Encuentra los 8 pares en la menor cantidad de movimientos.', best:()=>{ const b=gv('adn_mem_best'); return b?('Récord: '+b+' mov.'):null; } },
-    { t:'Juego de Seguridad', f:'adn-minero-seguridad-juego.html', e:'🦺', c:'#e0715a', badge:'Faena', d:'10 situaciones reales: EPP, altura, espacios confinados y emergencias.', best:()=>{ const b=gv('adn_segjuego_best'); return b?('Récord: '+b+'/10'):null; } }
+    { t:'Juego de Seguridad', f:'adn-minero-seguridad-juego.html', e:'🦺', c:'#e0715a', badge:'Faena', d:'10 situaciones reales: EPP, altura, espacios confinados y emergencias.', best:()=>{ const b=gv('adn_segjuego_best'); return b?('Récord: '+b+'/10'):null; } },
+    { t:'Adivina la Faena', f:'adn-minero-adivina-faena.html', e:'🔎', c:'#cf9b6f', badge:'Pistas', d:'Adivina la mina de Chile con pistas: menos pistas, más puntos.', best:()=>{ const b=gv('adn_faenajuego_best'); return b?('Récord: '+b+'/30'):null; } }
   ];
 
   $('games').innerHTML=GAMES.map(g=>{
