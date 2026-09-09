@@ -38,6 +38,14 @@
     .tip b{ color:#f6ecdf; } h3{ margin:0; }
     .num{ display:flex; gap:9px; align-items:center; text-decoration:none; padding:10px 12px; border-radius:12px; background:rgba(224,90,63,.1); border:1px solid rgba(224,90,63,.3); }
     .num b{ font-size:17px; color:#f4ece5; font-variant-numeric:tabular-nums; } .num span{ font-size:11.5px; color:#c9bcae; }
+    .rcp svg{ width:100%; height:auto; display:block; border-radius:12px; }
+    .rcpHands{ transform-box:fill-box; transform-origin:center; animation:rcpPress .55s ease-in-out infinite; }
+    @keyframes rcpPress{ 0%,100%{ transform:translateY(0) } 45%{ transform:translateY(8px) } }
+    .rcpRing{ transform-box:fill-box; transform-origin:center; animation:rcpRing .55s ease-out infinite; }
+    @keyframes rcpRing{ 0%{ transform:scale(.45); opacity:.6 } 100%{ transform:scale(1.7); opacity:0 } }
+    .rcpBeat{ animation:rcpBeat .55s ease-in-out infinite; } .rcpBeat.b2{ animation-delay:.09s } .rcpBeat.b3{ animation-delay:.18s } .rcpBeat.b4{ animation-delay:.27s } .rcpBeat.b5{ animation-delay:.36s }
+    @keyframes rcpBeat{ 0%,100%{ opacity:.25; transform:scaleY(.6) } 45%{ opacity:1; transform:scaleY(1) } }
+    @media (prefers-reduced-motion:reduce){ .rcpHands,.rcpRing,.rcpBeat{ animation:none !important } }
   </style>
   <script src="adn-ui.js" defer></script>
   <script src="adn-recorrido.js" defer></script>
@@ -66,6 +74,43 @@
       <a class="num" href="tel:133"><i data-lucide="shield" class="w-5 h-5" style="color:#7fb0d9"></i><span><b>133</b><br>Carabineros</span></a>
     </div>
     <p class="text-[11px] text-stone-500 mt-2 px-1">Y guarda a mano el número del <b>policlínico / rescate</b> de tu faena. Ver <a href="adn-minero-emergencias.html" style="color:#e8c9a6">Contactos de emergencia</a>.</p>
+
+    <!-- Metrónomo visual de RCP -->
+    <div class="glass rounded-2xl p-3.5 mt-3 rcp" style="border-color:rgba(224,90,63,.3)">
+      <div class="flex items-center gap-2 mb-2.5"><i data-lucide="heart-pulse" style="width:17px;height:17px;color:#e0715a"></i><h3 class="font-bold text-[13.5px]">Ritmo de RCP · sigue el pulso</h3></div>
+      <svg viewBox="0 0 340 150" role="img" aria-label="Ritmo de compresiones de reanimación: entre 100 y 120 por minuto, en el centro del pecho">
+        <defs>
+          <linearGradient id="rBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4652"/><stop offset="1" stop-color="#232c34"/></linearGradient>
+          <radialGradient id="rBg" cx="0.5" cy="0.4" r="0.7"><stop offset="0" stop-color="#241a16"/><stop offset="1" stop-color="#140f0c"/></radialGradient>
+          <linearGradient id="rHand" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0d3ba"/><stop offset="1" stop-color="#c99a76"/></linearGradient>
+          <filter id="rSh" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity=".45"/></filter>
+        </defs>
+        <rect x="0" y="0" width="340" height="150" fill="url(#rBg)"/>
+        <!-- persona reclinada -->
+        <ellipse cx="170" cy="128" rx="120" ry="9" fill="#000" opacity=".3"/>
+        <circle cx="66" cy="86" r="16" fill="url(#rHand)" filter="url(#rSh)"/>
+        <rect x="84" y="66" width="180" height="46" rx="23" fill="url(#rBody)" filter="url(#rSh)"/>
+        <rect x="250" y="74" width="46" height="30" rx="14" fill="url(#rBody)" opacity=".9"/>
+        <!-- punto de compresión: anillo + manos -->
+        <circle class="rcpRing" cx="150" cy="70" r="15" fill="none" stroke="#e0715a" stroke-width="3"/>
+        <g class="rcpHands" filter="url(#rSh)">
+          <ellipse cx="150" cy="58" rx="16" ry="11" fill="url(#rHand)"/>
+          <ellipse cx="150" cy="54" rx="13" ry="9" fill="url(#rHand)"/>
+          <rect x="140" y="44" width="9" height="14" rx="4" fill="url(#rHand)"/>
+        </g>
+        <!-- barras de pulso -->
+        <g transform="translate(0,0)">
+          <rect class="rcpBeat"    x="150" y="122" width="7" height="16" rx="2" fill="#e0715a"/>
+          <rect class="rcpBeat b2" x="164" y="122" width="7" height="16" rx="2" fill="#e0715a"/>
+          <rect class="rcpBeat b3" x="178" y="122" width="7" height="16" rx="2" fill="#e0715a"/>
+          <rect class="rcpBeat b4" x="192" y="122" width="7" height="16" rx="2" fill="#e0715a"/>
+          <rect class="rcpBeat b5" x="206" y="122" width="7" height="16" rx="2" fill="#e0715a"/>
+        </g>
+        <text x="150" y="30" text-anchor="middle" style="font-size:13px;font-weight:800;fill:#f4ece5">100–120 por minuto</text>
+        <text x="150" y="44" text-anchor="middle" style="font-size:9.5px;fill:#c9bcae">en el centro del pecho, fuerte y parejo</text>
+      </svg>
+      <p class="text-center text-[11px] text-stone-400 mt-2.5">Tip: el ritmo es parecido al de la canción “La Bamba” o “Stayin’ Alive”. Si no estás formado/a, haz <b>solo compresiones</b> sin parar hasta que llegue ayuda.</p>
+    </div>
 
     <div id="topics" class="mt-4 grid gap-2.5"></div>
 

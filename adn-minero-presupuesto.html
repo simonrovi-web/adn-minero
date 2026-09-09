@@ -42,6 +42,12 @@
     .cat .ic{ width:36px; height:36px; border-radius:10px; display:grid; place-items:center; flex:none; }
     .cat .amt{ font-weight:800; font-variant-numeric:tabular-nums; font-size:16px; margin-left:auto; }
     .pctinp{ width:52px; text-align:center; background:rgba(20,16,12,.7); border:1px solid rgba(196,168,148,.22); border-radius:8px; padding:5px 4px; color:#f4ece5; font-weight:700; font-size:13px; }
+    .viz svg{ width:100%; height:auto; display:block; border-radius:12px; }
+    .coin{ animation:coinFall 1.8s linear infinite; } .coin.k2{ animation-delay:.6s } .coin.k3{ animation-delay:1.2s }
+    @keyframes coinFall{ 0%{ transform:translateY(0); opacity:0 } 12%{ opacity:1 } 80%{ opacity:1 } 100%{ transform:translateY(50px); opacity:0 } }
+    .fill{ transform-box:fill-box; transform-origin:bottom; animation:fillUp 6s ease-in-out infinite; }
+    @keyframes fillUp{ 0%{ transform:scaleY(0) } 45%,92%{ transform:scaleY(1) } 100%{ transform:scaleY(0) } }
+    @media (prefers-reduced-motion:reduce){ .coin{ animation:none !important; opacity:1 } .fill{ animation:none !important } }
   </style>
   <script src="adn-ui.js" defer></script>
   <script src="adn-recorrido.js" defer></script>
@@ -63,8 +69,42 @@
       <p class="text-[12px] text-stone-300 leading-relaxed"><b style="color:#e6c079">💡 El sueldo minero es cíclico.</b> Cuando el cobre está alto llegan bonos; cuando baja, pueden faltar. La clave: <b>guardar en las buenas para las malas</b>. Esto es <b>educación financiera general</b>, no asesoría ni recomendación de productos.</p>
     </div>
 
+    <!-- Animación: reparte tu sueldo -->
+    <div class="glass rounded-2xl p-3.5 mt-4 viz">
+      <svg viewBox="0 0 340 172" role="img" aria-label="Tu sueldo se reparte en tres frascos: necesidades, gustos y ahorro">
+        <defs>
+          <radialGradient id="pBg" cx="0.5" cy="0.3" r="0.8"><stop offset="0" stop-color="#1e2418"/><stop offset="1" stop-color="#14100c"/></radialGradient>
+          <radialGradient id="pCoin" cx="0.4" cy="0.35" r="0.7"><stop offset="0" stop-color="#ffe28a"/><stop offset="1" stop-color="#d6a92e"/></radialGradient>
+          <filter id="pSh" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.6" flood-color="#000" flood-opacity=".4"/></filter>
+        </defs>
+        <rect x="0" y="0" width="340" height="172" fill="url(#pBg)"/>
+        <!-- fuente: tu sueldo -->
+        <g filter="url(#pSh)"><rect x="130" y="16" width="80" height="26" rx="13" fill="url(#pCoin)"/><text x="170" y="33" text-anchor="middle" style="font-size:12px;font-weight:800;fill:#2a1c0f">Tu sueldo</text></g>
+        <!-- guías -->
+        <g stroke="#4a5a38" stroke-width="1.5" stroke-dasharray="3 4" opacity=".55" fill="none"><path d="M150 42 C 120 56, 90 60, 78 74"/><path d="M170 42 L170 74"/><path d="M190 42 C 220 56, 250 60, 262 74"/></g>
+        <!-- monedas cayendo por frasco -->
+        <g fill="url(#pCoin)"><circle class="coin"    cx="78"  cy="60" r="5"/><circle class="coin k2" cx="78"  cy="60" r="5"/><circle class="coin k3" cx="78"  cy="60" r="5"/></g>
+        <g fill="url(#pCoin)"><circle class="coin k2" cx="170" cy="60" r="5"/><circle class="coin k3" cx="170" cy="60" r="5"/><circle class="coin"    cx="170" cy="60" r="5"/></g>
+        <g fill="url(#pCoin)"><circle class="coin k3" cx="262" cy="60" r="5"/><circle class="coin"    cx="262" cy="60" r="5"/></g>
+        <!-- frascos -->
+        <!-- necesidades (50%) -->
+        <g filter="url(#pSh)"><rect x="50" y="112" width="56" height="46" rx="7" fill="rgba(127,176,217,.1)" stroke="#7fb0d9" stroke-width="2"/><rect class="fill" x="53" y="127" width="50" height="28" rx="4" fill="#7fb0d9" opacity=".65"/></g>
+        <text class="" x="78" y="150" text-anchor="middle" style="font-size:13px;font-weight:800;fill:#eaf2f8">50%</text>
+        <text x="78" y="170" text-anchor="middle" style="font-size:9.5px;fill:#a9c9d9">Necesidades</text>
+        <!-- gustos (30%) -->
+        <g filter="url(#pSh)"><rect x="142" y="112" width="56" height="46" rx="7" fill="rgba(224,163,90,.1)" stroke="#e0a35a" stroke-width="2"/><rect class="fill" x="145" y="139" width="50" height="16" rx="4" fill="#e0a35a" opacity=".65"/></g>
+        <text x="170" y="150" text-anchor="middle" style="font-size:13px;font-weight:800;fill:#f6e6d2">30%</text>
+        <text x="170" y="170" text-anchor="middle" style="font-size:9.5px;fill:#e6c79b">Gustos</text>
+        <!-- ahorro (20%) -->
+        <g filter="url(#pSh)"><rect x="234" y="112" width="56" height="46" rx="7" fill="rgba(167,209,138,.1)" stroke="#a7d18a" stroke-width="2"/><rect class="fill" x="237" y="144" width="50" height="11" rx="4" fill="#a7d18a" opacity=".7"/></g>
+        <text x="262" y="150" text-anchor="middle" style="font-size:13px;font-weight:800;fill:#eaf5e2">20%</text>
+        <text x="262" y="170" text-anchor="middle" style="font-size:9.5px;fill:#bfe0a6">Ahorro</text>
+      </svg>
+      <p class="text-center text-[11px] text-stone-400 mt-2.5">Un punto de partida (50/30/20): divide tu sueldo apenas llega, y <b>el ahorro primero</b>.</p>
+    </div>
+
     <!-- Ingreso -->
-    <div class="glass rounded-2xl p-4 mt-4">
+    <div class="glass rounded-2xl p-4 mt-3">
       <label class="k">Tu sueldo líquido del mes</label>
       <input class="inp" id="liq" inputmode="numeric" placeholder="Ej: 1.200.000" />
       <p class="text-[11px] text-stone-500 mt-2">¿No sabes tu líquido? Estímalo en el <a href="adn-minero-sueldo-calc.html" style="color:#a7d18a;font-weight:700">Simulador de Sueldo Líquido</a>.</p>
