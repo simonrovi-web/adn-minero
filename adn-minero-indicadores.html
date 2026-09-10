@@ -204,6 +204,7 @@
       { key:'dolar',          nombre:'Dólar observado',        icon:'dollar-sign', unidad:'CLP', dec:2, color:'#7fbf9a', fmt:'clp' },
       { key:'euro',           nombre:'Euro',                   icon:'euro',        unidad:'CLP', dec:2, color:'#7f9bd1', fmt:'clp' },
       { key:'libra_cobre',    nombre:'Libra de cobre',         icon:'flame',       unidad:'USD', dec:3, color:'#cf9b6f', fmt:'num' },
+      { key:'petroleo',       nombre:'Petróleo Brent (barril)', icon:'fuel',       unidad:'USD / barril · Brent', dec:2, color:'#8a8f98', fmt:'usd', special:'brent' },
       { key:'uf',             nombre:'UF · Unidad de Fomento', icon:'building-2',  unidad:'CLP', dec:2, color:'#d6a94f', fmt:'clp' },
       { key:'utm',            nombre:'UTM · Unidad Trib. Mens.', icon:'receipt',   unidad:'CLP', dec:0, color:'#c9a888', fmt:'clp' },
       { key:'ipc',            nombre:'IPC (mensual)',          icon:'trending-up', unidad:'%',   dec:1, color:'#e0955f', fmt:'pct' },
@@ -253,6 +254,7 @@
         const r=await fetch('https://mindicador.cl/api');
         const d=await r.json();
         IND.forEach(ind=>{
+          if(ind.special) return;
           const el=$('ind-'+ind.key); if(!el) return;
           const v=d[ind.key]?.valor;
           el.querySelector('.val').textContent=fmtVal(ind, v);
@@ -260,7 +262,20 @@
         const f=d.dolar?.fecha ? new Date(d.dolar.fecha) : new Date();
         $('fecha').textContent=f.toLocaleDateString('es-CL',{day:'2-digit',month:'long',year:'numeric'});
       }catch(e){ console.warn('Mindicador no disponible',e); }
+      fetchPetroleo();
       setTimeout(refreshAll, REFRESH_MS);
+    }
+
+    // Petróleo Brent — no está en mindicador; se toma de Yahoo Finance vía proxy CORS
+    async function fetchPetroleo(){
+      const el=$('ind-petroleo'); if(!el) return;
+      try{
+        const y='https://query1.finance.yahoo.com/v8/finance/chart/BZ=F?interval=1d&range=1d';
+        const r=await fetch('https://api.allorigins.win/raw?url='+encodeURIComponent(y),{cache:'no-store'});
+        const j=await r.json();
+        const v=j&&j.chart&&j.chart.result&&j.chart.result[0]&&j.chart.result[0].meta&&j.chart.result[0].meta.regularMarketPrice;
+        if(typeof v==='number') el.querySelector('.val').textContent='US$ '+nf(v,2);
+      }catch(e){ /* si falla, queda el último valor o — */ }
     }
 
     drawIcons(); tick(); setInterval(tick,1000);

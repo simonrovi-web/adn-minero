@@ -46,6 +46,9 @@
     .sk{ background:linear-gradient(90deg, rgba(255,255,255,.05), rgba(255,255,255,.1), rgba(255,255,255,.05)); background-size:200% 100%; animation:sh 1.4s infinite; border-radius:10px; }
     @keyframes sh{ 0%{background-position:200% 0} 100%{background-position:-200% 0} }
     a.lnk{ color:#e8c9a6; }
+    #chLine{ position:absolute; top:0; width:1px; background:rgba(255,255,255,.4); pointer-events:none; display:none; }
+    #chDot{ position:absolute; width:12px; height:12px; border-radius:50%; border:2px solid #141110; transform:translate(-50%,-50%); pointer-events:none; display:none; box-shadow:0 0 8px rgba(0,0,0,.5); }
+    #chTip{ position:absolute; top:0; background:rgba(20,16,12,.94); border:1px solid rgba(196,168,148,.3); border-radius:9px; padding:5px 10px; font-size:13px; color:#f4ece5; pointer-events:none; display:none; white-space:nowrap; z-index:5; box-shadow:0 4px 14px rgba(0,0,0,.5); }
   </style>
   <script src="adn-ui.js" defer></script>
   <script type="application/ld+json">
@@ -98,7 +101,7 @@
     {k:'ipc',         lab:'IPC',   c:'#e0a35a', u:'%',   fmt:v=>v.toFixed(1)+'%', sub:'mensual'},
     {k:'bitcoin',     lab:'Bitcoin', c:'#f5c542', u:'US$', fmt:v=>'US$'+Math.round(v).toLocaleString('en-US'), sub:''}
   ];
-  let cur=IND[0], range='30';
+  let cur=IND[0], range='30', CH=null;
 
   function renderInds(){
     $('inds').innerHTML=IND.map(i=>`<button class="ind-btn ${i.k===cur.k?'on':''}" data-k="${i.k}" style="${i.k===cur.k?`background:${i.c};border-color:${i.c}`:''}">${i.lab}</button>`).join('');
@@ -117,14 +120,47 @@
     const iMin=vals.indexOf(mn), iMax=vals.indexOf(mx), iLast=pts.length-1;
     const gl=[0.25,0.5,0.75].map(g=>`<line x1="0" x2="${W}" y1="${(pt+g*(H-pt-pb)).toFixed(0)}" y2="${(pt+g*(H-pt-pb)).toFixed(0)}" stroke="rgba(255,255,255,.06)" />`).join('');
     const dot=(i,c,r)=>`<circle cx="${x(i).toFixed(1)}" cy="${y(vals[i]).toFixed(1)}" r="${r}" fill="${c}" stroke="#141110" stroke-width="2"/>`;
-    return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="width:100%;height:300px;display:block">
-      <defs><linearGradient id="ar" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity="0.28"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs>
-      ${gl}
-      <path d="${area}" fill="url(#ar)"/>
-      <path d="${d}" fill="none" stroke="${col}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-      ${dot(iMin,'#e0715a',3)}${dot(iMax,'#a7d18a',3)}${dot(iLast,col,4.5)}
-    </svg>
-    <div class="flex justify-between text-[11px] text-stone-500 mt-1 px-1"><span>${fmtDate(pts[0].t)}</span><span>${fmtDate(pts[iLast].t)}</span></div>`;
+    CH={pts,mn,span,W,pl,pr,pt,pb,H,col};
+    return `<div id="chartInner" style="position:relative;touch-action:none">
+      <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="width:100%;height:300px;display:block">
+        <defs><linearGradient id="ar" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity="0.28"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs>
+        ${gl}
+        <path d="${area}" fill="url(#ar)"/>
+        <path d="${d}" fill="none" stroke="${col}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+        ${dot(iMin,'#e0715a',3)}${dot(iMax,'#a7d18a',3)}${dot(iLast,col,4.5)}
+      </svg>
+      <div id="chLine" style="height:300px"></div>
+      <div id="chDot" style="background:${col}"></div>
+      <div id="chTip"></div>
+      <div class="flex justify-between text-[11px] text-stone-500 mt-1 px-1"><span>${fmtDate(pts[0].t)}</span><span>${fmtDate(pts[iLast].t)}</span></div>
+    </div>
+    <p class="text-center text-[10.5px] text-stone-500 mt-1">Desliza el dedo sobre el gráfico para ver el valor y el día.</p>`;
+  }
+
+  function attachCross(){
+    const box=$('chartInner'); if(!box||!CH) return;
+    const line=$('chLine'), dot=$('chDot'), tip=$('chTip');
+    const full=ts=>new Date(ts).toLocaleDateString('es-CL',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
+    function move(clientX){
+      const r=box.getBoundingClientRect(); if(!r.width) return;
+      const rx=Math.max(0,Math.min(r.width, clientX-r.left));
+      const vbX=rx/r.width*CH.W;
+      let idx=Math.round(((vbX-CH.pl)/(CH.W-CH.pl-CH.pr))*(CH.pts.length-1));
+      idx=Math.max(0,Math.min(CH.pts.length-1,idx));
+      const p=CH.pts[idx];
+      const px=(CH.pl+(idx/(CH.pts.length-1))*(CH.W-CH.pl-CH.pr))/CH.W*r.width;
+      const vy=CH.pt+(1-(p.v-CH.mn)/CH.span)*(CH.H-CH.pt-CH.pb);
+      line.style.left=px+'px'; line.style.display='block';
+      dot.style.left=px+'px'; dot.style.top=vy+'px'; dot.style.display='block';
+      tip.innerHTML='<b>'+cur.fmt(p.v)+'</b> <span style="color:#c9b7a5;font-weight:600;font-size:11px;text-transform:capitalize">· '+full(p.t)+'</span>';
+      tip.style.display='block';
+      const tw=tip.offsetWidth||140; tip.style.left=Math.max(0,Math.min(r.width-tw, px-tw/2))+'px';
+    }
+    function hide(){ line.style.display='none'; dot.style.display='none'; tip.style.display='none'; }
+    box.addEventListener('pointerdown', e=>move(e.clientX));
+    box.addEventListener('pointermove', e=>move(e.clientX));
+    box.addEventListener('pointerleave', hide);
+    box.addEventListener('pointercancel', hide);
   }
 
   async function load(){
@@ -141,6 +177,7 @@
       const pts=serie.map(p=>({t:new Date(p.fecha).getTime(), v:p.valor})).sort((a,b)=>a.t-b.t);
       if(!pts.length){ $('chartBox').innerHTML='<p class="text-stone-500 text-sm text-center py-10">Sin datos.</p>'; return; }
       $('chartBox').innerHTML=chart(pts, cur.c);
+      attachCross();
       const vals=pts.map(p=>p.v), last=vals[vals.length-1], first=vals[0], mn=Math.min(...vals), mx=Math.max(...vals);
       $('cVal').textContent=cur.fmt(last);
       const chg=first? ((last-first)/Math.abs(first))*100 : 0;
