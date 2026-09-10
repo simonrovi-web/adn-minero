@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · El Viaje del Cobre</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="El viaje del cobre chileno, de la mina al mundo: extracción, refinación a cátodo 99,99%, embarque en el puerto y su llegada a los productos que mueven la vida moderna." />
+  <link rel="canonical" href="https://simonrovi-web.github.io/adn-minero/adn-minero-viaje-cobre.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ADN Minero" />
+  <meta property="og:title" content="ADN Minero · El Viaje del Cobre" />
+  <meta property="og:description" content="De la mina al mundo: el viaje del cobre chileno hasta los productos que mueven la vida moderna." />
+  <meta property="og:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://simonrovi-web.github.io/adn-minero/adn-minero-viaje-cobre.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ADN Minero · El Viaje del Cobre" />
+  <meta name="twitter:description" content="De la mina al mundo: el viaje del cobre chileno." />
+  <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(207,155,111,0.14), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    h3{ margin:0; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .lbl{ font-size:10.5px; font-weight:800; fill:#f6ead9; } .lbl-sm{ font-size:9px; fill:#e6c79b; font-weight:700; }
+    .steps{ display:flex; gap:5px; margin-top:11px; }
+    .step{ flex:1; text-align:center; font-size:10px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#9a8b78; border:1px solid rgba(207,155,111,.14); animation:stepHi 16s infinite; }
+    .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(207,155,111,.16); color:#eabf86; font-size:9px; margin-bottom:4px; }
+    .step.s2{ animation-delay:4s } .step.s3{ animation-delay:8s } .step.s4{ animation-delay:12s }
+    @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#9a8b78; border-color:rgba(207,155,111,.14) } 5%,21%{ background:rgba(207,155,111,.18); color:#fbeede; border-color:rgba(207,155,111,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#9a8b78; border-color:rgba(207,155,111,.14) } }
+    .narr{ position:relative; min-height:38px; margin-top:9px; }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:narr 16s infinite; } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:4s } .nl.n3{ animation-delay:8s } .nl.n4{ animation-delay:12s }
+    @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    .tok{ animation:travel 16s ease-in-out infinite; }
+    @keyframes travel{ 0%,18%{ transform:translateX(0) } 28%,43%{ transform:translateX(86px) } 53%,68%{ transform:translateX(172px) } 78%,100%{ transform:translateX(256px) } }
+    .stn{ animation:stnPop 16s ease-in-out infinite; opacity:.5 } .stn.d2{ animation-delay:4s } .stn.d3{ animation-delay:8s } .stn.d4{ animation-delay:12s }
+    @keyframes stnPop{ 0%,3%{ opacity:.5 } 6%,22%{ opacity:1 } 26%,100%{ opacity:.5 } }
+    .fact{ display:flex; gap:11px; align-items:flex-start; padding:11px 0; border-bottom:1px solid rgba(196,168,148,.12); }
+    .fact:last-child{ border-bottom:none; } .fact .b{ font-size:15px; font-weight:800; color:#e8c9a6; min-width:74px; line-height:1.15; } .fact .t{ font-size:13.5px; line-height:1.5; color:#dacfc2; } .fact .t b{ color:#f4ece5; }
+    @media (prefers-reduced-motion:reduce){ .tok,.stn,.step,.nl{ animation:none !important } .tok{ transform:translateX(172px) } .stn{ opacity:1 } .nl{ opacity:1 } .narr{ display:none } }
+  </style>
+  <script src="adn-ui.js" defer></script>
+  <script src="adn-recorrido.js" defer></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","@id":"https://simonrovi-web.github.io/adn-minero/adn-minero-viaje-cobre.html#webpage","url":"https://simonrovi-web.github.io/adn-minero/adn-minero-viaje-cobre.html","name":"ADN Minero · El Viaje del Cobre","description":"El viaje del cobre chileno, de la mina al mundo: extracción, refinación a cátodo, embarque y llegada a los productos de la vida moderna.","isPartOf":{"@id":"https://simonrovi-web.github.io/adn-minero/#site"},"inLanguage":"es-CL","publisher":{"@id":"https://simonrovi-web.github.io/adn-minero/#org"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://simonrovi-web.github.io/adn-minero/"},{"@type":"ListItem","position":2,"name":"El Viaje del Cobre","item":"https://simonrovi-web.github.io/adn-minero/adn-minero-viaje-cobre.html"}]}}
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(207,155,111,.15);border:1px solid rgba(207,155,111,.34)"><i data-lucide="route" style="width:26px;height:26px;color:#cf9b6f"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#eabf86;font-weight:800">El Viaje del Cobre</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">De la mina chilena al mundo entero</p>
+      </div>
+    </header>
+
+    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">Cada cable, cada motor y cada panel solar del mundo puede llevar un pedacito de Chile. Este es el <b>viaje del cobre</b>, desde la roca en el desierto hasta tu vida diaria.</p>
+
+    <!-- ANIMACIÓN: EL VIAJE -->
+    <div class="glass rounded-2xl p-3.5 mt-4">
+      <svg class="viz" viewBox="0 0 340 172" role="img" aria-label="El cobre viaja de la mina a la planta donde se refina a cátodo, luego al puerto para embarcarse y llegar al mundo y sus productos">
+        <defs>
+          <linearGradient id="vBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#221a12"/><stop offset="1" stop-color="#14100c"/></linearGradient>
+          <linearGradient id="vMtn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6bf6a"/><stop offset="1" stop-color="#9c6636"/></linearGradient>
+          <linearGradient id="vSteel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a939c"/><stop offset="1" stop-color="#4a525a"/></linearGradient>
+          <linearGradient id="vShip" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9c6b2"/><stop offset="1" stop-color="#9c8a76"/></linearGradient>
+          <radialGradient id="vGlobe" cx="0.4" cy="0.35" r="0.75"><stop offset="0" stop-color="#6cc6b3"/><stop offset="1" stop-color="#2f7d70"/></radialGradient>
+          <radialGradient id="vTok" cx="0.4" cy="0.35" r="0.7"><stop offset="0" stop-color="#f4c98a"/><stop offset="1" stop-color="#b5734f"/></radialGradient>
+          <filter id="vSh" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.6" flood-color="#000" flood-opacity=".45"/></filter>
+        </defs>
+        <rect x="0" y="0" width="340" height="172" fill="url(#vBg)"/>
+        <!-- camino -->
+        <line x1="44" y1="120" x2="300" y2="120" stroke="#3a2f22" stroke-width="5" stroke-linecap="round"/>
+        <line x1="44" y1="120" x2="300" y2="120" stroke="#cf9b6f" stroke-width="2" stroke-dasharray="2 7" stroke-linecap="round" opacity=".6"/>
+
+        <!-- estación 1: la mina -->
+        <g class="stn"><circle cx="44" cy="100" r="26" fill="#cf9b6f" opacity=".1"/>
+          <g filter="url(#vSh)"><path d="M26 118 L44 84 L62 118 Z" fill="url(#vMtn)"/><path d="M44 84 L51 96 L45 97 L49 104 L44 100 L39 105 L43 96 L37 95 Z" fill="#fff6e8" opacity=".85"/><path d="M26 118 L44 84 L62 118 Z" fill="#000" opacity=".12"/></g>
+        </g>
+        <text class="lbl-sm" x="44" y="134" text-anchor="middle">mina</text>
+
+        <!-- estación 2: la planta (cátodo) -->
+        <g class="stn d2"><circle cx="130" cy="100" r="26" fill="#8a939c" opacity=".1"/>
+          <g filter="url(#vSh)"><rect x="114" y="98" width="32" height="20" rx="2" fill="url(#vSteel)"/><rect x="118" y="88" width="7" height="10" fill="url(#vSteel)"/><rect x="134" y="92" width="7" height="6" fill="url(#vSteel)"/><rect x="126" y="90" width="12" height="16" rx="1.5" fill="#e0975f"/><rect x="126" y="90" width="12" height="3" fill="#f4c98a"/></g>
+        </g>
+        <text class="lbl-sm" x="130" y="134" text-anchor="middle">planta · cátodo</text>
+
+        <!-- estación 3: el puerto -->
+        <g class="stn d3"><circle cx="216" cy="100" r="26" fill="#7fb0d9" opacity=".1"/>
+          <path d="M194 116 q22 8 44 0" fill="none" stroke="#4a8aa0" stroke-width="2" opacity=".6"/>
+          <g filter="url(#vSh)"><path d="M200 104 L232 104 L228 114 L204 114 Z" fill="url(#vShip)"/><rect x="210" y="96 " width="12" height="8" rx="1" fill="#c0ad98"/><rect x="222" y="98" width="3" height="6" fill="#8a7860"/><rect x="204" y="106" width="24" height="3" fill="#e0975f"/></g>
+        </g>
+        <text class="lbl-sm" x="216" y="134" text-anchor="middle">puerto</text>
+
+        <!-- estación 4: el mundo -->
+        <g class="stn d4"><circle cx="300" cy="100" r="26" fill="#5fc7b3" opacity=".12"/>
+          <g filter="url(#vSh)"><circle cx="300" cy="102" r="18" fill="url(#vGlobe)"/>
+            <path d="M283 96 h34 M285 108 h30 M300 84 v36" stroke="#eaf7f3" stroke-width="1" opacity=".5" fill="none"/>
+            <path d="M300 84 a18 12 0 0 0 0 36 a18 12 0 0 0 0 -36" fill="none" stroke="#eaf7f3" stroke-width="1" opacity=".5"/></g>
+          <path d="M312 88 l-5 8 h4 l-3 7 8 -10 h-4 l3 -5 z" fill="#f4c98a"/>
+        </g>
+        <text class="lbl-sm" x="300" y="134" text-anchor="middle">el mundo</text>
+
+        <!-- lingote de cobre que viaja -->
+        <g class="tok" filter="url(#vSh)"><g transform="translate(44,120)">
+          <circle cx="0" cy="0" r="8" fill="url(#vTok)"/>
+          <ellipse cx="-2.5" cy="-2.5" rx="3" ry="2" fill="#fff" opacity=".35"/>
+        </g></g>
+
+        <text class="lbl" x="170" y="16" text-anchor="middle" style="fill:#eabf86">Cu</text>
+        <text class="lbl-sm" x="170" y="30" text-anchor="middle" style="fill:#c7b79f">cobre chileno</text>
+      </svg>
+      <div class="steps">
+        <div class="step s1"><span class="n">1</span>La mina</div>
+        <div class="step s2"><span class="n">2</span>La planta</div>
+        <div class="step s3"><span class="n">3</span>El puerto</div>
+        <div class="step s4"><span class="n">4</span>El mundo</div>
+      </div>
+      <div class="narr">
+        <p class="nl n1">Todo parte en la <b>mina</b>: se extrae la roca con cobre del desierto.</p>
+        <p class="nl n2">En la <b>planta</b> se funde y refina hasta el <b>cátodo 99,99%</b> de pureza.</p>
+        <p class="nl n3">Viaja al <b>puerto</b> y se embarca hacia sus compradores.</p>
+        <p class="nl n4">Llega al <b>mundo</b>: cables, autos eléctricos, redes y paneles solares.</p>
+      </div>
+    </div>
+
+    <!-- POR QUÉ IMPORTA -->
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="zap" style="width:17px;height:17px;color:#e0a35a"></i><h3 class="font-bold text-[13.5px]">Por qué el mundo lo necesita</h3></div>
+      <div class="mt-1">
+        <div class="fact"><div class="b">~1 de 4</div><div class="t">kilos de cobre del mundo salen de Chile: somos, por lejos, el <b>mayor productor</b> del planeta.</div></div>
+        <div class="fact"><div class="b">Conduce</div><div class="t">El cobre es el <b>mejor conductor eléctrico</b> asequible: por eso está en casi todo lo que funciona con electricidad.</div></div>
+        <div class="fact"><div class="b">Transición</div><div class="t">Más <b>autos eléctricos, redes y energías limpias</b> significan más cobre. La descarbonización se mueve con cobre.</div></div>
+      </div>
+      <p class="text-[11px] text-stone-500 mt-2">Cifras referenciales de divulgación. Fuentes: USGS, COCHILCO, International Copper Association.</p>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Panorama de divulgación. · <a href="adn-minero-proceso.html" style="color:#e8c9a6">Del mineral al cátodo</a> · <a href="adn-minero-geopolitica.html" style="color:#e8c9a6">Quién lo compra</a> · <a href="adn-minero-cobre-transicion.html" style="color:#e8c9a6">Cobre y energía</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+<script>window.lucide&&lucide.createIcons();</script>
+</body>
+</html>
