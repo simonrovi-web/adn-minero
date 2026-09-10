@@ -57,7 +57,7 @@
     .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#d8cfc3; opacity:0; animation:narr 16s infinite; } .nl b{ color:#f4ece5; }
     .nl.n2{ animation-delay:4s } .nl.n3{ animation-delay:8s } .nl.n4{ animation-delay:12s }
     @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
-    #sunG{ animation:sunG 3.2s ease-in-out infinite; } @keyframes sunG{ 0%,100%{ r:16px; opacity:.32 } 50%{ r:21px; opacity:.6 } }
+    #sunG{ transform-box:fill-box; transform-origin:center; animation:sunG 3.6s ease-in-out infinite; } @keyframes sunG{ 0%,100%{ opacity:.85; transform:scale(1) } 50%{ opacity:1; transform:scale(1.05) } }
     .brine{ animation:brine 2.6s linear infinite; } .brine.b{ animation-delay:.9s } .brine.c{ animation-delay:1.7s }
     @keyframes brine{ 0%{ transform:translateY(0); opacity:0 } 12%{ opacity:1 } 88%{ opacity:1 } 100%{ transform:translateY(-92px); opacity:0 } }
     .water{ animation:evap 5s ease-in-out infinite; } .water.w2{ animation-delay:.6s } .water.w3{ animation-delay:1.2s }
@@ -106,12 +106,23 @@
           <radialGradient id="lVig" cx="0.5" cy="0.45" r="0.72"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></radialGradient>
           <filter id="lSoft" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.4"/></filter>
           <filter id="lSun" x="-90%" y="-90%" width="280%" height="280%"><feDropShadow dx="0" dy="0" stdDeviation="3.5" flood-color="#f0d79a" flood-opacity="0.85"/></filter>
+          <radialGradient id="sunGL" cx="0.42" cy="0.38" r="0.6"><stop offset="0" stop-color="#ffe6a6"/><stop offset="1" stop-color="#dfb45f"/></radialGradient>
+          <linearGradient id="mountL" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a5866"/><stop offset="1" stop-color="#2e3d44"/></linearGradient>
         </defs>
         <rect x="0" y="0" width="400" height="98" fill="url(#skyL)"/>
+        <!-- cordillera de fondo + neblina -->
+        <path d="M0 96 L58 52 L104 80 L168 44 L232 78 L300 50 L360 78 L400 58 L400 96 Z" fill="url(#mountL)"/>
+        <path d="M168 44 L188 62 L150 66 Z" fill="#eef2f5" opacity=".5"/><path d="M300 50 L318 66 L284 68 Z" fill="#eef2f5" opacity=".45"/>
+        <rect x="0" y="86" width="400" height="16" fill="#2a3b3f" opacity=".45"/>
         <rect x="0" y="96" width="400" height="114" fill="url(#salarL)"/>
+        <rect x="0" y="96" width="400" height="14" fill="#fff" opacity=".05"/>
         <rect x="0" y="0" width="400" height="210" fill="url(#lVig)"/>
-        <circle id="sunG" cx="50" cy="40" r="16" fill="#e8c98a"/>
-        <circle cx="50" cy="40" r="10" fill="#f0d79a" filter="url(#lSun)"/>
+        <!-- sol ilustrado -->
+        <g id="sunG" filter="url(#lSun)">
+          <g stroke="#e6c47f" stroke-width="2" stroke-linecap="round" opacity=".8"><line x1="50" y1="14" x2="50" y2="20"/><line x1="50" y1="60" x2="50" y2="66"/><line x1="24" y1="40" x2="30" y2="40"/><line x1="70" y1="40" x2="76" y2="40"/><line x1="32" y1="22" x2="36" y2="26"/><line x1="64" y1="54" x2="68" y2="58"/><line x1="68" y1="22" x2="64" y2="26"/><line x1="36" y1="54" x2="32" y2="58"/></g>
+          <circle cx="50" cy="40" r="15" fill="url(#sunGL)"/>
+          <ellipse cx="45" cy="35" rx="5" ry="3.5" fill="#fff" opacity=".22"/>
+        </g>
         <!-- pozo / bomba -->
         <rect x="64" y="96" width="9" height="106" fill="#0f0a07"/>
         <rect x="56" y="88" width="25" height="10" rx="2" fill="#c9b7a5" filter="url(#lSoft)"/>
@@ -122,6 +133,7 @@
         <rect class="water"    x="109" y="150" width="68" height="24" rx="2" fill="#2f9fb0"/>
         <rect class="water w2" x="187" y="150" width="68" height="24" rx="2" fill="#5fb87a"/>
         <rect class="water w3" x="265" y="150" width="68" height="24" rx="2" fill="#d3bd4f"/>
+        <g opacity=".35"><rect x="112" y="152" width="62" height="2.5" rx="1.2" fill="#fff"/><rect x="190" y="152" width="62" height="2.5" rx="1.2" fill="#fff"/><rect x="268" y="152" width="62" height="2.5" rx="1.2" fill="#fff"/></g>
         <g stroke="#bcd0d6" stroke-width="2" stroke-linecap="round" fill="none" opacity=".6"><line class="vapor" x1="143" y1="148" x2="143" y2="140"/><line class="vapor v2" x1="221" y1="148" x2="221" y2="140"/><line class="vapor v3" x1="299" y1="148" x2="299" y2="140"/></g>
         <!-- batería -->
         <g id="batt" transform="translate(354,148)"><rect x="0" y="0" width="24" height="28" rx="3" fill="none" stroke="#7fd4a2" stroke-width="2"/><rect x="8" y="-4" width="8" height="4" rx="1" fill="#7fd4a2"/><path d="M13,5 l-5,11 l4,0 l-3,8 l8,-13 l-4,0 z" fill="#7fd4a2"/></g>
