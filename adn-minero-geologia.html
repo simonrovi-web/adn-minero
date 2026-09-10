@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · ¿Cómo se Formó el Cobre?</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="La geología del cobre de Chile: cómo la subducción de placas y los Andes crearon los pórfidos cupríferos, por qué el país es tan rico en cobre y por qué es un recurso no renovable." />
+  <link rel="canonical" href="https://simonrovi-web.github.io/adn-minero/adn-minero-geologia.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ADN Minero" />
+  <meta property="og:title" content="ADN Minero · ¿Cómo se Formó el Cobre?" />
+  <meta property="og:description" content="Cómo la subducción y los Andes crearon el cobre de Chile: la geología de los pórfidos cupríferos." />
+  <meta property="og:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://simonrovi-web.github.io/adn-minero/adn-minero-geologia.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ADN Minero · ¿Cómo se Formó el Cobre?" />
+  <meta name="twitter:description" content="La geología detrás del cobre de Chile." />
+  <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(207,155,111,0.14), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    h3{ margin:0; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .lbl{ font-size:10px; font-weight:800; fill:#f6ead9; } .lbl-sm{ font-size:9px; fill:#e6c79b; font-weight:700; }
+    .steps{ display:flex; gap:5px; margin-top:11px; }
+    .step{ flex:1; text-align:center; font-size:10px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#9a8b78; border:1px solid rgba(207,155,111,.14); animation:stepHi 16s infinite; }
+    .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(207,155,111,.16); color:#eabf86; font-size:9px; margin-bottom:4px; }
+    .step.s2{ animation-delay:4s } .step.s3{ animation-delay:8s } .step.s4{ animation-delay:12s }
+    @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#9a8b78; border-color:rgba(207,155,111,.14) } 5%,21%{ background:rgba(207,155,111,.18); color:#fbeede; border-color:rgba(207,155,111,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#9a8b78; border-color:rgba(207,155,111,.14) } }
+    .narr{ position:relative; min-height:38px; margin-top:9px; }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:narr 16s infinite; } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:4s } .nl.n3{ animation-delay:8s } .nl.n4{ animation-delay:12s }
+    @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    .magma{ transform-box:fill-box; transform-origin:center; animation:magmaP 3.4s ease-in-out infinite }
+    @keyframes magmaP{ 0%,100%{ opacity:.82; transform:scale(1) } 50%{ opacity:1; transform:scale(1.05) } }
+    .plume{ opacity:0; animation:appearD 16s ease-in-out infinite }
+    .cu{ opacity:0; animation:appearD 16s ease-in-out infinite; animation-delay:8s }
+    .pit{ opacity:0; animation:appearD 16s ease-in-out infinite; animation-delay:12s }
+    .plume{ animation-delay:4s }
+    @keyframes appearD{ 0%,2%{opacity:0} 6%,96%{opacity:1} 100%{opacity:.85} }
+    .fact{ display:flex; gap:11px; align-items:flex-start; padding:11px 0; border-bottom:1px solid rgba(196,168,148,.12); }
+    .fact:last-child{ border-bottom:none; } .fact .b{ font-size:14px; font-weight:800; color:#e8c9a6; min-width:74px; line-height:1.15; } .fact .t{ font-size:13.5px; line-height:1.5; color:#dacfc2; } .fact .t b{ color:#f4ece5; }
+    @media (prefers-reduced-motion:reduce){ .magma,.plume,.cu,.pit,.step,.nl{ animation:none !important } .plume,.cu,.pit{ opacity:1 } .nl{ opacity:1 } .narr{ display:none } }
+  </style>
+  <script src="adn-ui.js" defer></script>
+  <script src="adn-recorrido.js" defer></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","@id":"https://simonrovi-web.github.io/adn-minero/adn-minero-geologia.html#webpage","url":"https://simonrovi-web.github.io/adn-minero/adn-minero-geologia.html","name":"ADN Minero · ¿Cómo se Formó el Cobre?","description":"La geología del cobre de Chile: subducción, magma y pórfidos cupríferos. Por qué el país es tan rico en cobre.","isPartOf":{"@id":"https://simonrovi-web.github.io/adn-minero/#site"},"inLanguage":"es-CL","publisher":{"@id":"https://simonrovi-web.github.io/adn-minero/#org"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://simonrovi-web.github.io/adn-minero/"},{"@type":"ListItem","position":2,"name":"¿Cómo se Formó el Cobre?","item":"https://simonrovi-web.github.io/adn-minero/adn-minero-geologia.html"}]}}
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(207,155,111,.15);border:1px solid rgba(207,155,111,.34)"><i data-lucide="layers" style="width:26px;height:26px;color:#cf9b6f"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#eabf86;font-weight:800">¿Cómo se Formó el Cobre?</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Por qué Chile es tan rico en cobre</p>
+      </div>
+    </header>
+
+    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">El cobre de Chile no llegó por casualidad: lo creó la <b>Tierra</b> a lo largo de <b>millones de años</b>, gracias a los Andes y al choque de placas bajo el Pacífico. Así se formó.</p>
+
+    <!-- ANIMACIÓN: corte de la Tierra -->
+    <div class="glass rounded-2xl p-3.5 mt-4">
+      <svg class="viz" viewBox="0 0 340 200" role="img" aria-label="Corte de la Tierra: la placa del Pacífico se hunde bajo Sudamérica, el magma sube y libera fluidos que depositan cobre formando un pórfido, que la erosión deja cerca de la superficie">
+        <defs>
+          <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#263444"/><stop offset="1" stop-color="#33434c"/></linearGradient>
+          <linearGradient id="gCrust" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a4230"/><stop offset="1" stop-color="#2a1d14"/></linearGradient>
+          <linearGradient id="gMantle" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2a1e"/><stop offset="1" stop-color="#20140d"/></linearGradient>
+          <radialGradient id="gMagma" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffd66a"/><stop offset=".5" stop-color="#f0803a"/><stop offset="1" stop-color="#c0331a"/></radialGradient>
+          <linearGradient id="gAndes" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6a7684"/><stop offset="1" stop-color="#3c4650"/></linearGradient>
+          <radialGradient id="gCu" cx="0.4" cy="0.35" r="0.7"><stop offset="0" stop-color="#8fe0c2"/><stop offset="1" stop-color="#2f9d86"/></radialGradient>
+          <filter id="gGlow" x="-70%" y="-70%" width="240%" height="240%"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#f0803a" flood-opacity=".7"/></filter>
+        </defs>
+        <rect x="0" y="0" width="340" height="64" fill="url(#gSky)"/>
+        <rect x="0" y="60" width="340" height="140" fill="url(#gMantle)"/>
+        <!-- océano (izq) -->
+        <rect x="0" y="52" width="96" height="12" fill="#2f6f8a"/>
+        <path d="M0 64 q12 -4 24 0 t24 0 t24 0 t24 0" fill="none" stroke="#6fb0c0" stroke-width="1.5" opacity=".5"/>
+        <text class="lbl-sm" x="34" y="46" text-anchor="middle" style="fill:#a9c9d4">Pacífico</text>
+        <!-- corteza continental -->
+        <path d="M96 64 L340 64 L340 96 L96 96 Z" fill="url(#gCrust)"/>
+        <g stroke="#3a2a1e" stroke-width="1" opacity=".4"><line x1="96" y1="80" x2="340" y2="80"/></g>
+        <!-- placa que subduce -->
+        <path d="M0 64 L96 64 L200 150 L188 162 L84 76 L0 76 Z" fill="#46586a" opacity=".85"/>
+        <path d="M150 120 l10 -3 l-2 10 z" fill="#8aa0b0"/>
+        <text class="lbl-sm" x="120" y="112" style="fill:#9fb4c4">placa que se hunde</text>
+        <!-- Andes -->
+        <path d="M232 64 L262 32 L292 64 Z" fill="url(#gAndes)"/><path d="M262 32 L270 44 L264 45 L268 52 L262 48 L256 53 L260 44 L254 43 Z" fill="#eef2f5" opacity=".8"/>
+        <text class="lbl-sm" x="262" y="26" text-anchor="middle" style="fill:#dbe6ee">Andes</text>
+        <!-- cámara de magma -->
+        <g class="magma" filter="url(#gGlow)"><ellipse cx="214" cy="150" rx="40" ry="22" fill="url(#gMagma)"/></g>
+        <text class="lbl-sm" x="214" y="184" text-anchor="middle" style="fill:#f0a878">magma</text>
+        <!-- fluidos (plumas) -->
+        <g class="plume" stroke="#f0a860" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".8"><path d="M206 130 q-6 -18 2 -34"/><path d="M222 130 q6 -16 -1 -32"/></g>
+        <!-- cobre depositado (pórfido) -->
+        <g class="cu" fill="url(#gCu)"><circle cx="206" cy="90" r="3"/><circle cx="214" cy="86" r="3.4"/><circle cx="222" cy="91" r="3"/><circle cx="210" cy="98" r="2.6"/><circle cx="219" cy="98" r="2.8"/><circle cx="214" cy="94" r="2.4"/></g>
+        <text class="cu lbl-sm" x="248" y="90" style="fill:#8fe0c2">cobre (pórfido)</text>
+        <!-- rajo (erosión deja el yacimiento arriba) -->
+        <g class="pit"><path d="M196 64 L232 64 L224 82 L204 82 Z" fill="none" stroke="#f0d090" stroke-width="2" stroke-dasharray="3 3"/><path d="M214 56 l-4 8 h8 z" fill="#f0d090"/></g>
+      </svg>
+      <div class="steps">
+        <div class="step s1"><span class="n">1</span>Subducción</div>
+        <div class="step s2"><span class="n">2</span>Magma y fluidos</div>
+        <div class="step s3"><span class="n">3</span>Se deposita</div>
+        <div class="step s4"><span class="n">4</span>El yacimiento</div>
+      </div>
+      <div class="narr">
+        <p class="nl n1">La placa del <b>Pacífico se hunde</b> bajo Sudamérica y levanta los <b>Andes</b>.</p>
+        <p class="nl n2">En profundidad, el <b>magma sube</b> y libera <b>fluidos calientes</b> cargados de metales.</p>
+        <p class="nl n3">Al enfriarse, esos fluidos <b>depositan el cobre</b> en la roca: nace un <b>pórfido cuprífero</b>.</p>
+        <p class="nl n4">Millones de años de <b>erosión</b> lo dejan cerca de la superficie: el <b>yacimiento</b> que hoy se explota.</p>
+      </div>
+    </div>
+
+    <!-- POR QUÉ CHILE -->
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="gem" style="width:17px;height:17px;color:#cf9b6f"></i><h3 class="font-bold text-[13.5px]">Por qué Chile tiene tanto</h3></div>
+      <div class="mt-1">
+        <div class="fact"><div class="b">Los Andes</div><div class="t">La <b>subducción</b> frente a Chile fue una “fábrica” de magmas y fluidos: creó una de las mayores concentraciones de cobre del planeta.</div></div>
+        <div class="fact"><div class="b">Pórfidos</div><div class="t">Los <b>pórfidos cupríferos</b> chilenos están entre los más grandes del mundo: Chuquicamata, Escondida y El Teniente nacieron así.</div></div>
+        <div class="fact"><div class="b">Millones</div><div class="t">El cobre tardó <b>millones de años</b> en formarse: es un <b>recurso no renovable</b>, por eso importa aprovecharlo bien.</div></div>
+      </div>
+      <p class="text-[11px] text-stone-500 mt-2">Explicación geológica de divulgación (simplificada).</p>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Panorama de divulgación. · <a href="adn-minero-tipos.html" style="color:#e8c9a6">Tipos de minería</a> · <a href="adn-minero-proceso.html" style="color:#e8c9a6">Del mineral al cátodo</a> · <a href="adn-minero-viaje-cobre.html" style="color:#e8c9a6">El viaje del cobre</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+<script>window.lucide&&lucide.createIcons();</script>
+</body>
+</html>
