@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · ¿Cuánto Rinde tu Turno?</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="Según tu sistema de turno (7x7, 4x3, 14x14…), calcula tus días en faena y en casa al año, los ciclos anuales y, con tu líquido, tu ingreso anual y lo que rinde cada día trabajado." />
+  <link rel="canonical" href="https://simonrovi-web.github.io/adn-minero/adn-minero-turno-ingreso.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ADN Minero" />
+  <meta property="og:title" content="ADN Minero · ¿Cuánto Rinde tu Turno?" />
+  <meta property="og:description" content="Días en faena y en casa al año según tu turno, y cuánto rinde cada día trabajado." />
+  <meta property="og:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://simonrovi-web.github.io/adn-minero/adn-minero-turno-ingreso.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ADN Minero · ¿Cuánto Rinde tu Turno?" />
+  <meta name="twitter:description" content="Días en faena y en casa al año según tu turno." />
+  <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(224,163,90,0.13), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    h3{ margin:0; }
+    .shift{ font-size:15px; font-weight:800; padding:10px 6px; border-radius:12px; cursor:pointer; color:#c9b7a5; background:rgba(48,41,35,.5); border:1px solid rgba(196,168,148,.18); text-align:center; transition:all .15s; }
+    .shift small{ display:block; font-size:9.5px; font-weight:600; color:#9c8f83; margin-top:2px; }
+    .shift.on{ color:#2a1c0f; background:linear-gradient(135deg,#f0d090,#e0a35a); border-color:rgba(240,208,144,.6); }
+    .shift.on small{ color:#5a3f1a; }
+    .inp{ width:100%; margin-top:6px; background:rgba(20,16,12,.7); border:1px solid rgba(196,168,148,.22); border-radius:11px; padding:11px 13px; color:#f4ece5; font-size:16px; font-weight:700; font-variant-numeric:tabular-nums; }
+    .inp:focus{ outline:none; border-color:#e0a35a; box-shadow:0 0 0 3px rgba(224,163,90,.15); }
+    .seg{ display:flex; height:22px; border-radius:8px; overflow:hidden; border:1px solid rgba(196,168,148,.16); }
+    .seg i{ height:100%; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:800; color:#1a1206; }
+    .res{ display:flex; justify-content:space-between; align-items:baseline; padding:9px 0; border-bottom:1px solid rgba(196,168,148,.1); font-size:14px; }
+    .res:last-child{ border-bottom:0; } .res .l{ color:#c9bcae; } .res .v{ font-weight:800; font-variant-numeric:tabular-nums; }
+  </style>
+  <script src="adn-ui.js" defer></script>
+  <script src="adn-recorrido.js" defer></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","@id":"https://simonrovi-web.github.io/adn-minero/adn-minero-turno-ingreso.html#app","name":"ADN Minero · ¿Cuánto Rinde tu Turno?","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","url":"https://simonrovi-web.github.io/adn-minero/adn-minero-turno-ingreso.html","description":"Calcula días en faena y en casa al año según tu turno, y el ingreso por día trabajado.","isPartOf":{"@id":"https://simonrovi-web.github.io/adn-minero/#site"},"offers":{"@type":"Offer","price":"0","priceCurrency":"CLP"}}
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(224,163,90,.15);border:1px solid rgba(224,163,90,.34)"><i data-lucide="calendar-clock" style="width:26px;height:26px;color:#e0a35a"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#e6c98f;font-weight:800">¿Cuánto Rinde tu Turno?</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Días, casa y plata al año</p>
+      </div>
+    </header>
+
+    <div class="glass rounded-2xl p-3.5 mt-4" style="border-color:rgba(224,169,79,.3);background:rgba(224,169,79,.06)">
+      <p class="text-[12px] text-stone-300 leading-relaxed">Tu <b>sistema de turno</b> decide cuánto tiempo pasas en faena y en casa. Elige el tuyo y, si quieres, agrega tu líquido para ver <b>cuánto rinde cada día trabajado</b>. Estimación referencial.</p>
+    </div>
+
+    <!-- Turno -->
+    <div class="glass rounded-2xl p-4 mt-4">
+      <h3 class="font-bold text-[14px] mb-3">Tu sistema de turno</h3>
+      <div id="shifts" class="grid grid-cols-3 gap-2"></div>
+      <label class="text-[12px] text-stone-400 font-semibold block mt-4">Tu sueldo líquido del mes <span class="text-stone-500 font-normal">(opcional)</span></label>
+      <input class="inp" id="liq" inputmode="numeric" placeholder="Ej: 1.200.000" />
+      <p class="text-[11px] text-stone-500 mt-2">Estímalo en el <a href="adn-minero-sueldo-calc.html" style="color:#e0a35a;font-weight:700">Simulador de Sueldo Líquido</a>.</p>
+    </div>
+
+    <!-- Resultado -->
+    <div class="glass rounded-2xl p-4 mt-3" style="border-color:rgba(224,163,90,.3)">
+      <div class="flex items-center gap-2 mb-2.5"><i data-lucide="calendar-days" style="width:17px;height:17px;color:#e0a35a"></i><h3 class="font-bold text-[13.5px]">Tu año, en números</h3></div>
+      <p class="text-[12px] text-stone-400 mb-1.5" id="cicloTxt">—</p>
+      <div class="seg mb-1"><i id="segF" style="background:#e0a35a;width:50%">faena</i><i id="segC" style="background:#7fb0d9;width:50%">casa</i></div>
+      <div class="flex justify-between text-[11px] mb-3"><span style="color:#e6c98f" id="lblF">— días en faena</span><span style="color:#a9d3dc" id="lblC">— días en casa</span></div>
+      <div class="res"><span class="l">Ciclos al año</span><span class="v" id="rCiclos" style="color:#f4ece5">—</span></div>
+      <div class="res"><span class="l">Días en faena / año</span><span class="v" id="rFaena" style="color:#e6c98f">—</span></div>
+      <div class="res"><span class="l">Días en casa / año</span><span class="v" id="rCasa" style="color:#a9d3dc">—</span></div>
+      <div id="moneyBox"></div>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Estimación referencial de divulgación (año de 365 días; no descuenta feriados legales ni traslados). El sueldo mensual no cambia con los días; “por día en faena” es solo una referencia. · <a href="adn-minero-turnos.html" style="color:#e8c9a6">Calculadora de turnos</a> · <a href="adn-minero-sueldos.html" style="color:#e8c9a6">Sueldos</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+
+<script>
+  const $=id=>document.getElementById(id);
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const money=n=>'$'+Math.round(n).toLocaleString('es-CL');
+  const num=s=>{ const v=parseFloat(String(s==null?'':s).replace(/[^\d.,-]/g,'').replace(/\./g,'').replace(',','.')); return isFinite(v)?v:0; };
+  const SHIFTS=[
+    {k:'7x7',   t:7,  d:7,  lab:'7×7'},
+    {k:'4x3',   t:4,  d:3,  lab:'4×3'},
+    {k:'14x14', t:14, d:14, lab:'14×14'},
+    {k:'10x10', t:10, d:10, lab:'10×10'},
+    {k:'5x2',   t:5,  d:2,  lab:'5×2'},
+    {k:'20x10', t:20, d:10, lab:'20×10'}
+  ];
+  let sel='7x7';
+  const KEY='adn_turnoing';
+  function load(){ try{ const s=JSON.parse(localStorage.getItem(KEY)||'{}'); if(s.sel) sel=s.sel; if(s.liq!=null) $('liq').value=s.liq; }catch(e){} }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify({sel, liq:$('liq').value})); }catch(e){} }
+
+  function renderShifts(){
+    $('shifts').innerHTML=SHIFTS.map(s=>`<div class="shift ${s.k===sel?'on':''}" data-k="${s.k}">${s.lab}<small>${s.t} trab · ${s.d} desc</small></div>`).join('');
+  }
+  function calc(){
+    const s=SHIFTS.find(x=>x.k===sel)||SHIFTS[0];
+    const ciclo=s.t+s.d;
+    const ciclos=365/ciclo;
+    const faena=Math.round(ciclos*s.t);
+    const casa=365-faena;
+    const pF=Math.round(faena/365*100);
+    $('cicloTxt').innerHTML=`Ciclo de <b>${ciclo} días</b> (${s.t} en faena + ${s.d} en casa) · <b>${pF}%</b> del año en faena`;
+    $('segF').style.width=pF+'%'; $('segC').style.width=(100-pF)+'%';
+    $('segF').textContent=pF>=18?'faena':''; $('segC').textContent=(100-pF)>=18?'casa':'';
+    $('lblF').textContent=faena+' días en faena'; $('lblC').textContent=casa+' días en casa';
+    $('rCiclos').textContent=ciclos.toFixed(1); $('rFaena').textContent=faena+' días'; $('rCasa').textContent=casa+' días';
+    const liq=num($('liq').value);
+    if(liq>0){
+      const anual=liq*12; const porDia=anual/faena;
+      $('moneyBox').innerHTML=`<div class="res"><span class="l">Ingreso líquido al año</span><span class="v" style="color:#a7d18a">${money(anual)}</span></div>`+
+        `<div class="mt-3 rounded-xl p-3.5" style="background:rgba(167,209,138,.1);border:1px solid rgba(167,209,138,.3)"><div class="flex items-baseline justify-between"><span class="text-[13px] font-bold text-stone-200">Rinde por día en faena</span><span class="text-[22px] font-extrabold tabnum" style="color:#bfe0a6">${money(porDia)}</span></div><p class="text-[11.5px] text-stone-400 mt-1.5">Es una referencia: tu sueldo mensual no cambia por los días; sirve para comparar turnos.</p></div>`;
+    } else { $('moneyBox').innerHTML='<p class="text-[12px] text-stone-500 mt-3">Agrega tu líquido para ver tu ingreso anual y lo que rinde cada día en faena.</p>'; }
+    save();
+  }
+  $('shifts').addEventListener('click', e=>{ const b=e.target.closest('.shift'); if(!b) return; sel=b.dataset.k; renderShifts(); calc(); });
+  $('liq').addEventListener('input', calc);
+  load(); renderShifts(); calc();
+  window.lucide && lucide.createIcons();
+</script>
+</body>
+</html>

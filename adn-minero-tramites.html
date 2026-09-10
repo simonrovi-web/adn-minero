@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · Trámites y Licencias por Rol</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="Qué cursos, licencias y exámenes suele pedir cada rol en minería: ayudante, operador de equipos, conductor, mantenedor, eléctrico, prevención. Guía referencial; cada empresa define lo suyo." />
+  <link rel="canonical" href="https://simonrovi-web.github.io/adn-minero/adn-minero-tramites.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ADN Minero" />
+  <meta property="og:title" content="ADN Minero · Trámites y Licencias por Rol" />
+  <meta property="og:description" content="Qué cursos, licencias y exámenes pide cada rol en minería. Guía referencial por cargo." />
+  <meta property="og:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://simonrovi-web.github.io/adn-minero/adn-minero-tramites.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ADN Minero · Trámites y Licencias por Rol" />
+  <meta name="twitter:description" content="Qué cursos, licencias y exámenes pide cada rol en minería." />
+  <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(103,193,214,0.12), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    .topic{ cursor:pointer; } .topic .body{ display:none; } .topic.open .body{ display:block; }
+    .topic.open .chev{ transform:rotate(90deg); } .chev{ transition:transform .2s; }
+    .tip{ display:flex; gap:9px; align-items:flex-start; font-size:13.5px; line-height:1.5; color:#e4d7c8; margin-top:8px; }
+    .tip b{ color:#f6ecdf; } h3{ margin:0; }
+  </style>
+  <script src="adn-ui.js" defer></script>
+  <script src="adn-recorrido.js" defer></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","@id":"https://simonrovi-web.github.io/adn-minero/adn-minero-tramites.html#webpage","url":"https://simonrovi-web.github.io/adn-minero/adn-minero-tramites.html","name":"ADN Minero · Trámites y Licencias por Rol","description":"Qué cursos, licencias y exámenes suele pedir cada rol en minería. Guía referencial.","isPartOf":{"@id":"https://simonrovi-web.github.io/adn-minero/#site"},"inLanguage":"es-CL","publisher":{"@id":"https://simonrovi-web.github.io/adn-minero/#org"}}
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(103,193,214,.15);border:1px solid rgba(103,193,214,.34)"><i data-lucide="badge-check" style="width:26px;height:26px;color:#67c1d6"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#a9d3dc;font-weight:800">Trámites y Licencias por Rol</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Qué te piden según el cargo</p>
+      </div>
+    </header>
+
+    <div class="glass rounded-2xl p-3.5 mt-4" style="border-color:rgba(224,169,79,.3);background:rgba(224,169,79,.06)">
+      <p class="text-[12px] text-stone-300 leading-relaxed"><b style="color:#e6c079">⚠️ Guía referencial.</b> Cada <b>empresa y faena</b> define los requisitos exactos, y cambian según la operación y la normativa vigente. Toca un rol para ver lo que <b>suele</b> pedirse. No es asesoría ni un listado oficial.</p>
+    </div>
+
+    <!-- comunes -->
+    <div class="glass rounded-2xl p-4 mt-4" style="border-color:rgba(167,209,138,.28)">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="list-checks" style="width:17px;height:17px;color:#a7d18a"></i><h3 class="font-bold text-[13.5px]">Casi siempre te pedirán</h3></div>
+      <p class="text-[12.5px] text-stone-300 leading-relaxed">Sea cual sea el rol: <b>examen preocupacional</b> (y de <b>altura</b> si la faena es sobre ~3.000 m), <b>inducción “hombre/mujer nuevo”</b>, uso de <b>EPP</b>, y los <b>cursos internos</b> que exija la empresa. Guarda todos tus certificados en <a href="adn-minero-documentos.html" style="color:#a7d18a;font-weight:700">Mis Documentos</a>.</p>
+    </div>
+
+    <p class="text-[12px] font-bold text-stone-400 mt-5 mb-2 px-1" style="letter-spacing:.06em;text-transform:uppercase">Elige tu rol</p>
+    <div id="topics" class="grid gap-2.5"></div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Guía de divulgación; los requisitos los define cada empresa y la normativa. La licencia de conducir se tramita en tu <b>municipalidad</b>; los cursos, en <b>OTEC/CFT/liceos</b>; la licencia eléctrica, en la <b>SEC</b>. · <a href="adn-minero-ruta.html" style="color:#e8c9a6">De cero a la faena</a> · <a href="adn-minero-educacion.html" style="color:#e8c9a6">Dónde estudiar</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+
+<script>
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const ROLES=[
+    { ic:'hard-hat', c:'#a7d18a', t:'Ayudante / servicios generales', s:'La puerta de entrada, sin experiencia',
+      tips:[
+        ['check','<b>Sin experiencia previa</b> en muchos casos: es la forma típica de partir, a menudo por empresas contratistas.'],
+        ['heart-pulse','<b>Examen preocupacional</b> y de altura si la faena lo requiere.'],
+        ['shield','<b>Inducción</b> y <b>EPP</b>. Cursos básicos de seguridad según la empresa.']
+      ]},
+    { ic:'truck', c:'#e0a35a', t:'Operador de equipo pesado', s:'CAEX, cargador, perforadora',
+      tips:[
+        ['badge-check','<b>Licencia de conducir</b> según el equipo (clase profesional; algunos equipos exigen clase D para maquinaria).'],
+        ['graduation-cap','<b>Curso de operación</b> del equipo específico (muchas empresas capacitan al ingresar).'],
+        ['heart-pulse','Examen preocupacional y <b>de altura</b> si aplica; a veces examen <b>psicosensotécnico</b>.']
+      ]},
+    { ic:'bus', c:'#7fb0d9', t:'Conductor / transporte', s:'Buses de personal o carga',
+      tips:[
+        ['badge-check','<b>Licencia clase A</b> (profesional) vigente, acorde al vehículo.'],
+        ['shield','<b>Manejo defensivo</b> y curso de <b>conducción en faena</b> (caminos mineros, alto tránsito).'],
+        ['heart-pulse','Examen psicosensotécnico y preocupacional.']
+      ]},
+    { ic:'wrench', c:'#cf9b6f', t:'Mantenedor mecánico', s:'Equipos, plantas y flota',
+      tips:[
+        ['graduation-cap','<b>Formación técnica</b> (liceo TP, CFT o experiencia acreditada).'],
+        ['triangle-alert','Cursos de <b>trabajo en altura física</b> y de <b>bloqueo y etiquetado (LOTO)</b>.'],
+        ['heart-pulse','Examen preocupacional; a veces prueba práctica del oficio.']
+      ]},
+    { ic:'zap', c:'#e0c35a', t:'Eléctrico / instrumentista', s:'Sistemas y control',
+      tips:[
+        ['badge-check','<b>Licencia SEC</b> (Superintendencia de Electricidad y Combustibles) según la clase que corresponda.'],
+        ['graduation-cap','Formación técnica <b>eléctrica</b> y curso de <b>riesgos eléctricos</b>.'],
+        ['triangle-alert','Trabajo en altura y bloqueo (LOTO); examen preocupacional.']
+      ]},
+    { ic:'shield-check', c:'#e0715a', t:'Prevención de riesgos', s:'Seguridad y salud ocupacional',
+      tips:[
+        ['graduation-cap','<b>Título</b> en prevención de riesgos / seguridad ocupacional.'],
+        ['book-marked','Conocer la <b>normativa</b>: DS 132 (Reglamento de Seguridad Minera) y Ley 16.744.'],
+        ['users','Habilidades de terreno, liderazgo y manejo de personas.']
+      ]}
+  ];
+  document.getElementById('topics').innerHTML=ROLES.map((x,i)=>`
+    <div class="glass rounded-2xl topic" data-i="${i}">
+      <div class="p-4 flex items-center gap-3">
+        <div class="h-10 w-10 rounded-xl grid place-items-center shrink-0" style="background:${x.c}22;border:1px solid ${x.c}55"><i data-lucide="${x.ic}" class="w-5 h-5" style="color:${x.c}"></i></div>
+        <div class="min-w-0 flex-1"><h3 class="font-bold text-[15px]">${x.t}</h3><p class="text-[11.5px] text-stone-400">${x.s}</p></div>
+        <i data-lucide="chevron-right" class="chev w-5 h-5 text-stone-500 shrink-0"></i>
+      </div>
+      <div class="body px-4 pb-4 -mt-1">
+        ${x.tips.map(t=>`<div class="tip"><i data-lucide="${t[0]}" class="w-4 h-4 shrink-0 mt-0.5" style="color:${x.c}"></i><span>${t[1]}</span></div>`).join('')}
+      </div>
+    </div>`).join('');
+  document.getElementById('topics').addEventListener('click', e=>{ const t=e.target.closest('.topic'); if(!t) return; t.classList.toggle('open'); drawIcons(); });
+  drawIcons();
+</script>
+</body>
+</html>

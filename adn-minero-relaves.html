@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · Relaves: de Pasivo a Recurso</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="Qué son los relaves mineros, por qué hay que cuidarlos (estabilidad, agua, polvo) y cómo pueden pasar de pasivo ambiental a recurso: el reprocesamiento recupera cobre y minerales que quedaron." />
+  <link rel="canonical" href="https://simonrovi-web.github.io/adn-minero/adn-minero-relaves.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ADN Minero" />
+  <meta property="og:title" content="ADN Minero · Relaves: de Pasivo a Recurso" />
+  <meta property="og:description" content="Qué son los relaves, por qué hay que cuidarlos y cómo el reprocesamiento los convierte de pasivo en recurso." />
+  <meta property="og:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://simonrovi-web.github.io/adn-minero/adn-minero-relaves.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ADN Minero · Relaves: de Pasivo a Recurso" />
+  <meta name="twitter:description" content="Qué son los relaves y cómo el reprocesamiento los convierte de pasivo en recurso." />
+  <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(127,191,154,0.12), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    h3{ margin:0; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .lbl{ font-size:10.5px; font-weight:800; fill:#f6ead9; } .lbl-sm{ font-size:9.5px; fill:#bcd0b6; font-weight:600; }
+    .steps{ display:flex; gap:5px; margin-top:11px; }
+    .step{ flex:1; text-align:center; font-size:10px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#8a9a82; border:1px solid rgba(127,191,154,.14); animation:stepHi 16s infinite; }
+    .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(127,191,154,.16); color:#a7d1b6; font-size:9px; margin-bottom:4px; }
+    .step.s2{ animation-delay:4s } .step.s3{ animation-delay:8s } .step.s4{ animation-delay:12s }
+    @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#8a9a82; border-color:rgba(127,191,154,.14) } 5%,21%{ background:rgba(127,191,154,.18); color:#eef7f1; border-color:rgba(127,191,154,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#8a9a82; border-color:rgba(127,191,154,.14) } }
+    .narr{ position:relative; min-height:38px; margin-top:9px; }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:narr 16s infinite; } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:4s } .nl.n3{ animation-delay:8s } .nl.n4{ animation-delay:12s }
+    @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    .warn{ transform-box:fill-box; transform-origin:center; animation:warnP 16s ease-in-out infinite; opacity:0 }
+    @keyframes warnP{ 0%,26%{opacity:0} 30%,46%{opacity:1} 50%,100%{opacity:0} }
+    .rcoin{ animation:rcoin 16s ease-in-out infinite; opacity:0 } .rcoin.c2{ animation-delay:.5s } .rcoin.c3{ animation-delay:1s }
+    @keyframes rcoin{ 0%,72%{ opacity:0; transform:translate(0,0) } 78%{ opacity:1 } 100%{ opacity:1; transform:translate(0,-12px) } }
+    .fact{ display:flex; gap:11px; align-items:flex-start; padding:11px 0; border-bottom:1px solid rgba(196,168,148,.12); }
+    .fact:last-child{ border-bottom:none; } .fact .b{ font-size:14px; font-weight:800; color:#a7d1b6; min-width:78px; line-height:1.15; } .fact .t{ font-size:13.5px; line-height:1.5; color:#dacfc2; } .fact .t b{ color:#f4ece5; }
+    @media (prefers-reduced-motion:reduce){ .step,.nl,.warn,.rcoin{ animation:none !important } .rcoin{ opacity:1 } .nl{ opacity:1 } .narr{ display:none } }
+  </style>
+  <script src="adn-ui.js" defer></script>
+  <script src="adn-recorrido.js" defer></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","@id":"https://simonrovi-web.github.io/adn-minero/adn-minero-relaves.html#webpage","url":"https://simonrovi-web.github.io/adn-minero/adn-minero-relaves.html","name":"ADN Minero · Relaves: de Pasivo a Recurso","description":"Qué son los relaves, por qué hay que cuidarlos y cómo el reprocesamiento los convierte de pasivo en recurso.","isPartOf":{"@id":"https://simonrovi-web.github.io/adn-minero/#site"},"inLanguage":"es-CL","publisher":{"@id":"https://simonrovi-web.github.io/adn-minero/#org"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://simonrovi-web.github.io/adn-minero/"},{"@type":"ListItem","position":2,"name":"Relaves","item":"https://simonrovi-web.github.io/adn-minero/adn-minero-relaves.html"}]}}
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(127,191,154,.15);border:1px solid rgba(127,191,154,.34)"><i data-lucide="recycle" style="width:26px;height:26px;color:#7fbf9a"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#a7d1b6;font-weight:800">Relaves</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">De pasivo ambiental a recurso</p>
+      </div>
+    </header>
+
+    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">Cuando se saca el metal de la roca, queda un material molido: el <b>relave</b>. Se guarda en grandes depósitos (tranques). Hay que <b>cuidarlos</b>… y, cada vez más, <b>aprovecharlos</b>.</p>
+
+    <!-- ANIMACIÓN -->
+    <div class="glass rounded-2xl p-3.5 mt-4">
+      <svg class="viz" viewBox="0 0 340 190" role="img" aria-label="Un tranque de relaves guarda la roca molida tras extraer el metal; hay que cuidar su muro, agua y polvo, y reprocesarlo permite recuperar el cobre que quedó">
+        <defs>
+          <linearGradient id="reSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#20281c"/><stop offset="1" stop-color="#14100c"/></linearGradient>
+          <linearGradient id="reTail" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a8172"/><stop offset="1" stop-color="#544d43"/></linearGradient>
+          <linearGradient id="reWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6a5a44"/><stop offset="1" stop-color="#3a2f22"/></linearGradient>
+          <linearGradient id="rePond" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6fb0c0"/><stop offset="1" stop-color="#3f7f90"/></linearGradient>
+          <linearGradient id="rePlant" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fc177"/><stop offset="1" stop-color="#4f8a53"/></linearGradient>
+          <radialGradient id="reCoin" cx="0.4" cy="0.35" r="0.7"><stop offset="0" stop-color="#f4c98a"/><stop offset="1" stop-color="#b5734f"/></radialGradient>
+          <filter id="reSh" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.6" flood-color="#000" flood-opacity=".45"/></filter>
+        </defs>
+        <rect x="0" y="0" width="340" height="190" fill="url(#reSky)"/>
+        <line x1="0" y1="164" x2="340" y2="164" stroke="#2f2a20" stroke-width="1.4"/>
+        <!-- tranque de relaves -->
+        <path d="M24 164 L44 108 L150 108 L150 164 Z" fill="url(#reTail)" filter="url(#reSh)"/>
+        <path d="M44 108 L150 108 L150 164 L150 164 Z" fill="#000" opacity=".12"/>
+        <ellipse cx="98" cy="110" rx="50" ry="7" fill="url(#rePond)" opacity=".9"/>
+        <path d="M150 108 L166 164 L150 164 Z" fill="url(#reWall)"/>
+        <text class="lbl-sm" x="92" y="180" text-anchor="middle" style="fill:#c9bfae">tranque de relaves</text>
+        <!-- señal de cuidado (paso 2) -->
+        <g class="warn"><circle cx="98" cy="86" r="12" fill="rgba(224,163,90,.9)"/><path d="M98 80 L98 88 M98 92 L98 92.5" stroke="#2a1c0f" stroke-width="2.6" stroke-linecap="round"/></g>
+        <!-- flecha a reproceso -->
+        <path d="M168 130 L206 130" fill="none" stroke="#7fbf9a" stroke-width="2.2" stroke-dasharray="4 4" marker-end="url(#reArw)"/>
+        <defs><marker id="reArw" markerWidth="8" markerHeight="8" refX="5.5" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#7fbf9a"/></marker></defs>
+        <text class="lbl-sm" x="187" y="122" text-anchor="middle" style="fill:#a7d1b6">reproceso</text>
+        <!-- planta de reproceso -->
+        <g filter="url(#reSh)"><rect x="212" y="120" width="40" height="44" rx="4" fill="url(#rePlant)"/><rect x="218" y="110" width="9" height="12" fill="url(#rePlant)"/><rect x="232" y="114" width="9" height="8" fill="url(#rePlant)"/><rect x="214" y="123" width="36" height="3" fill="#fff" opacity=".16"/></g>
+        <!-- cobre recuperado (paso 4) -->
+        <g fill="url(#reCoin)"><circle class="rcoin"    cx="272" cy="150" r="6" filter="url(#reSh)"/><circle class="rcoin c2" cx="286" cy="150" r="6" filter="url(#reSh)"/><circle class="rcoin c3" cx="300" cy="150" r="6" filter="url(#reSh)"/></g>
+        <text class="lbl-sm" x="286" y="180" text-anchor="middle" style="fill:#e6c79b">cobre recuperado</text>
+      </svg>
+      <div class="steps">
+        <div class="step s1"><span class="n">1</span>Qué es</div>
+        <div class="step s2"><span class="n">2</span>Cuidarlo</div>
+        <div class="step s3"><span class="n">3</span>Aún tiene metal</div>
+        <div class="step s4"><span class="n">4</span>Reprocesar</div>
+      </div>
+      <div class="narr">
+        <p class="nl n1">El <b>relave</b> es la roca molida que queda tras sacar el metal; se guarda en un <b>tranque</b>.</p>
+        <p class="nl n2">Hay que <b>cuidarlo</b>: la estabilidad del muro, el agua y el polvo. La seguridad es clave.</p>
+        <p class="nl n3">Con la tecnología de antes, quedó <b>algo de cobre</b> y otros minerales sin recuperar.</p>
+        <p class="nl n4"><b>Reprocesar</b> el relave recupera ese metal: de pasivo ambiental a <b>recurso</b>.</p>
+      </div>
+    </div>
+
+    <!-- CLAVES -->
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="info" style="width:17px;height:17px;color:#7fbf9a"></i><h3 class="font-bold text-[13.5px]">Lo que hay que saber</h3></div>
+      <div class="mt-1">
+        <div class="fact"><div class="b">Seguridad</div><div class="t">Un tranque debe ser <b>estable y monitoreado</b>. Su diseño, operación y cierre están regulados: la falla de un muro es un riesgo grave.</div></div>
+        <div class="fact"><div class="b">Agua</div><div class="t">Se busca <b>recuperar y recircular</b> el agua del relave y controlar el polvo para no afectar al entorno.</div></div>
+        <div class="fact"><div class="b">Oportunidad</div><div class="t">Muchos relaves <b>antiguos</b> aún contienen cobre y minerales críticos: reprocesarlos suma valor y limpia pasivos.</div></div>
+        <div class="fact"><div class="b">Cierre</div><div class="t">Toda faena debe tener un <b>plan de cierre</b> que deje el depósito seguro y estable a largo plazo.</div></div>
+      </div>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Contenido de divulgación. · <a href="adn-minero-ambiente.html" style="color:#e8c9a6">Medio ambiente</a> · <a href="adn-minero-agua.html" style="color:#e8c9a6">Agua y minería</a> · <a href="adn-minero-innovacion.html" style="color:#e8c9a6">Innovación</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+<script>window.lucide&&lucide.createIcons();</script>
+</body>
+</html>
