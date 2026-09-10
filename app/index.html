@@ -826,6 +826,6 @@
       document.getElementById('onb').addEventListener('click', e=>{ if(e.target.id==='onb') close(); });
     })();
   </script>
-<script>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}</script>
+<script>if('serviceWorker' in navigator){(function(){var r=false,h=!!navigator.serviceWorker.controller;navigator.serviceWorker.addEventListener('controllerchange',function(){if(r||!h)return;r=true;location.reload();});window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').then(function(reg){try{reg.update();}catch(e){}document.addEventListener('visibilitychange',function(){if(!document.hidden){try{reg.update();}catch(e){}}});}).catch(function(){});});})();}</script>
 </body>
 </html>

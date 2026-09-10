@@ -7,9 +7,20 @@
 (function(){
   'use strict';
   // Registrar el service worker (caché offline de los paneles visitados; también maneja el push)
+  // + auto-actualización: cuando un SW nuevo toma control, recarga una vez para mostrar los cambios.
   try{
     if('serviceWorker' in navigator && location.protocol!=='file:'){
-      window.addEventListener('load', function(){ navigator.serviceWorker.register('adn-push-sw.js').catch(function(){}); });
+      var _swReloading=false, _hadCtrl=!!navigator.serviceWorker.controller;
+      navigator.serviceWorker.addEventListener('controllerchange', function(){
+        if(_swReloading || !_hadCtrl) return; _swReloading=true; location.reload();
+      });
+      window.addEventListener('load', function(){
+        navigator.serviceWorker.register('adn-push-sw.js').then(function(reg){
+          try{ reg.update(); }catch(e){}
+          // revisa si hay versión nueva al volver a la app
+          document.addEventListener('visibilitychange', function(){ if(!document.hidden){ try{ reg.update(); }catch(e){} } });
+        }).catch(function(){});
+      });
     }
   }catch(e){}
 

@@ -65,7 +65,7 @@ self.addEventListener('fetch', (event) => {
   }
   event.respondWith((async () => {
     try {
-      const res = await fetch(req);
+      const res = await fetch(req, { cache: 'no-cache' });
       if (res && res.status === 200) { const cp = res.clone(); caches.open(OFFLINE_CACHE).then(c => c.put(req, cp)).catch(() => {}); }
       return res;
     } catch (err) {
