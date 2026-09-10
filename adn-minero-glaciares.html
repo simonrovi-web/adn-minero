@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · Glaciares y Minería</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="Por qué importan los glaciares: son reservas de agua dulce que alimentan ríos y valles. Su relación con la minería de alta cordillera, los cuidados (polvo, monitoreo) y el retroceso por el cambio climático." />
+  <link rel="canonical" href="https://simonrovi-web.github.io/adn-minero/adn-minero-glaciares.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ADN Minero" />
+  <meta property="og:title" content="ADN Minero · Glaciares y Minería" />
+  <meta property="og:description" content="Los glaciares como reservas de agua, su relación con la minería de altura y cómo cuidarlos." />
+  <meta property="og:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://simonrovi-web.github.io/adn-minero/adn-minero-glaciares.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ADN Minero · Glaciares y Minería" />
+  <meta name="twitter:description" content="Los glaciares como reservas de agua y su relación con la minería de altura." />
+  <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(127,191,209,0.13), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    h3{ margin:0; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; overflow:hidden; }
+    .lbl-sm{ font-size:9.5px; fill:#a9c9d4; font-weight:600; }
+    .steps{ display:flex; gap:5px; margin-top:11px; }
+    .step{ flex:1; text-align:center; font-size:10px; font-weight:700; line-height:1.2; padding:8px 3px 7px; border-radius:10px; background:rgba(255,255,255,.035); color:#89989e; border:1px solid rgba(127,191,209,.14); animation:stepHi 16s infinite; }
+    .step .n{ display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%; background:rgba(127,191,209,.16); color:#a9d3dc; font-size:9px; margin-bottom:4px; }
+    .step.s2{ animation-delay:4s } .step.s3{ animation-delay:8s } .step.s4{ animation-delay:12s }
+    @keyframes stepHi{ 0%,3%{ background:rgba(255,255,255,.035); color:#89989e; border-color:rgba(127,191,209,.14) } 5%,21%{ background:rgba(127,191,209,.18); color:#eef7fa; border-color:rgba(127,191,209,.55) } 24%,100%{ background:rgba(255,255,255,.035); color:#89989e; border-color:rgba(127,191,209,.14) } }
+    .narr{ position:relative; min-height:38px; margin-top:9px; }
+    .nl{ position:absolute; left:0; right:0; top:0; font-size:12.5px; line-height:1.45; color:#dacfc2; opacity:0; animation:narr 16s infinite; } .nl b{ color:#f4ece5; }
+    .nl.n2{ animation-delay:4s } .nl.n3{ animation-delay:8s } .nl.n4{ animation-delay:12s }
+    @keyframes narr{ 0%,3%{opacity:0} 6%,20%{opacity:1} 23%,100%{opacity:0} }
+    .glac{ transform-box:fill-box; transform-origin:center; animation:glacSh 5s ease-in-out infinite } @keyframes glacSh{ 0%,100%{ opacity:.9 } 50%{ opacity:1 } }
+    .drip{ animation:drip 2.4s ease-in infinite; opacity:0 } .drip.k2{ animation-delay:.8s } .drip.k3{ animation-delay:1.6s }
+    @keyframes drip{ 0%{ transform:translateY(0); opacity:0 } 15%{ opacity:.9 } 100%{ transform:translateY(22px); opacity:0 } }
+    .river{ opacity:0; animation:appearD 16s ease-in-out infinite; animation-delay:8s }
+    .care{ opacity:0; animation:appearD 16s ease-in-out infinite; animation-delay:12s }
+    @keyframes appearD{ 0%,2%{opacity:0} 6%,96%{opacity:1} 100%{opacity:.85} }
+    .fact{ display:flex; gap:11px; align-items:flex-start; padding:11px 0; border-bottom:1px solid rgba(196,168,148,.12); }
+    .fact:last-child{ border-bottom:none; } .fact .b{ font-size:14px; font-weight:800; color:#a9d3dc; min-width:78px; line-height:1.15; } .fact .t{ font-size:13.5px; line-height:1.5; color:#dacfc2; } .fact .t b{ color:#f4ece5; }
+    @media (prefers-reduced-motion:reduce){ .glac,.drip,.river,.care,.step,.nl{ animation:none !important } .river,.care{ opacity:1 } .nl{ opacity:1 } .narr{ display:none } }
+  </style>
+  <script src="adn-ui.js" defer></script>
+  <script src="adn-recorrido.js" defer></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","@id":"https://simonrovi-web.github.io/adn-minero/adn-minero-glaciares.html#webpage","url":"https://simonrovi-web.github.io/adn-minero/adn-minero-glaciares.html","name":"ADN Minero · Glaciares y Minería","description":"Los glaciares como reservas de agua, su relación con la minería de altura y cómo cuidarlos.","isPartOf":{"@id":"https://simonrovi-web.github.io/adn-minero/#site"},"inLanguage":"es-CL","publisher":{"@id":"https://simonrovi-web.github.io/adn-minero/#org"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://simonrovi-web.github.io/adn-minero/"},{"@type":"ListItem","position":2,"name":"Glaciares y Minería","item":"https://simonrovi-web.github.io/adn-minero/adn-minero-glaciares.html"}]}}
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(127,191,209,.15);border:1px solid rgba(127,191,209,.34)"><i data-lucide="snowflake" style="width:26px;height:26px;color:#7fbfd1"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#a9d3dc;font-weight:800">Glaciares y Minería</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">El agua congelada de Chile</p>
+      </div>
+    </header>
+
+    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">Los <b>glaciares</b> son las grandes reservas de agua dulce de la cordillera. Parte de la minería opera cerca de ellos, en la alta montaña — por eso hay que <b>entenderlos y cuidarlos</b>.</p>
+
+    <!-- ANIMACIÓN -->
+    <div class="glass rounded-2xl p-3.5 mt-4">
+      <svg class="viz" viewBox="0 0 340 200" role="img" aria-label="Un glaciar en la cordillera libera agua con el deshielo, que baja por los ríos hasta los valles y ciudades; cerca operan faenas de altura que hay que cuidar">
+        <defs>
+          <linearGradient id="glSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#20303f"/><stop offset="1" stop-color="#2a3b3f"/></linearGradient>
+          <linearGradient id="glMtn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a6b78"/><stop offset="1" stop-color="#33424c"/></linearGradient>
+          <linearGradient id="glIce" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2fbff"/><stop offset="1" stop-color="#bcdfec"/></linearGradient>
+          <linearGradient id="glValley" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a5a3a"/><stop offset="1" stop-color="#243a24"/></linearGradient>
+          <filter id="glSh" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.6" flood-color="#000" flood-opacity=".4"/></filter>
+        </defs>
+        <rect x="0" y="0" width="340" height="140" fill="url(#glSky)"/>
+        <rect x="0" y="136" width="340" height="64" fill="url(#glValley)"/>
+        <!-- montañas -->
+        <path d="M0 140 L70 44 L150 140 Z" fill="url(#glMtn)"/><path d="M120 140 L210 60 L300 140 Z" fill="url(#glMtn)" opacity=".9"/>
+        <!-- glaciar en la cima -->
+        <g class="glac"><path d="M46 78 L70 44 L96 78 L86 100 L58 100 Z" fill="url(#glIce)" filter="url(#glSh)"/>
+          <path d="M58 100 L64 112 L74 100 L82 110 L86 100" fill="none" stroke="#bcdfec" stroke-width="2" opacity=".7"/></g>
+        <text class="lbl-sm" x="70" y="36" text-anchor="middle" style="fill:#dbeef5">glaciar</text>
+        <!-- gotas de deshielo -->
+        <g class="drip" fill="#8fd6ea"><ellipse cx="70" cy="104" rx="2.4" ry="3.2"/></g>
+        <g class="drip k2" fill="#8fd6ea"><ellipse cx="64" cy="108" rx="2" ry="2.8"/></g>
+        <g class="drip k3" fill="#8fd6ea"><ellipse cx="76" cy="106" rx="2" ry="2.8"/></g>
+        <!-- río hacia el valle -->
+        <path class="river" d="M70 112 C 90 140, 150 150, 210 160 C 250 166, 280 168, 320 168" fill="none" stroke="#5fb0d0" stroke-width="4" stroke-linecap="round"/>
+        <path class="river" d="M70 112 C 90 140, 150 150, 210 160 C 250 166, 280 168, 320 168" fill="none" stroke="#bfeaf5" stroke-width="1.4" stroke-linecap="round" opacity=".6"/>
+        <!-- valle: campos + casas -->
+        <g class="river"><rect x="250" y="150" width="12" height="10" rx="1.5" fill="#c9b7a5"/><path d="M250 150 L256 144 L262 150 Z" fill="#e0975f"/><rect x="266" y="153" width="10" height="7" rx="1.5" fill="#c9b7a5"/><path d="M266 153 L271 148 L276 153 Z" fill="#e0975f"/></g>
+        <text class="river lbl-sm" x="286" y="150" style="fill:#bcd0b6">valle · ciudades</text>
+        <!-- faena de altura + cuidado -->
+        <g class="care"><path d="M150 140 L166 116 L182 140 Z" fill="#4a3a2e"/><rect x="158" y="122" width="16" height="8" rx="1.5" fill="#8a6b45"/>
+          <circle cx="196" cy="112" r="9" fill="rgba(127,191,209,.9)"/><path d="M192 112 l3 3 l5 -6" stroke="#14211f" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+        <text class="care lbl-sm" x="166" y="154" text-anchor="middle" style="fill:#e6c79b">faena de altura</text>
+      </svg>
+      <div class="steps">
+        <div class="step s1"><span class="n">1</span>El glaciar</div>
+        <div class="step s2"><span class="n">2</span>El deshielo</div>
+        <div class="step s3"><span class="n">3</span>El río</div>
+        <div class="step s4"><span class="n">4</span>Cuidarlo</div>
+      </div>
+      <div class="narr">
+        <p class="nl n1">El <b>glaciar</b> guarda agua dulce congelada en lo alto de la cordillera.</p>
+        <p class="nl n2">Con el <b>deshielo</b> libera agua de a poco, sobre todo en verano.</p>
+        <p class="nl n3">Esa agua baja por los <b>ríos</b> y llega a valles y ciudades: clave en años secos.</p>
+        <p class="nl n4">Cerca operan <b>faenas de altura</b>: hay que <b>cuidarlos</b> y monitorearlos.</p>
+      </div>
+    </div>
+
+    <!-- CLAVES -->
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="info" style="width:17px;height:17px;color:#7fbfd1"></i><h3 class="font-bold text-[13.5px]">Lo que hay que saber</h3></div>
+      <div class="mt-1">
+        <div class="fact"><div class="b">Reserva</div><div class="t">Los glaciares son <b>reservas estratégicas de agua</b>: regulan los ríos y son un seguro para los años de sequía.</div></div>
+        <div class="fact"><div class="b">Cercanía</div><div class="t">Algunas faenas de <b>alta cordillera</b> (por ejemplo Andina) operan cerca de glaciares y ambientes de montaña.</div></div>
+        <div class="fact"><div class="b">Cuidado</div><div class="t">El <b>polvo</b> de los caminos puede oscurecer el hielo y acelerar su derretimiento: se controla y se <b>monitorea</b> el entorno.</div></div>
+        <div class="fact"><div class="b">Clima</div><div class="t">Los glaciares ya <b>retroceden por el cambio climático</b>; protegerlos y estudiarlos es tarea de todos, y hay debate por una <b>ley de glaciares</b>.</div></div>
+      </div>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Contenido de divulgación. · <a href="adn-minero-agua.html" style="color:#e8c9a6">Agua y minería</a> · <a href="adn-minero-ambiente.html" style="color:#e8c9a6">Medio ambiente</a> · <a href="adn-minero-andina.html" style="color:#e8c9a6">Andina</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+<script>window.lucide&&lucide.createIcons();</script>
+</body>
+</html>
