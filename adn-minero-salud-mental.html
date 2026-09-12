@@ -38,6 +38,18 @@
     .tip b{ color:#f6ecdf; } h3{ margin:0; }
     .num{ display:flex; gap:10px; align-items:center; text-decoration:none; padding:11px 13px; border-radius:12px; background:rgba(127,176,217,.1); border:1px solid rgba(127,176,217,.3); }
     .num b{ font-size:16px; color:#f4ece5; } .num span{ font-size:11.5px; color:#c9bcae; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; }
+    .sm-ring{ transform-box:fill-box; transform-origin:center; animation:smBreathe 9s ease-in-out infinite }
+    .sm-ring.b{ animation-delay:.35s } .sm-ring.c{ animation-delay:.7s }
+    @keyframes smBreathe{ 0%,100%{ transform:scale(.62); opacity:.85 } 45%,55%{ transform:scale(1); opacity:.35 } }
+    .sm-word{ animation:smWord 9s ease-in-out infinite }
+    @keyframes smWord{ 0%,42%{ opacity:0 } 46%,50%{ opacity:1 } 96%,100%{ opacity:0 } }
+    .sm-word2{ animation:smWord2 9s ease-in-out infinite }
+    @keyframes smWord2{ 0%,4%{ opacity:1 } 46%,50%{ opacity:0 } 96%,100%{ opacity:1 } }
+    .sm-dawn{ animation:smDawn 9s ease-in-out infinite } @keyframes smDawn{ 0%,100%{ opacity:.5 } 50%{ opacity:.9 } }
+    .sm-heart{ transform-box:fill-box; transform-origin:center; animation:smHeart 3.2s ease-in-out infinite }
+    @keyframes smHeart{ 0%,100%{ transform:scale(1); opacity:.85 } 50%{ transform:scale(1.14); opacity:1 } }
+    @media (prefers-reduced-motion:reduce){ .sm-ring,.sm-word,.sm-word2,.sm-dawn,.sm-heart{ animation:none !important } .sm-word{ opacity:1 } .sm-ring{ transform:scale(.82); opacity:.6 } }
   </style>
   <script src="adn-ui.js" defer></script>
   <script src="adn-recorrido.js" defer></script>
@@ -57,6 +69,37 @@
 
     <div class="glass rounded-2xl p-3.5 mt-4" style="border-color:rgba(127,176,217,.3);background:rgba(127,176,217,.07)">
       <p class="text-[12px] text-stone-300 leading-relaxed">Los turnos largos, la altura y estar <b>lejos de la familia</b> pesan. Cuidar la cabeza es tan importante como el EPP. <b>Hablar es de valientes</b> y pedir ayuda no es debilidad. Esta es una guía de apoyo; <b>no reemplaza la atención de un profesional</b>.</p>
+    </div>
+
+    <div class="glass rounded-2xl p-4 mt-4">
+      <svg class="viz" viewBox="0 0 400 150" role="img" aria-label="Ejercicio de respiración calmada junto a un amanecer, y una persona acompañando a otra">
+        <defs>
+          <linearGradient id="smSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c2733"/><stop offset="1" stop-color="#2c2a33"/></linearGradient>
+          <radialGradient id="smDawnG" cx="0.5" cy="1" r="0.9"><stop offset="0" stop-color="#eab77a"/><stop offset="1" stop-color="#eab77a" stop-opacity="0"/></radialGradient>
+          <radialGradient id="smRingG" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#a7c6de"/><stop offset="1" stop-color="#7fb0d9"/></radialGradient>
+        </defs>
+        <rect x="0" y="0" width="400" height="150" fill="url(#smSky)"/>
+        <ellipse class="sm-dawn" cx="150" cy="150" rx="150" ry="90" fill="url(#smDawnG)" opacity=".6"/>
+        <!-- respiración -->
+        <g>
+          <circle class="sm-ring c" cx="120" cy="72" r="46" fill="none" stroke="url(#smRingG)" stroke-width="1.4"/>
+          <circle class="sm-ring b" cx="120" cy="72" r="46" fill="none" stroke="url(#smRingG)" stroke-width="1.8"/>
+          <circle class="sm-ring"   cx="120" cy="72" r="46" fill="url(#smRingG)" opacity=".2"/>
+          <circle cx="120" cy="72" r="6" fill="#eef4f9"/>
+          <text class="sm-word"  x="120" y="76" text-anchor="middle" style="font-size:11px;font-weight:800;fill:#dfeaf3">inhala</text>
+          <text class="sm-word2" x="120" y="76" text-anchor="middle" style="font-size:11px;font-weight:800;fill:#dfeaf3">exhala</text>
+          <text x="120" y="132" text-anchor="middle" style="font-size:10px;font-weight:700;fill:#a7c6de">respira, con calma</text>
+        </g>
+        <!-- acompañar -->
+        <g>
+          <circle cx="286" cy="52" r="12" fill="#7fbf9a"/><rect x="272" y="66" width="28" height="40" rx="12" fill="#7fbf9a"/>
+          <circle cx="330" cy="56" r="10" fill="#c9bcae"/><rect x="318" y="68" width="24" height="36" rx="11" fill="#c9bcae"/>
+          <path d="M298 74 q12 -4 20 2" fill="none" stroke="#eec9d6" stroke-width="3" stroke-linecap="round"/>
+          <path class="sm-heart" d="M306 40 c-3 -5 -11 -3 -11 3 c0 5 7 9 11 12 c4 -3 11 -7 11 -12 c0 -6 -8 -8 -11 -3 z" fill="#e08aa8"/>
+          <text x="307" y="132" text-anchor="middle" style="font-size:10px;font-weight:700;fill:#7fbf9a">acompañar salva</text>
+        </g>
+      </svg>
+      <p class="text-center text-[11px] text-stone-500 mt-2">Respirar lento calma el cuerpo. Y <b>hablar y acompañar</b> a un compañero también sana.</p>
     </div>
 
     <div id="topics" class="mt-4 grid gap-2.5"></div>

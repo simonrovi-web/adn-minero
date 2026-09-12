@@ -37,6 +37,12 @@
     .tip{ display:flex; gap:9px; align-items:flex-start; font-size:13.5px; line-height:1.5; color:#e4d7c8; margin-top:8px; }
     .tip b{ color:#f6ecdf; } h3{ margin:0; }
     .chip{ display:inline-flex; align-items:center; gap:6px; border:1px solid rgba(201,140,192,.3); background:rgba(201,140,192,.1); border-radius:999px; padding:6px 12px; font-size:12.5px; color:#eccfe6; font-weight:600; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; }
+    .pu-shine{ animation:puShine 6s ease-in-out infinite } @keyframes puShine{ 0%{ transform:translateX(-60px); opacity:0 } 30%,55%{ opacity:.7 } 100%{ transform:translateX(240px); opacity:0 } }
+    .pu-sun{ animation:puSun 6s ease-in-out infinite } @keyframes puSun{ 0%,100%{ opacity:.75 } 50%{ opacity:1 } }
+    .pu-bob{ transform-box:fill-box; transform-origin:bottom center; animation:puBob 4s ease-in-out infinite } .pu-bob.b{ animation-delay:1.2s }
+    @keyframes puBob{ 0%,100%{ transform:translateY(0) } 50%{ transform:translateY(-3px) } }
+    @media (prefers-reduced-motion:reduce){ .pu-shine,.pu-sun,.pu-bob{ animation:none !important } .pu-shine{ opacity:0 } }
   </style>
   <script src="adn-ui.js" defer></script>
   <script src="adn-recorrido.js" defer></script>
@@ -56,6 +62,31 @@
 
     <div class="glass rounded-2xl p-3.5 mt-4" style="border-color:rgba(201,140,192,.28)">
       <p class="text-[12px] text-stone-300 leading-relaxed">Buena parte de la minería ocurre en <b>territorios ancestrales</b> de pueblos originarios, sobre todo en el norte. Su voz, su cultura y su relación con el <b>agua y la tierra</b> son parte esencial de una minería respetuosa. Panorama general de divulgación.</p>
+    </div>
+
+    <div class="glass rounded-2xl p-4 mt-4">
+      <svg class="viz" viewBox="0 0 400 150" role="img" aria-label="Altiplano del norte: cordillera, un salar que refleja la luz y flamencos, territorio de los pueblos originarios">
+        <defs>
+          <linearGradient id="puSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2c3e"/><stop offset="1" stop-color="#c98a6a"/></linearGradient>
+          <linearGradient id="puMtn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6a5560"/><stop offset="1" stop-color="#4a3a44"/></linearGradient>
+          <linearGradient id="puSalar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9d6e0"/><stop offset="1" stop-color="#7fa9c0"/></linearGradient>
+          <clipPath id="puClip"><rect x="0" y="104" width="400" height="46"/></clipPath>
+        </defs>
+        <rect x="0" y="0" width="400" height="150" fill="url(#puSky)"/>
+        <circle class="pu-sun" cx="316" cy="40" r="15" fill="#f4d59a"/>
+        <!-- cordillera altiplánica -->
+        <polygon points="0,104 60,52 100,80 160,40 220,84 280,50 340,86 400,58 400,104" fill="url(#puMtn)"/>
+        <polygon points="160,40 176,58 144,58" fill="#e9edf0" opacity=".8"/><polygon points="280,50 294,66 266,66" fill="#e9edf0" opacity=".8"/>
+        <!-- salar / laguna -->
+        <rect x="0" y="104" width="400" height="46" fill="url(#puSalar)"/>
+        <g clip-path="url(#puClip)"><rect class="pu-shine" x="0" y="104" width="70" height="46" fill="#ffffff" opacity=".0"/></g>
+        <g stroke="#eef6f9" stroke-width="1" opacity=".5"><line x1="20" y1="120" x2="90" y2="120"/><line x1="150" y1="132" x2="240" y2="132"/><line x1="300" y1="124" x2="380" y2="124"/></g>
+        <!-- flamencos -->
+        <g class="pu-bob" fill="#e79bb0"><path d="M120 112 q3 -10 8 -10 q-2 4 0 7 l1 9 z"/><rect x="127" y="112" width="1.6" height="9"/><path d="M119 112 h10" stroke="#e79bb0" stroke-width="2"/></g>
+        <g class="pu-bob b" fill="#eaa9bb"><path d="M150 114 q3 -9 7 -9 q-2 4 0 6 l1 8 z"/><rect x="156" y="114" width="1.5" height="8"/><path d="M149 114 h9" stroke="#eaa9bb" stroke-width="2"/></g>
+        <text x="70" y="146" text-anchor="middle" style="font-size:9.5px;font-weight:700;fill:#33414a">salar · agua que da vida</text>
+      </svg>
+      <p class="text-center text-[11px] text-stone-500 mt-2">El altiplano y los salares son <b>hogar de los pueblos</b> y, a la vez, cuna del litio y el cobre.</p>
     </div>
 
     <!-- pueblos chips -->

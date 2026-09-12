@@ -36,6 +36,12 @@
     .topic.open .chev{ transform:rotate(90deg); } .chev{ transition:transform .2s; }
     .tip{ display:flex; gap:9px; align-items:flex-start; font-size:13.5px; line-height:1.5; color:#e4d7c8; margin-top:8px; }
     .tip b{ color:#f6ecdf; } h3{ margin:0; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; }
+    .tr-chk{ transform-box:fill-box; transform-origin:center; animation:trChk 6s ease-in-out infinite } .tr-chk.b{ animation-delay:.9s } .tr-chk.c{ animation-delay:1.8s }
+    @keyframes trChk{ 0%,8%{ opacity:0; transform:scale(.4) } 18%,90%{ opacity:1; transform:scale(1) } 100%{ opacity:0 } }
+    .tr-stamp{ transform-box:fill-box; transform-origin:center; animation:trStamp 6s ease-in-out infinite }
+    @keyframes trStamp{ 0%,55%{ opacity:0; transform:scale(1.5) rotate(-14deg) } 62%,90%{ opacity:1; transform:scale(1) rotate(-14deg) } 100%{ opacity:0 } }
+    @media (prefers-reduced-motion:reduce){ .tr-chk,.tr-stamp{ animation:none !important; opacity:1; transform:none } }
   </style>
   <script src="adn-ui.js" defer></script>
   <script src="adn-recorrido.js" defer></script>
@@ -55,6 +61,38 @@
 
     <div class="glass rounded-2xl p-3.5 mt-4" style="border-color:rgba(224,169,79,.3);background:rgba(224,169,79,.06)">
       <p class="text-[12px] text-stone-300 leading-relaxed"><b style="color:#e6c079">⚠️ Guía referencial.</b> Cada <b>empresa y faena</b> define los requisitos exactos, y cambian según la operación y la normativa vigente. Toca un rol para ver lo que <b>suele</b> pedirse. No es asesoría ni un listado oficial.</p>
+    </div>
+
+    <div class="glass rounded-2xl p-4 mt-4">
+      <svg class="viz" viewBox="0 0 400 150" role="img" aria-label="Un carnet de faena donde se van aprobando cursos, licencias y exámenes con visto bueno hasta quedar habilitado">
+        <defs>
+          <linearGradient id="trCard" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#243138"/><stop offset="1" stop-color="#1a252b"/></linearGradient>
+          <linearGradient id="trBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c2a30"/><stop offset="1" stop-color="#221d1a"/></linearGradient>
+        </defs>
+        <rect x="0" y="0" width="400" height="150" fill="url(#trBg)"/>
+        <!-- carnet -->
+        <rect x="70" y="26" width="260" height="100" rx="12" fill="url(#trCard)" stroke="#67c1d6" stroke-width="1.4"/>
+        <rect x="70" y="26" width="260" height="24" rx="12" fill="#67c1d6" opacity=".16"/>
+        <text x="86" y="42" style="font-size:11px;font-weight:800;fill:#a9d3dc">CARNET DE FAENA</text>
+        <!-- foto + casco -->
+        <circle cx="104" cy="86" r="20" fill="#2f3d44"/><circle cx="104" cy="82" r="9" fill="#c9bcae"/><path d="M90 96 a14 14 0 0 1 28 0 z" fill="#c9bcae"/>
+        <path d="M89 74 a15 11 0 0 1 30 0 z" fill="#e0955f"/><rect x="87" y="73" width="34" height="3" rx="1.5" fill="#e0955f"/>
+        <!-- filas de requisitos con check -->
+        <g font-size="10" font-weight="700" fill="#dfeaef">
+          <text x="140" y="62">Examen preocupacional</text>
+          <text x="140" y="80">Inducción y EPP</text>
+          <text x="140" y="98">Licencia / curso del rol</text>
+        </g>
+        <g stroke="#3a4a52" stroke-width="1"><line x1="140" y1="67" x2="300" y2="67"/><line x1="140" y1="85" x2="300" y2="85"/><line x1="140" y1="103" x2="300" y2="103"/></g>
+        <g fill="none" stroke="#7fdca0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path class="tr-chk"   d="M306 56 l4 5 l7 -9"/>
+          <path class="tr-chk b" d="M306 74 l4 5 l7 -9"/>
+          <path class="tr-chk c" d="M306 92 l4 5 l7 -9"/>
+        </g>
+        <!-- sello -->
+        <g class="tr-stamp"><rect x="150" y="108" width="90" height="15" rx="4" fill="none" stroke="#7fdca0" stroke-width="2"/><text x="195" y="119" text-anchor="middle" style="font-size:10.5px;font-weight:800;fill:#7fdca0;letter-spacing:.05em">HABILITADO</text></g>
+      </svg>
+      <p class="text-center text-[11px] text-stone-500 mt-2">Cada rol suma sus <b>cursos, licencias y exámenes</b>. Cuando están al día, quedas habilitado.</p>
     </div>
 
     <!-- comunes -->
