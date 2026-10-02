@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · La minería de Chile, para todos</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <meta name="description" content="ADN Minero es una app gratuita que explica la minería de Chile para todos: faenas, minerales, seguridad, sueldos, salud, historia, juegos y un asistente con IA. 115 paneles, funciona sin internet y se instala en tu celular." />
+  <link rel="canonical" href="https://simonrovi-web.github.io/adn-minero/presentacion.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ADN Minero" />
+  <meta property="og:title" content="ADN Minero · La minería de Chile, para todos" />
+  <meta property="og:description" content="App gratuita que explica la minería de Chile: faenas, minerales, seguridad, sueldos, salud, historia, juegos e IA. 115 paneles, offline e instalable." />
+  <meta property="og:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://simonrovi-web.github.io/adn-minero/presentacion.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ADN Minero · La minería de Chile, para todos" />
+  <meta name="twitter:description" content="App gratuita que explica la minería de Chile para todos. 115 paneles, offline e instalable." />
+  <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; scroll-behavior:smooth; }
+    body{ background:#141110; overflow-x:hidden; }
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ max-width:1040px; margin:0 auto; padding:0 18px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    .btn{ display:inline-flex; align-items:center; gap:9px; font-weight:800; font-size:15px; padding:13px 22px; border-radius:14px; transition:.15s; }
+    .btn:active{ transform:scale(.96); }
+    .btn-p{ background:linear-gradient(160deg,#e6b483,#cf9b6f); color:#241a12; box-shadow:0 10px 30px -10px rgba(207,155,111,.6); }
+    .btn-s{ background:rgba(255,255,255,.05); border:1px solid rgba(196,168,148,.26); color:#f4ece5; }
+    .eyebrow{ font-size:12px; letter-spacing:.16em; text-transform:uppercase; font-weight:800; color:#eabf86; }
+    .h2{ font-size:clamp(22px,4.4vw,32px); font-weight:900; line-height:1.1; letter-spacing:-.01em; margin:0; }
+    .lead{ color:#c9bcae; font-size:15px; line-height:1.6; }
+    .card{ display:block; border-radius:18px; padding:18px; transition:.16s; }
+    .card:hover{ transform:translateY(-2px); border-color:rgba(196,168,148,.3); }
+    .reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease; }
+    .reveal.in{ opacity:1; transform:none; }
+    /* hero backdrop */
+    .hero{ position:relative; overflow:hidden; }
+    .hero-bg{ position:absolute; inset:0; z-index:0; }
+    .spark{ animation:spk 7s ease-in-out infinite } .spark.b{ animation-delay:2.3s } .spark.c{ animation-delay:4.6s } .spark.d{ animation-delay:1.2s } .spark.e{ animation-delay:3.4s }
+    @keyframes spk{ 0%{ transform:translateY(0); opacity:0 } 15%{ opacity:.9 } 70%{ opacity:.5 } 100%{ transform:translateY(-120px); opacity:0 } }
+    .pulse{ transform-box:fill-box; transform-origin:center; animation:pls 3.4s ease-in-out infinite } @keyframes pls{ 0%,100%{ opacity:.55 } 50%{ opacity:1 } }
+    @media (prefers-reduced-motion:reduce){ .spark,.pulse{ animation:none !important } .reveal{ opacity:1; transform:none; transition:none } }
+  </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"ADN Minero","url":"https://simonrovi-web.github.io/adn-minero/","applicationCategory":"EducationApplication","operatingSystem":"Web, Android","offers":{"@type":"Offer","price":"0","priceCurrency":"CLP"},"inLanguage":"es-CL","description":"App gratuita que explica la minería de Chile para todos: faenas, minerales, seguridad, sueldos, salud, historia, juegos y un asistente con IA."}
+  </script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="sticky top-0 z-30" style="backdrop-filter:blur(12px);background:rgba(20,17,16,.72);border-bottom:1px solid rgba(196,168,148,.1)">
+    <div class="wrap flex items-center justify-between" style="height:60px">
+      <a href="#top" class="flex items-center gap-2.5">
+        <img src="icon-192.png" alt="ADN Minero" width="34" height="34" style="border-radius:9px"/>
+        <span style="font-weight:900;letter-spacing:.02em">ADN <span style="color:var(--copper)">Minero</span></span>
+      </a>
+      <a href="index.html" class="btn btn-p" style="padding:9px 16px;font-size:13.5px">Abrir la app <i data-lucide="arrow-right" style="width:16px;height:16px"></i></a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header id="top" class="hero">
+    <svg class="hero-bg" viewBox="0 0 1040 520" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <defs>
+        <radialGradient id="hGlow" cx="0.2" cy="0" r="1"><stop offset="0" stop-color="#cf9b6f" stop-opacity="0.22"/><stop offset="0.5" stop-color="#cf9b6f" stop-opacity="0.05"/><stop offset="1" stop-color="#cf9b6f" stop-opacity="0"/></radialGradient>
+        <linearGradient id="hMtn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2f28"/><stop offset="1" stop-color="#1a1511"/></linearGradient>
+        <linearGradient id="hMtn2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a221d"/><stop offset="1" stop-color="#17120f"/></linearGradient>
+      </defs>
+      <rect x="0" y="0" width="1040" height="520" fill="url(#hGlow)"/>
+      <polygon points="0,520 0,300 180,180 360,320 520,210 700,360 860,250 1040,360 1040,520" fill="url(#hMtn2)" opacity=".7"/>
+      <polygon points="0,520 0,380 220,260 430,400 640,300 820,420 1040,320 1040,520" fill="url(#hMtn)"/>
+      <circle class="pulse" cx="820" cy="120" r="46" fill="#cf9b6f" opacity=".12"/>
+      <g fill="#e6b483"><circle class="spark"   cx="230" cy="440" r="2.4"/><circle class="spark b" cx="470" cy="470" r="2"/><circle class="spark c" cx="690" cy="450" r="2.6"/><circle class="spark d" cx="880" cy="470" r="2"/><circle class="spark e" cx="360" cy="460" r="2.2"/></g>
+    </svg>
+    <div class="wrap" style="position:relative;z-index:1;padding-top:64px;padding-bottom:70px">
+      <p class="eyebrow reveal">Proyecto ciudadano · 100% gratis</p>
+      <h1 class="reveal" style="font-size:clamp(34px,7vw,60px);font-weight:900;line-height:1.02;letter-spacing:-.02em;margin:12px 0 0;max-width:15ch">La minería de Chile, <span style="color:var(--copper)">explicada para todos</span>.</h1>
+      <p class="reveal lead" style="font-size:clamp(16px,2.4vw,19px);max-width:56ch;margin-top:18px">ADN Minero reúne faenas, minerales, seguridad, sueldos, salud, historia, juegos y un asistente con inteligencia artificial — en una app simple, didáctica y en tu idioma. Para el trabajador, el estudiante y toda familia chilena.</p>
+      <div class="reveal" style="display:flex;flex-wrap:wrap;gap:12px;margin-top:28px">
+        <a href="index.html" class="btn btn-p">Explorar ADN Minero <i data-lucide="arrow-right" style="width:18px;height:18px"></i></a>
+        <a href="#conceptos" class="btn btn-s">Ver los conceptos</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- CIFRAS -->
+  <section class="wrap" style="margin-top:6px">
+    <div class="glass rounded-2xl reveal" style="display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(196,168,148,.12);overflow:hidden">
+      <div style="background:#141110;padding:20px 16px;text-align:center"><div style="font-size:30px;font-weight:900;color:var(--copper)">115</div><div style="font-size:12px;color:#9c8f83;font-weight:600;margin-top:2px">paneles de contenido</div></div>
+      <div style="background:#141110;padding:20px 16px;text-align:center"><div style="font-size:30px;font-weight:900;color:#5fd1bd">9</div><div style="font-size:12px;color:#9c8f83;font-weight:600;margin-top:2px">secciones temáticas</div></div>
+      <div style="background:#141110;padding:20px 16px;text-align:center"><div style="font-size:30px;font-weight:900;color:#a7d18a">IA</div><div style="font-size:12px;color:#9c8f83;font-weight:600;margin-top:2px">asistente que responde</div></div>
+      <div style="background:#141110;padding:20px 16px;text-align:center"><div style="font-size:30px;font-weight:900;color:#7fb0d9">0$</div><div style="font-size:12px;color:#9c8f83;font-weight:600;margin-top:2px">gratis y sin anuncios</div></div>
+    </div>
+  </section>
+
+  <!-- QUÉ ES -->
+  <section class="wrap" style="margin-top:64px">
+    <div style="max-width:70ch">
+      <p class="eyebrow reveal">¿Qué es ADN Minero?</p>
+      <h2 class="h2 reveal" style="margin-top:10px">Entender la minería no debería ser difícil.</h2>
+      <p class="lead reveal" style="margin-top:14px">La minería es el corazón de la economía de Chile, pero su mundo está lleno de tecnicismos. ADN Minero traduce todo eso a <b style="color:#f4ece5">explicaciones simples, visuales y con animaciones</b>: desde cómo funciona una mina hasta a dónde va la riqueza que genera, qué derechos tiene un trabajador o cómo cuidar la salud en faena. Todo verificable, con fuentes, y pensado para el bien de Chile.</p>
+    </div>
+  </section>
+
+  <!-- PARA QUIÉN -->
+  <section class="wrap" style="margin-top:46px">
+    <p class="eyebrow reveal">Para quién es</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:14px">
+      <div class="glass card reveal"><i data-lucide="hard-hat" style="width:26px;height:26px;color:#e0955f"></i><h3 style="margin:10px 0 4px;font-size:16px;font-weight:800">Trabajadores</h3><p style="font-size:13px;color:#c9bcae;line-height:1.5;margin:0">Turnos, sueldos, derechos, seguridad y salud en faena, a la mano.</p></div>
+      <div class="glass card reveal"><i data-lucide="graduation-cap" style="width:26px;height:26px;color:#a7d18a"></i><h3 style="margin:10px 0 4px;font-size:16px;font-weight:800">Estudiantes</h3><p style="font-size:13px;color:#c9bcae;line-height:1.5;margin:0">Procesos, minerales, historia y geología explicados con dibujos.</p></div>
+      <div class="glass card reveal"><i data-lucide="users" style="width:26px;height:26px;color:#7fb0d9"></i><h3 style="margin:10px 0 4px;font-size:16px;font-weight:800">Familias y comunidades</h3><p style="font-size:13px;color:#c9bcae;line-height:1.5;margin:0">Entender el impacto, el agua, el medioambiente y el aporte al país.</p></div>
+      <div class="glass card reveal"><i data-lucide="star" style="width:26px;height:26px;color:#e6c464"></i><h3 style="margin:10px 0 4px;font-size:16px;font-weight:800">Curiosos</h3><p style="font-size:13px;color:#c9bcae;line-height:1.5;margin:0">Juegos, trivia y datos para descubrir el orgullo minero de Chile.</p></div>
+    </div>
+  </section>
+
+  <!-- CATEGORÍAS -->
+  <section class="wrap" style="margin-top:64px">
+    <p class="eyebrow reveal">Todo organizado en 9 secciones</p>
+    <h2 class="h2 reveal" style="margin-top:10px">Explora por categoría</h2>
+    <div id="cats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:20px"></div>
+  </section>
+
+  <!-- CONCEPTOS DESTACADOS -->
+  <section class="wrap" id="conceptos" style="margin-top:64px;scroll-margin-top:72px">
+    <p class="eyebrow reveal">Una probada de lo que hay dentro</p>
+    <h2 class="h2 reveal" style="margin-top:10px">Conceptos destacados</h2>
+    <div id="feats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:20px"></div>
+    <p class="lead reveal" style="margin-top:18px;font-size:14px">…y más de 100 paneles: economía circular, ENAMI y la pequeña minería, fundición, glaciares, pueblos originarios, relaves, agua, energía, mujeres en la minería y mucho más.</p>
+  </section>
+
+  <!-- VALOR PARA CHILE -->
+  <section class="wrap" style="margin-top:64px">
+    <div class="glass rounded-2xl reveal" style="padding:28px 22px">
+      <p class="eyebrow">Por qué importa para Chile</p>
+      <h2 class="h2" style="margin-top:10px">Conocimiento que desarrolla al país</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin-top:22px">
+        <div style="display:flex;gap:12px"><i data-lucide="book-open" style="width:22px;height:22px;color:var(--copper);flex:0 0 auto;margin-top:2px"></i><div><h3 style="margin:0 0 3px;font-size:15px;font-weight:800">Educación y oportunidades</h3><p style="font-size:13px;color:#c9bcae;line-height:1.5;margin:0">Acerca carreras, cursos y empleos mineros a quien no tiene cómo informarse.</p></div></div>
+        <div style="display:flex;gap:12px"><i data-lucide="shield-check" style="width:22px;height:22px;color:#a7d18a;flex:0 0 auto;margin-top:2px"></i><div><h3 style="margin:0 0 3px;font-size:15px;font-weight:800">Seguridad y salud</h3><p style="font-size:13px;color:#c9bcae;line-height:1.5;margin:0">Prevención, primeros auxilios y bienestar para volver bien a casa.</p></div></div>
+        <div style="display:flex;gap:12px"><i data-lucide="heart-handshake" style="width:22px;height:22px;color:#e08aa8;flex:0 0 auto;margin-top:2px"></i><div><h3 style="margin:0 0 3px;font-size:15px;font-weight:800">Transparencia y confianza</h3><p style="font-size:13px;color:#c9bcae;line-height:1.5;margin:0">Explica a dónde va la riqueza, el royalty y el aporte de la minería al país.</p></div></div>
+        <div style="display:flex;gap:12px"><i data-lucide="trending-up" style="width:22px;height:22px;color:#7fbf9a;flex:0 0 auto;margin-top:2px"></i><div><h3 style="margin:0 0 3px;font-size:15px;font-weight:800">Orgullo y futuro</h3><p style="font-size:13px;color:#c9bcae;line-height:1.5;margin:0">Del cobre al litio y la transición energética: el rol de Chile en el mundo.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARACTERÍSTICAS -->
+  <section class="wrap" style="margin-top:64px">
+    <p class="eyebrow reveal">Hecha para usarse en cualquier parte</p>
+    <h2 class="h2 reveal" style="margin-top:10px">Simple, rápida y tuya</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:20px">
+      <div class="glass card reveal"><i data-lucide="smartphone" style="width:24px;height:24px;color:var(--copper)"></i><h3 style="margin:9px 0 3px;font-size:15px;font-weight:800">Se instala como app</h3><p style="font-size:13px;color:#c9bcae;line-height:1.5;margin:0">En Android, iPhone o PC, directo desde el navegador. También está en Google Play.</p></div>
+      <div class="glass card reveal"><i data-lucide="wifi-off" style="width:24px;height:24px;color:#7fb0d9"></i><h3 style="margin:9px 0 3px;font-size:15px;font-weight:800">Funciona sin internet</h3><p style="font-size:13px;color:#c9bcae;line-height:1.5;margin:0">Una vez abierta, los paneles quedan disponibles aunque estés en plena faena sin señal.</p></div>
+      <div class="glass card reveal"><i data-lucide="sparkles" style="width:24px;height:24px;color:#e8c9a6"></i><h3 style="margin:9px 0 3px;font-size:15px;font-weight:800">Con asistente IA</h3><p style="font-size:13px;color:#c9bcae;line-height:1.5;margin:0">Pregunta en lenguaje natural y recibe respuestas basadas en el contenido de la app.</p></div>
+      <div class="glass card reveal"><i data-lucide="radio" style="width:24px;height:24px;color:#e0715a"></i><h3 style="margin:9px 0 3px;font-size:15px;font-weight:800">Titulares en vivo</h3><p style="font-size:13px;color:#c9bcae;line-height:1.5;margin:0">Noticias mineras y geopolítica del cobre y el litio, actualizadas solas.</p></div>
+      <div class="glass card reveal"><i data-lucide="gamepad-2" style="width:24px;height:24px;color:#a7d18a"></i><h3 style="margin:9px 0 3px;font-size:15px;font-weight:800">Se aprende jugando</h3><p style="font-size:13px;color:#c9bcae;line-height:1.5;margin:0">Trivia, wordle minero, memoria y más, para aprender sin darte cuenta.</p></div>
+      <div class="glass card reveal"><i data-lucide="heart" style="width:24px;height:24px;color:#e08aa8"></i><h3 style="margin:9px 0 3px;font-size:15px;font-weight:800">Gratis, siempre</h3><p style="font-size:13px;color:#c9bcae;line-height:1.5;margin:0">Sin costo, sin anuncios y sin registro. Hecha para aportar al país.</p></div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="wrap" style="margin-top:70px">
+    <div class="glass rounded-2xl reveal" style="text-align:center;padding:40px 22px;background:radial-gradient(600px 300px at 50% 0%, rgba(207,155,111,.14), transparent 60%), linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44))">
+      <h2 class="h2" style="max-width:20ch;margin:0 auto">Descubre el ADN minero de Chile</h2>
+      <p class="lead" style="max-width:50ch;margin:14px auto 0">Abre la app, explora los 115 paneles y comparte el conocimiento con tu gente.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:24px">
+        <a href="index.html" class="btn btn-p">Abrir ADN Minero <i data-lucide="arrow-right" style="width:18px;height:18px"></i></a>
+        <a href="adn-minero-acerca.html" class="btn btn-s">Conocer el proyecto</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="wrap" style="margin-top:56px;padding-bottom:44px;border-top:1px solid rgba(196,168,148,.1);padding-top:26px">
+    <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between">
+      <div class="flex items-center gap-2.5"><img src="icon-192.png" alt="" width="30" height="30" style="border-radius:8px"/><span style="font-weight:800">ADN <span style="color:var(--copper)">Minero</span></span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:#c9bcae;font-weight:600">
+        <a href="index.html" style="color:#c9bcae">Inicio</a>
+        <a href="adn-minero-acerca.html" style="color:#c9bcae">Acerca</a>
+        <a href="adn-minero-terminos.html" style="color:#c9bcae">Términos</a>
+        <a href="adn-minero-privacidad.html" style="color:#c9bcae">Privacidad</a>
+      </div>
+    </div>
+    <p style="font-size:11.5px;color:#7d7267;line-height:1.6;margin-top:20px;max-width:75ch">ADN Minero es un proyecto de divulgación ciudadano, independiente y gratuito. El contenido es referencial y con fines educativos; no constituye asesoría legal, financiera ni de inversión. Fuentes: Cochilco, Sernageomin, Codelco, ENAMI y organismos públicos de Chile.</p>
+  </footer>
+
+<script src="portal-data.js"></script>
+<script>
+(function(){
+  // Categorías (desde la fuente única del portal) → enlazan a la app por #clave
+  try{
+    const cats=(typeof CATS!=='undefined'&&Array.isArray(CATS))?CATS:[];
+    const cont=document.getElementById('cats');
+    if(cont && cats.length){
+      cont.innerHTML=cats.filter(c=>c.k!=='comparte').map(c=>`
+        <a href="index.html#${c.k}" class="glass card" style="border-left:3px solid ${c.dot}">
+          <div style="display:flex;align-items:center;gap:11px">
+            <div style="height:40px;width:40px;border-radius:11px;display:grid;place-items:center;background:${c.dot}1f;border:1px solid ${c.dot}44;flex:0 0 auto"><i data-lucide="${c.ic}" style="width:20px;height:20px;color:${c.dot}"></i></div>
+            <div style="min-width:0"><h3 style="margin:0;font-size:15.5px;font-weight:800">${c.lbl}</h3><p style="margin:1px 0 0;font-size:12px;color:#9c8f83">${c.sub}</p></div>
+          </div>
+        </a>`).join('');
+    }
+  }catch(e){}
+
+  // Conceptos destacados (archivos reales de la app)
+  const FEATS=[
+    {f:'adn-minero-faenas.html',   i:'mountain',          c:'#cf9b6f', t:'Faenas de Chile',        d:'Las grandes minas, con su historia y rol.'},
+    {f:'adn-minero-litio.html',    i:'battery-charging',  c:'#5fd1bd', t:'Litio · oro blanco',     d:'Qué es, los salares y la estrategia nacional.'},
+    {f:'adn-minero-viaje-cobre.html', i:'route',          c:'#cf9b6f', t:'El viaje del cobre',     d:'De la roca al mundo, paso a paso y animado.'},
+    {f:'adn-minero-seguridad.html',i:'shield-check',      c:'#a7d18a', t:'Seguridad en faena',     d:'Prevención y autocuidado para volver a casa.'},
+    {f:'adn-minero-salud-mental.html', i:'heart',         c:'#7fb0d9', t:'Salud mental',           d:'Cuidar la mente en los turnos y la distancia.'},
+    {f:'adn-minero-sueldos.html',  i:'line-chart',        c:'#7fbf9a', t:'Sueldos de la minería',  d:'Rentas por cargo y cómo se componen.'},
+    {f:'adn-minero-riqueza.html',  i:'hand-coins',        c:'#e0a35a', t:'¿A dónde va la riqueza?',d:'Impuestos, royalty y aporte al país.'},
+    {f:'adn-minero-juegos.html',   i:'gamepad-2',         c:'#d6a94f', t:'Juegos y trivia',        d:'Aprende de minería jugando.'}
+  ];
+  document.getElementById('feats').innerHTML=FEATS.map(x=>`
+    <a href="${x.f}" class="glass card">
+      <div style="height:42px;width:42px;border-radius:12px;display:grid;place-items:center;background:${x.c}1f;border:1px solid ${x.c}44"><i data-lucide="${x.i}" style="width:21px;height:21px;color:${x.c}"></i></div>
+      <h3 style="margin:12px 0 4px;font-size:15.5px;font-weight:800">${x.t}</h3>
+      <p style="margin:0;font-size:13px;color:#c9bcae;line-height:1.5">${x.d}</p>
+    </a>`).join('');
+
+  window.lucide&&lucide.createIcons();
+
+  // Reveal al hacer scroll
+  const io=new IntersectionObserver((es)=>{ es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); }, {threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+})();
+</script>
+</body>
+</html>
