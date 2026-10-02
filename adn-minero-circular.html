@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · El Cobre se Recicla Casi Infinito</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="Economía circular del cobre: el cobre se puede reciclar una y otra vez sin perder sus propiedades, usando mucha menos energía que extraerlo. Un camino para dar más valor sostenible a Chile." />
+  <link rel="canonical" href="https://simonrovi-web.github.io/adn-minero/adn-minero-circular.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ADN Minero" />
+  <meta property="og:title" content="ADN Minero · El Cobre se Recicla Casi Infinito" />
+  <meta property="og:description" content="Economía circular: el cobre se recicla una y otra vez sin perder calidad." />
+  <meta property="og:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://simonrovi-web.github.io/adn-minero/adn-minero-circular.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ADN Minero · El Cobre se Recicla Casi Infinito" />
+  <meta name="twitter:description" content="Economía circular: el cobre se recicla una y otra vez sin perder calidad." />
+  <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(127,191,154,0.13), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    h3{ margin:0; } .lbl-sm{ font-size:9.5px; font-weight:700; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; }
+    .ci-spin{ transform-box:view-box; transform-origin:200px 76px; animation:ciSpin 11s linear infinite }
+    @keyframes ciSpin{ to{ transform:rotate(360deg) } }
+    .ci-node{ transform-box:fill-box; transform-origin:center; animation:ciNode 11s ease-in-out infinite }
+    .ci-node.n2{ animation-delay:2.75s } .ci-node.n3{ animation-delay:5.5s } .ci-node.n4{ animation-delay:8.25s }
+    @keyframes ciNode{ 0%,100%{ transform:scale(1) } 8%,16%{ transform:scale(1.18) } }
+    @media (prefers-reduced-motion:reduce){ .ci-spin,.ci-node{ animation:none !important } }
+  </style>
+  <script src="adn-ui.js" defer></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","@id":"https://simonrovi-web.github.io/adn-minero/adn-minero-circular.html#webpage","url":"https://simonrovi-web.github.io/adn-minero/adn-minero-circular.html","name":"ADN Minero · El Cobre se Recicla Casi Infinito","description":"Economía circular: el cobre se recicla una y otra vez sin perder calidad.","isPartOf":{"@id":"https://simonrovi-web.github.io/adn-minero/#site"},"inLanguage":"es-CL","publisher":{"@id":"https://simonrovi-web.github.io/adn-minero/#org"}}
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(127,191,154,.15);border:1px solid rgba(127,191,154,.34)"><i data-lucide="recycle" style="width:26px;height:26px;color:#7fbf9a"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#a7dcbf;font-weight:800">El Cobre se Recicla Casi Infinito</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Economía circular: el metal que no se gasta</p>
+      </div>
+    </header>
+
+    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">El cobre tiene un superpoder: se puede <b>reciclar una y otra vez sin perder sus propiedades</b>. Un cable viejo puede volver a ser cobre nuevo, usando <b>mucha menos energía</b> que sacarlo de la mina. Es la <b>economía circular</b>, y es parte del futuro de Chile.</p>
+
+    <div class="glass rounded-2xl p-4 mt-4">
+      <svg class="viz" viewBox="0 0 400 152" role="img" aria-label="Ciclo del cobre: cátodo, productos, chatarra y fundición que vuelve a ser cobre nuevo, una y otra vez">
+        <defs>
+          <linearGradient id="ciCu" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f0d7b6"/><stop offset="1" stop-color="#cf9b6f"/></linearGradient>
+          <radialGradient id="ciDot" cx="0.4" cy="0.4" r="0.6"><stop offset="0" stop-color="#ffe0b0"/><stop offset="1" stop-color="#d98a4a"/></radialGradient>
+        </defs>
+        <rect x="0" y="0" width="400" height="152" fill="#17201b"/>
+        <!-- anillo giratorio con flechas + punto de cobre viajando -->
+        <g class="ci-spin">
+          <circle cx="200" cy="76" r="48" fill="none" stroke="#3f5a4b" stroke-width="7"/>
+          <circle cx="200" cy="76" r="48" fill="none" stroke="#7fbf9a" stroke-width="2.4" stroke-dasharray="4 10" stroke-linecap="round"/>
+          <polygon points="200,22 194,34 206,34" fill="#7fbf9a"/>
+          <polygon points="248,76 236,70 236,82" fill="#7fbf9a"/>
+          <circle cx="200" cy="28" r="7" fill="url(#ciDot)"/>
+        </g>
+        <!-- centro -->
+        <circle cx="200" cy="76" r="25" fill="#1f2c24" stroke="#7fbf9a" stroke-width="1.2"/>
+        <text x="200" y="72" text-anchor="middle" style="font-size:10px;font-weight:800;fill:#a7dcbf">economía</text>
+        <text x="200" y="85" text-anchor="middle" style="font-size:10px;font-weight:800;fill:#a7dcbf">circular</text>
+        <!-- nodos -->
+        <g class="ci-node"><circle cx="200" cy="18" r="13" fill="url(#ciCu)"/><text x="200" y="22" text-anchor="middle" style="font-size:11px">⛏️</text></g>
+        <text class="lbl-sm" x="200" y="6" text-anchor="middle" style="fill:#e8c9a6">cátodo</text>
+        <g class="ci-node n2"><circle cx="268" cy="76" r="13" fill="url(#ciCu)"/><text x="268" y="80" text-anchor="middle" style="font-size:11px">🔌</text></g>
+        <text class="lbl-sm" x="318" y="79" text-anchor="middle" style="fill:#e8c9a6">productos</text>
+        <g class="ci-node n3"><circle cx="200" cy="134" r="13" fill="url(#ciCu)"/><text x="200" y="138" text-anchor="middle" style="font-size:11px">🧰</text></g>
+        <text class="lbl-sm" x="200" y="150" text-anchor="middle" style="fill:#e8c9a6">chatarra</text>
+        <g class="ci-node n4"><circle cx="132" cy="76" r="13" fill="url(#ciCu)"/><text x="132" y="80" text-anchor="middle" style="font-size:11px">🔥</text></g>
+        <text class="lbl-sm" x="82" y="79" text-anchor="middle" style="fill:#e8c9a6">fundición</text>
+      </svg>
+      <p class="text-center text-[11px] text-stone-500 mt-2">Cátodo → productos → chatarra → fundición → <b>otra vez cobre nuevo</b>. Sin fin.</p>
+    </div>
+
+    <div class="grid grid-cols-2 gap-2.5 mt-4">
+      <div class="glass rounded-2xl p-3.5"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="recycle" class="w-4 h-4" style="color:#7fbf9a"></i><span class="text-[11px] font-bold text-stone-400">Reciclable</span></div><b style="font-size:17px;color:#a7dcbf">100%</b><p class="text-[11px] text-stone-500 mt-1">sin perder calidad</p></div>
+      <div class="glass rounded-2xl p-3.5"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="zap" class="w-4 h-4" style="color:#e0c35a"></i><span class="text-[11px] font-bold text-stone-400">Energía</span></div><b style="font-size:17px;color:#e6c98f">Mucho menos</b><p class="text-[11px] text-stone-500 mt-1">que extraerlo</p></div>
+      <div class="glass rounded-2xl p-3.5"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="leaf" class="w-4 h-4" style="color:#a7d18a"></i><span class="text-[11px] font-bold text-stone-400">Huella</span></div><b style="font-size:17px;color:#e8c9a6">Más baja</b><p class="text-[11px] text-stone-500 mt-1">menos CO₂</p></div>
+      <div class="glass rounded-2xl p-3.5"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="repeat" class="w-4 h-4" style="color:#e0955f"></i><span class="text-[11px] font-bold text-stone-400">Vida útil</span></div><b style="font-size:17px;color:#e8c9a6">Casi infinita</b><p class="text-[11px] text-stone-500 mt-1">se reusa siempre</p></div>
+    </div>
+
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="info" style="width:17px;height:17px;color:#7fbf9a"></i><h3 class="font-bold text-[13.5px]">Por qué importa</h3></div>
+      <p class="text-[12.5px] text-stone-300 leading-relaxed">Buena parte del cobre que se ha extraído en la historia <b>sigue en uso</b> en cables, casas y aparatos. Reciclarlo entrega cobre de la misma calidad con una fracción de la energía. Con la <b>electromovilidad</b>, el mundo necesitará aún más cobre, y el reciclaje ayuda a abastecerlo.</p>
+    </div>
+
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="trending-up" style="width:17px;height:17px;color:#a7d18a"></i><h3 class="font-bold text-[13.5px]">Su rol en el desarrollo</h3></div>
+      <p class="text-[12.5px] text-stone-300 leading-relaxed">Chile es el rey del cobre primario; sumar <b>reciclaje y manufactura</b> permitiría capturar más valor, crear industria y empleo calificado, y ofrecer un <b>cobre más limpio</b> al mundo.</p>
+      <a href="adn-minero-cobre-transicion.html" class="inline-flex items-center gap-1.5 mt-2.5 text-[13px] font-bold" style="color:#a7d18a">Cobre y transición energética <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+    </div>
+
+    <div class="mt-3 grid grid-cols-2 gap-2.5"><a href="adn-minero-viaje-cobre.html" class="glass rounded-2xl p-3.5 active:scale-95 transition"><i data-lucide="route" style="width:19px;height:19px;color:#cf9b6f"></i><p class="text-[13px] font-bold mt-1.5">El viaje del cobre</p></a><a href="adn-minero-ambiente.html" class="glass rounded-2xl p-3.5 active:scale-95 transition"><i data-lucide="leaf" style="width:19px;height:19px;color:#cf9b6f"></i><p class="text-[13px] font-bold mt-1.5">Medio ambiente</p></a></div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Contenido de divulgación. Fuentes: Cochilco, ICA (International Copper Association). · <a href="adn-minero-energia.html" style="color:#e8c9a6">Energía y transición</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+<script>window.lucide&&lucide.createIcons();</script>
+</body>
+</html>

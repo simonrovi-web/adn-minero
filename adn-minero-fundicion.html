@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · Fundición y Refinería</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="Cómo el concentrado de cobre se convierte en cobre 99,99%: la fundición lo derrite y lo limpia, y la refinería electrolítica entrega cátodos purísimos. Aquí Chile agrega valor en vez de exportar solo concentrado." />
+  <link rel="canonical" href="https://simonrovi-web.github.io/adn-minero/adn-minero-fundicion.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ADN Minero" />
+  <meta property="og:title" content="ADN Minero · Fundición y Refinería" />
+  <meta property="og:description" content="Del concentrado al cobre 99,99%: el valor agregado que Chile puede capturar." />
+  <meta property="og:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://simonrovi-web.github.io/adn-minero/adn-minero-fundicion.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ADN Minero · Fundición y Refinería" />
+  <meta name="twitter:description" content="Del concentrado al cobre 99,99%: el valor agregado que Chile puede capturar." />
+  <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(224,113,90,0.14), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    h3{ margin:0; } .lbl-sm{ font-size:9px; fill:#e6c79b; font-weight:700; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; }
+    .fu-fire{ animation:fuFire 1.6s ease-in-out infinite } .fu-fire.b{ animation-delay:.5s } .fu-fire.c{ animation-delay:1s }
+    @keyframes fuFire{ 0%,100%{ opacity:.55; transform:translateY(0) } 50%{ opacity:1; transform:translateY(-3px) } }
+    .fu-pour{ animation:fuPour 3s ease-in-out infinite } @keyframes fuPour{ 0%,100%{ opacity:.5 } 50%{ opacity:1 } }
+    .fu-bub{ animation:fuBub 2.4s linear infinite } .fu-bub.b{ animation-delay:.8s } .fu-bub.c{ animation-delay:1.6s }
+    @keyframes fuBub{ 0%{ transform:translateY(0); opacity:0 } 20%{ opacity:.9 } 100%{ transform:translateY(-26px); opacity:0 } }
+    .fu-plate{ animation:fuPlate 4s ease-in-out infinite } @keyframes fuPlate{ 0%{ transform:scaleY(.2); opacity:.5 } 60%,100%{ transform:scaleY(1); opacity:1 } }
+    @media (prefers-reduced-motion:reduce){ .fu-fire,.fu-pour,.fu-bub,.fu-plate{ animation:none !important; opacity:1; transform:none } }
+  </style>
+  <script src="adn-ui.js" defer></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","@id":"https://simonrovi-web.github.io/adn-minero/adn-minero-fundicion.html#webpage","url":"https://simonrovi-web.github.io/adn-minero/adn-minero-fundicion.html","name":"ADN Minero · Fundición y Refinería","description":"Del concentrado al cobre 99,99%: el valor agregado que Chile puede capturar.","isPartOf":{"@id":"https://simonrovi-web.github.io/adn-minero/#site"},"inLanguage":"es-CL","publisher":{"@id":"https://simonrovi-web.github.io/adn-minero/#org"}}
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(224,113,90,.15);border:1px solid rgba(224,113,90,.32)"><i data-lucide="flame" style="width:26px;height:26px;color:#e0715a"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#eaa08c;font-weight:800">Fundición y Refinería</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Del concentrado al cobre 99,99%</p>
+      </div>
+    </header>
+
+    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">El <b>concentrado</b> que sale de la mina es apenas ~30% cobre. Para llegar al cobre purísimo hay dos pasos: la <b>fundición</b> lo derrite con fuego y lo limpia, y la <b>refinería electrolítica</b> lo convierte en <b>cátodos de 99,99%</b>. Hacer esto en Chile es <b>agregar valor</b>.</p>
+
+    <div class="glass rounded-2xl p-4 mt-4">
+      <svg class="viz" viewBox="0 0 400 150" role="img" aria-label="El concentrado entra a la fundición con fuego, pasa a ánodo y en la celda electrolítica se forma un cátodo de cobre 99,99%">
+        <defs>
+          <linearGradient id="fuBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a1f1b"/><stop offset="1" stop-color="#1a1411"/></linearGradient>
+          <linearGradient id="fuFurn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a4a40"/><stop offset="1" stop-color="#2e2420"/></linearGradient>
+          <radialGradient id="fuMolten" cx="0.5" cy="0.3" r="0.8"><stop offset="0" stop-color="#ffd27a"/><stop offset="0.5" stop-color="#ff8a4a"/><stop offset="1" stop-color="#d1401f"/></radialGradient>
+          <linearGradient id="fuCat" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe6c8"/><stop offset="1" stop-color="#cf9b6f"/></linearGradient>
+        </defs>
+        <rect x="0" y="0" width="400" height="150" fill="url(#fuBg)"/>
+        <!-- concentrado -->
+        <ellipse cx="34" cy="112" rx="22" ry="8" fill="#4a3d33"/><path d="M14 112 q20 -22 40 0 z" fill="#6a5744"/>
+        <text class="lbl-sm" x="34" y="132" text-anchor="middle">concentrado 30%</text>
+        <text class="lbl-sm" x="74" y="86" text-anchor="middle" style="fill:#8a7a63">→</text>
+        <!-- fundición -->
+        <g>
+          <path class="fu-fire c" d="M118 60 q-6 -14 6 -22 q-2 10 6 12 q6 -4 4 -12 q10 10 4 22 z" fill="#ffb24a"/>
+          <path class="fu-fire"   d="M112 66 q-7 -18 7 -28 q-3 13 7 15 q7 -5 5 -15 q12 13 5 28 z" fill="#ff7a3a" opacity=".9"/>
+          <path class="fu-fire b" d="M120 64 q-4 -9 4 -15 q-1 7 4 8 q4 -3 3 -8 q7 7 3 15 z" fill="#ffe08a"/>
+          <rect x="96" y="66" width="56" height="46" rx="5" fill="url(#fuFurn)"/>
+          <rect x="104" y="76" width="40" height="18" rx="3" fill="url(#fuMolten)"/>
+          <circle class="fu-bub"   cx="114" cy="86" r="2.4" fill="#ffe3a0"/><circle class="fu-bub b" cx="124" cy="86" r="2" fill="#ffe3a0"/><circle class="fu-bub c" cx="134" cy="86" r="2.2" fill="#ffe3a0"/>
+        </g>
+        <text class="lbl-sm" x="124" y="132" text-anchor="middle" style="fill:#eaa08c">fundición (fuego)</text>
+        <!-- ánodo -->
+        <g><rect x="190" y="70" width="10" height="46" rx="2" fill="#b07a52"/><path class="fu-pour" d="M168 88 q12 2 20 -8" fill="none" stroke="#ff8a4a" stroke-width="3" stroke-linecap="round"/></g>
+        <text class="lbl-sm" x="195" y="132" text-anchor="middle">ánodo ~99%</text>
+        <!-- celda electrolítica -->
+        <g>
+          <rect x="244" y="60" width="118" height="58" rx="6" fill="#1c3038" stroke="#4a7d8a" stroke-width="1.3"/>
+          <rect x="248" y="70" width="110" height="44" rx="3" fill="#2a5560" opacity=".5"/>
+          <rect x="262" y="68" width="8" height="48" rx="2" fill="#b07a52"/>
+          <rect x="336" y="68" width="8" height="48" rx="2" fill="#b07a52"/>
+          <!-- cátodo creciendo -->
+          <rect class="fu-plate" x="296" y="66" width="16" height="50" rx="2" fill="url(#fuCat)" style="transform-box:fill-box;transform-origin:center"/>
+          <circle class="fu-bub"   cx="280" cy="108" r="1.8" fill="#bfe0e6"/><circle class="fu-bub b" cx="324" cy="108" r="1.8" fill="#bfe0e6"/>
+        </g>
+        <text class="lbl-sm" x="303" y="132" text-anchor="middle" style="fill:#ffe6c8">cátodo 99,99%</text>
+      </svg>
+      <p class="text-center text-[11px] text-stone-500 mt-2">La fundición derrite y limpia; la <b>electrólisis</b> deposita cobre purísimo en el cátodo.</p>
+    </div>
+
+    <div class="grid grid-cols-2 gap-2.5 mt-4">
+      <div class="glass rounded-2xl p-3.5"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="log-in" class="w-4 h-4" style="color:#a7d18a"></i><span class="text-[11px] font-bold text-stone-400">Entra</span></div><b style="font-size:17px;color:#a7d18a">Concentrado</b><p class="text-[11px] text-stone-500 mt-1">~30% cobre</p></div>
+      <div class="glass rounded-2xl p-3.5"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="flame" class="w-4 h-4" style="color:#e0715a"></i><span class="text-[11px] font-bold text-stone-400">Proceso</span></div><b style="font-size:15px;color:#eaa08c">Fuego + electrólisis</b><p class="text-[11px] text-stone-500 mt-1">funde y refina</p></div>
+      <div class="glass rounded-2xl p-3.5"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="gem" class="w-4 h-4" style="color:#d6a94f"></i><span class="text-[11px] font-bold text-stone-400">Sale</span></div><b style="font-size:17px;color:#e8c9a6">Cátodo 99,99%</b><p class="text-[11px] text-stone-500 mt-1">cobre purísimo</p></div>
+      <div class="glass rounded-2xl p-3.5"><div class="flex items-center gap-1.5 mb-1.5"><i data-lucide="trending-up" class="w-4 h-4" style="color:#7fbf9a"></i><span class="text-[11px] font-bold text-stone-400">Valor</span></div><b style="font-size:17px;color:#e8c9a6">Agregado</b><p class="text-[11px] text-stone-500 mt-1">empleo e industria</p></div>
+    </div>
+
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="info" style="width:17px;height:17px;color:#e0715a"></i><h3 class="font-bold text-[13.5px]">El debate del valor agregado</h3></div>
+      <p class="text-[12.5px] text-stone-300 leading-relaxed">Chile exporta gran parte de su cobre como <b>concentrado</b>, que se funde fuera del país. Fundir y refinar <b>acá</b> genera empleo calificado e industria, pero exige inversión y resolver temas ambientales. Es uno de los grandes debates del desarrollo minero chileno.</p>
+    </div>
+
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="factory" style="width:17px;height:17px;color:#a7d18a"></i><h3 class="font-bold text-[13.5px]">Dónde ocurre en Chile</h3></div>
+      <p class="text-[12.5px] text-stone-300 leading-relaxed">Fundiciones de <b>Codelco</b> (Chuquicamata, Potrerillos, Caletones) y de <b>ENAMI</b> (Hernán Videla Lira, “Paipote”). Modernizarlas para cumplir la norma de emisiones es clave para su futuro.</p>
+      <a href="adn-minero-enami.html" class="inline-flex items-center gap-1.5 mt-2.5 text-[13px] font-bold" style="color:#a7d18a">ENAMI y la pequeña minería <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+    </div>
+
+    <div class="mt-3 grid grid-cols-2 gap-2.5"><a href="adn-minero-proceso.html" class="glass rounded-2xl p-3.5 active:scale-95 transition"><i data-lucide="git-branch" style="width:19px;height:19px;color:#cf9b6f"></i><p class="text-[13px] font-bold mt-1.5">Cómo se procesa</p></a><a href="adn-minero-viaje-cobre.html" class="glass rounded-2xl p-3.5 active:scale-95 transition"><i data-lucide="route" style="width:19px;height:19px;color:#cf9b6f"></i><p class="text-[13px] font-bold mt-1.5">El viaje del cobre</p></a></div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Contenido de divulgación. Fuentes: Codelco, ENAMI, Cochilco. · <a href="adn-minero-circular.html" style="color:#e8c9a6">Economía circular</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+<script>window.lucide&&lucide.createIcons();</script>
+</body>
+</html>
