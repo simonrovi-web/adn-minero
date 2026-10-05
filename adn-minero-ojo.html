@@ -59,6 +59,10 @@
     .you{ display:block; width:16px; height:16px; border-radius:50%; background:#4aa3ff; border:2px solid #fff; box-shadow:0 0 0 0 rgba(74,163,255,.6); animation:youp 2s infinite }
     @keyframes youp{ 0%{ box-shadow:0 0 0 0 rgba(74,163,255,.5) } 70%{ box-shadow:0 0 0 13px rgba(74,163,255,0) } 100%{ box-shadow:0 0 0 0 rgba(74,163,255,0) } }
     #map:fullscreen{ border-radius:0; height:100% !important }
+    .pin-relave{ display:block; width:12px; height:12px; background:#b7905a; border:1.5px solid #2a1d10; border-radius:2px; transform:rotate(45deg) }
+    input[type=range]{ -webkit-appearance:none; appearance:none; height:6px; border-radius:6px; background:linear-gradient(90deg,#ff7a3a,#ffd27a); outline:none; accent-color:#ff7a3a }
+    input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:#ffb169; border:2px solid #1a1008; cursor:pointer }
+    input[type=range]::-moz-range-thumb{ width:18px; height:18px; border-radius:50%; background:#ffb169; border:2px solid #1a1008; cursor:pointer }
     /* chips filtro = leyenda */
     .fchip{ display:inline-flex; align-items:center; gap:6px; font-size:11.5px; color:#c9bcae; font-weight:700; background:rgba(255,255,255,.04); border:1px solid rgba(196,168,148,.2); border-radius:999px; padding:5px 11px; cursor:pointer; transition:.15s; user-select:none }
     .fchip .d{ width:11px; height:11px; border-radius:50%; display:inline-block }
@@ -122,16 +126,22 @@
       <div class="glass rounded-2xl p-3 tile"><div class="flex items-center gap-1.5 mb-1"><i data-lucide="clock" class="w-3.5 h-3.5" style="color:#7fb0d9"></i><span class="text-[10.5px] font-bold text-stone-400 uppercase tracking-wide">Hora Chile</span></div><div class="n" style="font-size:17px;color:#e8c9a6" id="tClock">—</div><div class="text-[10.5px] text-stone-500 mt-0.5">tiempo real</div></div>
     </div>
 
-    <!-- toolbar -->
+    <!-- toolbar capas -->
     <div class="flex flex-wrap items-center gap-2 mt-4">
       <div class="seg" id="layerSeg">
         <button data-l="sat" class="on"><i data-lucide="globe" style="width:14px;height:14px"></i> Satélite</button>
         <button data-l="map"><i data-lucide="layers" style="width:14px;height:14px"></i> Mapa</button>
       </div>
       <button class="abtn" id="btnRutas"><i data-lucide="route" style="width:14px;height:14px"></i> Rutas</button>
+      <button class="abtn" id="btnRail">🚆 Ferrocarril</button>
       <button class="abtn" id="btnPorts"><i data-lucide="anchor" style="width:14px;height:14px"></i> Puertos</button>
       <button class="abtn" id="btnVolc"><i data-lucide="triangle-alert" style="width:14px;height:14px"></i> Volcanes</button>
+      <button class="abtn" id="btnRelaves"><i data-lucide="droplet" style="width:14px;height:14px"></i> Relaves</button>
+    </div>
+    <!-- toolbar acciones -->
+    <div class="flex flex-wrap items-center gap-2 mt-2">
       <button class="abtn" id="btnLoc"><i data-lucide="navigation" style="width:14px;height:14px"></i> Mi faena cercana</button>
+      <button class="abtn" id="btnTour"><i data-lucide="play" style="width:14px;height:14px"></i> Tour por las faenas</button>
       <button class="abtn" id="btnShare"><i data-lucide="share-2" style="width:14px;height:14px"></i> Compartir</button>
       <button class="abtn" id="btnFS"><i data-lucide="move" style="width:14px;height:14px"></i> Pantalla completa</button>
     </div>
@@ -145,14 +155,26 @@
       <span class="fchip" style="cursor:default"><span class="d" style="background:#ff8a6a"></span>Sismo</span>
       <span class="fchip" style="cursor:default"><span class="d" style="background:#ffc24a;width:14px;height:4px;border-radius:2px"></span>Ruta 5</span>
       <span class="fchip" style="cursor:default"><span class="d" style="background:#ffe08a;width:14px;height:3px;border-radius:2px"></span>Corredor minero</span>
+      <span class="fchip" style="cursor:default"><span class="d" style="background:#c9c0b4;width:14px;height:3px;border-radius:0;border-top:2px dotted #2a2520"></span>Ferrocarril</span>
       <span class="fchip" style="cursor:default">⚓ Puerto</span>
       <span class="fchip" style="cursor:default">🌋 Volcán</span>
+      <span class="fchip" style="cursor:default"><span class="d" style="background:#b7905a;width:10px;height:10px;border-radius:2px"></span>Relave</span>
     </div>
 
     <div id="map" class="mt-3"></div>
     <div id="mapMsg" class="hidden glass rounded-2xl p-5 mt-3 text-center" style="color:#c9bcae">
       <p style="font-weight:700;color:#eef2f7;font-size:15px">El mapa necesita internet</p>
       <p class="text-sm mt-1">Las imágenes satelitales y los datos en vivo se cargan en línea. Conéctate y vuelve a intentar.</p>
+    </div>
+
+    <!-- línea de tiempo de sismos -->
+    <div class="glass rounded-2xl p-3.5 mt-3">
+      <div class="flex items-center justify-between gap-3 mb-2">
+        <span class="text-[12.5px] font-bold flex items-center gap-1.5" style="color:#ff9a6a"><i data-lucide="history" style="width:15px;height:15px"></i> Línea de tiempo de sismos</span>
+        <span id="eqWinLbl" class="text-[11.5px] font-bold text-stone-300">últimas 24 h</span>
+      </div>
+      <input type="range" id="eqSlider" min="1" max="48" value="24" step="1" />
+      <div class="flex items-center justify-between mt-1.5"><span class="text-[10px] text-stone-500">1 h</span><span id="eqCount" class="text-[11px] text-stone-400">—</span><span class="text-[10px] text-stone-500">48 h</span></div>
     </div>
 
     <!-- volar + empresa -->
@@ -296,6 +318,33 @@
   let volcOn=false;
   $('btnVolc').addEventListener('click',()=>{ volcOn=!volcOn; if(volcOn){ volcLayer.addTo(map); $('btnVolc').classList.add('on'); } else { map.removeLayer(volcLayer); $('btnVolc').classList.remove('on'); } });
 
+  // ferrocarriles mineros (referenciales)
+  const RAILS=[
+    {n:'FCAB · Antofagasta–Calama', pts:[[-23.65,-70.40],[-23.30,-69.70],[-22.90,-69.20],[-22.46,-68.93]]},
+    {n:'FCAB · Calama–Ollagüe (a Bolivia)', pts:[[-22.46,-68.93],[-22.10,-68.65],[-21.22,-68.25]]},
+    {n:'Ferronor · longitudinal norte', pts:[[-29.95,-71.24],[-28.60,-70.75],[-27.37,-70.33],[-26.35,-70.60],[-25.40,-70.42],[-24.20,-69.95],[-23.65,-70.40]]},
+    {n:'CAP · hierro a Guayacán', pts:[[-28.30,-70.60],[-28.57,-70.76],[-29.40,-71.00],[-29.96,-71.35]]},
+    {n:'Caldera–Copiapó (histórico)', pts:[[-27.07,-70.82],[-27.37,-70.33]]}
+  ];
+  const railLines=RAILS.map(r=>L.polyline(r.pts,{color:'#d6cdbf', weight:2.5, opacity:.9, dashArray:'2 5', lineCap:'round'}).bindTooltip(r.n,{sticky:true}));
+  const railLayer=L.layerGroup(railLines); let railOn=false;
+  $('btnRail').addEventListener('click',()=>{ railOn=!railOn; if(railOn){ railLayer.addTo(map); $('btnRail').classList.add('on'); } else { map.removeLayer(railLayer); $('btnRail').classList.remove('on'); } });
+
+  // tranques de relaves
+  const RELAVES=[
+    {n:'Talabre (Chuquicamata)', lat:-22.44, lon:-68.78},
+    {n:'Laguna Seca (Escondida)', lat:-24.28, lon:-69.00},
+    {n:'Pampa Austral (Salvador)', lat:-26.40, lon:-69.60},
+    {n:'El Mauro (Los Pelambres)', lat:-31.92, lon:-71.18},
+    {n:'Ovejería (Andina)', lat:-33.02, lon:-70.72},
+    {n:'Las Tórtolas (Los Bronces)', lat:-33.33, lon:-70.82},
+    {n:'Carén (El Teniente)', lat:-34.15, lon:-71.07}
+  ];
+  const relaveLayer=L.layerGroup(RELAVES.map(t=>L.marker([t.lat,t.lon],{icon:L.divIcon({className:'',html:'<span class="pin-relave"></span>',iconSize:[14,14],iconAnchor:[7,7]})})
+    .bindPopup('<p class="pop-t">'+t.n+'</p><p class="pop-l">Tranque de relaves: depósito de los desechos del proceso. Su seguridad es clave.</p><a class="pop-a" href="adn-minero-relaves.html">¿Qué es un relave? →</a>')));
+  let relaveOn=false;
+  $('btnRelaves').addEventListener('click',()=>{ relaveOn=!relaveOn; if(relaveOn){ relaveLayer.addTo(map); $('btnRelaves').classList.add('on'); } else { map.removeLayer(relaveLayer); $('btnRelaves').classList.remove('on'); } });
+
   // barra de escala
   try{ L.control.scale({imperial:false, position:'bottomleft'}).addTo(map); }catch(_){ }
 
@@ -367,6 +416,18 @@
       else if(navigator.clipboard){ await navigator.clipboard.writeText(url); toast('Enlace de esta vista copiado'); }
       else toast(url); }catch(_){ } });
 
+  // tour automático por las grandes faenas
+  const TOUR=['Chuquicamata','Radomiro Tomic','Escondida','Collahuasi','Spence','Los Pelambres','Salar de Atacama','Candelaria'];
+  let tourOn=false, tourIx=0, tourT=null;
+  function tourStep(){ const f=FAENAS.find(x=>x.n===TOUR[tourIx%TOUR.length]); tourIx++;
+    if(f){ const mk=markerOf[f.n]; map.flyTo([f.lat,f.lon],12.5,{duration:2.2}); setTimeout(()=>{ if(tourOn&&mk) mk.openPopup(); },2300); toast('Tour: '+f.n); }
+    tourT=setTimeout(tourStep, 7000); }
+  function tourSet(on){ tourOn=on; const b=$('btnTour'); b.classList.toggle('on',on);
+    b.innerHTML = on ? '<i data-lucide="pause" style="width:14px;height:14px"></i> Detener tour' : '<i data-lucide="play" style="width:14px;height:14px"></i> Tour por las faenas'; drawIcons();
+    if(on){ tourIx=0; tourStep(); } else { clearTimeout(tourT); } }
+  $('btnTour').addEventListener('click',()=>tourSet(!tourOn));
+  map.on('mousedown wheel',()=>{ if(tourOn) tourSet(false); }); // detener si el usuario interviene
+
   // cobre + dólar
   (async()=>{ try{ const j=await (await fetch('https://mindicador.cl/api',{cache:'no-store'})).json();
     if(j&&j.libra_cobre&&j.libra_cobre.valor) $('tCu').textContent='US$ '+j.libra_cobre.valor.toFixed(2);
@@ -376,22 +437,27 @@
   // sismos de Chile (EMSC) + conteo 24h
   function relt(ts){ const s=(Date.now()-ts)/1000; if(s<3600) return 'hace '+Math.max(1,Math.round(s/60))+' min'; if(s<86400) return 'hace '+Math.round(s/3600)+' h'; return 'hace '+Math.round(s/86400)+' d'; }
   const eqLayer=L.layerGroup().addTo(map);
+  let eqAll=[];
+  function eqColor(m){ return m>=5?'#ff3b2f':(m>=4?'#ff8a3a':'#ffd23c'); }
+  function renderEq(winH){ eqLayer.clearLayers(); const cut=Date.now()-winH*3600e3; const sub=eqAll.filter(e=>e.time>=cut);
+    sub.slice(0,45).forEach(e=>{ const sz=Math.max(10,Math.min(38,e.mag*6));
+      const icon=L.divIcon({className:'', html:'<span class="eq" style="width:'+sz+'px;height:'+sz+'px;border-color:'+eqColor(e.mag)+'"></span>', iconSize:[sz,sz]});
+      L.marker([e.lat,e.lon],{icon:icon, zIndexOffset:-100}).addTo(eqLayer)
+        .bindPopup('<p class="pop-t">Sismo M '+e.mag.toFixed(1)+'</p><p class="pop-l">'+e.region+'</p><p class="pop-l">'+relt(e.time)+' · '+Math.round(e.depth)+' km prof.</p>'); });
+    const lbl=$('eqCount'); if(lbl) lbl.textContent=sub.length+' sismos en las últimas '+winH+' h'; }
   async function loadSismos(){ try{
-    const u='https://www.seismicportal.eu/fdsnws/event/1/query?format=json&orderby=time&limit=120';
+    const u='https://www.seismicportal.eu/fdsnws/event/1/query?format=json&orderby=time&limit=150';
     const j=await (await fetch(u)).json(); if(!j||!j.features) return;
-    const chile=j.features.filter(ft=>{ const p=ft.properties||{}; const la=p.lat, lo=p.lon; const reg=(p.flynn_region||'').toUpperCase();
-      return (la<=-17&&la>=-57&&lo<=-66&&lo>=-77) || reg.indexOf('CHILE')>=0; });
-    if(!chile.length) return;
-    eqLayer.clearLayers();
-    chile.slice(0,18).forEach(ft=>{ const p=ft.properties; const m=p.mag||0; const sz=Math.max(10,Math.min(36,m*6));
-      const icon=L.divIcon({className:'', html:'<span class="eq" style="width:'+sz+'px;height:'+sz+'px"></span>', iconSize:[sz,sz]});
-      L.marker([p.lat,p.lon],{icon:icon, zIndexOffset:-100}).addTo(eqLayer)
-        .bindPopup('<p class="pop-t">Sismo M '+m.toFixed(1)+'</p><p class="pop-l">'+(p.flynn_region||'Chile')+'</p><p class="pop-l">'+relt(Date.parse(p.time))+' · '+Math.round(p.depth)+' km prof.</p>'); });
-    const dayAgo=Date.now()-864e5; const n24=chile.filter(ft=>Date.parse(ft.properties.time)>=dayAgo).length;
-    const last=chile[0].properties;
-    $('tEq24').textContent=n24;
-    const info=$('tEqInfo'); if(info) info.textContent='últ. M '+(last.mag||0).toFixed(1)+' · '+relt(Date.parse(last.time));
+    eqAll=j.features.filter(ft=>{ const p=ft.properties||{}; const la=p.lat, lo=p.lon; const reg=(p.flynn_region||'').toUpperCase();
+        return (la<=-17&&la>=-57&&lo<=-66&&lo>=-77) || reg.indexOf('CHILE')>=0; })
+      .map(ft=>{ const p=ft.properties; return {lat:p.lat, lon:p.lon, mag:p.mag||0, time:Date.parse(p.time), region:p.flynn_region||'Chile', depth:p.depth||0}; })
+      .filter(e=>e.time);
+    eqAll.sort((a,b)=>b.time-a.time);
+    renderEq(+($('eqSlider').value||24));
+    const dayAgo=Date.now()-864e5; $('tEq24').textContent=eqAll.filter(e=>e.time>=dayAgo).length;
+    const last=eqAll[0]; const info=$('tEqInfo'); if(last&&info) info.textContent='últ. M '+last.mag.toFixed(1)+' · '+relt(last.time);
   }catch(_){ } }
+  const sl=$('eqSlider'); if(sl) sl.addEventListener('input',()=>{ const v=+sl.value; $('eqWinLbl').textContent='últimas '+v+' h'; renderEq(v); });
   loadSismos(); setInterval(loadSismos, 180000);
 })();
 </script>
