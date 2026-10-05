@@ -95,7 +95,7 @@
         <span class="glass rounded-full px-4 py-1.5 flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-emerald-400"></span> Datos en vivo</span>
         <span class="glass rounded-full px-4 py-1.5 flex items-center gap-2"><i data-lucide="badge-check" class="w-4 h-4 text-[#cf9b6f]"></i> Fuentes oficiales</span>
       </div>
-      <a href="adn-minero-prensa.html" class="cta-news group inline-flex items-center gap-3 mt-5 sm:mt-7 rounded-2xl pl-3 pr-5 py-3">
+      <a id="ctaNews" href="adn-minero-prensa.html" class="cta-news group inline-flex items-center gap-3 mt-5 sm:mt-7 rounded-2xl pl-3 pr-5 py-3">
         <span class="cta-ic h-11 w-11 rounded-xl grid place-items-center shrink-0"><i data-lucide="newspaper" class="w-6 h-6"></i></span>
         <span class="text-left leading-tight">
           <span class="flex items-center gap-2 font-extrabold text-[15px]">Noticias Mineras en vivo <span class="cta-badge inline-flex items-center gap-1 text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded-full"><span class="cta-dot"></span> con voz</span></span>
@@ -128,7 +128,7 @@
     </a>
 
     <!-- HERO OJO DE SAURON -->
-    <a href="adn-minero-ojo.html" class="group block mt-3 max-w-3xl mx-auto rounded-2xl p-4 sm:p-5 transition active:scale-[.99]" style="background:radial-gradient(420px 160px at 18% -40%, rgba(255,122,58,.3), transparent 70%), linear-gradient(135deg, rgba(255,122,58,.12), rgba(43,37,32,.5));border:1px solid rgba(255,122,58,.34)">
+    <a id="heroOjo" href="adn-minero-ojo.html" class="group block mt-3 max-w-3xl mx-auto rounded-2xl p-4 sm:p-5 transition active:scale-[.99]" style="background:radial-gradient(420px 160px at 18% -40%, rgba(255,122,58,.3), transparent 70%), linear-gradient(135deg, rgba(255,122,58,.12), rgba(43,37,32,.5));border:1px solid rgba(255,122,58,.34)">
       <div class="flex items-center gap-3 sm:gap-4">
         <span class="h-12 w-12 sm:h-14 sm:w-14 rounded-2xl grid place-items-center shrink-0" style="background:rgba(255,122,58,.2);border:1px solid rgba(255,122,58,.45)">
           <svg viewBox="0 0 100 100" style="width:30px;height:30px">
@@ -775,6 +775,8 @@
       document.getElementById('homeCats').classList.toggle('hidden', !home);
       { const rcEl=document.getElementById('reciente'); if(rcEl) rcEl.classList.toggle('hidden', !home || rcEl.children.length===0); }
       { const hd=document.getElementById('heroDev'); if(hd) hd.classList.toggle('hidden', !home); }
+      { const ho=document.getElementById('heroOjo'); if(ho) ho.classList.toggle('hidden', !home); }
+      { const cn=document.getElementById('ctaNews'); if(cn) cn.classList.toggle('hidden', !home); }
       document.getElementById('hoy').classList.toggle('hidden', !home);
       const tEl=document.getElementById('titulares'); if(tEl) tEl.classList.toggle('hidden', !home || tEl.children.length===0);
       document.getElementById('miFaena').classList.toggle('hidden', !home);
@@ -859,6 +861,8 @@
 
     // ===== Onboarding (primera vez) =====
     (function(){
+      // No interrumpir si el usuario llegó a una categoría o búsqueda por enlace compartido (deep-link)
+      try{ if((location.hash||'').replace(/^#/,'').length || /[?&]q=/.test(location.search)) return; }catch(e){}
       try{ if(localStorage.getItem('adn_onboarded2')==='1') return; }catch(e){ return; }
       const st=document.createElement('style'); st.textContent='@keyframes onbup{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}'; document.head.appendChild(st);
       const row=(e,h)=>`<div style="display:flex;gap:10px;align-items:flex-start"><span style="font-size:1.1rem">${e}</span><p style="font-size:.86rem;color:#d8c8b8;margin:0;line-height:1.4">${h}</p></div>`;

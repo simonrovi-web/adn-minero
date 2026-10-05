@@ -111,7 +111,13 @@
           'background:linear-gradient(150deg,#2b221c,#1a1310);color:#e8c9a6;'+
           'box-shadow:0 6px 20px rgba(0,0,0,.45),0 0 0 1px rgba(196,168,148,.28);'+
           'display:grid;place-items:center;font-size:22px;line-height:1;padding:0}'+
-          '#adnui-back:active{transform:scale(.94)}';
+          '#adnui-back:active{transform:scale(.94)}'+
+          '#adnui-home{position:fixed;left:14px;bottom:calc(68px + var(--adn-fabgap,0px) + env(safe-area-inset-bottom,0px));z-index:2147482998;'+
+          'width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;'+
+          'background:linear-gradient(150deg,#2b221c,#1a1310);color:#e8c9a6;'+
+          'box-shadow:0 6px 20px rgba(0,0,0,.45),0 0 0 1px rgba(196,168,148,.28);'+
+          'display:grid;place-items:center;font-size:19px;line-height:1;padding:0}'+
+          '#adnui-home:active{transform:scale(.94)}';
         document.head.appendChild(st);
         var b=document.createElement('button'); b.id='adnui-back'; b.type='button';
         b.setAttribute('aria-label','Volver atrás'); b.title='Volver atrás'; b.innerHTML='←';
@@ -124,6 +130,23 @@
           location.href='index.html';
         });
         document.body.appendChild(b);
+        // Botón Inicio (wayfinding rápido a casa desde cualquier panel)
+        var h=document.createElement('button'); h.id='adnui-home'; h.type='button';
+        h.setAttribute('aria-label','Ir al inicio'); h.title='Inicio'; h.innerHTML='⌂';
+        h.addEventListener('click', function(){ location.href='index.html'; });
+        document.body.appendChild(h);
+        // Espaciador: evita que el footer quede bajo los botones flotantes (solo si la página hace scroll)
+        try{
+          var addSpacer=function(){ try{
+            if(document.getElementById('adnui-spacer')) return;
+            var se=document.scrollingElement||document.documentElement;
+            if((se.scrollHeight - se.clientHeight) <= 40) return; // kiosco/corto: los FAB no tapan nada
+            var sp=document.createElement('div'); sp.id='adnui-spacer'; sp.setAttribute('aria-hidden','true');
+            sp.style.cssText='height:76px;width:100%;pointer-events:none';
+            (document.querySelector('.wrap')||document.body).appendChild(sp);
+          }catch(e){} };
+          window.addEventListener('load', function(){ setTimeout(addSpacer,120); });
+        }catch(e){}
       };
       if(document.body) mountBack(); else document.addEventListener('DOMContentLoaded', mountBack);
     }
@@ -297,6 +320,8 @@
     a11y.textContent=
       'html.adn-faena{font-size:118%}'+
       'html.adn-faena .text-stone-400, html.adn-faena .text-stone-500{color:#cfbdad!important}'+
+      // Contraste base mejorado de textos secundarios (siempre, sin modo faena) para legibilidad/WCAG
+      '.text-stone-500{color:#9a8d7f}.text-stone-600{color:#8a7d6f}'+
       '#adnui-offline{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:99999;'+
       'background:linear-gradient(160deg,#3a2a22,#2a1d17);color:#f0d7b6;border:1px solid rgba(224,163,90,.5);border-radius:999px;'+
       'padding:7px 15px;font:600 12.5px/1 system-ui,sans-serif;box-shadow:0 6px 20px rgba(0,0,0,.5);display:none}'+
