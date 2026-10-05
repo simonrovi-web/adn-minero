@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · Ojo de Dios · Minería en vivo</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="Ojo de Dios Minero: vista en vivo de la minería de Chile sobre un mapa satelital. Vuela sobre las grandes faenas y mira su tamaño real desde el espacio, con el precio del cobre, los sismos recientes y el clima en faena." />
+  <link rel="canonical" href="https://simonrovi-web.github.io/adn-minero/adn-minero-ojo.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ADN Minero" />
+  <meta property="og:title" content="ADN Minero · Ojo de Dios · Minería en vivo" />
+  <meta property="og:description" content="Vuela sobre las faenas de Chile desde el espacio, con cobre, sismos y clima en vivo." />
+  <meta property="og:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://simonrovi-web.github.io/adn-minero/adn-minero-ojo.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ADN Minero · Ojo de Dios · Minería en vivo" />
+  <meta name="twitter:description" content="Vuela sobre las faenas de Chile desde el espacio, con cobre, sismos y clima en vivo." />
+  <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(207,155,111,0.14), transparent 60%), #141110; }
+    .wrap{ max-width:900px; margin:0 auto; padding:16px 14px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    h3{ margin:0; }
+    .tile .n{ font-variant-numeric:tabular-nums; font-weight:900; line-height:1; }
+    .seg{ display:inline-flex; background:rgba(255,255,255,.05); border:1px solid rgba(196,168,148,.2); border-radius:12px; padding:3px; }
+    .seg button{ border:0; background:transparent; color:#c9bcae; font-weight:700; font-size:12.5px; padding:7px 13px; border-radius:9px; cursor:pointer; transition:.15s; display:inline-flex; align-items:center; gap:6px }
+    .seg button.on{ background:rgba(207,155,111,.22); color:#fff }
+    .lg{ display:inline-flex; align-items:center; gap:6px; font-size:11.5px; color:#c9bcae; font-weight:600 }
+    .lg i{ width:11px; height:11px; border-radius:50%; display:inline-block }
+    #map{ height:60vh; min-height:380px; width:100%; border-radius:16px; overflow:hidden; border:1px solid rgba(196,168,148,.18); background:#0d1420; z-index:0 }
+    .leaflet-popup-content-wrapper{ background:#1c1713; color:#f4ece5; border:1px solid rgba(196,168,148,.25); border-radius:12px }
+    .leaflet-popup-tip{ background:#1c1713 }
+    .leaflet-popup-content{ margin:11px 13px; font-size:13px; line-height:1.4 }
+    .leaflet-container{ font-family:'Inter',system-ui,sans-serif; background:#0d1420 }
+    .pop-t{ font-weight:800; font-size:14px; margin:0 0 3px }
+    .pop-l{ color:#c9bcae; font-size:11.5px; margin:1px 0 }
+    .pop-a{ display:inline-flex; align-items:center; gap:5px; margin-top:7px; color:#e8c9a6; font-weight:700; font-size:12px }
+    .eq{ display:block; border-radius:50%; background:rgba(224,113,90,.5); border:2px solid #ff8a6a; box-shadow:0 0 0 0 rgba(224,113,90,.6); animation:eqp 2s infinite }
+    @keyframes eqp{ 0%{ box-shadow:0 0 0 0 rgba(224,113,90,.55) } 70%{ box-shadow:0 0 0 12px rgba(224,113,90,0) } 100%{ box-shadow:0 0 0 0 rgba(224,113,90,0) } }
+    select{ background:#241d18; color:#f4ece5; border:1px solid rgba(196,168,148,.25); border-radius:12px; padding:11px 12px; font-size:14px; outline:none; width:100% }
+    select:focus{ border-color:rgba(207,155,111,.6) }
+    @media (prefers-reduced-motion:reduce){ .eq{ animation:none } }
+  </style>
+  <script src="adn-ui.js" defer></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","@id":"https://simonrovi-web.github.io/adn-minero/adn-minero-ojo.html#webpage","url":"https://simonrovi-web.github.io/adn-minero/adn-minero-ojo.html","name":"ADN Minero · Ojo de Dios · Minería en vivo","description":"Vuela sobre las faenas de Chile desde el espacio, con cobre, sismos y clima en vivo.","isPartOf":{"@id":"https://simonrovi-web.github.io/adn-minero/#site"},"inLanguage":"es-CL","publisher":{"@id":"https://simonrovi-web.github.io/adn-minero/#org"}}
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(207,155,111,.15);border:1px solid rgba(207,155,111,.32)"><i data-lucide="eye" style="width:26px;height:26px;color:#cf9b6f"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#e0c3a0;font-weight:800">Ojo de Dios Minero</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">La minería de Chile en vivo, desde el espacio</p>
+      </div>
+    </header>
+
+    <!-- franja en vivo -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-4">
+      <div class="glass rounded-2xl p-3 tile"><div class="flex items-center gap-1.5 mb-1"><i data-lucide="gem" class="w-3.5 h-3.5" style="color:#cf9b6f"></i><span class="text-[10.5px] font-bold text-stone-400 uppercase tracking-wide">Cobre</span></div><div class="n" style="font-size:17px;color:#e8c9a6" id="tCu">—</div><div class="text-[10.5px] text-stone-500 mt-0.5">US$/libra</div></div>
+      <div class="glass rounded-2xl p-3 tile"><div class="flex items-center gap-1.5 mb-1"><i data-lucide="dollar-sign" class="w-3.5 h-3.5" style="color:#a7d18a"></i><span class="text-[10.5px] font-bold text-stone-400 uppercase tracking-wide">Dólar</span></div><div class="n" style="font-size:17px;color:#e8c9a6" id="tUsd">—</div><div class="text-[10.5px] text-stone-500 mt-0.5">CLP observado</div></div>
+      <div class="glass rounded-2xl p-3 tile"><div class="flex items-center gap-1.5 mb-1"><i data-lucide="activity" class="w-3.5 h-3.5" style="color:#e0715a"></i><span class="text-[10.5px] font-bold text-stone-400 uppercase tracking-wide">Último sismo</span></div><div class="n" style="font-size:17px;color:#e8c9a6" id="tEqMag">—</div><div class="text-[10.5px] text-stone-500 mt-0.5" id="tEqInfo">Chile</div></div>
+      <div class="glass rounded-2xl p-3 tile"><div class="flex items-center gap-1.5 mb-1"><i data-lucide="clock" class="w-3.5 h-3.5" style="color:#7fb0d9"></i><span class="text-[10.5px] font-bold text-stone-400 uppercase tracking-wide">Hora Chile</span></div><div class="n" style="font-size:17px;color:#e8c9a6" id="tClock">—</div><div class="text-[10.5px] text-stone-500 mt-0.5">tiempo real</div></div>
+    </div>
+
+    <!-- controles -->
+    <div class="flex flex-wrap items-center justify-between gap-3 mt-4">
+      <div class="seg" id="layerSeg">
+        <button data-l="sat" class="on"><i data-lucide="globe" style="width:14px;height:14px"></i> Satélite</button>
+        <button data-l="map"><i data-lucide="layers" style="width:14px;height:14px"></i> Mapa</button>
+      </div>
+      <div class="flex flex-wrap gap-x-3 gap-y-1.5">
+        <span class="lg"><i style="background:#cf9b6f"></i>Cobre</span>
+        <span class="lg"><i style="background:#e6c464"></i>Oro</span>
+        <span class="lg"><i style="background:#5fd1bd"></i>Litio</span>
+        <span class="lg"><i style="background:#e0855f"></i>Hierro</span>
+        <span class="lg"><i style="background:#ff8a6a"></i>Sismo</span>
+      </div>
+    </div>
+
+    <div id="map" class="mt-3"></div>
+    <div id="mapMsg" class="hidden glass rounded-2xl p-5 mt-3 text-center" style="color:#c9bcae">
+      <p style="font-weight:700;color:#eef2f7;font-size:15px">El mapa necesita internet</p>
+      <p class="text-sm mt-1">Las imágenes satelitales y los datos en vivo se cargan en línea. Conéctate y vuelve a intentar.</p>
+    </div>
+
+    <!-- volar a faena -->
+    <div class="glass rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2 mb-2"><i data-lucide="navigation" style="width:16px;height:16px;color:#cf9b6f"></i><h3 class="font-bold text-[13.5px]">Vuela a una faena</h3></div>
+      <select id="jump"><option value="">Elige una mina para verla desde el espacio…</option></select>
+      <p class="text-[11.5px] text-stone-400 mt-2">También puedes tocar cualquier punto del mapa. Al acercarte verás el <b>tamaño real</b> del rajo.</p>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">
+      Imágenes satelitales © Esri, Maxar, Earthstar Geographics. Sismos: seismicportal.eu (EMSC). Cobre/dólar: mindicador.cl. Clima: open-meteo.com. Ubicaciones referenciales; requiere conexión a internet.<br>
+      · <a href="adn-minero-mapa.html" style="color:#e8c9a6">Mapa minero</a> · <a href="adn-minero-sismos.html" style="color:#e8c9a6">Sismos</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a>
+    </p>
+  </div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function(){
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  drawIcons();
+
+  // ---- datos de faenas (lat/lon reales) ----
+  const MINCOL={cobre:'#cf9b6f', oro:'#e6c464', litio:'#5fd1bd', hierro:'#e0855f'};
+  const FAENAS=[
+    {n:'Escondida', e:'BHP', m:'cobre', r:'Antofagasta', lat:-24.27, lon:-69.07},
+    {n:'Collahuasi', e:'Collahuasi', m:'cobre', r:'Tarapacá', lat:-20.98, lon:-68.68},
+    {n:'Chuquicamata', e:'Codelco', m:'cobre', r:'Antofagasta', lat:-22.29, lon:-68.90},
+    {n:'Radomiro Tomic', e:'Codelco', m:'cobre', r:'Antofagasta', lat:-22.28, lon:-68.92},
+    {n:'Ministro Hales', e:'Codelco', m:'cobre', r:'Antofagasta', lat:-22.05, lon:-68.92},
+    {n:'Gabriela Mistral', e:'Codelco', m:'cobre', r:'Antofagasta', lat:-24.30, lon:-69.20},
+    {n:'Andina', e:'Codelco', m:'cobre', r:'Valparaíso', lat:-33.05, lon:-70.28},
+    {n:'Salvador', e:'Codelco', m:'cobre', r:'Atacama', lat:-26.25, lon:-69.62},
+    {n:'Los Bronces', e:'Anglo American', m:'cobre', r:'Metropolitana', lat:-33.14, lon:-70.28},
+    {n:'El Soldado', e:'Anglo American', m:'cobre', r:'Valparaíso', lat:-32.66, lon:-71.00},
+    {n:'Spence', e:'BHP', m:'cobre', r:'Antofagasta', lat:-22.75, lon:-69.28},
+    {n:'Centinela', e:'Antofagasta Minerals', m:'cobre', r:'Antofagasta', lat:-23.05, lon:-69.02},
+    {n:'Antucoya', e:'Antofagasta Minerals', m:'cobre', r:'Antofagasta', lat:-22.35, lon:-69.90},
+    {n:'Los Pelambres', e:'Antofagasta Minerals', m:'cobre', r:'Coquimbo', lat:-31.75, lon:-70.49},
+    {n:'Zaldívar', e:'AMSA / Barrick', m:'cobre', r:'Antofagasta', lat:-24.20, lon:-69.05},
+    {n:'Candelaria', e:'Lundin Mining', m:'cobre', r:'Atacama', lat:-27.51, lon:-70.28},
+    {n:'Caserones', e:'Lundin Mining', m:'cobre', r:'Atacama', lat:-28.00, lon:-69.70},
+    {n:'El Abra', e:'Freeport / Codelco', m:'cobre', r:'Antofagasta', lat:-21.75, lon:-68.77},
+    {n:'Quebrada Blanca', e:'Teck', m:'cobre', r:'Tarapacá', lat:-20.99, lon:-68.75},
+    {n:'Sierra Gorda', e:'South32 / KGHM', m:'cobre', r:'Antofagasta', lat:-22.90, lon:-69.30},
+    {n:'Mantoverde', e:'Capstone', m:'cobre', r:'Atacama', lat:-27.00, lon:-70.70},
+    {n:'Lomas Bayas', e:'Glencore', m:'cobre', r:'Antofagasta', lat:-22.90, lon:-69.50},
+    {n:'Mantos Blancos', e:'Capstone', m:'cobre', r:'Antofagasta', lat:-23.52, lon:-70.13},
+    {n:'El Peñón', e:'Pan American Silver', m:'oro', r:'Antofagasta', lat:-24.40, lon:-69.35},
+    {n:'La Coipa', e:'Kinross', m:'oro', r:'Atacama', lat:-26.78, lon:-69.28},
+    {n:'Maricunga', e:'Maricunga', m:'oro', r:'Atacama', lat:-27.13, lon:-69.05},
+    {n:'Los Colorados', e:'CAP Minería', m:'hierro', r:'Atacama', lat:-28.30, lon:-70.60},
+    {n:'El Romeral', e:'CAP Minería', m:'hierro', r:'Coquimbo', lat:-29.70, lon:-71.28},
+    {n:'Salar de Atacama', e:'SQM / Albemarle', m:'litio', r:'Antofagasta', lat:-23.50, lon:-68.20}
+  ];
+
+  // ---- reloj ----
+  function tickClock(){ try{ const d=new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit',second:'2-digit',timeZone:'America/Santiago'}); const e=document.getElementById('tClock'); if(e) e.textContent=d; }catch(_){ } }
+  tickClock(); setInterval(tickClock,1000);
+
+  // ---- sin Leaflet (offline) ----
+  if(typeof L==='undefined'){ document.getElementById('map').classList.add('hidden'); document.getElementById('mapMsg').classList.remove('hidden'); return; }
+
+  // ---- mapa ----
+  const ESRI='https://server.arcgisonline.com/ArcGIS/rest/services/';
+  const sat=L.tileLayer(ESRI+'World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:18, attribution:'Esri, Maxar, Earthstar Geographics'});
+  const satRef=L.tileLayer(ESRI+'Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',{maxZoom:18, opacity:.9});
+  const dark=L.tileLayer(ESRI+'Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',{maxZoom:16, attribution:'Esri'});
+  const darkRef=L.tileLayer(ESRI+'Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}',{maxZoom:16});
+  const satG=L.layerGroup([sat,satRef]), mapG=L.layerGroup([dark,darkRef]);
+
+  const map=L.map('map',{ center:[-26.5,-69.6], zoom:5, layers:[satG], zoomControl:true, attributionControl:true });
+  let current='sat';
+  function setLayer(which){
+    if(which===current) return; current=which;
+    if(which==='sat'){ map.removeLayer(mapG); satG.addTo(map); } else { map.removeLayer(satG); mapG.addTo(map); }
+    document.querySelectorAll('#layerSeg button').forEach(b=>b.classList.toggle('on', b.dataset.l===which));
+  }
+  document.querySelectorAll('#layerSeg button').forEach(b=>b.addEventListener('click',()=>setLayer(b.dataset.l)));
+
+  // ---- marcadores de faenas ----
+  const jump=document.getElementById('jump');
+  const markerOf={};
+  FAENAS.slice().sort((a,b)=>a.n.localeCompare(b.n)).forEach(f=>{
+    const col=MINCOL[f.m]||'#cf9b6f';
+    const mk=L.circleMarker([f.lat,f.lon],{ radius:6, color:'#1a1511', weight:1.5, fillColor:col, fillOpacity:.95 }).addTo(map);
+    const gmap='https://www.google.com/maps/search/?api=1&query='+f.lat+','+f.lon;
+    mk.bindPopup('<p class="pop-t">'+f.n+'</p>'+
+      '<p class="pop-l">'+f.e+'</p>'+
+      '<p class="pop-l">'+f.m.charAt(0).toUpperCase()+f.m.slice(1)+' · '+f.r+'</p>'+
+      '<p class="pop-l clima" data-k="'+f.n+'">Clima: cargando…</p>'+
+      '<a class="pop-a" href="'+gmap+'" target="_blank" rel="noopener">Abrir en Google Maps →</a>');
+    mk.on('popupopen',()=>{ loadClima(f); });
+    mk.on('click',()=>{ map.flyTo([f.lat,f.lon], 13, {duration:1.1}); });
+    markerOf[f.n]=mk;
+    const o=document.createElement('option'); o.value=f.n; o.textContent=f.n+' · '+f.m; jump.appendChild(o);
+  });
+  jump.addEventListener('change',()=>{ const f=FAENAS.find(x=>x.n===jump.value); if(!f) return; const mk=markerOf[f.n]; map.flyTo([f.lat,f.lon],13,{duration:1.2}); setTimeout(()=>mk&&mk.openPopup(),1200); });
+
+  // ---- clima por faena (lazy) ----
+  const climaCache={};
+  async function loadClima(f){
+    const span=document.querySelector('.clima[data-k="'+f.n.replace(/"/g,'')+'"]'); if(!span) return;
+    if(climaCache[f.n]){ span.innerHTML=climaCache[f.n]; return; }
+    try{
+      const u='https://api.open-meteo.com/v1/forecast?latitude='+f.lat+'&longitude='+f.lon+'&current=temperature_2m,wind_speed_10m&wind_speed_unit=kmh&timezone=America%2FSantiago';
+      const j=await (await fetch(u)).json(); const c=j&&j.current;
+      if(c){ const txt='Clima: '+Math.round(c.temperature_2m)+'°C · viento '+Math.round(c.wind_speed_10m)+' km/h'; climaCache[f.n]=txt; span.textContent=txt; }
+      else span.textContent='Clima: no disponible';
+    }catch(_){ span.textContent='Clima: no disponible'; }
+  }
+
+  // ---- cobre + dólar ----
+  (async()=>{ try{ const j=await (await fetch('https://mindicador.cl/api',{cache:'no-store'})).json();
+    if(j&&j.libra_cobre&&j.libra_cobre.valor){ document.getElementById('tCu').textContent='US$ '+j.libra_cobre.valor.toFixed(2); }
+    if(j&&j.dolar&&j.dolar.valor){ document.getElementById('tUsd').textContent='$ '+Math.round(j.dolar.valor).toLocaleString('es-CL'); }
+  }catch(_){ } })();
+
+  // ---- sismos de Chile (EMSC) ----
+  function relt(ts){ const s=(Date.now()-ts)/1000; if(s<3600) return 'hace '+Math.max(1,Math.round(s/60))+' min'; if(s<86400) return 'hace '+Math.round(s/3600)+' h'; return 'hace '+Math.round(s/86400)+' d'; }
+  let eqLayer=L.layerGroup().addTo(map);
+  async function loadSismos(){
+    try{
+      const u='https://www.seismicportal.eu/fdsnws/event/1/query?format=json&orderby=time&limit=80';
+      const j=await (await fetch(u)).json(); if(!j||!j.features) return;
+      const chile=j.features.filter(ft=>{ const p=ft.properties||{}; const la=p.lat, lo=p.lon;
+        const inBox=(la<=-17&&la>=-57&&lo<=-66&&lo>=-77); const reg=(p.flynn_region||'').toUpperCase();
+        return inBox || reg.indexOf('CHILE')>=0; });
+      if(!chile.length) return;
+      eqLayer.clearLayers();
+      chile.slice(0,15).forEach((ft,i)=>{ const p=ft.properties; const m=p.mag||0; const sz=Math.max(10,Math.min(34,m*6));
+        const icon=L.divIcon({className:'', html:'<span class="eq" style="width:'+sz+'px;height:'+sz+'px"></span>', iconSize:[sz,sz]});
+        const mk=L.marker([p.lat,p.lon],{icon:icon, zIndexOffset:-100}).addTo(eqLayer);
+        mk.bindPopup('<p class="pop-t">Sismo M '+m.toFixed(1)+'</p><p class="pop-l">'+(p.flynn_region||'Chile')+'</p><p class="pop-l">'+relt(Date.parse(p.time))+' · '+Math.round(p.depth)+' km prof.</p>');
+      });
+      const last=chile[0].properties;
+      document.getElementById('tEqMag').textContent='M '+(last.mag||0).toFixed(1);
+      const info=document.getElementById('tEqInfo'); if(info) info.textContent=relt(Date.parse(last.time));
+    }catch(_){ }
+  }
+  loadSismos(); setInterval(loadSismos, 180000);
+})();
+</script>
+</body>
+</html>
