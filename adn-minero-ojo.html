@@ -135,7 +135,8 @@
       <span class="fchip" data-m="litio"><span class="d" style="background:#5fd1bd"></span>Litio</span>
       <span class="fchip" data-m="hierro"><span class="d" style="background:#e0855f"></span>Hierro</span>
       <span class="fchip" style="cursor:default"><span class="d" style="background:#ff8a6a"></span>Sismo</span>
-      <span class="fchip" style="cursor:default"><span class="d" style="background:#ffb169;width:14px;height:3px;border-radius:2px"></span>Ruta 5</span>
+      <span class="fchip" style="cursor:default"><span class="d" style="background:#ffc24a;width:14px;height:4px;border-radius:2px"></span>Ruta 5</span>
+      <span class="fchip" style="cursor:default"><span class="d" style="background:#ffe08a;width:14px;height:3px;border-radius:2px"></span>Corredor minero</span>
     </div>
 
     <div id="map" class="mt-3"></div>
@@ -233,10 +234,21 @@
     document.querySelectorAll('#layerSeg button').forEach(b=>b.classList.toggle('on', b.dataset.l===which)); }
   document.querySelectorAll('#layerSeg button').forEach(b=>b.addEventListener('click',()=>setLayer(b.dataset.l)));
 
-  // rutas: overlay real + Ruta 5 destacada
+  // rutas: overlay real + Ruta 5 destacada + corredores mineros
   const RUTA5=[[-18.48,-70.31],[-19.99,-69.77],[-20.26,-69.78],[-22.10,-70.00],[-23.50,-70.25],[-24.50,-70.50],[-25.40,-70.48],[-26.35,-70.62],[-27.37,-70.33],[-28.57,-70.76],[-29.90,-71.25],[-31.18,-71.50],[-31.91,-71.51],[-32.78,-71.20],[-33.45,-70.66]];
-  const r5=L.polyline(RUTA5,{color:'#ffb169', weight:3, opacity:.85, dashArray:'7 7'});
-  const routeG=L.layerGroup([roads, r5]);
+  const r5casing=L.polyline(RUTA5,{color:'#2a1405', weight:8, opacity:.6, lineCap:'round', lineJoin:'round'});
+  const r5=L.polyline(RUTA5,{color:'#ffc24a', weight:4.5, opacity:.98, lineCap:'round', lineJoin:'round'});
+  r5.bindTooltip('Ruta 5 · Panamericana', {sticky:true});
+  // corredores mineros clave (referenciales)
+  const CORRIDORS=[
+    {n:'Ruta 25 · Antofagasta–Calama', pts:[[-23.65,-70.40],[-23.33,-69.84],[-22.68,-69.22],[-22.46,-68.93]]},
+    {n:'Ruta 24 · Calama–Chuquicamata', pts:[[-22.46,-68.93],[-22.36,-68.92],[-22.29,-68.90]]},
+    {n:'Acceso Escondida', pts:[[-23.52,-70.13],[-23.80,-69.70],[-24.10,-69.30],[-24.27,-69.07]]},
+    {n:'Copiapó–Puerto Caldera', pts:[[-27.37,-70.33],[-27.20,-70.60],[-27.07,-70.82]]},
+    {n:'Ruta 1 · Antofagasta–Iquique (costa)', pts:[[-23.65,-70.40],[-22.10,-70.20],[-21.00,-70.14],[-20.21,-70.14]]}
+  ];
+  const corrLines=CORRIDORS.map(c=>L.polyline(c.pts,{color:'#ffe08a', weight:3, opacity:.9, dashArray:'3 7', lineCap:'round'}).bindTooltip(c.n,{sticky:true}));
+  const routeG=L.layerGroup([roads, r5casing, r5].concat(corrLines));
   let routesOn=true; routeG.addTo(map);
   $('btnRutas').classList.add('on'); $('btnRutas').style.background='rgba(255,122,58,.24)'; $('btnRutas').style.color='#fff';
   $('btnRutas').addEventListener('click',()=>{ routesOn=!routesOn; if(routesOn){ routeG.addTo(map); $('btnRutas').style.background='rgba(255,122,58,.24)'; $('btnRutas').style.color='#fff'; } else { map.removeLayer(routeG); $('btnRutas').style.background=''; $('btnRutas').style.color=''; } });

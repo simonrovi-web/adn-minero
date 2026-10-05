@@ -103,6 +103,25 @@
         <span id="heroTrend" class="text-[10px] font-black shrink-0" style="font-variant-numeric:tabular-nums"></span>
       </div>
     </a>
+
+    <!-- HERO OJO DE SAURON -->
+    <a href="../adn-minero-ojo.html" class="group block mt-3 max-w-3xl mx-auto rounded-2xl p-4 sm:p-5 transition active:scale-[.99]" style="background:radial-gradient(420px 160px at 18% -40%, rgba(255,122,58,.3), transparent 70%), linear-gradient(135deg, rgba(255,122,58,.12), rgba(43,37,32,.5));border:1px solid rgba(255,122,58,.34)">
+      <div class="flex items-center gap-3 sm:gap-4">
+        <span class="h-12 w-12 sm:h-14 sm:w-14 rounded-2xl grid place-items-center shrink-0" style="background:rgba(255,122,58,.2);border:1px solid rgba(255,122,58,.45)">
+          <svg viewBox="0 0 100 100" style="width:30px;height:30px">
+            <defs><radialGradient id="hiIris" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#fff2c4"/><stop offset="0.35" stop-color="#ffc04a"/><stop offset="0.65" stop-color="#ff6a2a"/><stop offset="1" stop-color="#8a2d12"/></radialGradient></defs>
+            <path d="M8 50 Q50 16 92 50 Q50 84 8 50 Z" fill="#0d0907" stroke="#ff8a3a" stroke-width="3"/>
+            <circle cx="50" cy="50" r="19" fill="url(#hiIris)"/><ellipse cx="50" cy="50" rx="4.5" ry="17" fill="#180a05"/>
+          </svg>
+        </span>
+        <div class="min-w-0 flex-1">
+          <p class="text-[10px] uppercase tracking-[.14em] font-bold" style="color:#ffb169">En vivo · desde el espacio</p>
+          <h2 class="text-lg sm:text-2xl font-extrabold leading-tight">Ojo de Sauron Minero</h2>
+          <p class="text-xs sm:text-sm text-stone-400 mt-0.5">Mapa satelital con faenas, rutas, sismos y clima en tiempo real</p>
+        </div>
+        <i data-lucide="arrow-right" class="w-5 h-5 shrink-0 text-[#ffb169] transition-transform group-hover:translate-x-1"></i>
+      </div>
+    </a>
     <script>
       (function(){var K='adn_cu',ID='heroCu';function s(v){var e=document.getElementById(ID);if(e&&v)e.textContent='US$'+v.toFixed(2)+'/lb';}try{var c=JSON.parse(localStorage.getItem(K)||'null');if(c&&c.cu)s(c.cu);}catch(e){}fetch('https://mindicador.cl/api').then(r=>r.ok?r.json():null).then(d=>{if(d&&d.libra_cobre&&d.libra_cobre.valor){var v=d.libra_cobre.valor;s(v);try{localStorage.setItem(K,JSON.stringify({cu:v,dl:(d.dolar&&d.dolar.valor)||0,ts:Date.now()}));}catch(e){}}}).catch(function(){});})();
       (function(){var box=document.getElementById('heroSpark');if(!box)return;fetch('https://mindicador.cl/api/libra_cobre').then(function(r){return r.ok?r.json():null;}).then(function(d){var ser=(d&&d.serie)||[];if(ser.length<3)return;var pts=ser.slice(0,30).map(function(x){return x.valor;}).reverse();var mn=Math.min.apply(null,pts),mx=Math.max.apply(null,pts),rg=(mx-mn)||1;var W=220,H=22,pad=3;var xy=pts.map(function(v,i){return [(i/(pts.length-1))*W,pad+(1-(v-mn)/rg)*(H-2*pad)];});var line=xy.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1);}).join(' ');var chg=((pts[pts.length-1]-pts[0])/pts[0])*100,up=chg>=0,c=up?'#7fbf9a':'#e0715a',last=xy[xy.length-1];document.getElementById('heroSvg').innerHTML='<polyline points="'+line+'" fill="none" stroke="'+c+'" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/><circle cx="'+last[0].toFixed(1)+'" cy="'+last[1].toFixed(1)+'" r="2.6" fill="'+c+'"/>';var t=document.getElementById('heroTrend');if(t){t.textContent=(up?'▲ +':'▼ ')+chg.toFixed(1)+'% · 30d';t.style.color=c;}box.style.display='flex';}).catch(function(){});})();
