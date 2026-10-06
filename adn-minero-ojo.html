@@ -217,35 +217,35 @@
   const MINCOL={cobre:'#cf9b6f', oro:'#e6c464', litio:'#5fd1bd', hierro:'#e0855f'};
   // p: ficha existente en la app (si la hay)
   const FAENAS=[
-    {n:'Escondida', e:'BHP', m:'cobre', r:'Antofagasta', lat:-24.27, lon:-69.07, p:'adn-minero-escondida.html', d:'La mayor mina de cobre del mundo; opera con agua de mar desalada.'},
-    {n:'Collahuasi', e:'Collahuasi', m:'cobre', r:'Tarapacá', lat:-20.98, lon:-68.68, p:'adn-minero-collahuasi.html', d:'Una de las mayores minas de cobre del mundo, sobre los 4.400 m de altura.'},
-    {n:'Chuquicamata', e:'Codelco', m:'cobre', r:'Antofagasta', lat:-22.29, lon:-68.90, p:'adn-minero-chuqui.html', d:'Una de las minas de cobre a cielo abierto más grandes del planeta; más de un siglo de historia y hoy también subterránea.'},
-    {n:'Radomiro Tomic', e:'Codelco', m:'cobre', r:'Antofagasta', lat:-22.28, lon:-68.92, p:'adn-minero-radomiro-tomic.html', d:'Vecina de Chuquicamata (Distrito Norte de Codelco); produce cátodos de cobre por lixiviación (SX-EW).'},
-    {n:'Ministro Hales', e:'Codelco', m:'cobre', r:'Antofagasta', lat:-22.05, lon:-68.92, p:'adn-minero-ministro-hales.html'},
-    {n:'Gabriela Mistral', e:'Codelco', m:'cobre', r:'Antofagasta', lat:-24.30, lon:-69.20, p:'adn-minero-gabriela-mistral.html'},
-    {n:'Andina', e:'Codelco', m:'cobre', r:'Valparaíso', lat:-33.05, lon:-70.28, p:'adn-minero-andina.html'},
-    {n:'Salvador', e:'Codelco', m:'cobre', r:'Atacama', lat:-26.25, lon:-69.62, p:'adn-minero-salvador.html'},
-    {n:'Los Bronces', e:'Anglo American', m:'cobre', r:'Metropolitana', lat:-33.14, lon:-70.28},
-    {n:'El Soldado', e:'Anglo American', m:'cobre', r:'Valparaíso', lat:-32.66, lon:-71.00},
-    {n:'Spence', e:'BHP', m:'cobre', r:'Antofagasta', lat:-22.75, lon:-69.28, p:'adn-minero-spence.html', d:'Cobre de BHP en Sierra Gorda, con agua de mar y su expansión SGO.'},
-    {n:'Centinela', e:'Antofagasta Minerals', m:'cobre', r:'Antofagasta', lat:-23.05, lon:-69.02, p:'adn-minero-centinela.html'},
-    {n:'Antucoya', e:'Antofagasta Minerals', m:'cobre', r:'Antofagasta', lat:-22.35, lon:-69.90},
-    {n:'Los Pelambres', e:'Antofagasta Minerals', m:'cobre', r:'Coquimbo', lat:-31.75, lon:-70.49, p:'adn-minero-pelambres.html', d:'La gran minera de capital chileno (grupo Luksic); usa agua de mar y un mineroducto hasta el puerto.'},
-    {n:'Zaldívar', e:'AMSA / Barrick', m:'cobre', r:'Antofagasta', lat:-24.20, lon:-69.05},
-    {n:'Candelaria', e:'Lundin Mining', m:'cobre', r:'Atacama', lat:-27.51, lon:-70.28, p:'adn-minero-candelaria.html', d:'Cobre a rajo y subterránea cerca de Copiapó, junto a un valle agrícola.'},
-    {n:'Caserones', e:'Lundin Mining', m:'cobre', r:'Atacama', lat:-28.00, lon:-69.70, p:'adn-minero-caserones.html'},
-    {n:'El Abra', e:'Freeport / Codelco', m:'cobre', r:'Antofagasta', lat:-21.75, lon:-68.77},
-    {n:'Quebrada Blanca', e:'Teck', m:'cobre', r:'Tarapacá', lat:-20.99, lon:-68.75, p:'adn-minero-qb.html'},
-    {n:'Sierra Gorda', e:'South32 / KGHM', m:'cobre', r:'Antofagasta', lat:-22.90, lon:-69.30},
-    {n:'Mantoverde', e:'Capstone', m:'cobre', r:'Atacama', lat:-27.00, lon:-70.70, p:'adn-minero-mantoverde.html'},
-    {n:'Lomas Bayas', e:'Glencore', m:'cobre', r:'Antofagasta', lat:-22.90, lon:-69.50},
-    {n:'Mantos Blancos', e:'Capstone', m:'cobre', r:'Antofagasta', lat:-23.52, lon:-70.13},
-    {n:'El Peñón', e:'Pan American Silver', m:'oro', r:'Antofagasta', lat:-24.40, lon:-69.35},
-    {n:'La Coipa', e:'Kinross', m:'oro', r:'Atacama', lat:-26.78, lon:-69.28},
-    {n:'Maricunga', e:'Maricunga', m:'oro', r:'Atacama', lat:-27.13, lon:-69.05},
-    {n:'Los Colorados', e:'CAP Minería', m:'hierro', r:'Atacama', lat:-28.30, lon:-70.60},
-    {n:'El Romeral', e:'CAP Minería', m:'hierro', r:'Coquimbo', lat:-29.70, lon:-71.28},
-    {n:'Salar de Atacama', e:'SQM / Albemarle', m:'litio', r:'Antofagasta', lat:-23.50, lon:-68.20, p:'adn-minero-salar.html', d:'El corazón del litio de Chile: se extrae de la salmuera bajo el salar más rico del mundo.'}
+    {n:'Escondida', e:'BHP', m:'cobre', r:'Antofagasta', lat:-24.27, lon:-69.07, p:'adn-minero-escondida.html', d:'La mayor mina de cobre del mundo; opera con agua de mar desalada.', cu:'Produce más cobre que ninguna otra mina del mundo.'},
+    {n:'Collahuasi', e:'Collahuasi', m:'cobre', r:'Tarapacá', lat:-20.98, lon:-68.68, p:'adn-minero-collahuasi.html', d:'Una de las mayores minas de cobre del mundo, sobre los 4.400 m de altura.', cu:'Tan alto que el aire tiene mucho menos oxígeno que al nivel del mar.'},
+    {n:'Chuquicamata', e:'Codelco', m:'cobre', r:'Antofagasta', lat:-22.29, lon:-68.90, p:'adn-minero-chuqui.html', d:'Una de las minas de cobre a cielo abierto más grandes del planeta; más de un siglo de historia y hoy también subterránea.', cu:'Su rajo mide más de 4 km de largo y cerca de 1 km de profundidad.'},
+    {n:'Radomiro Tomic', e:'Codelco', m:'cobre', r:'Antofagasta', lat:-22.28, lon:-68.92, p:'adn-minero-radomiro-tomic.html', d:'Vecina de Chuquicamata (Distrito Norte de Codelco); produce cátodos de cobre por lixiviación (SX-EW).', cu:'Lleva el nombre del político que impulsó la nacionalización del cobre.'},
+    {n:'Ministro Hales', e:'Codelco', m:'cobre', r:'Antofagasta', lat:-22.05, lon:-68.92, p:'adn-minero-ministro-hales.html', d:'Mina joven de Codelco en Calama (desde 2014): cobre y plata, con planta de tostación por el alto arsénico.', cu:'Su mineral es tan rico que también recupera plata.'},
+    {n:'Gabriela Mistral', e:'Codelco', m:'cobre', r:'Antofagasta', lat:-24.30, lon:-69.20, p:'adn-minero-gabriela-mistral.html', d:'Mina de cobre de Codelco en Sierra Gorda; cátodos por lixiviación, pionera en energía solar.', cu:'Lleva el nombre de la poeta chilena, Premio Nobel.'},
+    {n:'Andina', e:'Codelco', m:'cobre', r:'Valparaíso', lat:-33.05, lon:-70.28, p:'adn-minero-andina.html', d:'División de Codelco en la alta cordillera de Valparaíso; rajo y subterránea entre glaciares.', cu:'Opera a más de 3.700 m, entre glaciares de los Andes.'},
+    {n:'Salvador', e:'Codelco', m:'cobre', r:'Atacama', lat:-26.25, lon:-69.62, p:'adn-minero-salvador.html', d:'División de Codelco en Atacama que renació con el proyecto Rajo Inca.', cu:'Su campamento fue una ciudad minera planificada en el desierto.'},
+    {n:'Los Bronces', e:'Anglo American', m:'cobre', r:'Metropolitana', lat:-33.14, lon:-70.28, d:'Gran mina de cobre de Anglo American en la cordillera de la Región Metropolitana.', cu:'Está a pocas horas de Santiago, en plena montaña.'},
+    {n:'El Soldado', e:'Anglo American', m:'cobre', r:'Valparaíso', lat:-32.66, lon:-71.00, d:'Mina de cobre de Anglo American en Valparaíso; rajo y subterránea.', cu:'Es una de las operaciones más antiguas aún activas de la zona central.'},
+    {n:'Spence', e:'BHP', m:'cobre', r:'Antofagasta', lat:-22.75, lon:-69.28, p:'adn-minero-spence.html', d:'Cobre de BHP en Sierra Gorda, con agua de mar y su expansión SGO.', cu:'Funciona con agua de mar para cuidar el agua dulce del desierto.'},
+    {n:'Centinela', e:'Antofagasta Minerals', m:'cobre', r:'Antofagasta', lat:-23.05, lon:-69.02, p:'adn-minero-centinela.html', d:'Gran mina de cobre de Antofagasta Minerals en Sierra Gorda; usa agua de mar.', cu:'Lleva agua de mar sin desalar por tubería hasta la mina.'},
+    {n:'Antucoya', e:'Antofagasta Minerals', m:'cobre', r:'Antofagasta', lat:-22.35, lon:-69.90, d:'Mina de cobre de Antofagasta Minerals; cátodos por lixiviación con agua de mar.', cu:'Opera casi íntegramente con agua de mar.'},
+    {n:'Los Pelambres', e:'Antofagasta Minerals', m:'cobre', r:'Coquimbo', lat:-31.75, lon:-70.49, p:'adn-minero-pelambres.html', d:'La gran minera de capital chileno (grupo Luksic); usa agua de mar y un mineroducto hasta el puerto.', cu:'Su mineroducto lleva el concentrado decenas de km hasta el puerto.'},
+    {n:'Zaldívar', e:'AMSA / Barrick', m:'cobre', r:'Antofagasta', lat:-24.20, lon:-69.05, d:'Mina de cobre en Antofagasta operada por Antofagasta Minerals y Barrick.', cu:'Produce cátodos por lixiviación en pleno desierto de altura.'},
+    {n:'Candelaria', e:'Lundin Mining', m:'cobre', r:'Atacama', lat:-27.51, lon:-70.28, p:'adn-minero-candelaria.html', d:'Cobre a rajo y subterránea cerca de Copiapó, junto a un valle agrícola.', cu:'Convive con un valle agrícola cerca de Copiapó.'},
+    {n:'Caserones', e:'Lundin Mining', m:'cobre', r:'Atacama', lat:-28.00, lon:-69.70, p:'adn-minero-caserones.html', d:'Mina de cobre y molibdeno de Lundin en Tierra Amarilla (Atacama), de gran altura.', cu:'Además de cobre, recupera molibdeno para aceros especiales.'},
+    {n:'El Abra', e:'Freeport / Codelco', m:'cobre', r:'Antofagasta', lat:-21.75, lon:-68.77, d:'Mina de cobre de Freeport y Codelco en Antofagasta; cátodos por lixiviación.', cu:'Su nombre viene de una quebrada del altiplano.'},
+    {n:'Quebrada Blanca', e:'Teck', m:'cobre', r:'Tarapacá', lat:-20.99, lon:-68.75, p:'adn-minero-qb.html', d:'Mina de Teck en Tarapacá que dio el salto con el megaproyecto QB2.', cu:'QB2 fue uno de los mayores proyectos mineros recientes de Chile.'},
+    {n:'Sierra Gorda', e:'South32 / KGHM', m:'cobre', r:'Antofagasta', lat:-22.90, lon:-69.30, d:'Mina de cobre y molibdeno de South32 y KGHM en Antofagasta.', cu:'Une capital polaco (KGHM) y australiano (South32).'},
+    {n:'Mantoverde', e:'Capstone', m:'cobre', r:'Atacama', lat:-27.00, lon:-70.70, p:'adn-minero-mantoverde.html', d:'Mina de cobre de Capstone en Chañaral (Atacama); cátodos y concentrado con agua desalada.', cu:'Combina lixiviación histórica con una nueva planta de concentrado.'},
+    {n:'Lomas Bayas', e:'Glencore', m:'cobre', r:'Antofagasta', lat:-22.90, lon:-69.50, d:'Mina de cobre de Glencore en Antofagasta; cátodos por lixiviación.', cu:'Trabaja un mineral de muy baja ley con gran eficiencia.'},
+    {n:'Mantos Blancos', e:'Capstone', m:'cobre', r:'Antofagasta', lat:-23.52, lon:-70.13, d:'Mina de cobre de Capstone cerca de Antofagasta; rajo histórico renovado.', cu:'Es una de las operaciones clásicas de la Región de Antofagasta.'},
+    {n:'El Peñón', e:'Pan American Silver', m:'oro', r:'Antofagasta', lat:-24.40, lon:-69.35, d:'Mina de oro y plata de Pan American Silver en Antofagasta.', cu:'Es subterránea: se persigue el oro en vetas bajo tierra.'},
+    {n:'La Coipa', e:'Kinross', m:'oro', r:'Atacama', lat:-26.78, lon:-69.28, d:'Mina de oro y plata de Kinross en Atacama, a gran altura.', cu:'Opera en pleno altiplano, sobre los 4.000 m.'},
+    {n:'Maricunga', e:'Maricunga', m:'oro', r:'Atacama', lat:-27.13, lon:-69.05, d:'Mina de oro en Atacama, en la cordillera cerca del salar de Maricunga.', cu:'Está entre las minas de oro más altas de Chile.'},
+    {n:'Los Colorados', e:'CAP Minería', m:'hierro', r:'Atacama', lat:-28.30, lon:-70.60, d:'Mina de hierro de CAP Minería en Atacama (Franja Ferrífera).', cu:'Su hierro viaja por ferrocarril hasta el puerto.'},
+    {n:'El Romeral', e:'CAP Minería', m:'hierro', r:'Coquimbo', lat:-29.70, lon:-71.28, d:'Mina de hierro de CAP Minería en Coquimbo, cerca de la costa.', cu:'Está a pasos del mar, lo que facilita exportar el hierro.'},
+    {n:'Salar de Atacama', e:'SQM / Albemarle', m:'litio', r:'Antofagasta', lat:-23.50, lon:-68.20, p:'adn-minero-salar.html', d:'El corazón del litio de Chile: se extrae de la salmuera bajo el salar más rico del mundo.', cu:'Bajo su costra blanca hay salmuera riquísima en litio.'}
   ];
 
   // reloj
@@ -377,6 +377,8 @@
     let html='<p class="pop-t">'+f.n+'</p>'+
       '<p class="pop-l">'+f.e+'</p>'+
       '<p class="pop-l">'+f.m.charAt(0).toUpperCase()+f.m.slice(1)+' · '+f.r+'</p>'+
+      (f.d?'<p class="pop-l" style="color:#d8cebf;max-width:220px">'+f.d+'</p>':'')+
+      (f.cu?'<p class="pop-l" style="color:#ffb169;max-width:220px">💡 '+f.cu+'</p>':'')+
       '<p class="pop-l clima" data-k="'+f.n+'">Clima: cargando…</p>'+
       '<div>'+(f.p?'<a class="pop-a" href="'+f.p+'">Ver ficha →</a>':'')+
       '<a class="pop-a" href="'+sview+'" target="_blank" rel="noopener">Street View →</a>'+
@@ -426,7 +428,7 @@
       else toast(url); }catch(_){ } });
 
   // tour automático por las grandes faenas, con ficha informativa de cada mina
-  const TOUR=['Chuquicamata','Radomiro Tomic','Escondida','Collahuasi','Spence','Los Pelambres','Salar de Atacama','Candelaria'];
+  const TOUR=['Chuquicamata','Radomiro Tomic','Ministro Hales','Gabriela Mistral','Escondida','Spence','Centinela','Collahuasi','Quebrada Blanca','Los Pelambres','Caserones','Mantoverde','Candelaria','Salar de Atacama'];
   let tourOn=false, tourIx=0, tourT=null;
   // tarjeta de información sobre el mapa
   const tInfo=document.createElement('div'); tInfo.id='tourInfo';
@@ -437,6 +439,7 @@
       '<div class="ti-name">'+f.n+'</div>'+
       '<div class="ti-meta">'+f.e+' · '+cap+' · '+f.r+'</div>'+
       (f.d?'<p class="ti-desc">'+f.d+'</p>':'')+
+      (f.cu?'<p class="ti-desc" style="color:#ffb169;font-weight:700">💡 '+f.cu+'</p>':'')+
       (f.p?'<a class="ti-link" href="'+f.p+'">Ver ficha completa →</a>':'');
     tInfo.classList.add('on');
   }
