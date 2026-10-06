@@ -57,6 +57,8 @@
   </style>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#141110">
+  <script>try{if(localStorage.getItem('adn_theme')==='light')document.documentElement.classList.add('adn-light');}catch(e){}</script>
+  <style>html.adn-light{filter:invert(1) hue-rotate(180deg);background:#121212!important}html.adn-light img,html.adn-light video,html.adn-light canvas,html.adn-light iframe,html.adn-light .adn-noinv{filter:invert(1) hue-rotate(180deg)}</style>
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
@@ -234,8 +236,23 @@
       <p class="text-sm text-[#cf9b6f] font-semibold flex items-center justify-center gap-2"><i data-lucide="pickaxe" class="w-4 h-4"></i> ADN Minero · divulgación minera independiente</p>
       <p class="text-xs text-stone-500 mt-2">Los datos son referenciales y requieren conexión. No reemplazan los sistemas oficiales de tu faena.</p>
       <p class="text-xs mt-3 flex items-center justify-center gap-3 flex-wrap"><a href="../adn-minero-acerca.html" class="text-[#e8c9a6]">Acerca de y fuentes</a><span class="text-stone-600">·</span><a href="../adn-minero-privacidad.html" class="text-[#e8c9a6]">Privacidad</a><span class="text-stone-600">·</span><a href="../adn-minero-terminos.html" class="text-[#e8c9a6]">Términos</a></p>
-      <button id="faenaMode" type="button" class="mt-4 inline-flex items-center gap-2 text-xs font-semibold glass rounded-full px-4 py-2 active:scale-95 transition"><i data-lucide="sun" class="w-4 h-4" style="color:#e0a35a"></i> <span id="faenaModeTxt">Modo faena: texto grande</span></button>
+      <div class="mt-4 flex items-center justify-center gap-2 flex-wrap">
+        <button id="faenaMode" type="button" class="inline-flex items-center gap-2 text-xs font-semibold glass rounded-full px-4 py-2 active:scale-95 transition"><i data-lucide="sun" class="w-4 h-4" style="color:#e0a35a"></i> <span id="faenaModeTxt">Modo faena: texto grande</span></button>
+        <button id="themeToggle" type="button" class="inline-flex items-center gap-2 text-xs font-semibold glass rounded-full px-4 py-2 active:scale-95 transition"><i data-lucide="moon" class="w-4 h-4" style="color:#a9c3e6"></i> <span id="themeToggleTxt">Tema claro</span></button>
+      </div>
     </footer>
+    <script>
+      (function(){ var b=document.getElementById('themeToggle'); if(!b) return;
+        var ic=b.querySelector('i'), tx=document.getElementById('themeToggleTxt');
+        var sync=function(){ var light=document.documentElement.classList.contains('adn-light');
+          if(tx) tx.textContent=light?'Tema oscuro':'Tema claro';
+          if(ic){ ic.setAttribute('data-lucide', light?'sun':'moon'); ic.style.color=light?'#e0a35a':'#a9c3e6'; }
+          try{ window.lucide&&lucide.createIcons(); }catch(e){} };
+        sync();
+        b.addEventListener('click', function(){ var light=document.documentElement.classList.toggle('adn-light');
+          try{ localStorage.setItem('adn_theme', light?'light':'dark'); }catch(e){} sync(); });
+      })();
+    </script>
 
   </div>
 

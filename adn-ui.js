@@ -340,6 +340,40 @@
     if(document.body) mount(); else document.addEventListener('DOMContentLoaded',mount);
   }catch(e){}
 
+  // ===== Tokens de diseño + Tema claro (beta) + Salto al contenido (a11y) =====
+  try{
+    var tk=document.createElement('style'); tk.id='adnui-tokens';
+    tk.textContent=
+      // Tokens compartidos (base del sistema de diseño para theming futuro)
+      ':root{--adn-ink:#141110;--adn-paper:#f4ece5;--adn-copper:#cf9b6f;--adn-copper-soft:#e8c9a6;'+
+      '--adn-glass-1:rgba(43,37,32,.62);--adn-glass-2:rgba(26,21,18,.44);--adn-line:rgba(196,168,148,.14);'+
+      '--adn-muted:#9a8d7f;--adn-ok:#a7d18a;--adn-warn:#e0a35a;--adn-live:#e0715a;'+
+      '--adn-r-sm:10px;--adn-r:14px;--adn-r-lg:20px;--adn-sp:16px}'+
+      // Tema claro (beta): inversión global; medios (fotos, mapas, video) se re-invierten para verse normales
+      'html.adn-light{filter:invert(1) hue-rotate(180deg);background:#121212!important}'+
+      'html.adn-light img,html.adn-light video,html.adn-light canvas,html.adn-light iframe,html.adn-light .leaflet-tile,html.adn-light .adn-noinv{filter:invert(1) hue-rotate(180deg)}'+
+      // Enlace "saltar al contenido" (lectores de pantalla / teclado)
+      '#adnui-skip{position:fixed;left:8px;top:-60px;z-index:2147483600;background:#2b221c;color:#f0d7b6;border:1px solid rgba(207,155,111,.5);border-radius:10px;padding:9px 14px;font:700 13px system-ui,sans-serif;text-decoration:none;transition:top .15s}'+
+      '#adnui-skip:focus{top:8px;outline:2px solid #e0a35a}';
+    (document.head||document.documentElement).appendChild(tk);
+
+    // Aplicar el tema guardado
+    try{ if(localStorage.getItem('adn_theme')==='light') document.documentElement.classList.add('adn-light'); }catch(e){}
+    window.adnSetTheme=function(mode){ try{ var light=(mode==='light'); document.documentElement.classList.toggle('adn-light',light); localStorage.setItem('adn_theme',light?'light':'dark'); }catch(e){} };
+    window.adnToggleTheme=function(){ var isLight=document.documentElement.classList.contains('adn-light'); window.adnSetTheme(isLight?'dark':'light'); return !isLight; };
+
+    // Salto al contenido
+    var mkSkip=function(){ try{
+      if(!document.body||document.getElementById('adnui-skip')) return;
+      var target=document.querySelector('.wrap')||document.querySelector('main'); if(!target) return;
+      if(!target.id) target.id='adn-main';
+      var a=document.createElement('a'); a.id='adnui-skip'; a.href='#'+target.id; a.textContent='Saltar al contenido';
+      a.addEventListener('click',function(){ try{ target.setAttribute('tabindex','-1'); target.focus(); }catch(e){} });
+      document.body.insertBefore(a, document.body.firstChild);
+    }catch(e){} };
+    if(document.body) mkSkip(); else document.addEventListener('DOMContentLoaded', mkSkip);
+  }catch(e){}
+
   try{
     var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
