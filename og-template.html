@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>OG</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  *{margin:0;box-sizing:border-box}
+  html,body{width:1200px;height:630px;overflow:hidden}
+  body{ font-family:'Inter',system-ui,sans-serif; color:#f4ece5;
+    background:radial-gradient(900px 520px at 16% -10%, rgba(255,122,58,.26), transparent 60%),
+      radial-gradient(800px 460px at 100% 120%, rgba(207,155,111,.22), transparent 60%), #141110;
+    position:relative; }
+  .frame{ position:absolute; inset:0; border:14px solid transparent; }
+  .wrap{ position:absolute; inset:0; padding:70px 76px; display:flex; flex-direction:column; justify-content:space-between }
+  .top{ display:flex; align-items:center; gap:16px }
+  .logo{ width:64px; height:64px; border-radius:16px; display:grid; place-items:center; font-size:34px;
+    background:rgba(255,255,255,.06); border:1px solid rgba(196,168,148,.3) }
+  .brand{ font-size:26px; font-weight:900; letter-spacing:.01em }
+  .brand .c{ color:#cf9b6f }
+  .mid{ display:flex; align-items:center; gap:40px }
+  .emoji{ font-size:150px; line-height:1; filter:drop-shadow(0 8px 26px rgba(0,0,0,.5)) }
+  .title{ font-size:72px; font-weight:900; line-height:1.02; letter-spacing:-.02em; max-width:720px }
+  .accent{ color:var(--a,#cf9b6f) }
+  .sub{ font-size:30px; color:#c9bcae; font-weight:700; margin-top:18px; max-width:760px; line-height:1.3 }
+  .bar{ height:8px; width:150px; border-radius:6px; background:var(--a,#cf9b6f); margin-top:26px }
+  .foot{ display:flex; align-items:center; justify-content:space-between; font-size:22px; color:#9c8f83; font-weight:700 }
+  .foot .url{ color:#e8c9a6 }
+  .chip{ background:rgba(255,255,255,.05); border:1px solid rgba(196,168,148,.26); border-radius:999px; padding:9px 18px; font-size:20px; color:#e7dccd }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="logo" id="logo">⛏️</div>
+      <div class="brand">ADN <span class="c">Minero</span></div>
+    </div>
+    <div class="mid">
+      <div class="emoji" id="emoji">👁️</div>
+      <div>
+        <div class="title" id="title">Título</div>
+        <div class="sub" id="sub">Subtítulo</div>
+        <div class="bar" id="bar"></div>
+      </div>
+    </div>
+    <div class="foot">
+      <span class="url">simonrovi-web.github.io/adn-minero</span>
+      <span class="chip" id="chip">La minería de Chile, para todos</span>
+    </div>
+  </div>
+<script>
+  const q=new URLSearchParams(location.search);
+  const set=(id,v)=>{ if(v!=null) document.getElementById(id).textContent=v; };
+  const t=q.get('t'); if(t){ document.getElementById('title').innerHTML=t.replace(/\*(.+?)\*/g,'<span class="accent">$1</span>'); }
+  set('sub', q.get('s'));
+  set('emoji', q.get('e'));
+  set('chip', q.get('c')||'La minería de Chile, para todos');
+  const a=q.get('a'); if(a){ document.documentElement.style.setProperty('--a', a); }
+</script>
+</body>
+</html>

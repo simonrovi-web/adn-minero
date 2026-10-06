@@ -81,6 +81,15 @@
     select:focus{ border-color:rgba(255,122,58,.6) }
     #toast{ position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(20px); background:#2a1d14; border:1px solid rgba(255,122,58,.4); color:#f6ecdf; font-size:13px; font-weight:700; padding:11px 18px; border-radius:12px; opacity:0; pointer-events:none; transition:.3s; z-index:60; box-shadow:0 12px 30px -12px rgba(0,0,0,.7) }
     #toast.show{ opacity:1; transform:translateX(-50%) translateY(0) }
+    #tourInfo{ position:absolute; left:10px; right:10px; bottom:10px; z-index:1000; border-radius:14px; padding:12px 14px;
+      background:linear-gradient(160deg, rgba(26,19,14,.94), rgba(16,11,8,.9)); border:1px solid rgba(255,122,58,.4);
+      box-shadow:0 12px 30px rgba(0,0,0,.6); opacity:0; transform:translateY(12px); transition:.35s; pointer-events:none }
+    #tourInfo.on{ opacity:1; transform:none; pointer-events:auto }
+    #tourInfo .ti-step{ font-size:10px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:#ff9a6a }
+    #tourInfo .ti-name{ font-size:17px; font-weight:900; margin:2px 0 1px; color:#f4ece5 }
+    #tourInfo .ti-meta{ font-size:11.5px; color:#e6c98f; font-weight:700 }
+    #tourInfo .ti-desc{ font-size:12px; color:#c9bcae; line-height:1.45; margin:6px 0 0 }
+    #tourInfo .ti-link{ display:inline-flex; align-items:center; gap:5px; margin-top:7px; color:#ffb169; font-weight:800; font-size:12.5px }
     @media (prefers-reduced-motion:reduce){ .eq,.flame,.iris,.pupil,.you{ animation:none !important } }
   </style>
   <script src="adn-ui.js" defer></script>
@@ -208,22 +217,22 @@
   const MINCOL={cobre:'#cf9b6f', oro:'#e6c464', litio:'#5fd1bd', hierro:'#e0855f'};
   // p: ficha existente en la app (si la hay)
   const FAENAS=[
-    {n:'Escondida', e:'BHP', m:'cobre', r:'Antofagasta', lat:-24.27, lon:-69.07, p:'adn-minero-escondida.html'},
-    {n:'Collahuasi', e:'Collahuasi', m:'cobre', r:'Tarapacá', lat:-20.98, lon:-68.68, p:'adn-minero-collahuasi.html'},
-    {n:'Chuquicamata', e:'Codelco', m:'cobre', r:'Antofagasta', lat:-22.29, lon:-68.90, p:'adn-minero-chuqui.html'},
-    {n:'Radomiro Tomic', e:'Codelco', m:'cobre', r:'Antofagasta', lat:-22.28, lon:-68.92, p:'adn-minero-radomiro-tomic.html'},
+    {n:'Escondida', e:'BHP', m:'cobre', r:'Antofagasta', lat:-24.27, lon:-69.07, p:'adn-minero-escondida.html', d:'La mayor mina de cobre del mundo; opera con agua de mar desalada.'},
+    {n:'Collahuasi', e:'Collahuasi', m:'cobre', r:'Tarapacá', lat:-20.98, lon:-68.68, p:'adn-minero-collahuasi.html', d:'Una de las mayores minas de cobre del mundo, sobre los 4.400 m de altura.'},
+    {n:'Chuquicamata', e:'Codelco', m:'cobre', r:'Antofagasta', lat:-22.29, lon:-68.90, p:'adn-minero-chuqui.html', d:'Una de las minas de cobre a cielo abierto más grandes del planeta; más de un siglo de historia y hoy también subterránea.'},
+    {n:'Radomiro Tomic', e:'Codelco', m:'cobre', r:'Antofagasta', lat:-22.28, lon:-68.92, p:'adn-minero-radomiro-tomic.html', d:'Vecina de Chuquicamata (Distrito Norte de Codelco); produce cátodos de cobre por lixiviación (SX-EW).'},
     {n:'Ministro Hales', e:'Codelco', m:'cobre', r:'Antofagasta', lat:-22.05, lon:-68.92, p:'adn-minero-ministro-hales.html'},
     {n:'Gabriela Mistral', e:'Codelco', m:'cobre', r:'Antofagasta', lat:-24.30, lon:-69.20, p:'adn-minero-gabriela-mistral.html'},
     {n:'Andina', e:'Codelco', m:'cobre', r:'Valparaíso', lat:-33.05, lon:-70.28, p:'adn-minero-andina.html'},
     {n:'Salvador', e:'Codelco', m:'cobre', r:'Atacama', lat:-26.25, lon:-69.62, p:'adn-minero-salvador.html'},
     {n:'Los Bronces', e:'Anglo American', m:'cobre', r:'Metropolitana', lat:-33.14, lon:-70.28},
     {n:'El Soldado', e:'Anglo American', m:'cobre', r:'Valparaíso', lat:-32.66, lon:-71.00},
-    {n:'Spence', e:'BHP', m:'cobre', r:'Antofagasta', lat:-22.75, lon:-69.28, p:'adn-minero-spence.html'},
+    {n:'Spence', e:'BHP', m:'cobre', r:'Antofagasta', lat:-22.75, lon:-69.28, p:'adn-minero-spence.html', d:'Cobre de BHP en Sierra Gorda, con agua de mar y su expansión SGO.'},
     {n:'Centinela', e:'Antofagasta Minerals', m:'cobre', r:'Antofagasta', lat:-23.05, lon:-69.02, p:'adn-minero-centinela.html'},
     {n:'Antucoya', e:'Antofagasta Minerals', m:'cobre', r:'Antofagasta', lat:-22.35, lon:-69.90},
-    {n:'Los Pelambres', e:'Antofagasta Minerals', m:'cobre', r:'Coquimbo', lat:-31.75, lon:-70.49, p:'adn-minero-pelambres.html'},
+    {n:'Los Pelambres', e:'Antofagasta Minerals', m:'cobre', r:'Coquimbo', lat:-31.75, lon:-70.49, p:'adn-minero-pelambres.html', d:'La gran minera de capital chileno (grupo Luksic); usa agua de mar y un mineroducto hasta el puerto.'},
     {n:'Zaldívar', e:'AMSA / Barrick', m:'cobre', r:'Antofagasta', lat:-24.20, lon:-69.05},
-    {n:'Candelaria', e:'Lundin Mining', m:'cobre', r:'Atacama', lat:-27.51, lon:-70.28, p:'adn-minero-candelaria.html'},
+    {n:'Candelaria', e:'Lundin Mining', m:'cobre', r:'Atacama', lat:-27.51, lon:-70.28, p:'adn-minero-candelaria.html', d:'Cobre a rajo y subterránea cerca de Copiapó, junto a un valle agrícola.'},
     {n:'Caserones', e:'Lundin Mining', m:'cobre', r:'Atacama', lat:-28.00, lon:-69.70, p:'adn-minero-caserones.html'},
     {n:'El Abra', e:'Freeport / Codelco', m:'cobre', r:'Antofagasta', lat:-21.75, lon:-68.77},
     {n:'Quebrada Blanca', e:'Teck', m:'cobre', r:'Tarapacá', lat:-20.99, lon:-68.75, p:'adn-minero-qb.html'},
@@ -236,7 +245,7 @@
     {n:'Maricunga', e:'Maricunga', m:'oro', r:'Atacama', lat:-27.13, lon:-69.05},
     {n:'Los Colorados', e:'CAP Minería', m:'hierro', r:'Atacama', lat:-28.30, lon:-70.60},
     {n:'El Romeral', e:'CAP Minería', m:'hierro', r:'Coquimbo', lat:-29.70, lon:-71.28},
-    {n:'Salar de Atacama', e:'SQM / Albemarle', m:'litio', r:'Antofagasta', lat:-23.50, lon:-68.20, p:'adn-minero-salar.html'}
+    {n:'Salar de Atacama', e:'SQM / Albemarle', m:'litio', r:'Antofagasta', lat:-23.50, lon:-68.20, p:'adn-minero-salar.html', d:'El corazón del litio de Chile: se extrae de la salmuera bajo el salar más rico del mundo.'}
   ];
 
   // reloj
@@ -416,15 +425,28 @@
       else if(navigator.clipboard){ await navigator.clipboard.writeText(url); toast('Enlace de esta vista copiado'); }
       else toast(url); }catch(_){ } });
 
-  // tour automático por las grandes faenas
+  // tour automático por las grandes faenas, con ficha informativa de cada mina
   const TOUR=['Chuquicamata','Radomiro Tomic','Escondida','Collahuasi','Spence','Los Pelambres','Salar de Atacama','Candelaria'];
   let tourOn=false, tourIx=0, tourT=null;
-  function tourStep(){ const f=FAENAS.find(x=>x.n===TOUR[tourIx%TOUR.length]); tourIx++;
-    if(f){ const mk=markerOf[f.n]; map.flyTo([f.lat,f.lon],12.5,{duration:2.2}); setTimeout(()=>{ if(tourOn&&mk) mk.openPopup(); },2300); toast('Tour: '+f.n); }
-    tourT=setTimeout(tourStep, 7000); }
+  // tarjeta de información sobre el mapa
+  const tInfo=document.createElement('div'); tInfo.id='tourInfo';
+  document.getElementById('map').appendChild(tInfo);
+  function showInfo(f, step){
+    const cap=f.m.charAt(0).toUpperCase()+f.m.slice(1);
+    tInfo.innerHTML='<div class="ti-step">Tour minero · '+step+' de '+TOUR.length+'</div>'+
+      '<div class="ti-name">'+f.n+'</div>'+
+      '<div class="ti-meta">'+f.e+' · '+cap+' · '+f.r+'</div>'+
+      (f.d?'<p class="ti-desc">'+f.d+'</p>':'')+
+      (f.p?'<a class="ti-link" href="'+f.p+'">Ver ficha completa →</a>':'');
+    tInfo.classList.add('on');
+  }
+  function hideInfo(){ tInfo.classList.remove('on'); }
+  function tourStep(){ const f=FAENAS.find(x=>x.n===TOUR[tourIx%TOUR.length]); const step=(tourIx%TOUR.length)+1; tourIx++;
+    if(f){ map.flyTo([f.lat,f.lon],12.5,{duration:2.2}); setTimeout(()=>{ if(tourOn) showInfo(f, step); },2300); }
+    tourT=setTimeout(tourStep, 8000); }
   function tourSet(on){ tourOn=on; const b=$('btnTour'); b.classList.toggle('on',on);
     b.innerHTML = on ? '<i data-lucide="pause" style="width:14px;height:14px"></i> Detener tour' : '<i data-lucide="play" style="width:14px;height:14px"></i> Tour por las faenas'; drawIcons();
-    if(on){ tourIx=0; tourStep(); } else { clearTimeout(tourT); } }
+    if(on){ tourIx=0; tourStep(); } else { clearTimeout(tourT); hideInfo(); } }
   $('btnTour').addEventListener('click',()=>tourSet(!tourOn));
   map.on('mousedown wheel',()=>{ if(tourOn) tourSet(false); }); // detener si el usuario interviene
 
