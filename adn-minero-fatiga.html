@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · Fatiga y Descanso en Turnos</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="Fatiga y descanso en faena: por qué la fatiga es tan peligrosa como el alcohol, las señales de alerta, cómo sobrellevar el turno de noche y qué ayuda a dormir mejor. Descansar bien es seguridad." />
+  <link rel="canonical" href="https://simonrovi-web.github.io/adn-minero/adn-minero-fatiga.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ADN Minero" />
+  <meta property="og:title" content="ADN Minero · Fatiga y Descanso en Turnos" />
+  <meta property="og:description" content="La fatiga es tan peligrosa como el alcohol. Señales, turno de noche y cómo dormir mejor." />
+  <meta property="og:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://simonrovi-web.github.io/adn-minero/adn-minero-fatiga.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ADN Minero · Fatiga y Descanso en Turnos" />
+  <meta name="twitter:description" content="La fatiga es tan peligrosa como el alcohol. Señales, turno de noche y cómo dormir mejor." />
+  <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(127,144,217,0.13), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    .topic{ cursor:pointer; } .topic .body{ display:none; } .topic.open .body{ display:block; }
+    .topic.open .chev{ transform:rotate(90deg); } .chev{ transition:transform .2s; }
+    .tip{ display:flex; gap:9px; align-items:flex-start; font-size:13.5px; line-height:1.5; color:#e4d7c8; margin-top:8px; }
+    .tip b{ color:#f6ecdf; } h3{ margin:0; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; }
+    .fa-moon{ animation:faMoon 5s ease-in-out infinite } @keyframes faMoon{ 0%,100%{ opacity:.85 } 50%{ opacity:1 } }
+    .fa-star{ animation:faStar 3s ease-in-out infinite } .fa-star.b{ animation-delay:1s } .fa-star.c{ animation-delay:2s }
+    @keyframes faStar{ 0%,100%{ opacity:.3 } 50%{ opacity:1 } }
+    .fa-z{ animation:faZ 4s ease-in-out infinite } .fa-z.b{ animation-delay:1.3s } .fa-z.c{ animation-delay:2.6s }
+    @keyframes faZ{ 0%{ transform:translateY(0); opacity:0 } 25%{ opacity:1 } 100%{ transform:translateY(-26px); opacity:0 } }
+    @media (prefers-reduced-motion:reduce){ .fa-moon,.fa-star,.fa-z{ animation:none !important; opacity:1 } }
+  </style>
+  <script src="adn-ui.js" defer></script>
+  <script src="adn-recorrido.js" defer></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","@id":"https://simonrovi-web.github.io/adn-minero/adn-minero-fatiga.html#webpage","url":"https://simonrovi-web.github.io/adn-minero/adn-minero-fatiga.html","name":"ADN Minero · Fatiga y Descanso en Turnos","description":"La fatiga es tan peligrosa como el alcohol. Señales, turno de noche y cómo dormir mejor.","isPartOf":{"@id":"https://simonrovi-web.github.io/adn-minero/#site"},"inLanguage":"es-CL","publisher":{"@id":"https://simonrovi-web.github.io/adn-minero/#org"}}
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(127,144,217,.15);border:1px solid rgba(127,144,217,.34)"><i data-lucide="moon" style="width:26px;height:26px;color:#9aa6e6"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#b3bcf0;font-weight:800">Fatiga y Descanso en Turnos</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Descansar bien también es seguridad</p>
+      </div>
+    </header>
+
+    <div class="glass rounded-2xl p-3.5 mt-4" style="border-color:rgba(224,113,90,.3);background:rgba(224,113,90,.07)">
+      <p class="text-[12px] text-stone-300 leading-relaxed">Estar <b>muchas horas sin dormir</b> afecta la reacción y el juicio parecido al <b>alcohol</b>. En faena, con equipos pesados y conducción, la <b>fatiga mata</b>. Dormir bien no es flojera: es parte del autocuidado, como el EPP.</p>
+    </div>
+
+    <div class="glass rounded-2xl p-4 mt-4">
+      <svg class="viz" viewBox="0 0 400 150" role="img" aria-label="Noche de descanso: luna, estrellas y una persona durmiendo 7 a 9 horas para recuperar energía">
+        <defs>
+          <linearGradient id="faSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b2140"/><stop offset="1" stop-color="#241b2a"/></linearGradient>
+          <radialGradient id="faMoonG" cx="0.4" cy="0.4" r="0.6"><stop offset="0" stop-color="#fdf6d8"/><stop offset="1" stop-color="#e6dca0"/></radialGradient>
+        </defs>
+        <rect x="0" y="0" width="400" height="150" fill="url(#faSky)"/>
+        <!-- estrellas -->
+        <g fill="#eef2ff"><circle class="fa-star" cx="110" cy="30" r="1.6"/><circle class="fa-star b" cx="180" cy="22" r="1.4"/><circle class="fa-star c" cx="250" cy="34" r="1.6"/><circle class="fa-star" cx="300" cy="24" r="1.3"/><circle class="fa-star b" cx="150" cy="48" r="1.2"/></g>
+        <!-- luna -->
+        <g class="fa-moon"><circle cx="64" cy="44" r="20" fill="url(#faMoonG)"/><circle cx="56" cy="40" r="18" fill="#1b2140"/></g>
+        <!-- zzz -->
+        <g fill="#b3bcf0" font-weight="800" style="font-size:14px"><text class="fa-z" x="230" y="70">z</text><text class="fa-z b" x="244" y="64">z</text><text class="fa-z c" x="258" y="58">Z</text></g>
+        <!-- cama + persona durmiendo -->
+        <rect x="150" y="104" width="190" height="16" rx="4" fill="#4a3f52"/>
+        <rect x="150" y="96" width="34" height="14" rx="6" fill="#6a5f72"/>
+        <path d="M184 110 q30 -16 70 0 z" fill="#8a7f92"/>
+        <circle cx="196" cy="100" r="9" fill="#d8c3ad"/>
+        <rect x="150" y="118" width="190" height="6" rx="3" fill="#2e2636"/>
+        <text x="300" y="100" text-anchor="middle" style="font-size:15px;font-weight:800;fill:#bfe0c9">7–9 h</text>
+        <text x="300" y="114" text-anchor="middle" style="font-size:9px;font-weight:700;fill:#9fb9a8">de sueño</text>
+      </svg>
+      <p class="text-center text-[11px] text-stone-500 mt-2">Dormir <b>7 a 9 horas</b> recupera la atención. Un turno sin dormir bien es un turno en riesgo.</p>
+    </div>
+
+    <div id="topics" class="mt-4 grid gap-2.5"></div>
+
+    <div class="glass rounded-2xl p-4 mt-3" style="border-color:rgba(224,113,90,.3)">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="car" style="width:17px;height:17px;color:#ff8a6a"></i><h3 class="font-bold text-[13.5px]">Si manejas con sueño: detente</h3></div>
+      <p class="text-[12.5px] text-stone-300 leading-relaxed">Si vas al volante y sientes <b>micro-sueños</b>, pestañeos largos o no recuerdas los últimos km, <b>detente en un lugar seguro</b>. Una siesta corta (15–20 min) o un café no reemplazan dormir, pero ayudan a llegar. <b>Ninguna meta vale tu vida.</b></p>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Contenido de divulgación y autocuidado; no reemplaza los protocolos de gestión de fatiga de tu faena ni la evaluación médica. · <a href="adn-minero-turnos.html" style="color:#e8c9a6">Calculadora de turnos</a> · <a href="adn-minero-salud-mental.html" style="color:#e8c9a6">Salud mental</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+
+<script>
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const TOPICS=[
+    { ic:'triangle-alert', c:'#ff8a6a', t:'Por qué la fatiga es peligrosa', s:'Tan riesgosa como el alcohol',
+      tips:[
+        ['brain','Sin dormir, el cerebro reacciona más lento y decide peor; <b>17–19 h despierto equivale a ~0,5 g/l de alcohol</b>.'],
+        ['truck','En faena hay <b>equipos pesados, altura y conducción</b>: un segundo de micro-sueño puede causar un accidente grave.'],
+        ['clock','La fatiga se <b>acumula</b>: varias noches durmiendo poco pesan como una noche en vela.']
+      ]},
+    { ic:'eye', c:'#e0a35a', t:'Señales de que estás fatigado', s:'Detéctalas a tiempo',
+      tips:[
+        ['eye','<b>Pestañeos largos</b>, ojos pesados, bostezos seguidos o visión borrosa.'],
+        ['activity','Cuesta <b>concentrarte</b>, cometes errores simples o se te olvidan cosas.'],
+        ['triangle-alert','<b>Micro-sueños</b>: segundos en que te duermes sin darte cuenta. Es una señal de alarma.']
+      ]},
+    { ic:'moon', c:'#9aa6e6', t:'El turno de noche', s:'Lo más exigente para el cuerpo',
+      tips:[
+        ['moon','Tu cuerpo quiere dormir de noche; trabajar contra ese reloj cansa más y exige cuidarse.'],
+        ['coffee','La <b>cafeína</b> ayuda al inicio del turno, no al final (si no, no podrás dormir de día).'],
+        ['sun','Al volver, usa <b>lentes de sol</b>: la luz del día le avisa al cuerpo que es hora de despertar.']
+      ]},
+    { ic:'heart', c:'#7fbf9a', t:'Qué ayuda a dormir mejor', s:'Aunque sea de día',
+      tips:[
+        ['moon','<b>Oscuridad total</b>: cortinas, antifaz. La pieza fresca y silenciosa (tapones si hace falta).'],
+        ['phone','<b>Baja las pantallas</b> antes de dormir; la luz azul engaña al cerebro.'],
+        ['coffee','Evita <b>café, energéticas y pantallas</b> en las horas previas a acostarte.'],
+        ['check','Rutina estable para dormir y despertar, incluso en bajada, ayuda al cuerpo a ordenarse.']
+      ]}
+  ];
+  document.getElementById('topics').innerHTML=TOPICS.map((x,i)=>`
+    <div class="glass rounded-2xl topic" data-i="${i}">
+      <div class="p-4 flex items-center gap-3">
+        <div class="h-10 w-10 rounded-xl grid place-items-center shrink-0" style="background:${x.c}22;border:1px solid ${x.c}55"><i data-lucide="${x.ic}" class="w-5 h-5" style="color:${x.c}"></i></div>
+        <div class="min-w-0 flex-1"><h3 class="font-bold text-[15px]">${x.t}</h3><p class="text-[11.5px] text-stone-400">${x.s}</p></div>
+        <i data-lucide="chevron-right" class="chev w-5 h-5 text-stone-500 shrink-0"></i>
+      </div>
+      <div class="body px-4 pb-4 -mt-1">
+        ${x.tips.map(t=>`<div class="tip"><i data-lucide="${t[0]}" class="w-4 h-4 shrink-0 mt-0.5" style="color:${x.c}"></i><span>${t[1]}</span></div>`).join('')}
+      </div>
+    </div>`).join('');
+  document.getElementById('topics').addEventListener('click', e=>{ const t=e.target.closest('.topic'); if(!t) return; t.classList.toggle('open'); drawIcons(); });
+  drawIcons();
+</script>
+</body>
+</html>
