@@ -271,6 +271,7 @@
         var sync=function(){ var light=document.documentElement.classList.contains('adn-light');
           if(tx) tx.textContent=light?'Tema oscuro':'Tema claro';
           if(ic){ ic.setAttribute('data-lucide', light?'sun':'moon'); ic.style.color=light?'#e0a35a':'#a9c3e6'; }
+          try{ var m=document.querySelector('meta[name="theme-color"]'); if(m) m.setAttribute('content', light?'#e9dfd0':'#141110'); }catch(e){}
           try{ window.lucide&&lucide.createIcons(); }catch(e){} };
         sync();
         b.addEventListener('click', function(){ var light=document.documentElement.classList.toggle('adn-light');
