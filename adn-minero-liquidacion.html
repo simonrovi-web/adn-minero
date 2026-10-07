@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#141110" />
+  <title>ADN Minero · Leer tu Liquidación</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="Cómo leer tu liquidación de sueldo en la minería: qué son los haberes y los descuentos (AFP, salud, cesantía, impuesto), la diferencia entre imponible y líquido, y qué revisar para que todo esté bien." />
+  <link rel="canonical" href="https://simonrovi-web.github.io/adn-minero/adn-minero-liquidacion.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ADN Minero" />
+  <meta property="og:title" content="ADN Minero · Leer tu Liquidación" />
+  <meta property="og:description" content="Entiende tu liquidación de sueldo: haberes, descuentos, imponible vs líquido y qué revisar." />
+  <meta property="og:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://simonrovi-web.github.io/adn-minero/adn-minero-liquidacion.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ADN Minero · Leer tu Liquidación" />
+  <meta name="twitter:description" content="Entiende tu liquidación de sueldo: haberes, descuentos, imponible vs líquido y qué revisar." />
+  <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    :root{ --copper:#cf9b6f; }
+    *{box-sizing:border-box}
+    html,body{ margin:0; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:radial-gradient(1000px 600px at 12% -8%, rgba(127,191,154,0.13), transparent 60%), #141110; }
+    .wrap{ max-width:640px; margin:0 auto; padding:16px 16px 44px; }
+    .glass{ background:linear-gradient(160deg, rgba(43,37,32,0.62), rgba(26,21,18,0.44)); border:1px solid rgba(196,168,148,0.14); }
+    .topic{ cursor:pointer; } .topic .body{ display:none; } .topic.open .body{ display:block; }
+    .topic.open .chev{ transform:rotate(90deg); } .chev{ transition:transform .2s; }
+    .tip{ display:flex; gap:9px; align-items:flex-start; font-size:13.5px; line-height:1.5; color:#e4d7c8; margin-top:8px; }
+    .tip b{ color:#f6ecdf; } h3{ margin:0; }
+    .viz{ width:100%; height:auto; display:block; border-radius:14px; }
+    .grow{ transform-box:fill-box; transform-origin:left center; animation:grow 4s ease-in-out infinite } @keyframes grow{ 0%{ transform:scaleX(0) } 40%,100%{ transform:scaleX(1) } }
+    .coin{ transform-box:fill-box; transform-origin:center; animation:coin 4s ease-in-out infinite } .coin.b{ animation-delay:.3s } .coin.c{ animation-delay:.6s }
+    @keyframes coin{ 0%,55%{ opacity:0; transform:translateY(-8px) scale(.6) } 68%{ opacity:1; transform:translateY(0) scale(1) } 95%{ opacity:1 } 100%{ opacity:0 } }
+    @media (prefers-reduced-motion:reduce){ .grow,.coin{ animation:none !important; opacity:1; transform:none } }
+  </style>
+  <script src="adn-ui.js" defer></script>
+  <script src="adn-recorrido.js" defer></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","@id":"https://simonrovi-web.github.io/adn-minero/adn-minero-liquidacion.html#webpage","url":"https://simonrovi-web.github.io/adn-minero/adn-minero-liquidacion.html","name":"ADN Minero · Leer tu Liquidación","description":"Entiende tu liquidación de sueldo: haberes, descuentos, imponible vs líquido y qué revisar.","isPartOf":{"@id":"https://simonrovi-web.github.io/adn-minero/#site"},"inLanguage":"es-CL","publisher":{"@id":"https://simonrovi-web.github.io/adn-minero/#org"}}
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="glass rounded-2xl p-4 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-xl grid place-items-center shrink-0" style="background:rgba(127,191,154,.15);border:1px solid rgba(127,191,154,.34)"><i data-lucide="file-text" style="width:26px;height:26px;color:#7fbf9a"></i></div>
+      <div class="min-w-0">
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#a7dcbf;font-weight:800">Leer tu Liquidación</p>
+        <p style="margin:0;font-size:11px;color:#9c8f83">Entiende de dónde sale tu sueldo</p>
+      </div>
+    </header>
+
+    <p class="text-[13px] text-stone-300 leading-relaxed mt-4 px-1">La <b>liquidación de sueldo</b> es el papel donde tu empresa te explica cuánto ganaste y qué se descontó. Entenderla te ayuda a <b>revisar que todo esté bien</b> y a saber a dónde va tu plata. Tiene dos partes: lo que <b>sumas</b> y lo que se <b>resta</b>.</p>
+
+    <div class="glass rounded-2xl p-4 mt-4">
+      <svg class="viz" viewBox="0 0 400 150" role="img" aria-label="Del total imponible se restan los descuentos (AFP, salud, impuesto) y queda el sueldo líquido">
+        <defs>
+          <linearGradient id="lqBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1e2a22"/><stop offset="1" stop-color="#201a15"/></linearGradient>
+          <radialGradient id="lqCoin" cx="0.5" cy="0.4" r="0.6"><stop offset="0" stop-color="#b9f0cf"/><stop offset="1" stop-color="#4faf7a"/></radialGradient>
+        </defs>
+        <rect x="0" y="0" width="400" height="150" fill="url(#lqBg)"/>
+        <text x="20" y="34" style="font-size:11px;font-weight:800;fill:#dfeae3">Tu sueldo, paso a paso</text>
+        <!-- barra total imponible -->
+        <text x="20" y="56" style="font-size:9.5px;font-weight:700;fill:#c9bcae">Total imponible</text>
+        <rect x="20" y="60" width="300" height="16" rx="4" fill="#3a4a3f"/>
+        <rect class="grow" x="20" y="60" width="300" height="16" rx="4" fill="#6a7f70"/>
+        <!-- descuentos (rojo) -->
+        <text x="20" y="98" style="font-size:9.5px;font-weight:700;fill:#f0a89a">− Descuentos (AFP · salud · cesantía · impuesto)</text>
+        <rect x="20" y="102" width="88" height="14" rx="3" fill="#b5503f"/>
+        <g font-size="8" font-weight="700" fill="#ffd9cf"><text x="26" y="112">≈ 20%</text></g>
+        <!-- flecha -->
+        <path d="M120 109 h30 m-9 -5 l9 5 l-9 5" fill="none" stroke="#8a9a8f" stroke-width="2"/>
+        <!-- líquido (verde) + monedas -->
+        <rect x="162" y="100" width="150" height="34" rx="6" fill="#2f6b48" stroke="#7fdca0" stroke-width="1.4"/>
+        <text x="200" y="122" style="font-size:13px;font-weight:800;fill:#bff0d0">LÍQUIDO</text>
+        <g><circle class="coin"   cx="286" cy="112" r="9" fill="url(#lqCoin)"/><circle class="coin b" cx="300" cy="118" r="8" fill="url(#lqCoin)"/><circle class="coin c" cx="296" cy="104" r="7" fill="url(#lqCoin)"/></g>
+        <text x="200" y="146" style="font-size:9px;font-weight:700;fill:#9fb9a8">lo que llega a tu bolsillo</text>
+      </svg>
+      <p class="text-center text-[11px] text-stone-500 mt-2">Del <b>imponible</b> se restan los descuentos y queda el <b>líquido</b> (lo que recibes).</p>
+    </div>
+
+    <div id="topics" class="mt-4 grid gap-2.5"></div>
+
+    <div class="glass rounded-2xl p-4 mt-3" style="border-color:rgba(127,191,154,.3)">
+      <div class="flex items-center gap-2 mb-1.5"><i data-lucide="calculator" style="width:17px;height:17px;color:#7fbf9a"></i><h3 class="font-bold text-[13.5px]">Calcula el tuyo</h3></div>
+      <p class="text-[12.5px] text-stone-300 leading-relaxed">¿Quieres estimar tu líquido a partir de tu base, bonos y asignaciones? Usa el simulador de ADN Minero.</p>
+      <a href="adn-minero-sueldo-calc.html" class="inline-flex items-center gap-1.5 mt-2.5 text-[13px] font-bold" style="color:#7fbf9a">Simulador de sueldo líquido <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+    </div>
+
+    <p class="text-center text-[11px] text-stone-500 mt-6 leading-relaxed">Contenido de orientación; las tasas y topes (AFP, salud, UF/UTM, impuesto) cambian en el tiempo. Compara siempre con tu liquidación real y tu contrato. · <a href="adn-minero-derechos.html" style="color:#e8c9a6">Tus derechos</a> · <a href="index.html" style="color:#e8c9a6">Inicio</a></p>
+  </div>
+
+<script>
+  const drawIcons=()=>window.lucide&&lucide.createIcons();
+  const TOPICS=[
+    { ic:'trending-up', c:'#a7d18a', t:'Los haberes (lo que sumas)', s:'Todo lo que ganas en el mes',
+      tips:[
+        ['circle-dollar-sign','<b>Sueldo base:</b> lo fijo de tu contrato. Es la parte principal.'],
+        ['gift','<b>Gratificación y bonos:</b> producción, turno, zona, nocturnidad… Son <b>imponibles</b> (pagan cotizaciones).'],
+        ['bus-front','<b>Asignaciones NO imponibles:</b> colación y movilización. Se suman al líquido pero <b>no</b> pagan cotizaciones ni impuesto.']
+      ]},
+    { ic:'trending-down', c:'#e0715a', t:'Los descuentos (lo que se resta)', s:'A dónde va parte de tu sueldo',
+      tips:[
+        ['shield','<b>AFP (~10% + comisión):</b> va a tu fondo de <b>pensión</b>. Es tu ahorro para el futuro.'],
+        ['heart-pulse','<b>Salud (7%):</b> a Fonasa o isapre. Te da cobertura de salud.'],
+        ['umbrella','<b>Seguro de cesantía (AFC):</b> un pequeño % que te protege si quedas sin trabajo.'],
+        ['receipt','<b>Impuesto único (2ª categoría):</b> solo si tu renta supera cierto tramo. Muchos sueldos no pagan impuesto.']
+      ]},
+    { ic:'scale', c:'#d6a94f', t:'Imponible vs. líquido', s:'La diferencia clave',
+      tips:[
+        ['layers','<b>Imponible:</b> la base sobre la que se calculan AFP, salud e impuesto. No incluye colación ni movilización.'],
+        ['wallet','<b>Líquido:</b> lo que de verdad recibes = imponible − descuentos + asignaciones no imponibles.'],
+        ['info','Por eso tu líquido puede ser bastante menor que tu "sueldo bruto": los descuentos son tu pensión y tu salud.']
+      ]},
+    { ic:'search-check', c:'#7fb0d9', t:'Revisa que esté bien', s:'Tus derechos',
+      tips:[
+        ['check','Que estén <b>todos tus bonos</b> y las horas extra acordadas.'],
+        ['shield-check','Que se paguen tus <b>cotizaciones</b> (AFP y salud): revísalo en tu AFP y en Previred.'],
+        ['file-text','Que coincida con tu <b>contrato</b>. Si algo no cuadra, pregunta en RR.HH. o a la Dirección del Trabajo.']
+      ]}
+  ];
+  document.getElementById('topics').innerHTML=TOPICS.map((x,i)=>`
+    <div class="glass rounded-2xl topic" data-i="${i}">
+      <div class="p-4 flex items-center gap-3">
+        <div class="h-10 w-10 rounded-xl grid place-items-center shrink-0" style="background:${x.c}22;border:1px solid ${x.c}55"><i data-lucide="${x.ic}" class="w-5 h-5" style="color:${x.c}"></i></div>
+        <div class="min-w-0 flex-1"><h3 class="font-bold text-[15px]">${x.t}</h3><p class="text-[11.5px] text-stone-400">${x.s}</p></div>
+        <i data-lucide="chevron-right" class="chev w-5 h-5 text-stone-500 shrink-0"></i>
+      </div>
+      <div class="body px-4 pb-4 -mt-1">
+        ${x.tips.map(t=>`<div class="tip"><i data-lucide="${t[0]}" class="w-4 h-4 shrink-0 mt-0.5" style="color:${x.c}"></i><span>${t[1]}</span></div>`).join('')}
+      </div>
+    </div>`).join('');
+  document.getElementById('topics').addEventListener('click', e=>{ const t=e.target.closest('.topic'); if(!t) return; t.classList.toggle('open'); drawIcons(); });
+  drawIcons();
+</script>
+</body>
+</html>
