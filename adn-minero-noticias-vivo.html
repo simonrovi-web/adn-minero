@@ -60,6 +60,8 @@
     .ctx{ font-size:14.5px; line-height:1.6; color:#dccfc0; min-height:3em }
     .ctx .cursor{ display:inline-block; width:8px; height:15px; background:var(--accent); margin-left:2px; vertical-align:-2px; animation:bl 1s steps(2) infinite } @keyframes bl{ 50%{ opacity:0 } }
     .cta{ display:inline-flex; align-items:center; gap:7px; margin-top:auto; padding-top:18px; color:var(--accent); font-weight:800; font-size:14px; text-decoration:none }
+    .feat-img{ display:none }
+    .readat{ display:none }
     .bar{ position:absolute; left:0; bottom:0; height:4px; width:0; background:linear-gradient(90deg, var(--accent2), var(--accent)); box-shadow:0 0 12px var(--glow) }
     /* queue */
     .qtitle{ font-size:10.5px; font-weight:900; letter-spacing:.12em; text-transform:uppercase; color:#9c8f83; margin:18px 2px 8px }
@@ -76,10 +78,14 @@
     /* ===== Modo 16:9 para streaming / pantalla ancha (OBS 1920x1080) ===== */
     @media (min-width:980px) and (orientation:landscape){
       html,body{ height:100vh; overflow:hidden }
-      .wrap{ max-width:none; width:100vw; height:100vh; padding:min(3.4vh,34px) min(3.4vw,46px);
-        display:grid; grid-template-columns:2.35fr 1fr; grid-template-rows:auto minmax(0,1fr); gap:min(2.4vh,26px) min(2.4vw,30px); }
+      .wrap{ max-width:none; width:100vw; height:100vh; padding:min(3.2vh,32px) min(3.2vw,44px);
+        display:grid; grid-template-columns:2.95fr 1fr; grid-template-rows:auto minmax(0,1fr); gap:min(2.2vh,24px) min(2.2vw,28px); }
       .topbar{ grid-column:1 / -1; grid-row:1 }
-      .feat{ grid-column:1; grid-row:2; margin-top:0; border-radius:26px; padding:min(4vh,46px) min(2.6vw,40px) min(3vh,32px); }
+      .feat{ grid-column:1; grid-row:2; margin-top:0; border-radius:26px; padding:min(2.4vh,26px) min(2.6vw,40px) min(2.8vh,30px); overflow:hidden; }
+      .feat-img{ display:flex; align-items:center; justify-content:center; height:33%; min-height:150px; border-radius:18px; margin:0 0 min(2.2vh,20px); position:relative; overflow:hidden; box-shadow:inset 0 0 90px rgba(0,0,0,.45); }
+      .feat-img::after{ content:''; position:absolute; inset:0; background:radial-gradient(60% 85% at 28% 18%, rgba(255,255,255,.16), transparent 60%) }
+      .fi-ic{ font-size:clamp(60px,6.6vw,124px); position:relative; z-index:1; filter:drop-shadow(0 8px 22px rgba(0,0,0,.5)) }
+      .readat{ display:flex; align-items:center; gap:9px; margin-top:auto; padding-top:min(2.2vh,20px); color:var(--accent); font-weight:800; font-size:clamp(15px,1.25vw,21px); line-height:1.3 }
       .side{ grid-column:2; grid-row:2; display:flex; flex-direction:column; min-height:0; }
       #queue{ flex:1; overflow:hidden } .qtitle{ margin-top:0 } .foot{ margin-top:auto }
       .live{ font-size:clamp(12px,1.05vw,16px) } .brand{ font-size:clamp(17px,1.5vw,23px) } #clock{ font-size:clamp(13px,1.1vw,17px) }
@@ -87,12 +93,11 @@
       h1.head{ font-size:clamp(34px,3.6vw,64px); margin-top:min(2.4vh,24px); line-height:1.08 }
       .ctx-l{ font-size:clamp(12px,.9vw,14px); margin:min(2.8vh,28px) 0 min(1.4vh,13px) }
       .ctx{ font-size:clamp(18px,1.55vw,28px); line-height:1.55 }
-      .cta{ font-size:clamp(16px,1.25vw,21px); padding-top:min(2.6vh,24px) }
+      .cta{ display:none }
       .qtitle{ font-size:clamp(10px,.78vw,12px) } .qt{ font-size:clamp(12px,.92vw,15px); -webkit-line-clamp:2 } .qm{ font-size:clamp(10px,.72vw,12px) }
       .qn{ font-size:11px; width:17px } .qrow{ padding:min(1.25vh,12px) 11px; gap:9px }
       .bar{ height:6px }
       #adnui-back,#adnui-home,#adnui-read,#adnai-fab,#adnui-note,#adnui-offline,#adnui-more,#adnui-skip{ display:none !important }
-      .feat{ overflow:hidden }
     }
   </style>
   <script src="adn-ui.js" defer></script>
@@ -112,6 +117,7 @@
     </div>
 
     <article class="feat">
+      <div class="feat-img" id="featImg"><span class="fi-ic" id="featIc">⛏️</span></div>
       <div class="tagrow" id="tagrow">
         <span class="tag" id="tag" style="background:var(--b1);color:var(--accent)">Minería</span>
         <span class="meta" id="metaline">cargando titulares…</span>
@@ -120,6 +126,7 @@
       <div class="ctx-l"><i data-lucide="sparkles" style="width:13px;height:13px"></i> Contexto</div>
       <p class="ctx fade" id="ctx"><span class="skel" style="display:block;height:14px;width:92%;margin-bottom:8px"></span><span class="skel" style="display:block;height:14px;width:78%"></span></p>
       <a class="cta" id="cta" href="#" target="_blank" rel="noopener">Leer la noticia completa <i data-lucide="arrow-up-right" style="width:16px;height:16px"></i></a>
+      <div class="readat" id="readat"></div>
       <div class="bar" id="bar"></div>
     </article>
 
@@ -169,7 +176,7 @@
       }); });
       out.sort(function(a,b){ return b.ts-a.ts; });
       var fresh=out.filter(function(x){ return x.ts && (now-x.ts)<=6048e5; });
-      return (fresh.length>=4?fresh:out).slice(0,12);
+      return (fresh.length>=4?fresh:out).slice(0,18);
     }
 
     // ===== Contexto IA (con caché en localStorage) =====
@@ -194,11 +201,24 @@
       }catch(e){ if(e&&e.name==='AbortError') return; onChunk('Toca "Leer la noticia completa" para ver el detalle en la fuente.',true); }
     }
 
-    var STORIES=[], idx=0, timer=null, barT=null, DWELL=28000;
+    var STORIES=[], idx=0, timer=null, barT=null, DWELL=40000;
+    // imagen temática según el tema detectado en el titular (siempre carga)
+    function topicVisual(t){ var s=(t||'').toLowerCase();
+      if(/litio|salar|bater/.test(s)) return {e:'🔋', g:'linear-gradient(135deg,#1f6f66,#0e3b38)'};
+      if(/hidr[oó]geno|\bh2\b|renovab|solar|e[oó]lic|energ[ií]a|electr|transici|combustib/.test(s)) return {e:'⚡', g:'linear-gradient(135deg,#2e6b43,#163a24)'};
+      if(/china|ee\.?uu|estados unidos|arancel|geopol|export|mundo|global|trump|comercio|tratado/.test(s)) return {e:'🌐', g:'linear-gradient(135deg,#275a86,#122a40)'};
+      if(/\boro\b|plata/.test(s)) return {e:'🥇', g:'linear-gradient(135deg,#8a6a1e,#3a2c0c)'};
+      if(/hierro|acero|\bcap\b/.test(s)) return {e:'🏭', g:'linear-gradient(135deg,#7a3a28,#3a1c14)'};
+      if(/seguridad|accidente|fallec|muere|muert|rescate|fatal/.test(s)) return {e:'🦺', g:'linear-gradient(135deg,#7a5a1e,#3a2c0e)'};
+      if(/sueldo|empleo|trabaj|turno|vacante|operador/.test(s)) return {e:'💼', g:'linear-gradient(135deg,#3a5a3a,#1c2e1c)'};
+      if(/royalty|impuesto|fisc|inversi[oó]n|\bpib\b|econom|financ|banco/.test(s)) return {e:'💰', g:'linear-gradient(135deg,#6a5420,#332810)'};
+      if(/litig|ley|tribunal|contralor|pol[ií]tic|gobierno|ministr/.test(s)) return {e:'🏛️', g:'linear-gradient(135deg,#4a4a6a,#242436)'};
+      return {e:'⛏️', g:'linear-gradient(135deg,#6a4a30,#331f14)'};
+    }
 
     function renderQueue(){
       var q=$('queue'); var html='';
-      for(var n=0;n<Math.min(STORIES.length,5);n++){ var s=STORIES[(idx+1+n)%STORIES.length];
+      for(var n=0;n<Math.min(STORIES.length-1,7);n++){ var s=STORIES[(idx+1+n)%STORIES.length];
         html+='<a class="qrow" data-i="'+((idx+1+n)%STORIES.length)+'"><span class="qn">'+(n+1)+'</span><span style="min-width:0"><span class="qt">'+esc(s.t)+'</span><span class="qm">'+(s.s?esc(s.s)+' · ':'')+rel(s.ts)+'</span></span></a>';
       }
       q.innerHTML=html;
@@ -215,6 +235,8 @@
       setTimeout(function(){
         $('metaline').textContent=(s.s?s.s+' · ':'')+rel(s.ts);
         head.textContent=s.t; $('cta').href=s.link;
+        var tv=topicVisual(s.t); var fi=$('featImg'), fic=$('featIc'); if(fi){ fi.style.background=tv.g; } if(fic){ fic.textContent=tv.e; }
+        var ra=$('readat'); if(ra){ ra.innerHTML='<span style="opacity:.85">📰 Lee la nota completa en</span>&nbsp; <b>'+esc(s.s||'la fuente original')+'</b>'; }
         ctx.innerHTML='<span class="skel" style="display:block;height:14px;width:92%;margin-bottom:8px"></span><span class="skel" style="display:block;height:14px;width:76%"></span>';
         head.classList.remove('out'); ctx.classList.remove('out');
         var myIdx=idx;
