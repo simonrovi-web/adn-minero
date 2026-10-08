@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a1210" />
+  <title>ADN Minero · Energía y Desarrollo en Vivo</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <meta name="description" content="Energía, transición energética y desarrollo de Chile en vivo, desarrollados: el titular más un contexto breve que explica de qué se trata y por qué importa, con rotación automática para pantalla y streaming." />
+  <link rel="canonical" href="https://simonrovi-web.github.io/adn-minero/adn-minero-energia-vivo.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ADN Minero" />
+  <meta property="og:title" content="ADN Minero · Energía y Desarrollo en Vivo" />
+  <meta property="og:description" content="Energía y desarrollo de Chile en vivo, con titular y contexto que desarrolla la noticia." />
+  <meta property="og:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://simonrovi-web.github.io/adn-minero/adn-minero-energia-vivo.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ADN Minero · Energía y Desarrollo en Vivo" />
+  <meta name="twitter:description" content="Energía y desarrollo de Chile en vivo, con titular y contexto que desarrolla la noticia." />
+  <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/og-image.png" />
+  <link rel="stylesheet" href="tailwind.min.css">
+  <script src="lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    /* ===== Tema de este panel ===== */
+    :root{ --accent:#a7dcbf; --accent2:#7fbf9a; --glow:rgba(127,191,154,.5); --b1:rgba(127,191,154,.2); --b2:rgba(106,176,201,.14); --b3:rgba(230,196,100,.12); }
+    *{box-sizing:border-box}
+    html,body{ margin:0; height:100%; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
+    body{ min-height:100vh; background:#120d0a; overflow-x:hidden; }
+    /* aurora de fondo que respira */
+    .aurora{ position:fixed; inset:-20%; z-index:0; filter:blur(70px); opacity:.9; pointer-events:none; }
+    .aurora b{ position:absolute; border-radius:50%; display:block; mix-blend-mode:screen; animation:drift 22s ease-in-out infinite; }
+    .aurora .a1{ width:60vw; height:60vw; left:-10vw; top:-15vw; background:radial-gradient(circle at 50% 50%, var(--b1), transparent 65%); }
+    .aurora .a2{ width:55vw; height:55vw; right:-12vw; top:10vh; background:radial-gradient(circle at 50% 50%, var(--b2), transparent 65%); animation-delay:-7s; }
+    .aurora .a3{ width:70vw; height:70vw; left:10vw; bottom:-25vw; background:radial-gradient(circle at 50% 50%, var(--b3), transparent 65%); animation-delay:-14s; }
+    @keyframes drift{ 0%,100%{ transform:translate(0,0) scale(1) } 33%{ transform:translate(6vw,-4vh) scale(1.1) } 66%{ transform:translate(-5vw,5vh) scale(.95) } }
+    .wrap{ position:relative; z-index:1; max-width:720px; margin:0 auto; padding:18px 18px 28px; min-height:100vh; display:flex; flex-direction:column; }
+    .glass{ background:linear-gradient(160deg, rgba(38,31,26,0.72), rgba(20,15,12,0.55)); border:1px solid rgba(196,168,148,0.16); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); }
+    /* top bar */
+    .live{ display:inline-flex; align-items:center; gap:7px; font-size:11px; font-weight:900; letter-spacing:.12em; text-transform:uppercase; color:#ff8577; }
+    .live .dot{ width:9px; height:9px; border-radius:50%; background:#ff5a3c; box-shadow:0 0 0 0 rgba(255,90,60,.6); animation:pls 1.6s infinite }
+    @keyframes pls{ 0%{ box-shadow:0 0 0 0 rgba(255,90,60,.55) } 70%{ box-shadow:0 0 0 8px rgba(255,90,60,0) } 100%{ box-shadow:0 0 0 0 rgba(255,90,60,0) } }
+    .brand{ font-weight:900; font-size:15px; letter-spacing:.01em }
+    .brand .c{ color:var(--accent) }
+    /* featured */
+    .feat{ position:relative; border-radius:22px; padding:26px 24px 20px; overflow:hidden; margin-top:14px;
+      background:radial-gradient(520px 240px at 12% -10%, var(--b1), transparent 60%), linear-gradient(160deg, rgba(38,31,26,0.75), rgba(18,13,10,0.6));
+      border:1px solid rgba(196,168,148,0.18); box-shadow:0 30px 70px -30px #000; flex:1; display:flex; flex-direction:column; }
+    .tagrow{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-size:12px }
+    .tag{ font-weight:800; letter-spacing:.04em; padding:5px 11px; border-radius:999px; font-size:11px }
+    .meta{ color:#b7a897; font-weight:700; font-size:11.5px }
+    .fade{ transition:opacity .5s ease, transform .5s ease }
+    .fade.out{ opacity:0; transform:translateY(10px) }
+    h1.head{ font-size:clamp(22px,4.6vw,33px); font-weight:900; line-height:1.12; letter-spacing:-.015em; margin:16px 0 0; }
+    .ctx-l{ display:inline-flex; align-items:center; gap:6px; font-size:10.5px; font-weight:900; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin:18px 0 7px }
+    .ctx{ font-size:14.5px; line-height:1.6; color:#dccfc0; min-height:3em }
+    .ctx .cursor{ display:inline-block; width:8px; height:15px; background:var(--accent); margin-left:2px; vertical-align:-2px; animation:bl 1s steps(2) infinite } @keyframes bl{ 50%{ opacity:0 } }
+    .cta{ display:inline-flex; align-items:center; gap:7px; margin-top:auto; padding-top:18px; color:var(--accent); font-weight:800; font-size:14px; text-decoration:none }
+    .bar{ position:absolute; left:0; bottom:0; height:4px; width:0; background:linear-gradient(90deg, var(--accent2), var(--accent)); box-shadow:0 0 12px var(--glow) }
+    /* queue */
+    .qtitle{ font-size:10.5px; font-weight:900; letter-spacing:.12em; text-transform:uppercase; color:#9c8f83; margin:18px 2px 8px }
+    .qrow{ display:flex; align-items:center; gap:11px; padding:11px 13px; border-radius:14px; text-decoration:none; color:inherit; transition:.15s; cursor:pointer }
+    .qrow:hover{ background:rgba(255,255,255,.04) }
+    .qrow.on{ background:rgba(255,255,255,.05); border:1px solid rgba(196,168,148,.16) }
+    .qn{ font-weight:900; font-size:12px; color:var(--accent); width:20px; text-align:center; flex:none }
+    .qt{ font-size:13px; font-weight:700; line-height:1.3; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden }
+    .qm{ font-size:10.5px; color:#8a7d6f; margin-top:2px }
+    .skel{ background:linear-gradient(90deg,rgba(255,255,255,.05),rgba(255,255,255,.12),rgba(255,255,255,.05)); background-size:200% 100%; animation:sk 1.3s infinite; border-radius:8px } @keyframes sk{ 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+    .foot{ text-align:center; font-size:10.5px; color:#7d7267; margin-top:16px; line-height:1.6 }
+    .foot a{ color:#c9bcae }
+    @media (prefers-reduced-motion:reduce){ .aurora b,.live .dot,.ctx .cursor{ animation:none !important } .fade{ transition:none } }
+  </style>
+  <script src="adn-ui.js" defer></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","@id":"https://simonrovi-web.github.io/adn-minero/adn-minero-energia-vivo.html#webpage","url":"https://simonrovi-web.github.io/adn-minero/adn-minero-energia-vivo.html","name":"ADN Minero · Energía y Desarrollo en Vivo","description":"Energía y desarrollo de Chile en vivo, con titular y contexto que desarrolla la noticia.","isPartOf":{"@id":"https://simonrovi-web.github.io/adn-minero/#site"},"inLanguage":"es-CL","publisher":{"@id":"https://simonrovi-web.github.io/adn-minero/#org"}}
+  </script>
+</head>
+<body>
+  <div class="aurora"><b class="a1"></b><b class="a2"></b><b class="a3"></b></div>
+  <div class="wrap">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <span class="live"><span class="dot"></span> En vivo</span>
+        <span class="brand">Energía y <span class="c">Desarrollo</span></span>
+      </div>
+      <span id="clock" class="meta" style="font-variant-numeric:tabular-nums"></span>
+    </div>
+
+    <article class="feat">
+      <div class="tagrow" id="tagrow">
+        <span class="tag" id="tag" style="background:var(--b1);color:var(--accent)">Energía</span>
+        <span class="meta" id="metaline">cargando titulares…</span>
+      </div>
+      <h1 class="head fade" id="head">Conectando con las noticias de energía y desarrollo…</h1>
+      <div class="ctx-l"><i data-lucide="sparkles" style="width:13px;height:13px"></i> Contexto</div>
+      <p class="ctx fade" id="ctx"><span class="skel" style="display:block;height:14px;width:92%;margin-bottom:8px"></span><span class="skel" style="display:block;height:14px;width:78%"></span></p>
+      <a class="cta" id="cta" href="#" target="_blank" rel="noopener">Leer la noticia completa <i data-lucide="arrow-up-right" style="width:16px;height:16px"></i></a>
+      <div class="bar" id="bar"></div>
+    </article>
+
+    <p class="qtitle">A continuación</p>
+    <div id="queue"></div>
+
+    <p class="foot">
+      Titulares: Google Noticias · Contexto generado por la <b>IA de ADN Minero</b> (puede equivocarse; contrasta antes de decidir).<br>
+      <a href="adn-minero-energia.html">Ver todos los titulares</a> · <a href="index.html">Inicio</a>
+    </p>
+  </div>
+
+<script>
+  (function(){
+    var CFG={
+      queries:['energía renovable Chile transición energética','hidrógeno verde Chile','inversión minera Chile desarrollo','royalty minero desarrollo Chile'],
+      topic:'energía, la transición energética y el desarrollo de Chile',
+      label:'Energía'
+    };
+    var WORKER='https://adn-minero-ia.simonrovi.workers.dev';
+    var api=function(q){ return 'https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent('https://news.google.com/rss/search?q='+encodeURIComponent(q)+'&hl=es-419&gl=CL&ceid=CL:es'); };
+    var $=function(id){ return document.getElementById(id); };
+    var draw=function(){ try{ window.lucide&&lucide.createIcons(); }catch(e){} };
+
+    // reloj
+    function tick(){ try{ $('clock').textContent=new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit',timeZone:'America/Santiago'}); }catch(e){} }
+    tick(); setInterval(tick,30000);
+
+    function rel(ts){ if(!ts) return ''; var s=(Date.now()-ts)/1000; if(s<3600) return 'hace '+Math.max(1,Math.round(s/60))+' min'; if(s<86400) return 'hace '+Math.round(s/3600)+' h'; return 'hace '+Math.round(s/86400)+' d'; }
+    function clean(t){ t=(t||'').trim(); var i=t.lastIndexOf(' - '); return i>40 ? {t:t.slice(0,i), s:t.slice(i+3)} : {t:t, s:''}; }
+    function esc(s){ return (s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+    async function feedOne(q){
+      try{ var ctl=new AbortController(), to=setTimeout(function(){ctl.abort();},9000);
+        var r=await fetch(api(q),{signal:ctl.signal}); var j=await r.json(); clearTimeout(to);
+        if(j&&j.status==='ok'&&j.items) return j.items; }catch(e){} return [];
+    }
+    async function loadNews(){
+      var res=await Promise.all(CFG.queries.map(feedOne));
+      var seen={}, out=[], now=Date.now();
+      res.forEach(function(items){ items.forEach(function(it){
+        var c=clean(it.title); if(!c.t||c.t.length<22) return;
+        var k=c.t.toLowerCase().slice(0,55); if(seen[k]) return; seen[k]=1;
+        var ts=it.pubDate?Date.parse(it.pubDate):0; if(ts && (now-ts)>2592e6) return;
+        out.push({t:c.t, s:c.s||(it.author||''), link:it.link||'#', ts:ts});
+      }); });
+      out.sort(function(a,b){ return b.ts-a.ts; });
+      var fresh=out.filter(function(x){ return x.ts && (now-x.ts)<=6048e5; });
+      return (fresh.length>=4?fresh:out).slice(0,12);
+    }
+
+    // ===== Contexto IA (con caché en localStorage) =====
+    function ckey(h){ return 'adn_ctx_'+h.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,60); }
+    function cacheGet(h){ try{ var v=JSON.parse(localStorage.getItem(ckey(h))||'null'); if(v&&v.x&&(Date.now()-v.ts)<864e5) return v.x; }catch(e){} return null; }
+    function cacheSet(h,x){ try{ localStorage.setItem(ckey(h), JSON.stringify({x:x,ts:Date.now()})); }catch(e){} }
+    var curCtl=null;
+    async function getContext(h, onChunk){
+      var cached=cacheGet(h); if(cached){ onChunk(cached,true); return; }
+      try{ if(curCtl) curCtl.abort(); }catch(e){} curCtl=new AbortController();
+      var prompt='En 2 frases, claras y para público general, explica de qué trata y por qué importa esta noticia de la '+CFG.topic+'. No repitas el titular ni saludes; responde solo la explicación. Titular: "'+h+'"';
+      try{
+        var res=await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:prompt}]}),signal:curCtl.signal});
+        if(!res.ok){ onChunk('Toca "Leer la noticia completa" para ver el detalle en la fuente.',true); return; }
+        var reader=res.body.getReader(), dec=new TextDecoder(), buf='', acc='';
+        while(true){ var r=await reader.read(); if(r.done) break;
+          buf+=dec.decode(r.value,{stream:true}); var lines=buf.split('\n'); buf=lines.pop();
+          for(var i=0;i<lines.length;i++){ var l=lines[i].trim(); if(l.indexOf('data:')!==0) continue; var d=l.slice(5).trim(); if(d==='[DONE]') continue;
+            try{ var jj=JSON.parse(d); if(jj.response){ acc+=jj.response; onChunk(acc,false); } }catch(e){} }
+        }
+        acc=acc.trim(); if(acc){ cacheSet(h,acc); onChunk(acc,true); } else onChunk('Toca "Leer la noticia completa" para ver el detalle en la fuente.',true);
+      }catch(e){ if(e&&e.name==='AbortError') return; onChunk('Toca "Leer la noticia completa" para ver el detalle en la fuente.',true); }
+    }
+
+    var STORIES=[], idx=0, timer=null, barT=null, DWELL=15000;
+
+    function renderQueue(){
+      var q=$('queue'); var html='';
+      for(var n=0;n<Math.min(STORIES.length,5);n++){ var s=STORIES[(idx+1+n)%STORIES.length];
+        html+='<a class="qrow" data-i="'+((idx+1+n)%STORIES.length)+'"><span class="qn">'+(n+1)+'</span><span style="min-width:0"><span class="qt">'+esc(s.t)+'</span><span class="qm">'+(s.s?esc(s.s)+' · ':'')+rel(s.ts)+'</span></span></a>';
+      }
+      q.innerHTML=html;
+      Array.prototype.forEach.call(q.querySelectorAll('.qrow'), function(el){ el.addEventListener('click', function(){ go(+el.getAttribute('data-i')); }); });
+    }
+
+    function startBar(){ var bar=$('bar'); bar.style.transition='none'; bar.style.width='0'; void bar.offsetWidth; bar.style.transition='width '+DWELL+'ms linear'; bar.style.width='100%'; }
+
+    function show(i){
+      idx=((i%STORIES.length)+STORIES.length)%STORIES.length;
+      var s=STORIES[idx];
+      var head=$('head'), ctx=$('ctx');
+      head.classList.add('out'); ctx.classList.add('out');
+      setTimeout(function(){
+        $('metaline').textContent=(s.s?s.s+' · ':'')+rel(s.ts);
+        head.textContent=s.t; $('cta').href=s.link;
+        ctx.innerHTML='<span class="skel" style="display:block;height:14px;width:92%;margin-bottom:8px"></span><span class="skel" style="display:block;height:14px;width:76%"></span>';
+        head.classList.remove('out'); ctx.classList.remove('out');
+        var myIdx=idx;
+        getContext(s.t, function(txt, done){ if(myIdx!==idx) return; ctx.innerHTML=esc(txt)+(done?'':'<span class="cursor"></span>'); });
+        renderQueue();
+        startBar();
+      }, 380);
+    }
+    function go(i){ clearTimeout(timer); show(i); schedule(); }
+    function schedule(){ clearTimeout(timer); timer=setTimeout(function(){ show(idx+1); schedule(); }, DWELL); }
+
+    async function boot(){
+      var s=await loadNews();
+      if(!s.length){ $('head').textContent='No hay titulares por ahora'; $('ctx').textContent='Revisa tu conexión y vuelve a intentar.'; return; }
+      STORIES=s; idx=-1; show(0); schedule(); draw();
+      setInterval(async function(){ var ns=await loadNews(); if(ns.length){ STORIES=ns; renderQueue(); } }, 600000);
+    }
+    draw();
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+  })();
+</script>
+</body>
+</html>
