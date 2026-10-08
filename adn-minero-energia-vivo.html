@@ -73,6 +73,26 @@
     .foot{ text-align:center; font-size:10.5px; color:#7d7267; margin-top:16px; line-height:1.6 }
     .foot a{ color:#c9bcae }
     @media (prefers-reduced-motion:reduce){ .aurora b,.live .dot,.ctx .cursor{ animation:none !important } .fade{ transition:none } }
+    /* ===== Modo 16:9 para streaming / pantalla ancha (OBS 1920x1080) ===== */
+    @media (min-width:980px) and (orientation:landscape){
+      html,body{ height:100vh; overflow:hidden }
+      .wrap{ max-width:none; width:100vw; height:100vh; padding:min(3.4vh,34px) min(3.4vw,46px);
+        display:grid; grid-template-columns:1.62fr 1fr; grid-template-rows:auto minmax(0,1fr); gap:min(2.4vh,26px) min(2.6vw,34px); }
+      .topbar{ grid-column:1 / -1; grid-row:1 }
+      .feat{ grid-column:1; grid-row:2; margin-top:0; border-radius:26px; padding:min(4vh,46px) min(2.6vw,40px) min(3vh,32px); }
+      .side{ grid-column:2; grid-row:2; display:flex; flex-direction:column; min-height:0; }
+      #queue{ flex:1; overflow:hidden } .qtitle{ margin-top:0 } .foot{ margin-top:auto }
+      .live{ font-size:clamp(12px,1.05vw,16px) } .brand{ font-size:clamp(17px,1.5vw,23px) } #clock{ font-size:clamp(13px,1.1vw,17px) }
+      .tag{ font-size:clamp(12px,1vw,15px); padding:7px 15px } .meta{ font-size:clamp(12px,.95vw,15px) }
+      h1.head{ font-size:clamp(30px,3vw,54px); margin-top:min(2.2vh,22px) }
+      .ctx-l{ font-size:clamp(11px,.85vw,13px); margin:min(2.6vh,26px) 0 min(1.4vh,12px) }
+      .ctx{ font-size:clamp(16px,1.32vw,23px); line-height:1.55 }
+      .cta{ font-size:clamp(15px,1.15vw,19px); padding-top:min(2.4vh,22px) }
+      .qtitle{ font-size:clamp(11px,.9vw,14px) } .qt{ font-size:clamp(14px,1.05vw,18px) } .qm{ font-size:clamp(11px,.82vw,13px) }
+      .qrow{ padding:min(1.55vh,15px) 14px }
+      .bar{ height:6px }
+      #adnui-back,#adnui-home,#adnui-read,#adnai-fab,#adnui-note,#adnui-offline{ display:none !important }
+    }
   </style>
   <script src="adn-ui.js" defer></script>
   <script type="application/ld+json">
@@ -82,7 +102,7 @@
 <body>
   <div class="aurora"><b class="a1"></b><b class="a2"></b><b class="a3"></b></div>
   <div class="wrap">
-    <div class="flex items-center justify-between">
+    <div class="topbar flex items-center justify-between">
       <div class="flex items-center gap-2.5">
         <span class="live"><span class="dot"></span> En vivo</span>
         <span class="brand">Energía y <span class="c">Desarrollo</span></span>
@@ -102,13 +122,14 @@
       <div class="bar" id="bar"></div>
     </article>
 
-    <p class="qtitle">A continuación</p>
-    <div id="queue"></div>
-
-    <p class="foot">
-      Titulares: Google Noticias · Contexto generado por la <b>IA de ADN Minero</b> (puede equivocarse; contrasta antes de decidir).<br>
-      <a href="adn-minero-energia.html">Ver todos los titulares</a> · <a href="index.html">Inicio</a>
-    </p>
+    <div class="side">
+      <p class="qtitle">A continuación</p>
+      <div id="queue"></div>
+      <p class="foot">
+        Titulares: Google Noticias · Contexto generado por la <b>IA de ADN Minero</b> (puede equivocarse; contrasta antes de decidir).<br>
+        <a href="adn-minero-energia.html">Ver todos los titulares</a> · <a href="index.html">Inicio</a>
+      </p>
+    </div>
   </div>
 
 <script>
