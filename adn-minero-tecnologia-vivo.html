@@ -148,7 +148,7 @@
 <script>
   (function(){
     var CFG={
-      queries:['tecnología minera automatización Chile','camiones autónomos inteligencia artificial minería','innovación minera digitalización robótica'],
+      queries:['tecnología minera Chile','automatización minería','innovación minera Chile'],
       topic:'la tecnología, la automatización y la innovación en la minería (Minería 4.0)',
       label:'Tecnología'
     };
@@ -165,13 +165,21 @@
     function clean(t){ t=(t||'').trim(); var i=t.lastIndexOf(' - '); return i>40 ? {t:t.slice(0,i), s:t.slice(i+3)} : {t:t, s:''}; }
     function esc(s){ return (s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
 
-    async function feedOne(q){
+    function sleep(ms){ return new Promise(function(r){ setTimeout(r,ms); }); }
+    async function feedOnce(q){
       try{ var ctl=new AbortController(), to=setTimeout(function(){ctl.abort();},9000);
         var r=await fetch(api(q),{signal:ctl.signal}); var j=await r.json(); clearTimeout(to);
-        if(j&&j.status==='ok'&&j.items) return j.items; }catch(e){} return [];
+        if(j&&j.status==='ok'&&j.items&&j.items.length) return j.items; }catch(e){} return null;
+    }
+    async function feedOne(q){
+      var items=await feedOnce(q);
+      if(!items){ await sleep(1400); items=await feedOnce(q); } // reintento: rss2json a veces falla la 1a vez
+      return items||[];
     }
     async function loadNews(){
-      var res=await Promise.all(CFG.queries.map(feedOne));
+      // secuencial con espaciado para no gatillar el throttle de rss2json (ráfaga = "Internal error")
+      var res=[];
+      for(var qi=0;qi<CFG.queries.length;qi++){ res.push(await feedOne(CFG.queries[qi])); if(qi<CFG.queries.length-1) await sleep(700); }
       var seen={}, out=[], now=Date.now();
       res.forEach(function(items){ items.forEach(function(it){
         var c=clean(it.title); if(!c.t||c.t.length<22) return;
@@ -225,7 +233,7 @@
     function keyFigure(t){
       t=(t||'');
       var pats=[
-        /US?\$\s?[\d.,]+\s?(?:mil\s?)?(?:millones|millón|billones|bn|mm)?/i,
+        /US?\$\s?[\d.,]+\s?(?:mil\s+)?(?:millones|millón|billones|bn|mm)\b|US?\$\s?[\d.,]+/i,
         /[\d.,]+\s?%/,
         /[\d.,]+\s?(?:mil\s?)?(?:millones|millón|billones)\s?(?:de\s?)?(?:dólares|dolares|pesos|toneladas|ton)?/i,
         /[\d.,]+\s?(?:toneladas|ton|kt|mt|kton)\b/i,
