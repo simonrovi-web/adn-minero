@@ -127,7 +127,7 @@
         <span class="meta" id="metaline">cargando titulares…</span>
       </div>
       <h1 class="head fade" id="head">Conectando con las noticias de energía y desarrollo…</h1>
-      <div class="ctx-l"><i data-lucide="sparkles" style="width:13px;height:13px"></i> Contexto</div>
+      <div class="ctx-l"><i data-lucide="sparkles" style="width:13px;height:13px"></i> Resumen</div>
       <p class="ctx fade" id="ctx"><span class="skel" style="display:block;height:14px;width:92%;margin-bottom:8px"></span><span class="skel" style="display:block;height:14px;width:78%"></span></p>
       <a class="cta" id="cta" href="#" target="_blank" rel="noopener">Leer la noticia completa <i data-lucide="arrow-up-right" style="width:16px;height:16px"></i></a>
       <div class="readat" id="readat"></div>
@@ -193,7 +193,7 @@
     }
 
     // ===== Contexto IA (con caché en localStorage) =====
-    function ckey(h){ return 'adn_ctx_'+h.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,60); }
+    function ckey(h){ return 'adn_res_'+h.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,60); }
     function cacheGet(h){ try{ var v=JSON.parse(localStorage.getItem(ckey(h))||'null'); if(v&&v.x&&(Date.now()-v.ts)<864e5) return v.x; }catch(e){} return null; }
     function cacheSet(h,x){ try{ localStorage.setItem(ckey(h), JSON.stringify({x:x,ts:Date.now()})); }catch(e){} }
     var curCtl=null;
@@ -212,7 +212,7 @@
     }
     async function getContext(h, onChunk){
       var cached=cacheGet(h); if(cached){ onChunk(cached,true); return; }
-      var prompt='En 2 frases, claras y para público general, explica de qué trata y por qué importa esta noticia de la '+CFG.topic+'. No repitas el titular ni saludes; responde solo la explicación. Titular: "'+h+'"';
+      var prompt='En 2 frases, claras y para público general, resume de qué trata esta noticia de la '+CFG.topic+': qué pasó y los datos principales. No repitas el titular ni saludes; responde solo el resumen. Titular: "'+h+'"';
       // hasta 2 intentos: en streaming el contexto siempre debe desarrollar la noticia
       for(var intento=0;intento<2;intento++){
         try{
