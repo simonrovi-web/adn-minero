@@ -193,36 +193,47 @@
     }
 
     // ===== Contexto IA (con caché en localStorage) =====
-    function ckey(h){ return 'adn_res2_'+h.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,60); }
+    function ckey(h){ return 'adn_res3_'+h.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,60); }
     function cacheGet(h){ try{ var v=JSON.parse(localStorage.getItem(ckey(h))||'null'); if(v&&v.x&&(Date.now()-v.ts)<864e5) return v.x; }catch(e){} return null; }
     function cacheSet(h,x){ try{ localStorage.setItem(ckey(h), JSON.stringify({x:x,ts:Date.now()})); }catch(e){} }
     var curCtl=null;
-    // una pasada de streaming contra la IA; devuelve el texto acumulado ('' si falla)
-    async function streamContext(prompt, onChunk){
-      try{ if(curCtl) curCtl.abort(); }catch(e){} curCtl=new AbortController();
-      var res=await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:prompt}]}),signal:curCtl.signal});
-      if(!res.ok) return '';
+    // lee el stream SSE de la IA; acumula y entrega por onChunk; devuelve el texto final ('' si falla)
+    async function readSSE(res, onChunk){
+      if(!res || !res.ok || !res.body) return '';
       var reader=res.body.getReader(), dec=new TextDecoder(), buf='', acc='';
       while(true){ var r=await reader.read(); if(r.done) break;
         buf+=dec.decode(r.value,{stream:true}); var lines=buf.split('\n'); buf=lines.pop();
         for(var i=0;i<lines.length;i++){ var l=lines[i].trim(); if(l.indexOf('data:')!==0) continue; var d=l.slice(5).trim(); if(d==='[DONE]') continue;
-          try{ var jj=JSON.parse(d); if(jj.response){ acc+=jj.response; onChunk(acc,false); } }catch(e){} }
+          try{ var jj=JSON.parse(d); if(jj.response){ acc+=jj.response; if(onChunk) onChunk(acc,false); } }catch(e){} }
       }
       return acc.trim();
     }
-    async function getContext(h, onChunk){
+    // pide al Worker el RESUMEN de la noticia (decodifica Google News + baja el artículo real + IA)
+    async function streamResumen(title, link, onChunk){
+      try{ if(curCtl) curCtl.abort(); }catch(e){} curCtl=new AbortController();
+      var res=await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({task:'resumen',title:title,link:link||'',topic:CFG.topic}),signal:curCtl.signal});
+      return await readSSE(res, onChunk);
+    }
+    async function getContext(h, link, onChunk){
       var cached=cacheGet(h); if(cached){ onChunk(cached,true); return; }
-      var prompt='Actúa como redactor de prensa. En 2 frases y en presente, redacta la bajada de esta noticia de la '+CFG.topic+': parafrasea y amplía lo que informa el titular (qué ocurre, quién y las cifras o datos que menciona). No des contexto general ni antecedentes, no expliques por qué importa, no inventes datos que no estén en el titular, no repitas el titular textual ni saludes; responde solo la bajada. Titular: "'+h+'"';
-      // hasta 2 intentos: en streaming el contexto siempre debe desarrollar la noticia
       for(var intento=0;intento<2;intento++){
         try{
-          var acc=await streamContext(prompt, onChunk);
+          var acc=await streamResumen(h, link, onChunk);
           if(acc){ cacheSet(h,acc); onChunk(acc,true); return; }
         }catch(e){ if(e&&e.name==='AbortError') return; }
         await sleep(1200);
       }
-      // respaldo (sin "tocar"): desarrollo breve segun el tema; la fuente va abajo
+      // respaldo (sin "tocar"): la fuente va abajo
       onChunk('Noticia sobre '+CFG.topic+'. En la fuente indicada abajo está el detalle completo.',true);
+    }
+    // precarga silenciosa del resumen (sin abortar el que se muestra) para que el cambio sea instantáneo
+    var preBusy={};
+    function prefetchResumen(h, link){
+      if(!h || cacheGet(h) || preBusy[h]) return; preBusy[h]=1;
+      fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({task:'resumen',title:h,link:link||'',topic:CFG.topic})})
+        .then(function(res){ return readSSE(res, null); })
+        .then(function(txt){ if(txt) cacheSet(h,txt); delete preBusy[h]; })
+        .catch(function(){ delete preBusy[h]; });
     }
 
     var STORIES=[], idx=0, timer=null, barT=null, DWELL=40000;
@@ -286,9 +297,11 @@
         ctx.innerHTML='<span class="skel" style="display:block;height:14px;width:92%;margin-bottom:8px"></span><span class="skel" style="display:block;height:14px;width:76%"></span>';
         head.classList.remove('out'); ctx.classList.remove('out');
         var myIdx=idx;
-        getContext(s.t, function(txt, done){ if(myIdx!==idx) return; ctx.innerHTML=esc(txt)+(done?'':'<span class="cursor"></span>'); });
+        getContext(s.t, s.link, function(txt, done){ if(myIdx!==idx) return; ctx.innerHTML=esc(txt)+(done?'':'<span class="cursor"></span>'); });
         renderQueue();
         startBar();
+        // precarga el resumen del siguiente para que el cambio sea instantáneo
+        var nxt=STORIES[(idx+1)%STORIES.length]; if(nxt) prefetchResumen(nxt.t, nxt.link);
       }, 380);
     }
     function go(i){ clearTimeout(timer); show(i); schedule(); }
