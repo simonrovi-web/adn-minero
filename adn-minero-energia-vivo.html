@@ -61,6 +61,7 @@
     .ctx .cursor{ display:inline-block; width:8px; height:15px; background:var(--accent); margin-left:2px; vertical-align:-2px; animation:bl 1s steps(2) infinite } @keyframes bl{ 50%{ opacity:0 } }
     .cta{ display:inline-flex; align-items:center; gap:7px; margin-top:auto; padding-top:18px; color:var(--accent); font-weight:800; font-size:14px; text-decoration:none }
     .feat-img{ display:none }
+    .fi-fig{ display:none }
     .readat{ display:none }
     .bar{ position:absolute; left:0; bottom:0; height:4px; width:0; background:linear-gradient(90deg, var(--accent2), var(--accent)); box-shadow:0 0 12px var(--glow) }
     /* queue */
@@ -85,6 +86,10 @@
       .feat-img{ display:flex; align-items:center; justify-content:center; flex:0 0 auto; width:100%; aspect-ratio:16/9; border-radius:18px; margin:0 0 min(1.8vh,16px); position:relative; overflow:hidden; box-shadow:inset 0 0 90px rgba(0,0,0,.45), 0 10px 30px rgba(0,0,0,.35); }
       .feat-img::after{ content:''; position:absolute; inset:0; background:radial-gradient(60% 85% at 28% 18%, rgba(255,255,255,.16), transparent 60%) }
       .fi-ic{ font-size:clamp(54px,4.4vw,96px); position:relative; z-index:1; filter:drop-shadow(0 8px 22px rgba(0,0,0,.5)) }
+      .fi-fig{ display:none; position:absolute; left:0; right:0; bottom:0; z-index:2; padding:min(1.4vh,13px) min(1.3vw,18px) min(1.5vh,14px); text-align:center;
+        font-weight:900; font-size:clamp(20px,2vw,40px); line-height:1; letter-spacing:-.01em; color:#fff;
+        background:linear-gradient(0deg,rgba(0,0,0,.72),rgba(0,0,0,.28) 70%,transparent); text-shadow:0 2px 10px rgba(0,0,0,.6) }
+      .fi-fig.on{ display:block }
       .readat{ display:flex; align-items:center; gap:9px; margin-top:auto; padding-top:min(2.2vh,20px); color:var(--accent); font-weight:800; font-size:clamp(15px,1.25vw,21px); line-height:1.3 }
       .side{ grid-column:2; grid-row:2; display:flex; flex-direction:column; min-height:0; }
       #queue{ flex:1; overflow:hidden } .qtitle{ margin-top:0 } .foot{ margin-top:auto }
@@ -130,7 +135,7 @@
     </article>
 
     <div class="side">
-      <div class="feat-img" id="featImg"><span class="fi-ic" id="featIc">⛏️</span></div>
+      <div class="feat-img" id="featImg"><span class="fi-ic" id="featIc">⛏️</span><span class="fi-fig" id="featFig"></span></div>
       <p class="qtitle">A continuación</p>
       <div id="queue"></div>
       <p class="foot">
@@ -216,6 +221,27 @@
       return {e:'⛏️', g:'linear-gradient(135deg,#6a4a30,#331f14)'};
     }
 
+    // dato destacado: extrae la cifra clave del titular (precio, %, montos, toneladas, MW…)
+    function keyFigure(t){
+      t=(t||'');
+      var pats=[
+        /US?\$\s?[\d.,]+\s?(?:mil\s?)?(?:millones|millón|billones|bn|mm)?/i,
+        /[\d.,]+\s?%/,
+        /[\d.,]+\s?(?:mil\s?)?(?:millones|millón|billones)\s?(?:de\s?)?(?:dólares|dolares|pesos|toneladas|ton)?/i,
+        /[\d.,]+\s?(?:toneladas|ton|kt|mt|kton)\b/i,
+        /[\d.,]+\s?(?:MW|GWh|MWh|GW|TWh)\b/i,
+        /[\d.,]+\s?(?:m³|m3|litros?|hm³)\b/i
+      ];
+      for(var i=0;i<pats.length;i++){ var m=t.match(pats[i]);
+        if(m){ var v=m[0].trim();
+          // descarta años sueltos (1900-2099) sin unidad
+          if(/^\d{4}$/.test(v) && +v>=1900 && +v<=2099) continue;
+          return v.replace(/\s+/g,' ');
+        }
+      }
+      return '';
+    }
+
     function renderQueue(){
       var q=$('queue'); var html='';
       for(var n=0;n<Math.min(STORIES.length-1,7);n++){ var s=STORIES[(idx+1+n)%STORIES.length];
@@ -236,6 +262,7 @@
         $('metaline').textContent=(s.s?s.s+' · ':'')+rel(s.ts);
         head.textContent=s.t; $('cta').href=s.link;
         var tv=topicVisual(s.t); var fi=$('featImg'), fic=$('featIc'); if(fi){ fi.style.background=tv.g; } if(fic){ fic.textContent=tv.e; }
+        var ff=$('featFig'); if(ff){ var kf=keyFigure(s.t); if(kf){ ff.textContent=kf; ff.classList.add('on'); } else { ff.textContent=''; ff.classList.remove('on'); } }
         var ra=$('readat'); if(ra){ ra.innerHTML='<span style="opacity:.85">📰 Lee la nota completa en</span>&nbsp; <b>'+esc(s.s||'la fuente original')+'</b>'; }
         ctx.innerHTML='<span class="skel" style="display:block;height:14px;width:92%;margin-bottom:8px"></span><span class="skel" style="display:block;height:14px;width:76%"></span>';
         head.classList.remove('out'); ctx.classList.remove('out');

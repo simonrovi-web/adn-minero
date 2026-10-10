@@ -18,6 +18,18 @@
     #tag .d{width:9px;height:9px;border-radius:50%;background:#7ee787;box-shadow:0 0 8px #7ee787;animation:pz 1.6s infinite}
     @keyframes pz{0%,100%{opacity:1}50%{opacity:.3}}
     #tag small{font-weight:500;color:#c9a888;margin-left:2px}
+    /* franja "a continuación" (continuidad tipo TV); se oculta con ?label=0 */
+    #upnext{position:fixed;right:0;bottom:0;z-index:11;max-width:46vw;
+      display:flex;align-items:center;gap:10px;padding:11px 20px 11px 16px;
+      font-family:'Inter',system-ui,sans-serif;color:#f0e6da;font-size:16px;
+      background:linear-gradient(160deg,rgba(26,21,18,.94),rgba(20,17,16,.96));
+      border-top:2px solid #b5734f;border-left:2px solid #b5734f;border-top-left-radius:12px;
+      box-shadow:0 -4px 20px rgba(0,0,0,.5);transform:translateY(130%);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+    #upnext.on{transform:translateY(0)}
+    #upnext b{font-weight:800}
+    #upnext .lbl{color:#c9a888;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-right:2px}
+    #upnext i{font-style:normal;color:#e0a06a;font-size:18px;animation:nx 1.2s infinite}
+    @keyframes nx{0%,100%{transform:translateX(0)}50%{transform:translateX(3px)}}
   </style>
 </head>
 <body>
@@ -26,6 +38,7 @@
     <iframe id="fb" class="fr" allowtransparency="false"></iframe>
   </div>
   <div id="tag"><span class="d"></span><span id="tagt">ADN Minero</span></div>
+  <div id="upnext"><span class="lbl">A continuación</span><i>›</i><b id="upnextt"></b></div>
 <script>
   // Todos los paneles (primero los más visuales / en vivo)
   const PANELS = [
@@ -65,6 +78,15 @@
     ['adn-minero-empleos.html','Trabajos y servicios'],
     ['adn-minero-bolsa.html','Bolsa de empleo'],
     ['adn-minero-prensa.html','Noticias mineras'],
+    ['adn-minero-noticias-vivo.html','Noticias Mineras en Vivo'],
+    ['adn-minero-geo-vivo.html','Geopolítica en Vivo'],
+    ['adn-minero-energia-vivo.html','Energía y Desarrollo en Vivo'],
+    ['adn-minero-mercado-vivo.html','Mercado del Cobre en Vivo'],
+    ['adn-minero-seguridad-vivo.html','Seguridad Minera en Vivo'],
+    ['adn-minero-litio-vivo.html','Litio y Salares en Vivo'],
+    ['adn-minero-tecnologia-vivo.html','Tecnología y Minería 4.0 en Vivo'],
+    ['adn-minero-territorio-vivo.html','Comunidades, Agua y Territorio en Vivo'],
+    ['adn-minero-talento-vivo.html','Talento Minero en Vivo'],
     ['adn-minero-tv.html','ADN Minero TV'],
     ['adn-minero-muro.html','Muro de la comunidad'],
     ['adn-minero-promo.html','Descarga la app']
@@ -100,7 +122,10 @@
   }
 
   const fa=document.getElementById('fa'), fb=document.getElementById('fb'), tagt=document.getElementById('tagt');
-  let i=0, active=fa, hidden=fb, scrollRAF=null;
+  const upnext=document.getElementById('upnext'), upnextt=document.getElementById('upnextt');
+  let i=0, active=fa, hidden=fb, scrollRAF=null, upT=null;
+  function showUpNext(name){ if(!SHOW_TAG) return; upnextt.textContent=name; upnext.classList.add('on'); }
+  function hideUpNext(){ upnext.classList.remove('on'); }
 
   function loadInto(frame, url){ return new Promise(res=>{ let done=false; const fin=()=>{ if(!done){done=true;res();} }; frame.onload=fin; frame.src=url; setTimeout(fin, 2500); }); }
 
@@ -136,10 +161,20 @@
     tagt.innerHTML = name + ' <small>· ADN Minero</small>';
     hidden.classList.add('on'); active.classList.remove('on');
     const tmp=active; active=hidden; hidden=tmp;
+    hideUpNext();
     setTimeout(()=>startScroll(active), 800); // deja renderizar antes de medir
   }
 
-  function scheduleNext(){ setTimeout(tick, LIST[i].seconds*1000); }
+  function scheduleNext(){
+    const slot=LIST[i].seconds*1000;
+    setTimeout(tick, slot);
+    if(upT) clearTimeout(upT);
+    // anuncia el siguiente bloque 5s antes del cambio (si el tramo es largo)
+    if(SHOW_TAG && LIST.length>1 && slot>8000){
+      const nx=LIST[(i+1)%LIST.length];
+      upT=setTimeout(()=>showUpNext(nx.name), slot-5000);
+    }
+  }
   async function tick(){ i=(i+1)%LIST.length; await swapTo(i); scheduleNext(); }
   async function start(){
     const {url,name}=LIST[0];
