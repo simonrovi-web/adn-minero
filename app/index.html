@@ -95,7 +95,7 @@
       .nv-cur{display:inline-block;width:7px;height:1.05em;background:#cf9b6f;margin-left:2px;vertical-align:-2px;animation:nvbl 1s steps(2) infinite}
       @keyframes nvbl{0%,100%{opacity:1}50%{opacity:0}}
     </style>
-    <section class="mt-6 sm:mt-8 max-w-3xl mx-auto">
+    <section id="nvBand" class="mt-6 sm:mt-8 max-w-3xl mx-auto">
       <div class="rounded-2xl p-4 sm:p-5" style="background:linear-gradient(135deg, rgba(207,155,111,.15), rgba(43,37,32,.5));border:1px solid rgba(207,155,111,.32)">
         <div class="flex items-center justify-between gap-2 mb-2">
           <span class="text-[10px] uppercase tracking-[.14em] font-bold flex items-center gap-2" style="color:#e0c3a0"><span class="nv-dot"></span> Noticias en vivo</span>
@@ -864,6 +864,7 @@
       // Inicio (tarjetas de categoría), perfil y favoritos: solo en la vista de inicio
       document.getElementById('homeCats').classList.toggle('hidden', !home);
       { const rcEl=document.getElementById('reciente'); if(rcEl) rcEl.classList.toggle('hidden', !home || rcEl.children.length===0); }
+      { const nv=document.getElementById('nvBand'); if(nv) nv.classList.toggle('hidden', !home); }
       { const hd=document.getElementById('heroDev'); if(hd) hd.classList.toggle('hidden', !home); }
       { const ho=document.getElementById('heroOjo'); if(ho) ho.classList.toggle('hidden', !home); }
       document.getElementById('hoy').classList.toggle('hidden', !home);
