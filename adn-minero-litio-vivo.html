@@ -216,12 +216,12 @@
     }
     async function getContext(h, link, onChunk){
       var cached=cacheGet(h); if(cached){ onChunk(cached,true); return; }
-      for(var intento=0;intento<2;intento++){
+      for(var intento=0;intento<3;intento++){ // 3 intentos: resiste hipos transitorios del Worker
         try{
           var acc=await streamResumen(h, link, onChunk);
           if(acc){ cacheSet(h,acc); onChunk(acc,true); return; }
         }catch(e){ if(e&&e.name==='AbortError') return; }
-        await sleep(1200);
+        await sleep(1500);
       }
       // respaldo (sin "tocar"): la fuente va abajo
       onChunk('Noticia sobre '+CFG.topic+'. En la fuente indicada abajo está el detalle completo.',true);
