@@ -374,7 +374,7 @@
       var pill=document.getElementById('vozPill');
       var p=new URLSearchParams(location.search);
       var mode=(p.get('voz')||'off').toLowerCase(); if(mode!=='browser'&&mode!=='neural') mode='off';
-      var on=false, token=0, q=[], playing=false, curAudio=null, acache={};
+      var on=false, token=0, q=[], playing=false, curAudio=null, acache={}, endCb=null, changeCb=null;
       function synth(){ return window.speechSynthesis; }
       function bestVoice(){ try{ var vs=(synth().getVoices()||[]).filter(function(v){return /^es/i.test(v.lang);});
         function sc(v){ var n=(v.name||'').toLowerCase(),s=0; if(/natural|neural/.test(n))s+=6; if(/google/.test(n))s+=5; if(/microsoft|sabina|helena|dalia|paulina/.test(n))s+=3; if(/-cl/i.test(v.lang))s+=2; if(/-mx|-us/i.test(v.lang))s+=1; return s; }
@@ -389,25 +389,32 @@
         var a=new Audio(url); curAudio=a; a.onended=function(){ if(curAudio===a)curAudio=null; done(); }; a.onerror=function(){ if(curAudio===a)curAudio=null; bspeak(text,done); };
         a.play().catch(function(){ bspeak(text,done); });
       }catch(e){ bspeak(text,done); } }
-      function pump(){ if(playing||!q.length) return; playing=true; var my=token, text=q.shift();
-        var fin=function(){ if(my!==token) return; playing=false; pump(); };
-        if(mode==='neural') nspeak(text,my,fin); else bspeak(text,fin); }
-      function enq(text){ if(!on||mode==='off'||!text) return; q.push(text); pump(); }
+      function pump(){ if(playing||!q.length) return; playing=true; var my=token, item=q.shift();
+        var fin=function(){ if(my!==token) return; playing=false; if(item.last){ if(endCb) endCb(); } else { pump(); } };
+        if(mode==='neural') nspeak(item.t,my,fin); else bspeak(item.t,fin); }
+      function enq(text,last){ if(!on||mode==='off'||!text) return; q.push({t:text,last:!!last}); pump(); }
       function render(){ if(!pill) return; if(mode==='off'){ pill.style.display='none'; return; } pill.style.display='flex';
         var tx=pill.querySelector('.vz-tx');
         if(!on){ pill.classList.remove('on','mini'); tx.textContent='Activar voz'; }
         else { pill.classList.add('on'); tx.textContent='Voz: '+(mode==='neural'?'Neural':'Navegador'); } }
+      function activate(){ on=true; render(); stop();
+        var h=$('head'), c=$('ctx'); enq(h?h.textContent:'',false);
+        if(c){ var ct=c.textContent.trim(); if(ct&&ct.length>40&&!c.querySelector('.skel')) enq(ct,true); }
+        setTimeout(function(){ if(on&&pill) pill.classList.add('mini'); }, 6000); if(changeCb) changeCb(); }
       if(pill){ render();
         pill.addEventListener('click', function(){
-          if(!on){ on=true; render(); stop();
-            var h=$('head'), c=$('ctx'); if(h&&h.textContent) enq(h.textContent);
-            if(c){ var ct=c.textContent.trim(); if(ct&&ct.length>40&&!c.querySelector('.skel')) enq(ct); }
-            setTimeout(function(){ if(on) pill.classList.add('mini'); }, 6000);
-          } else { mode=(mode==='neural')?'browser':'neural'; stop(); pill.classList.remove('mini'); render(); var h=$('head'); if(h) enq(h.textContent); }
+          if(!on){ activate(); }
+          else { mode=(mode==='neural')?'browser':'neural'; stop(); pill.classList.remove('mini'); render(); var h=$('head'); if(h) enq(h.textContent,false); if(changeCb) changeCb(); }
         });
-        pill.addEventListener('dblclick', function(){ on=false; stop(); render(); });
+        pill.addEventListener('dblclick', function(){ on=false; stop(); render(); if(changeCb) changeCb(); });
       }
-      return { onStory:function(h){ stop(); if(on&&h) enq(h); }, onSummary:function(txt){ if(on&&txt) enq(txt); } };
+      return {
+        onStory:function(h){ stop(); if(on&&h) enq(h,false); },
+        onSummary:function(txt){ if(on&&txt) enq(txt,true); },
+        active:function(){ return on&&mode!=='off'; },
+        onNarrationEnd:function(fn){ endCb=fn; },
+        onChange:function(fn){ changeCb=fn; }
+      };
     })();
 
     function show(i){
@@ -433,7 +440,14 @@
       }, 380);
     }
     function go(i){ clearTimeout(timer); show(i); schedule(); }
-    function schedule(){ clearTimeout(timer); timer=setTimeout(function(){ show(idx+1); schedule(); }, DWELL); }
+    function schedule(){ clearTimeout(timer);
+      // con voz activa, avanza al terminar la narración (timer largo solo de seguridad)
+      var d=(Voz&&Voz.active())?75000:DWELL;
+      timer=setTimeout(function(){ show(idx+1); schedule(); }, d); }
+    // avanza cuando la voz termina de relatar el resumen (pausa breve entre noticias)
+    Voz.onNarrationEnd(function(){ clearTimeout(timer); timer=setTimeout(function(){ show(idx+1); schedule(); }, 1400); });
+    // si se activa/desactiva/cambia la voz, re-agenda con el criterio correcto
+    Voz.onChange(function(){ if(STORIES.length) schedule(); });
 
     async function boot(){
       var s=await loadNews();
