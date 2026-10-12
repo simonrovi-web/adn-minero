@@ -373,7 +373,7 @@
     var Voz=(function(){
       var pill=document.getElementById('vozPill');
       var p=new URLSearchParams(location.search);
-      var mode=(p.get('voz')||'off').toLowerCase(); if(mode!=='browser'&&mode!=='neural') mode='off';
+      var mode=(p.get('voz')||'off').toLowerCase(); if(mode!=='browser'&&mode!=='neural'&&mode!=='azure') mode='off';
       var on=false, token=0, q=[], playing=false, curAudio=null, acache={}, endCb=null, changeCb=null;
       function synth(){ return window.speechSynthesis; }
       function bestVoice(){ try{ var vs=(synth().getVoices()||[]).filter(function(v){return /^es/i.test(v.lang);});
@@ -382,21 +382,21 @@
       function stop(){ token++; q=[]; playing=false; try{synth().cancel();}catch(e){} if(curAudio){try{curAudio.pause();}catch(e){} curAudio=null;} }
       function bspeak(text,done){ try{ var u=new SpeechSynthesisUtterance(text); var v=bestVoice(); if(v){u.voice=v;u.lang=v.lang;} else u.lang='es-CL'; u.rate=1; u.pitch=1; u.onend=done; u.onerror=done; synth().speak(u); }catch(e){done();} }
       async function nspeak(text,my,done){ try{
-        var url=acache[text];
-        if(!url){ var r=await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({task:'tts',text:text,lang:'es'})});
-          if(!r.ok){ bspeak(text,done); return; } var blob=await r.blob(); if(!blob||blob.size<300){ bspeak(text,done); return; } url=URL.createObjectURL(blob); acache[text]=url; }
+        var ck=mode+'|'+text, url=acache[ck];
+        if(!url){ var r=await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({task:'tts',text:text,lang:'es',engine:(mode==='azure'?'azure':'neural')})});
+          if(!r.ok){ bspeak(text,done); return; } var blob=await r.blob(); if(!blob||blob.size<300){ bspeak(text,done); return; } url=URL.createObjectURL(blob); acache[ck]=url; }
         if(my!==token){ done(); return; }
         var a=new Audio(url); curAudio=a; a.onended=function(){ if(curAudio===a)curAudio=null; done(); }; a.onerror=function(){ if(curAudio===a)curAudio=null; bspeak(text,done); };
         a.play().catch(function(){ bspeak(text,done); });
       }catch(e){ bspeak(text,done); } }
       function pump(){ if(playing||!q.length) return; playing=true; var my=token, item=q.shift();
         var fin=function(){ if(my!==token) return; playing=false; if(item.last){ if(endCb) endCb(); } else { pump(); } };
-        if(mode==='neural') nspeak(item.t,my,fin); else bspeak(item.t,fin); }
+        if(mode==='neural'||mode==='azure') nspeak(item.t,my,fin); else bspeak(item.t,fin); }
       function enq(text,last){ if(!on||mode==='off'||!text) return; q.push({t:text,last:!!last}); pump(); }
       function render(){ if(!pill) return; if(mode==='off'){ pill.style.display='none'; return; } pill.style.display='flex';
         var tx=pill.querySelector('.vz-tx');
         if(!on){ pill.classList.remove('on','mini'); tx.textContent='Activar voz'; }
-        else { pill.classList.add('on'); tx.textContent='Voz: '+(mode==='neural'?'Neural':'Navegador'); } }
+        else { pill.classList.add('on'); tx.textContent='Voz: '+(mode==='azure'?'Chilena':mode==='neural'?'Neural':'Navegador'); } }
       function activate(){ on=true; render(); stop();
         var h=$('head'), c=$('ctx'); enq(h?h.textContent:'',false);
         if(c){ var ct=c.textContent.trim(); if(ct&&ct.length>40&&!c.querySelector('.skel')) enq(ct,true); }
@@ -404,7 +404,7 @@
       if(pill){ render();
         pill.addEventListener('click', function(){
           if(!on){ activate(); }
-          else { mode=(mode==='neural')?'browser':'neural'; stop(); pill.classList.remove('mini'); render(); var h=$('head'); if(h) enq(h.textContent,false); if(changeCb) changeCb(); }
+          else { mode=(mode==='browser')?'neural':(mode==='neural')?'azure':'browser'; stop(); pill.classList.remove('mini'); render(); var h=$('head'); if(h) enq(h.textContent,false); if(changeCb) changeCb(); }
         });
         pill.addEventListener('dblclick', function(){ on=false; stop(); render(); if(changeCb) changeCb(); });
       }
