@@ -106,6 +106,18 @@
       .bar{ height:6px }
       #adnui-back,#adnui-home,#adnui-read,#adnai-fab,#adnui-note,#adnui-offline,#adnui-more,#adnui-skip{ display:none !important }
     }
+    /* control de voz (narración) */
+    #vozPill{ position:fixed; left:14px; bottom:14px; z-index:70; display:none; align-items:center; gap:7px;
+      padding:8px 14px; border-radius:999px; font-family:'Inter',system-ui,sans-serif; font-weight:800; font-size:13px;
+      color:#f0e6da; background:linear-gradient(160deg,rgba(26,21,18,.93),rgba(20,17,16,.96)); border:1.5px solid var(--accent2);
+      cursor:pointer; box-shadow:0 6px 20px rgba(0,0,0,.45); transition:opacity .4s, transform .15s; -webkit-user-select:none; user-select:none }
+    #vozPill:active{ transform:scale(.95) }
+    #vozPill.on{ border-color:#7ee787; color:#dfffe6 }
+    #vozPill.on .vz-ic{ animation:vzpz 1.4s infinite }
+    #vozPill.mini{ padding:9px; font-size:0; gap:0; opacity:.55 }
+    #vozPill.mini .vz-ic{ font-size:15px }
+    #vozPill.mini:hover{ opacity:1 }
+    @keyframes vzpz{0%,100%{opacity:1}50%{opacity:.4}}
   </style>
   <script src="adn-ui.js" defer></script>
   <script type="application/ld+json">
@@ -114,6 +126,7 @@
 </head>
 <body>
   <div class="aurora"><b class="a1"></b><b class="a2"></b><b class="a3"></b></div>
+  <button id="vozPill" type="button"><span class="vz-ic">🔊</span><span class="vz-tx">Activar voz</span></button>
   <div class="wrap">
     <div class="topbar flex items-center justify-between">
       <div class="flex items-center gap-2.5">
@@ -356,6 +369,47 @@
 
     function startBar(){ var bar=$('bar'); bar.style.transition='none'; bar.style.width='0'; void bar.offsetWidth; bar.style.transition='width '+DWELL+'ms linear'; bar.style.width='100%'; }
 
+    // ===== Narración por voz (navegador / neural) =====
+    var Voz=(function(){
+      var pill=document.getElementById('vozPill');
+      var p=new URLSearchParams(location.search);
+      var mode=(p.get('voz')||'off').toLowerCase(); if(mode!=='browser'&&mode!=='neural') mode='off';
+      var on=false, token=0, q=[], playing=false, curAudio=null, acache={};
+      function synth(){ return window.speechSynthesis; }
+      function bestVoice(){ try{ var vs=(synth().getVoices()||[]).filter(function(v){return /^es/i.test(v.lang);});
+        function sc(v){ var n=(v.name||'').toLowerCase(),s=0; if(/natural|neural/.test(n))s+=6; if(/google/.test(n))s+=5; if(/microsoft|sabina|helena|dalia|paulina/.test(n))s+=3; if(/-cl/i.test(v.lang))s+=2; if(/-mx|-us/i.test(v.lang))s+=1; return s; }
+        vs.sort(function(a,b){return sc(b)-sc(a);}); return vs[0]||null; }catch(e){return null;} }
+      function stop(){ token++; q=[]; playing=false; try{synth().cancel();}catch(e){} if(curAudio){try{curAudio.pause();}catch(e){} curAudio=null;} }
+      function bspeak(text,done){ try{ var u=new SpeechSynthesisUtterance(text); var v=bestVoice(); if(v){u.voice=v;u.lang=v.lang;} else u.lang='es-CL'; u.rate=1; u.pitch=1; u.onend=done; u.onerror=done; synth().speak(u); }catch(e){done();} }
+      async function nspeak(text,my,done){ try{
+        var url=acache[text];
+        if(!url){ var r=await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({task:'tts',text:text,lang:'es'})});
+          if(!r.ok){ bspeak(text,done); return; } var blob=await r.blob(); if(!blob||blob.size<300){ bspeak(text,done); return; } url=URL.createObjectURL(blob); acache[text]=url; }
+        if(my!==token){ done(); return; }
+        var a=new Audio(url); curAudio=a; a.onended=function(){ if(curAudio===a)curAudio=null; done(); }; a.onerror=function(){ if(curAudio===a)curAudio=null; bspeak(text,done); };
+        a.play().catch(function(){ bspeak(text,done); });
+      }catch(e){ bspeak(text,done); } }
+      function pump(){ if(playing||!q.length) return; playing=true; var my=token, text=q.shift();
+        var fin=function(){ if(my!==token) return; playing=false; pump(); };
+        if(mode==='neural') nspeak(text,my,fin); else bspeak(text,fin); }
+      function enq(text){ if(!on||mode==='off'||!text) return; q.push(text); pump(); }
+      function render(){ if(!pill) return; if(mode==='off'){ pill.style.display='none'; return; } pill.style.display='flex';
+        var tx=pill.querySelector('.vz-tx');
+        if(!on){ pill.classList.remove('on','mini'); tx.textContent='Activar voz'; }
+        else { pill.classList.add('on'); tx.textContent='Voz: '+(mode==='neural'?'Neural':'Navegador'); } }
+      if(pill){ render();
+        pill.addEventListener('click', function(){
+          if(!on){ on=true; render(); stop();
+            var h=$('head'), c=$('ctx'); if(h&&h.textContent) enq(h.textContent);
+            if(c){ var ct=c.textContent.trim(); if(ct&&ct.length>40&&!c.querySelector('.skel')) enq(ct); }
+            setTimeout(function(){ if(on) pill.classList.add('mini'); }, 6000);
+          } else { mode=(mode==='neural')?'browser':'neural'; stop(); pill.classList.remove('mini'); render(); var h=$('head'); if(h) enq(h.textContent); }
+        });
+        pill.addEventListener('dblclick', function(){ on=false; stop(); render(); });
+      }
+      return { onStory:function(h){ stop(); if(on&&h) enq(h); }, onSummary:function(txt){ if(on&&txt) enq(txt); } };
+    })();
+
     function show(i){
       idx=((i%STORIES.length)+STORIES.length)%STORIES.length;
       var s=STORIES[idx];
@@ -370,7 +424,8 @@
         ctx.innerHTML='<span class="skel" style="display:block;height:14px;width:92%;margin-bottom:8px"></span><span class="skel" style="display:block;height:14px;width:76%"></span>';
         head.classList.remove('out'); ctx.classList.remove('out');
         var myIdx=idx;
-        getContext(s.t, s.link, function(txt, done){ if(myIdx!==idx) return; ctx.innerHTML=esc(txt)+(done?'':'<span class="cursor"></span>'); });
+        Voz.onStory(s.t); // narra el titular (si la voz está activa)
+        getContext(s.t, s.link, function(txt, done){ if(myIdx!==idx) return; ctx.innerHTML=esc(txt)+(done?'':'<span class="cursor"></span>'); if(done) Voz.onSummary(txt); });
         renderQueue();
         startBar();
         // precarga el resumen del siguiente para que el cambio sea instantáneo
