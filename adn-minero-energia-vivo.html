@@ -178,17 +178,19 @@
     }
     async function loadNews(){
       // secuencial con espaciado para no gatillar el throttle de rss2json (ráfaga = "Internal error")
-      var res=[];
-      for(var qi=0;qi<CFG.queries.length;qi++){ res.push(await feedOne(CFG.queries[qi])); if(qi<CFG.queries.length-1) await sleep(700); }
       var seen={}, out=[], now=Date.now();
-      res.forEach(function(items){ items.forEach(function(it){
+      function absorb(items){ items.forEach(function(it){
         var c=clean(it.title); if(!c.t||c.t.length<22) return;
         var k=c.t.toLowerCase().slice(0,55); if(seen[k]) return; seen[k]=1;
         var ts=it.pubDate?Date.parse(it.pubDate):0; if(ts && (now-ts)>5184e6) return; // hasta 60 días
         out.push({t:c.t, s:c.s||(it.author||''), link:it.link||'#', ts:ts});
-      }); });
+      }); }
+      for(var qi=0;qi<CFG.queries.length;qi++){ absorb(await feedOne(CFG.queries[qi])); if(qi<CFG.queries.length-1) await sleep(700); }
+      // si el tema trae pocas, completa con minería general para asegurar variedad (mínimo ~15)
+      var fill=['minería Chile','cobre Chile','Codelco'];
+      for(var fi=0; fi<fill.length && out.length<15; fi++){ await sleep(700); absorb(await feedOne(fill[fi])); }
       out.sort(function(a,b){ return b.ts-a.ts; });
-      return out.slice(0,24); // hasta 24 noticias (más recientes primero, dentro de 30 días)
+      return out.slice(0,24); // hasta 24 noticias (más recientes primero)
     }
 
     // ===== Contexto IA (con caché en localStorage) =====
