@@ -184,7 +184,7 @@
       res.forEach(function(items){ items.forEach(function(it){
         var c=clean(it.title); if(!c.t||c.t.length<22) return;
         var k=c.t.toLowerCase().slice(0,55); if(seen[k]) return; seen[k]=1;
-        var ts=it.pubDate?Date.parse(it.pubDate):0; if(ts && (now-ts)>2592e6) return;
+        var ts=it.pubDate?Date.parse(it.pubDate):0; if(ts && (now-ts)>5184e6) return; // hasta 60 días
         out.push({t:c.t, s:c.s||(it.author||''), link:it.link||'#', ts:ts});
       }); });
       out.sort(function(a,b){ return b.ts-a.ts; });
