@@ -148,7 +148,7 @@
 <script>
   (function(){
     var CFG={
-      queries:['empleo minería Chile','mujer minería Chile','sueldos minería Chile'],
+      queries:['empleo minería Chile','trabajo minero Chile','mujer minería Chile','sueldos minería Chile','vacantes minería Chile'],
       topic:'el empleo, los sueldos y el talento en la minería de Chile',
       label:'Talento'
     };
@@ -188,8 +188,7 @@
         out.push({t:c.t, s:c.s||(it.author||''), link:it.link||'#', ts:ts});
       }); });
       out.sort(function(a,b){ return b.ts-a.ts; });
-      var fresh=out.filter(function(x){ return x.ts && (now-x.ts)<=6048e5; });
-      return (fresh.length>=4?fresh:out).slice(0,18);
+      return out.slice(0,24); // hasta 24 noticias (más recientes primero, dentro de 30 días)
     }
 
     // ===== Contexto IA (con caché en localStorage) =====
