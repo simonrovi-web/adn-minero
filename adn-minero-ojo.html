@@ -4,20 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#0f0b09" />
-  <title>ADN Minero · Ojo de Sauron Minero</title>
+  <title>ADN Minero · Ojo de Cóndor</title>
   <link rel="icon" type="image/png" href="icon-192.png" />
-  <meta name="description" content="Ojo de Sauron Minero: todo lo ve. La minería de Chile en tiempo real sobre un mapa satelital. Vuela sobre las faenas, mira el tamaño real del rajo desde el espacio, con cobre, sismos, rutas, clima y vista en el terreno." />
+  <meta name="description" content="Ojo de Cóndor: todo lo ve. La minería de Chile en tiempo real sobre un mapa satelital. Vuela sobre las faenas, mira el tamaño real del rajo desde el espacio, con cobre, sismos, rutas, clima y vista en el terreno." />
   <link rel="canonical" href="https://simonrovi-web.github.io/adn-minero/adn-minero-ojo.html" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="ADN Minero" />
-  <meta property="og:title" content="ADN Minero · Ojo de Sauron Minero" />
+  <meta property="og:title" content="ADN Minero · Ojo de Cóndor" />
   <meta property="og:description" content="Todo lo ve: la minería de Chile en tiempo real sobre un mapa satelital, con cobre, sismos, rutas y clima." />
   <meta property="og:image" content="https://simonrovi-web.github.io/adn-minero/assets/og/ojo.jpg" />
   <meta property="og:image:width" content="800" />
   <meta property="og:image:height" content="420" />
   <meta property="og:url" content="https://simonrovi-web.github.io/adn-minero/adn-minero-ojo.html" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="ADN Minero · Ojo de Sauron Minero" />
+  <meta name="twitter:title" content="ADN Minero · Ojo de Cóndor" />
   <meta name="twitter:description" content="Todo lo ve: la minería de Chile en tiempo real sobre un mapa satelital." />
   <meta name="twitter:image" content="https://simonrovi-web.github.io/adn-minero/assets/og/ojo.jpg" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -94,7 +94,7 @@
   </style>
   <script src="adn-ui.js" defer></script>
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"WebPage","@id":"https://simonrovi-web.github.io/adn-minero/adn-minero-ojo.html#webpage","url":"https://simonrovi-web.github.io/adn-minero/adn-minero-ojo.html","name":"ADN Minero · Ojo de Sauron Minero","description":"Todo lo ve: la minería de Chile en tiempo real sobre un mapa satelital, con cobre, sismos, rutas y clima.","isPartOf":{"@id":"https://simonrovi-web.github.io/adn-minero/#site"},"inLanguage":"es-CL","publisher":{"@id":"https://simonrovi-web.github.io/adn-minero/#org"}}
+  {"@context":"https://schema.org","@type":"WebPage","@id":"https://simonrovi-web.github.io/adn-minero/adn-minero-ojo.html#webpage","url":"https://simonrovi-web.github.io/adn-minero/adn-minero-ojo.html","name":"ADN Minero · Ojo de Cóndor","description":"Todo lo ve: la minería de Chile en tiempo real sobre un mapa satelital, con cobre, sismos, rutas y clima.","isPartOf":{"@id":"https://simonrovi-web.github.io/adn-minero/#site"},"inLanguage":"es-CL","publisher":{"@id":"https://simonrovi-web.github.io/adn-minero/#org"}}
   </script>
 </head>
 <body>
@@ -123,7 +123,7 @@
           <ellipse cx="44" cy="44" rx="3" ry="5" fill="#fff" opacity=".45"/>
         </svg>
       </div>
-      <h1>Ojo de <span class="amber">Sauron</span> Minero</h1>
+      <h1>Ojo de <span class="amber">Cóndor</span></h1>
       <p>Todo lo ve · la minería de Chile en tiempo real, desde el espacio</p>
     </div>
 
@@ -423,7 +423,7 @@
   // compartir vista
   $('btnShare').addEventListener('click',async()=>{ const c=map.getCenter(), z=map.getZoom();
     const url=location.origin+location.pathname+'#'+c.lat.toFixed(4)+','+c.lng.toFixed(4)+','+z;
-    try{ if(navigator.share){ await navigator.share({title:'Ojo de Sauron Minero', text:'Mira la minería de Chile desde el espacio', url}); }
+    try{ if(navigator.share){ await navigator.share({title:'Ojo de Cóndor', text:'Mira la minería de Chile desde el espacio', url}); }
       else if(navigator.clipboard){ await navigator.clipboard.writeText(url); toast('Enlace de esta vista copiado'); }
       else toast(url); }catch(_){ } });
 
