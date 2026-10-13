@@ -130,6 +130,13 @@
     @keyframes aldot{0%,100%{opacity:1}50%{opacity:.25}}
     .anchor-head{ transform-box:fill-box; transform-origin:50% 95%; animation:asway 6.5s ease-in-out infinite }
     @keyframes asway{0%,100%{transform:rotate(-1.4deg)}50%{transform:rotate(1.4deg)}}
+    #anchor3d{ display:none; position:absolute; inset:0; width:100%; height:100% }
+    .anchor.is3d{ background:radial-gradient(120% 90% at 50% 15%, #3a2f4e, #141019 70%) }
+    .anchor-lt{ display:none; position:absolute; left:0; right:0; bottom:0; z-index:3; padding:6px 10px;
+      font:700 11px 'Inter',system-ui,sans-serif; color:#f0e6da; background:linear-gradient(0deg,rgba(0,0,0,.6),transparent);
+      text-shadow:0 1px 3px rgba(0,0,0,.6) }
+    .anchor-lt b{ color:var(--accent) } .anchor-lt span{ color:#cbb79f }
+    .anchor.is3d .anchor-lt{ display:block }
   </style>
   <script src="adn-ui.js" defer></script>
   <script type="application/ld+json">
@@ -141,6 +148,8 @@
   <button id="vozPill" type="button"><span class="vz-ic">🔊</span><span class="vz-tx">Activar voz</span></button>
   <div class="anchor" id="anchor" aria-hidden="true">
     <div class="anchor-live"><span class="al-dot"></span> EN VIVO</div>
+    <canvas id="anchor3d"></canvas>
+    <div class="anchor-lt"><b>ADN</b> Minero · <span>Noticias</span></div>
     <svg viewBox="0 0 200 210" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" class="anchor-svg">
       <defs>
         <linearGradient id="abg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2238"/><stop offset="1" stop-color="#14111d"/></linearGradient>
@@ -432,7 +441,7 @@
       function connect(audioEl){ ensureAC(); if(!AC) return; try{ if(AC.state==='suspended') AC.resume(); var src=AC.createMediaElementSource(audioEl); src.connect(analyser); connected=true; }catch(e){} }
       function level(){ var a=0; try{ if(analyser&&connected){ analyser.getByteTimeDomainData(data); var s=0; for(var i=0;i<data.length;i++){ var v=(data[i]-128)/128; s+=v*v; } a=Math.sqrt(s/data.length)*1.4; } }catch(e){}
         if(fake){ var t=Date.now(); var f=0.10+0.13*Math.abs(Math.sin(t/95))+0.07*Math.abs(Math.sin(t/41)); return Math.max(a,f); } return a; }
-      function loop(){ var l=level(); amp+=(l-amp)*0.45; var ry=1.3+Math.min(1,amp*7.5)*9; if(mouth) mouth.setAttribute('ry', ry.toFixed(1)); raf=requestAnimationFrame(loop); }
+      function loop(){ var l=level(); amp+=(l-amp)*0.45; if(window.AV3) window.AV3.level=amp; var ry=1.3+Math.min(1,amp*7.5)*9; if(mouth) mouth.setAttribute('ry', ry.toFixed(1)); raf=requestAnimationFrame(loop); }
       function blink(){ if(!lidL||!shown) { setTimeout(blink,3000); return; } lidL.setAttribute('height','7'); lidR.setAttribute('height','7'); setTimeout(function(){ lidL.setAttribute('height','0'); lidR.setAttribute('height','0'); },120); setTimeout(blink, 2800+Math.random()*3200); }
       return {
         show:function(){ shown=true; el.classList.add('on'); if(!raf) loop(); if(!el._blk){ el._blk=1; setTimeout(blink,1600); } },
@@ -531,6 +540,52 @@
     }
     draw();
     if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+  })();
+</script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"}}</script>
+<script type="module">
+  // Avatar 3D (cara realista con blendshapes) — si algo falla, queda el avatar SVG.
+  window.AV3 = { ok:false, level:0 };
+  (async function(){
+    var cv=document.getElementById('anchor3d'), box=document.getElementById('anchor'); if(!cv||!box) return;
+    try{
+      var THREE=await import('three');
+      var mod=await import('three/addons/loaders/GLTFLoader.js'); var GLTFLoader=mod.GLTFLoader;
+      var renderer=new THREE.WebGLRenderer({canvas:cv, antialias:true, alpha:true});
+      renderer.setClearColor(0x000000,0); renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1));
+      var scene=new THREE.Scene();
+      var camera=new THREE.PerspectiveCamera(20,1,0.01,100);
+      scene.add(new THREE.HemisphereLight(0xffffff,0x332b44,2.1));
+      var key=new THREE.DirectionalLight(0xfff1e2,2.4); key.position.set(1.2,1.6,2.5); scene.add(key);
+      var rim=new THREE.DirectionalLight(0x9ab8ff,1.3); rim.position.set(-1.8,0.6,-1.2); scene.add(rim);
+      function resize(){ var w=cv.clientWidth||200,h=cv.clientHeight||210; renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); }
+      var head=null, dict=null, infl=null, root=null;
+      new GLTFLoader().load('facecap.glb', function(gltf){
+        root=gltf.scene; scene.add(root);
+        root.traverse(function(o){ if(o.morphTargetDictionary&&o.morphTargetInfluences&&!head){ head=o; dict=o.morphTargetDictionary; infl=o.morphTargetInfluences; } });
+        var b=new THREE.Box3().setFromObject(root), c=b.getCenter(new THREE.Vector3()), s=b.getSize(new THREE.Vector3());
+        var eyeY=c.y+s.y*0.08;
+        camera.position.set(c.x, eyeY, c.z+s.z*0.5+s.y*2.15);
+        camera.lookAt(c.x, eyeY, c.z);
+        resize(); AV3.ok=true;
+        var svg=box.querySelector('.anchor-svg'); if(svg) svg.style.display='none';
+        cv.style.display='block'; box.classList.add('is3d');
+      }, undefined, function(){ /* queda el SVG */ });
+      function setM(n,v){ if(dict&&(n in dict)) infl[dict[n]]=Math.max(0,Math.min(1,v)); }
+      var lvl=0, bNext=1800, bStart=-1;
+      function frame(t){ requestAnimationFrame(frame);
+        if(head){
+          lvl += ((AV3.level||0)-lvl)*0.5; var jaw=Math.min(1, lvl*1.35);
+          setM('jawOpen',jaw); setM('mouthClose',(1-jaw)*0.08); setM('mouthFunnel',jaw*0.18); setM('mouthPucker',jaw*0.05);
+          if(t>bNext){ bStart=t; bNext=t+2400+Math.random()*3200; }
+          var bp=t-bStart, bv= (bStart>=0&&bp<140)?(bp<70?bp/70:1-(bp-70)/70):0; setM('eyeBlinkLeft',bv); setM('eyeBlinkRight',bv);
+          if(root){ root.rotation.y=Math.sin(t/1700)*0.09; root.rotation.x=Math.sin(t/2300)*0.025; }
+        }
+        renderer.render(scene,camera);
+      }
+      requestAnimationFrame(frame);
+      window.addEventListener('resize', function(){ if(AV3.ok) resize(); });
+    }catch(e){ /* three no disponible -> avatar SVG */ }
   })();
 </script>
 </body>
