@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ADN Minero · Streaming</title>
+<meta name="description" content="Todos los canales de noticias mineras en vivo de ADN Minero, listos para ver o transmitir (OBS)." />
+<meta name="theme-color" content="#120d0a" />
+<meta property="og:title" content="ADN Minero · Streaming" />
+<meta property="og:description" content="Canales de noticias mineras de Chile en vivo, 16:9, listos para compartir y transmitir." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{ --bg:#141110; --card:#1d1813; --line:rgba(207,155,111,.22); --cu:#cf9b6f; --cu2:#e8c9a6; --tx:#f0e6da; --mut:#b9a892; }
+  *{ box-sizing:border-box }
+  html,body{ margin:0; background:
+      radial-gradient(900px 500px at 80% -10%, rgba(207,155,111,.10), transparent 60%),
+      radial-gradient(700px 500px at -10% 10%, rgba(224,113,90,.08), transparent 60%),
+      var(--bg);
+    color:var(--tx); font-family:'Inter',system-ui,-apple-system,Segoe UI,sans-serif; line-height:1.5; -webkit-font-smoothing:antialiased }
+  .wrap{ max-width:760px; margin:0 auto; padding:30px 18px 60px }
+  header{ text-align:center; margin-bottom:6px }
+  .eyebrow{ font-size:11px; letter-spacing:.16em; text-transform:uppercase; font-weight:800; color:#e0c3a0; margin:0 }
+  h1{ font-size:clamp(26px,6vw,40px); font-weight:900; letter-spacing:-.02em; margin:6px 0 4px }
+  h1 .c{ color:var(--cu) }
+  .sub{ color:var(--mut); margin:0 auto; max-width:46ch; font-size:14.5px }
+  .live{ display:inline-flex; align-items:center; gap:7px; margin-top:12px; font-size:12px; font-weight:800; color:#dfffe6; background:rgba(126,231,135,.12); border:1px solid rgba(126,231,135,.3); padding:5px 12px; border-radius:999px }
+  .live .d{ width:7px; height:7px; border-radius:50%; background:#7ee787; box-shadow:0 0 8px #7ee787; animation:pz 1.5s infinite }
+  @keyframes pz{0%,100%{opacity:1}50%{opacity:.3}}
+  .sect{ margin-top:30px }
+  .sect h2{ font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:#e0c3a0; font-weight:800; margin:0 0 12px; display:flex; align-items:center; gap:8px }
+  .toolbar{ display:flex; justify-content:center; margin-top:18px }
+  .vz{ display:inline-flex; align-items:center; gap:10px; background:var(--card); border:1px solid var(--line); border-radius:999px; padding:7px 8px 7px 15px; cursor:pointer; user-select:none }
+  .vz span{ font-size:13px; font-weight:700; color:var(--tx) }
+  .vz small{ color:var(--mut); font-weight:600 }
+  .sw{ width:42px; height:24px; border-radius:999px; background:#3a322c; position:relative; transition:.2s; flex:0 0 auto }
+  .sw::after{ content:''; position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%; background:#cbb79f; transition:.2s }
+  .vz.on .sw{ background:linear-gradient(90deg,#6fe0c6,#3fb49a) } .vz.on .sw::after{ left:21px; background:#06241f }
+  .plist{ display:grid; grid-template-columns:1fr 1fr; gap:12px }
+  @media(max-width:560px){ .plist{ grid-template-columns:1fr } .grid{ grid-template-columns:1fr !important } }
+  .pbtn{ display:block; text-decoration:none; color:var(--tx); border-radius:16px; padding:16px 18px; border:1px solid var(--line);
+    background:linear-gradient(135deg, rgba(207,155,111,.16), rgba(43,37,32,.5)); transition:transform .12s, border-color .2s }
+  .pbtn:active{ transform:scale(.98) } .pbtn:hover{ border-color:rgba(207,155,111,.5) }
+  .pbtn b{ display:block; font-size:16px; font-weight:800 } .pbtn small{ color:var(--mut); font-size:12.5px }
+  .pbtn .ic{ font-size:20px }
+  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:11px }
+  .card{ display:flex; align-items:center; gap:12px; background:var(--card); border:1px solid var(--line); border-left:4px solid var(--c);
+    border-radius:14px; padding:12px 12px 12px 14px; text-decoration:none; color:var(--tx); transition:transform .12s, border-color .2s }
+  .card:hover{ border-color:var(--c) } .card:active{ transform:scale(.985) }
+  .card .em{ font-size:22px; flex:0 0 auto; width:34px; text-align:center }
+  .card .nm{ flex:1; min-width:0 } .card .nm b{ font-size:14.5px; font-weight:800; display:block; line-height:1.2 }
+  .card .nm small{ color:var(--mut); font-size:11.5px }
+  .card .go{ color:var(--c); font-weight:900; font-size:15px; flex:0 0 auto }
+  .cpy{ border:1px solid var(--line); background:transparent; color:var(--mut); border-radius:9px; width:30px; height:30px; cursor:pointer; flex:0 0 auto; font-size:13px; transition:.15s }
+  .cpy:hover{ color:var(--cu); border-color:var(--cu) } .cpy:active{ transform:scale(.9) }
+  .note{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 16px; font-size:13px; color:#cbbba6; margin-top:14px }
+  .note b{ color:var(--tx) } code{ background:#000; color:#a7d18a; padding:1.5px 6px; border-radius:5px; font-size:12px }
+  footer{ text-align:center; color:var(--mut); font-size:12px; margin-top:34px }
+  footer a{ color:var(--cu); text-decoration:none }
+  #toast{ position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(20px); background:#2a2017; color:#f0e6da; border:1px solid var(--cu);
+    padding:10px 18px; border-radius:999px; font-size:13px; font-weight:700; opacity:0; pointer-events:none; transition:.25s; box-shadow:0 8px 24px rgba(0,0,0,.5) }
+  #toast.show{ opacity:1; transform:translateX(-50%) translateY(0) }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <p class="eyebrow">ADN Minero</p>
+      <h1>Streaming <span class="c">en vivo</span></h1>
+      <p class="sub">Canales de noticias mineras de Chile, 16:9, listos para ver o transmitir (OBS). Toca uno para abrirlo.</p>
+      <div class="live"><span class="d"></span> Noticias actualizadas automáticamente</div>
+    </header>
+
+    <div class="toolbar">
+      <div class="vz" id="vz" role="switch" aria-checked="false" tabindex="0">
+        <div class="sw"></div><span>🎙️ Narración con voz <small>(chilena)</small></span>
+      </div>
+    </div>
+
+    <section class="sect">
+      <h2>▶️ Playlists para OBS (rotación automática)</h2>
+      <div class="plist">
+        <a class="pbtn" id="pl-vivo" href="#"><span class="ic">📰</span><b>Solo noticias</b><small>Rota los 9 canales · 3 min c/u</small></a>
+        <a class="pbtn" id="pl-all" href="paneles-stream.html"><span class="ic">🗂️</span><b>Todos los paneles</b><small>Mapas, sismos, commodities y más</small></a>
+      </div>
+    </section>
+
+    <section class="sect">
+      <h2>📺 Canales de noticias</h2>
+      <div class="grid" id="grid"></div>
+    </section>
+
+    <div class="note">
+      <b>🎙️ Voz:</b> activa el interruptor de arriba para abrir los canales con narración (voz chilena). Dentro del canal, toca <b>“Activar voz”</b> una vez. También puedes alternar Navegador / Neural / Chilena.<br>
+      <b>⚙️ OBS:</b> usa un <b>Browser Source</b> a <code>1920 × 1080</code>. Para una secuencia a tu medida: <code>paneles-stream.html?seq=mercado:4,seguridad:3,litio:3</code>.
+    </div>
+
+    <footer>
+      Un aporte de <b>ADN Minero</b> · <a href="index.html">Ver todos los paneles</a> · <a href="adn-minero-ia.html">Asistente IA</a>
+    </footer>
+  </div>
+  <div id="toast">Link copiado ✓</div>
+
+<script>
+  var BASE = location.href.replace(/[^/]*$/, ''); // carpeta actual del sitio
+  var CH = [
+    ['adn-minero-noticias-vivo.html','Minería','⛏️','#cf9b6f'],
+    ['adn-minero-mercado-vivo.html','Mercado del Cobre','📈','#e8c26a'],
+    ['adn-minero-geo-vivo.html','Geopolítica','🌐','#7fb0d9'],
+    ['adn-minero-energia-vivo.html','Energía y Desarrollo','⚡','#7fbf9a'],
+    ['adn-minero-litio-vivo.html','Litio y Salares','🔋','#6fe0c6'],
+    ['adn-minero-seguridad-vivo.html','Seguridad Minera','🦺','#f2b35e'],
+    ['adn-minero-tecnologia-vivo.html','Tecnología y Minería 4.0','🤖','#6fc3ee'],
+    ['adn-minero-territorio-vivo.html','Comunidades, Agua y Territorio','💧','#8fcfa6'],
+    ['adn-minero-talento-vivo.html','Talento Minero','💼','#c0dd72']
+  ];
+  var voiceOn = false;
+  function esc(s){ return s.replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function vzSuffix(){ return voiceOn ? '?voz=azure' : ''; }
+
+  function render(){
+    var g = document.getElementById('grid'); g.innerHTML='';
+    CH.forEach(function(c){
+      var file=c[0], url=BASE+file+vzSuffix();
+      var a=document.createElement('a'); a.className='card'; a.href=file+vzSuffix(); a.style.setProperty('--c', c[3]);
+      a.innerHTML='<span class="em">'+c[2]+'</span><span class="nm"><b>'+esc(c[1])+'</b><small>16:9 · en vivo</small></span>'
+        +'<button class="cpy" title="Copiar link" data-url="'+esc(url)+'">⧉</button><span class="go">↗</span>';
+      g.appendChild(a);
+    });
+    // playlist "solo noticias" respeta nada de voz (es la playlist), queda fijo
+    document.getElementById('pl-vivo').href='paneles-stream.html?only=vivo&min=3';
+  }
+
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('.cpy');
+    if(b){ e.preventDefault(); e.stopPropagation(); copy(b.getAttribute('data-url')); }
+  });
+  function copy(text){
+    function done(){ var t=document.getElementById('toast'); t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 1600); }
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done, function(){ fallback(text); done(); }); }
+    else { fallback(text); done(); }
+  }
+  function fallback(text){ try{ var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }catch(e){} }
+
+  var vz=document.getElementById('vz');
+  function toggleVoice(){ voiceOn=!voiceOn; vz.classList.toggle('on',voiceOn); vz.setAttribute('aria-checked', voiceOn?'true':'false'); render(); }
+  vz.addEventListener('click', toggleVoice);
+  vz.addEventListener('keydown', function(e){ if(e.key===' '||e.key==='Enter'){ e.preventDefault(); toggleVoice(); } });
+
+  render();
+</script>
+</body>
+</html>
