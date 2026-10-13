@@ -99,7 +99,10 @@
       <div class="rounded-2xl p-4 sm:p-5" style="background:linear-gradient(135deg, rgba(207,155,111,.15), rgba(43,37,32,.5));border:1px solid rgba(207,155,111,.32)">
         <div class="flex items-center justify-between gap-2 mb-2">
           <span class="text-[10px] uppercase tracking-[.14em] font-bold flex items-center gap-2" style="color:#e0c3a0"><span class="nv-dot"></span> Noticias en vivo</span>
-          <a href="../paneles-stream.html?only=vivo&min=3" class="text-[11px] font-semibold text-[#cf9b6f] flex items-center gap-1">Modo pantalla <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></a>
+          <div class="flex items-center gap-3">
+            <button id="nvVoz" type="button" class="text-[11px] font-semibold flex items-center gap-1" style="background:none;border:0;cursor:pointer;color:#cf9b6f"><span id="nvVozIc">🔊</span> <span id="nvVozTx">Escuchar</span></button>
+            <a href="../paneles-stream.html?only=vivo&min=3" class="text-[11px] font-semibold text-[#cf9b6f] flex items-center gap-1">Modo pantalla <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></a>
+          </div>
         </div>
         <a id="nvMain" href="../adn-minero-noticias-vivo.html" class="block group">
           <h2 id="nvHead" class="text-base sm:text-xl font-extrabold leading-snug">Conectando con las noticias mineras…</h2>
@@ -125,6 +128,25 @@
       var W='https://adn-minero-ia.simonrovi.workers.dev', TOPIC='la minería de Chile';
       var $=function(id){return document.getElementById(id);};
       if(!$('nvHead')) return;
+      // ===== Voz (narración opcional con voz chilena de Azure) =====
+      var vOn=false, vTok=0, vQ=[], vPlaying=false, vCur=null, vCache={};
+      function vStop(){ vTok++; vQ=[]; vPlaying=false; if(vCur){try{vCur.pause();}catch(e){} vCur=null;} }
+      function vEnq(t){ if(!vOn||!t) return; vQ.push(t); vPump(); }
+      async function vPump(){ if(vPlaying||!vQ.length) return; vPlaying=true; var my=vTok, t=vQ.shift();
+        try{ var ck='az|'+t, url=vCache[ck];
+          if(!url){ var r=await fetch(W,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({task:'tts',text:t,lang:'es',engine:'azure'})}); if(r.ok){ var b=await r.blob(); if(b&&b.size>=300){ url=URL.createObjectURL(b); vCache[ck]=url; } } }
+          if(my!==vTok){ vPlaying=false; return; }
+          if(url){ var a=new Audio(url); vCur=a; await new Promise(function(res){ a.onended=res; a.onerror=res; a.play().catch(res); }); }
+        }catch(e){}
+        if(my!==vTok) return; vPlaying=false; vPump();
+      }
+      (function(){ var b=$('nvVoz'); if(!b) return;
+        b.addEventListener('click', function(){
+          vOn=!vOn; $('nvVozIc').textContent=vOn?'🔈':'🔊'; $('nvVozTx').textContent=vOn?'Silenciar':'Escuchar'; b.style.color=vOn?'#7ee787':'#cf9b6f';
+          if(vOn){ vStop(); var h=$('nvHead'); if(h&&h.textContent) vEnq(h.textContent); var c=$('nvSum'); if(c){ var ct=c.textContent.trim(); if(ct&&ct.length>40&&ct.indexOf('Resumiendo')<0&&ct.indexOf('Preparando')<0) vEnq(ct); } }
+          else vStop();
+        });
+      })();
       function api(q){return 'https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent('https://news.google.com/rss/search?q='+encodeURIComponent(q)+'&hl=es-419&gl=CL&ceid=CL:es');}
       function clean(t){t=(t||'').trim();var i=t.lastIndexOf(' - ');return i>40?{t:t.slice(0,i),s:t.slice(i+3)}:{t:t,s:''};}
       function ckey(h){return 'adn_res3_'+h.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,60);}
@@ -142,13 +164,13 @@
         return acc.trim();
       }
       async function summarize(h, link, myIdx){
-        var c=cget(h); if(c){ if(myIdx===idx) $('nvSum').textContent=c; return; }
+        var c=cget(h); if(c){ if(myIdx===idx){ $('nvSum').textContent=c; if(vOn) vEnq(c); } return; }
         try{ if(curCtl) curCtl.abort(); }catch(e){} curCtl=new AbortController();
         for(var intento=0;intento<2;intento++){
           try{
             var res=await fetch(W,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({task:'resumen',title:h,link:link||'',topic:TOPIC}),signal:curCtl.signal});
             var txt=await readSSE(res);
-            if(txt){ cset(h,txt); if(myIdx===idx) $('nvSum').textContent=txt; return; }
+            if(txt){ cset(h,txt); if(myIdx===idx){ $('nvSum').textContent=txt; if(vOn) vEnq(txt); } return; }
           }catch(e){ if(e&&e.name==='AbortError') return; }
           await new Promise(function(r){setTimeout(r,1500);});
         }
@@ -157,6 +179,7 @@
       function show(n){
         idx=((n%STORIES.length)+STORIES.length)%STORIES.length; var s=STORIES[idx];
         $('nvHead').textContent=s.t;
+        if(vOn){ vStop(); vEnq(s.t); } // narra el titular si la voz está activa
         $('nvSrc').textContent=s.s?('Fuente: '+s.s):'';
         $('nvSum').textContent='Resumiendo la noticia…';
         summarize(s.t, s.link, idx);
