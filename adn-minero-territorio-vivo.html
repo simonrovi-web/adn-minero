@@ -105,6 +105,8 @@
       .qn{ font-size:11px; width:17px } .qrow{ padding:min(1.25vh,12px) 11px; gap:9px }
       .bar{ height:6px }
       #adnui-back,#adnui-home,#adnui-read,#adnai-fab,#adnui-note,#adnui-offline,#adnui-more,#adnui-skip{ display:none !important }
+      .anchor{ width:clamp(170px,13vw,230px); height:clamp(179px,13.7vw,242px); right:min(2.2vw,30px); bottom:min(2.4vh,26px) }
+      .anchor.on{ display:block }
     }
     /* control de voz (narración) */
     #vozPill{ position:fixed; left:14px; bottom:14px; z-index:70; display:none; align-items:center; gap:7px;
@@ -118,6 +120,16 @@
     #vozPill.mini .vz-ic{ font-size:15px }
     #vozPill.mini:hover{ opacity:1 }
     @keyframes vzpz{0%,100%{opacity:1}50%{opacity:.4}}
+    /* avatar presentador/a (picture con lip-sync) — solo en broadcast */
+    .anchor{ display:none; position:fixed; right:18px; bottom:18px; z-index:66; width:150px; height:158px; border-radius:16px; overflow:hidden;
+      box-shadow:0 12px 34px rgba(0,0,0,.55), 0 0 0 2px var(--accent2); }
+    .anchor-svg{ width:100%; height:100%; display:block }
+    .anchor-live{ position:absolute; top:7px; left:7px; z-index:2; display:flex; align-items:center; gap:5px;
+      font:800 9px 'Inter',system-ui,sans-serif; letter-spacing:.08em; color:#fff; background:rgba(224,90,63,.92); padding:3px 7px; border-radius:999px }
+    .anchor-live .al-dot{ width:6px; height:6px; border-radius:50%; background:#fff; animation:aldot 1.4s infinite }
+    @keyframes aldot{0%,100%{opacity:1}50%{opacity:.25}}
+    .anchor-head{ transform-box:fill-box; transform-origin:50% 95%; animation:asway 6.5s ease-in-out infinite }
+    @keyframes asway{0%,100%{transform:rotate(-1.4deg)}50%{transform:rotate(1.4deg)}}
   </style>
   <script src="adn-ui.js" defer></script>
   <script type="application/ld+json">
@@ -127,6 +139,47 @@
 <body>
   <div class="aurora"><b class="a1"></b><b class="a2"></b><b class="a3"></b></div>
   <button id="vozPill" type="button"><span class="vz-ic">🔊</span><span class="vz-tx">Activar voz</span></button>
+  <div class="anchor" id="anchor" aria-hidden="true">
+    <div class="anchor-live"><span class="al-dot"></span> EN VIVO</div>
+    <svg viewBox="0 0 200 210" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" class="anchor-svg">
+      <defs>
+        <linearGradient id="abg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2238"/><stop offset="1" stop-color="#14111d"/></linearGradient>
+        <radialGradient id="aspot" cx="0.5" cy="0.3" r="0.65"><stop offset="0" stop-color="#5a476e" stop-opacity=".65"/><stop offset="1" stop-color="#5a476e" stop-opacity="0"/></radialGradient>
+      </defs>
+      <rect width="200" height="210" fill="url(#abg)"/><rect width="200" height="210" fill="url(#aspot)"/>
+      <g opacity=".4" fill="none" stroke="#7a6a96" stroke-width="1.5"><rect x="16" y="24" width="44" height="28" rx="3"/><rect x="140" y="24" width="44" height="28" rx="3"/></g>
+      <g class="anchor-head">
+        <path d="M28 210 Q28 150 70 140 L130 140 Q172 150 172 210 Z" fill="#3a2c22"/>
+        <path d="M86 140 L100 164 L114 140 Z" fill="#efe7da"/>
+        <path d="M96 150 L100 178 L104 150 Z" fill="#cf9b6f"/>
+        <path d="M88 126 L88 147 Q100 155 112 147 L112 126 Z" fill="#e8b68f"/>
+        <path d="M56 92 Q54 38 100 36 Q146 38 144 92 L144 130 Q152 150 132 150 L132 92 Q122 70 100 70 Q78 70 68 92 L68 150 Q48 150 56 130 Z" fill="#3a2a2a"/>
+        <path d="M70 86 Q70 128 100 132 Q130 128 130 86 Q130 59 100 59 Q70 59 70 86 Z" fill="#f0bd93"/>
+        <ellipse cx="70" cy="99" rx="5" ry="8" fill="#eab489"/><ellipse cx="130" cy="99" rx="5" ry="8" fill="#eab489"/>
+        <path d="M78 84 Q86 80 94 84" stroke="#4a3528" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+        <path d="M106 84 Q114 80 122 84" stroke="#4a3528" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+        <ellipse cx="86" cy="94" rx="8" ry="5.4" fill="#fff"/><ellipse cx="114" cy="94" rx="8" ry="5.4" fill="#fff"/>
+        <circle cx="87" cy="94" r="3.4" fill="#5a3a22"/><circle cx="113" cy="94" r="3.4" fill="#5a3a22"/>
+        <circle cx="87" cy="94" r="1.6" fill="#180e07"/><circle cx="113" cy="94" r="1.6" fill="#180e07"/>
+        <circle cx="88.4" cy="92.6" r="1" fill="#fff"/><circle cx="114.4" cy="92.6" r="1" fill="#fff"/>
+        <rect id="lidL" x="77.6" y="88.6" width="17" height="0" rx="3" fill="#f0bd93"/>
+        <rect id="lidR" x="105.6" y="88.6" width="17" height="0" rx="3" fill="#f0bd93"/>
+        <path d="M100 98 L97 108 Q100 110 103 108" stroke="#d99c6e" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+        <ellipse cx="82" cy="111" rx="5" ry="3" fill="#e89a86" opacity=".38"/><ellipse cx="118" cy="111" rx="5" ry="3" fill="#e89a86" opacity=".38"/>
+        <g transform="translate(100,119)">
+          <ellipse id="mouthOpen" cx="0" cy="1" rx="8" ry="1.3" fill="#6b2b30"/>
+          <ellipse cx="0" cy="-0.6" rx="6" ry="1" fill="#fff" opacity=".85"/>
+          <path d="M-11 0 Q0 5 11 0" stroke="#a24a4a" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <path d="M-11 0 Q0 -2.5 11 0" stroke="#c76a6a" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+        </g>
+        <path d="M64 88 Q62 52 100 50 Q138 52 136 88 Q129 64 100 64 Q80 64 76 80 Q72 72 64 88 Z" fill="#45312f"/>
+        <circle cx="70" cy="110" r="2.2" fill="#ffd27f"/><circle cx="130" cy="110" r="2.2" fill="#ffd27f"/>
+      </g>
+      <rect x="0" y="186" width="200" height="24" fill="rgba(0,0,0,.42)"/>
+      <text x="12" y="202" font-family="Inter,Arial,sans-serif" font-weight="800" font-size="12" fill="#f0e6da">ADN Minero</text>
+      <circle cx="176" cy="198" r="4" fill="#e0715a"/>
+    </svg>
+  </div>
   <div class="wrap">
     <div class="topbar flex items-center justify-between">
       <div class="flex items-center gap-2.5">
@@ -369,6 +422,25 @@
 
     function startBar(){ var bar=$('bar'); bar.style.transition='none'; bar.style.width='0'; void bar.offsetWidth; bar.style.transition='width '+DWELL+'ms linear'; bar.style.width='100%'; }
 
+    // ===== Avatar presentador/a con lip-sync (analiza el audio en tiempo real) =====
+    var Avatar=(function(){
+      var el=document.getElementById('anchor');
+      if(!el) return { show:function(){}, hide:function(){}, connect:function(){}, talking:function(){} };
+      var mouth=el.querySelector('#mouthOpen'), lidL=el.querySelector('#lidL'), lidR=el.querySelector('#lidR');
+      var AC=null, analyser=null, data=null, connected=false, fake=false, amp=0, raf=null, shown=false;
+      function ensureAC(){ if(AC) return; try{ AC=new (window.AudioContext||window.webkitAudioContext)(); analyser=AC.createAnalyser(); analyser.fftSize=256; analyser.smoothingTimeConstant=0.55; data=new Uint8Array(analyser.frequencyBinCount); analyser.connect(AC.destination); }catch(e){} }
+      function connect(audioEl){ ensureAC(); if(!AC) return; try{ if(AC.state==='suspended') AC.resume(); var src=AC.createMediaElementSource(audioEl); src.connect(analyser); connected=true; }catch(e){} }
+      function level(){ try{ if(analyser&&connected){ analyser.getByteTimeDomainData(data); var s=0; for(var i=0;i<data.length;i++){ var v=(data[i]-128)/128; s+=v*v; } return Math.sqrt(s/data.length); } }catch(e){} if(fake) return 0.12+0.12*Math.abs(Math.sin(Date.now()/95)); return 0; }
+      function loop(){ var l=level(); amp+=(l-amp)*0.45; var ry=1.3+Math.min(1,amp*7.5)*9; if(mouth) mouth.setAttribute('ry', ry.toFixed(1)); raf=requestAnimationFrame(loop); }
+      function blink(){ if(!lidL||!shown) { setTimeout(blink,3000); return; } lidL.setAttribute('height','7'); lidR.setAttribute('height','7'); setTimeout(function(){ lidL.setAttribute('height','0'); lidR.setAttribute('height','0'); },120); setTimeout(blink, 2800+Math.random()*3200); }
+      return {
+        show:function(){ shown=true; el.classList.add('on'); if(!raf) loop(); if(!el._blk){ el._blk=1; setTimeout(blink,1600); } },
+        hide:function(){ shown=false; el.classList.remove('on'); },
+        connect:connect,
+        talking:function(b){ fake=!!b; if(!b && !connected){ amp=0; if(mouth) mouth.setAttribute('ry','1.3'); } }
+      };
+    })();
+
     // ===== Narración por voz (navegador / neural) =====
     var Voz=(function(){
       var pill=document.getElementById('vozPill');
@@ -379,14 +451,15 @@
       function bestVoice(){ try{ var vs=(synth().getVoices()||[]).filter(function(v){return /^es/i.test(v.lang);});
         function sc(v){ var n=(v.name||'').toLowerCase(),s=0; if(/natural|neural/.test(n))s+=6; if(/google/.test(n))s+=5; if(/microsoft|sabina|helena|dalia|paulina/.test(n))s+=3; if(/-cl/i.test(v.lang))s+=2; if(/-mx|-us/i.test(v.lang))s+=1; return s; }
         vs.sort(function(a,b){return sc(b)-sc(a);}); return vs[0]||null; }catch(e){return null;} }
-      function stop(){ token++; q=[]; playing=false; try{synth().cancel();}catch(e){} if(curAudio){try{curAudio.pause();}catch(e){} curAudio=null;} }
-      function bspeak(text,done){ try{ var u=new SpeechSynthesisUtterance(text); var v=bestVoice(); if(v){u.voice=v;u.lang=v.lang;} else u.lang='es-CL'; u.rate=1; u.pitch=1; u.onend=done; u.onerror=done; synth().speak(u); }catch(e){done();} }
+      function stop(){ token++; q=[]; playing=false; try{synth().cancel();}catch(e){} if(curAudio){try{curAudio.pause();}catch(e){} curAudio=null;} try{Avatar.talking(false);}catch(e){} }
+      function bspeak(text,done){ try{ var u=new SpeechSynthesisUtterance(text); var v=bestVoice(); if(v){u.voice=v;u.lang=v.lang;} else u.lang='es-CL'; u.rate=1; u.pitch=1; var fn=function(){ Avatar.talking(false); done(); }; u.onend=fn; u.onerror=fn; Avatar.talking(true); synth().speak(u); }catch(e){ Avatar.talking(false); done();} }
       async function nspeak(text,my,done){ try{
         var ck=mode+'|'+text, url=acache[ck];
         if(!url){ var r=await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({task:'tts',text:text,lang:'es',engine:(mode==='azure'?'azure':'neural')})});
           if(!r.ok){ bspeak(text,done); return; } var blob=await r.blob(); if(!blob||blob.size<300){ bspeak(text,done); return; } url=URL.createObjectURL(blob); acache[ck]=url; }
         if(my!==token){ done(); return; }
-        var a=new Audio(url); curAudio=a; a.onended=function(){ if(curAudio===a)curAudio=null; done(); }; a.onerror=function(){ if(curAudio===a)curAudio=null; bspeak(text,done); };
+        var a=new Audio(url); curAudio=a; Avatar.connect(a); Avatar.talking(true);
+        a.onended=function(){ if(curAudio===a)curAudio=null; Avatar.talking(false); done(); }; a.onerror=function(){ if(curAudio===a)curAudio=null; Avatar.talking(false); bspeak(text,done); };
         a.play().catch(function(){ bspeak(text,done); });
       }catch(e){ bspeak(text,done); } }
       function pump(){ if(playing||!q.length) return; playing=true; var my=token, item=q.shift();
@@ -397,7 +470,7 @@
         var tx=pill.querySelector('.vz-tx');
         if(!on){ pill.classList.remove('on','mini'); tx.textContent='Activar voz'; }
         else { pill.classList.add('on'); tx.textContent='Voz: '+(mode==='azure'?'Chilena':mode==='neural'?'Neural':'Navegador'); } }
-      function activate(){ on=true; render(); stop();
+      function activate(){ on=true; render(); stop(); Avatar.show();
         var h=$('head'), c=$('ctx'); enq(h?h.textContent:'',false);
         if(c){ var ct=c.textContent.trim(); if(ct&&ct.length>40&&!c.querySelector('.skel')) enq(ct,true); }
         setTimeout(function(){ if(on&&pill) pill.classList.add('mini'); }, 6000); if(changeCb) changeCb(); }
@@ -406,7 +479,7 @@
           if(!on){ activate(); }
           else { mode=(mode==='browser')?'neural':(mode==='neural')?'azure':'browser'; stop(); pill.classList.remove('mini'); render(); var h=$('head'); if(h) enq(h.textContent,false); if(changeCb) changeCb(); }
         });
-        pill.addEventListener('dblclick', function(){ on=false; stop(); render(); if(changeCb) changeCb(); });
+        pill.addEventListener('dblclick', function(){ on=false; stop(); render(); Avatar.hide(); if(changeCb) changeCb(); });
       }
       return {
         onStory:function(h){ stop(); if(on&&h) enq(h,false); },
