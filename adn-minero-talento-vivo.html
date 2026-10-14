@@ -260,26 +260,27 @@
 
     // ===== Imagen de apoyo realista: foto real de la nota (og:image) → foto del tema → ilustración SVG =====
     var _imgCache={}; // link -> url ('' = sin foto)
+    function _seed(t){ var h=5381,i=(t||'').length; while(i) h=(h*33)^(t.charCodeAt(--i)); return Math.abs(h); }
     function imgFetch(s){
       return fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({task:'img',link:s.link||'',title:s.t||'',topic:CFG.topic,q:CFG.label})})
+        body:JSON.stringify({task:'img',title:s.t||'',topic:CFG.topic,q:CFG.label,seed:_seed(s.t)})})
         .then(function(r){ return r.ok?r.json():null; })
         .then(function(j){ return (j&&j.image)||''; });
     }
     function loadFeat(s, my){
-      if(!s||!s.link) return; var fi=$('featImg'), fp=$('fiPhoto'); if(!fi||!fp) return;
+      if(!s||!s.t) return; var k=s.t, fi=$('featImg'), fp=$('fiPhoto'); if(!fi||!fp) return;
       var apply=function(url){
         if(my!==idx||!url) return;
         var pre=new Image();
         pre.onload=function(){ if(my!==idx) return; fp.src=url; fi.classList.add('has-photo'); };
         pre.src=url; // si falla la carga, se queda la ilustración (no se añade has-photo)
       };
-      if(_imgCache[s.link]!==undefined){ apply(_imgCache[s.link]); return; }
-      imgFetch(s).then(function(url){ _imgCache[s.link]=url; apply(url); }).catch(function(){ _imgCache[s.link]=''; });
+      if(_imgCache[k]!==undefined){ apply(_imgCache[k]); return; }
+      imgFetch(s).then(function(url){ _imgCache[k]=url; apply(url); }).catch(function(){ _imgCache[k]=''; });
     }
     function prefetchImg(s){
-      if(!s||!s.link||_imgCache[s.link]!==undefined) return;
-      imgFetch(s).then(function(url){ _imgCache[s.link]=url; if(url){ var im=new Image(); im.src=url; } }).catch(function(){ _imgCache[s.link]=''; });
+      if(!s||!s.t||_imgCache[s.t]!==undefined) return; var k=s.t;
+      imgFetch(s).then(function(url){ _imgCache[k]=url; if(url){ var im=new Image(); im.src=url; } }).catch(function(){ _imgCache[k]=''; });
     }
 
     var STORIES=[], idx=0, timer=null, barT=null, DWELL=40000;
