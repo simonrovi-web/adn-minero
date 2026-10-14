@@ -27,10 +27,10 @@
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" /></noscript>
   <style>
     /* ===== Tema de este panel ===== */
-    :root{ --accent:#c0dd72; --accent2:#8fb544; --glow:rgba(176,214,104,.5); --b1:rgba(176,214,104,.2); --b2:rgba(143,181,68,.15); --b3:rgba(200,224,130,.13); }
+    :root{ --accent:#c0dd72; --accent2:#8fb544; --glow:rgba(176,214,104,.5); --b1:rgba(176,214,104,.2); --b2:rgba(143,181,68,.15); --b3:rgba(200,224,130,.13); --bg:#0d1407; --p1:#1e2711; --p2:#0f160a; }
     *{box-sizing:border-box}
     html,body{ margin:0; height:100%; font-family:'Inter', system-ui, sans-serif; color:#f4ece5; }
-    body{ min-height:100vh; background:#120d0a; overflow-x:hidden; }
+    body{ min-height:100vh; background:var(--bg); overflow-x:hidden; }
     /* aurora de fondo que respira */
     .aurora{ position:fixed; inset:-20%; z-index:0; filter:blur(70px); opacity:.9; pointer-events:none; }
     .aurora b{ position:absolute; border-radius:50%; display:block; mix-blend-mode:screen; animation:drift 22s ease-in-out infinite; }
@@ -48,7 +48,7 @@
     .brand .c{ color:var(--accent) }
     /* featured */
     .feat{ position:relative; border-radius:22px; padding:26px 24px 20px; overflow:hidden; margin-top:14px;
-      background:radial-gradient(520px 240px at 12% -10%, var(--b1), transparent 60%), linear-gradient(160deg, rgba(38,31,26,0.75), rgba(18,13,10,0.6));
+      background:radial-gradient(520px 240px at 12% -10%, var(--b1), transparent 60%), linear-gradient(160deg, var(--p1), var(--p2));
       border:1px solid rgba(196,168,148,0.18); box-shadow:0 30px 70px -30px #000; flex:1; display:flex; flex-direction:column; }
     .tagrow{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-size:12px }
     .tag{ font-weight:800; letter-spacing:.04em; padding:5px 11px; border-radius:999px; font-size:11px }
@@ -81,10 +81,12 @@
     @media (min-width:980px) and (orientation:landscape){
       html,body{ height:100vh; overflow:hidden }
       .wrap{ max-width:none; width:100vw; height:100vh; padding:min(3.2vh,32px) min(3.2vw,44px);
-        display:grid; grid-template-columns:2.95fr 1fr; grid-template-rows:auto minmax(0,1fr); gap:min(2.2vh,24px) min(2.2vw,28px); }
-      .topbar{ grid-column:1 / -1; grid-row:1 }
-      .feat{ grid-column:1; grid-row:2; margin-top:0; border-radius:26px; padding:min(2.4vh,26px) min(2.6vw,40px) min(2.8vh,30px); overflow:hidden; }
-      .feat-img{ display:flex; align-items:center; justify-content:center; flex:0 0 auto; width:100%; aspect-ratio:16/9; border-radius:18px; margin:0 0 min(1.8vh,16px); position:relative; overflow:hidden; box-shadow:inset 0 0 90px rgba(0,0,0,.45), 0 10px 30px rgba(0,0,0,.35); }
+        display:grid; grid-template-columns:1.5fr 1fr; grid-template-rows:auto minmax(0,1fr);
+        grid-template-areas:"top top" "img rail"; gap:min(2.2vh,24px) min(2.4vw,30px); }
+      .topbar{ grid-area:top }
+      .feat-img{ grid-area:img; display:flex; align-items:center; justify-content:center; width:100%; height:100%; border-radius:26px; margin:0; position:relative; overflow:hidden; box-shadow:inset 0 0 120px rgba(0,0,0,.5), 0 22px 55px -12px rgba(0,0,0,.6); }
+      .rail{ grid-area:rail; display:flex; flex-direction:column; min-height:0; gap:min(1.6vh,18px); }
+      .feat{ flex:0 0 auto; margin-top:0; border-radius:24px; padding:min(2vh,22px) min(1.8vw,28px) min(2.2vh,24px); overflow:hidden; }
       .feat-img::after{ content:''; position:absolute; inset:0; background:radial-gradient(60% 85% at 28% 18%, rgba(255,255,255,.16), transparent 60%) }
       .fi-scene{ display:block; position:absolute; inset:0; z-index:0; transition:opacity .6s ease }
       .fi-scene svg{ width:100%; height:100%; display:block }
@@ -99,13 +101,15 @@
         background:linear-gradient(0deg,rgba(0,0,0,.72),rgba(0,0,0,.28) 70%,transparent); text-shadow:0 2px 10px rgba(0,0,0,.6) }
       .fi-fig.on{ display:block }
       .readat{ display:flex; align-items:center; gap:9px; margin-top:auto; padding-top:min(2.2vh,20px); color:var(--accent); font-weight:800; font-size:clamp(15px,1.25vw,21px); line-height:1.3 }
-      .side{ grid-column:2; grid-row:2; display:flex; flex-direction:column; min-height:0; }
+      .side{ flex:1 1 auto; display:flex; flex-direction:column; min-height:0; }
       #queue{ flex:1; overflow:hidden } .qtitle{ margin-top:0 } .foot{ margin-top:auto }
       .live{ font-size:clamp(12px,1.05vw,16px) } .brand{ font-size:clamp(17px,1.5vw,23px) } #clock{ font-size:clamp(13px,1.1vw,17px) }
       .tag{ font-size:clamp(13px,1.05vw,16px); padding:7px 16px } .meta{ font-size:clamp(13px,1vw,16px) }
-      h1.head{ font-size:clamp(34px,3.6vw,64px); margin-top:min(2.4vh,24px); line-height:1.08 }
-      .ctx-l{ font-size:clamp(12px,.9vw,14px); margin:min(2.8vh,28px) 0 min(1.4vh,13px) }
-      .ctx{ font-size:clamp(18px,1.55vw,28px); line-height:1.55 }
+      h1.head{ font-size:clamp(26px,2.5vw,46px); margin-top:min(1vh,10px); line-height:1.1;
+        display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden }
+      .ctx-l{ font-size:clamp(12px,.82vw,14px); margin:min(1.8vh,18px) 0 min(1vh,9px) }
+      .ctx{ font-size:clamp(16px,1.25vw,23px); line-height:1.5;
+        display:-webkit-box; -webkit-line-clamp:5; -webkit-box-orient:vertical; overflow:hidden }
       .cta{ display:none }
       .qtitle{ font-size:clamp(10px,.78vw,12px) } .qt{ font-size:clamp(12px,.92vw,15px); -webkit-line-clamp:2 } .qm{ font-size:clamp(10px,.72vw,12px) }
       .qn{ font-size:11px; width:17px } .qrow{ padding:min(1.25vh,12px) 11px; gap:9px }
@@ -142,6 +146,9 @@
       <span id="clock" class="meta" style="font-variant-numeric:tabular-nums"></span>
     </div>
 
+    <div class="feat-img" id="featImg"><div class="fi-scene" id="featScene"></div><img class="fi-photo" id="fiPhoto" alt="" referrerpolicy="no-referrer" /><div class="fi-shade"></div><span class="fi-fig" id="featFig"></span></div>
+
+    <div class="rail">
     <article class="feat">
       <div class="tagrow" id="tagrow">
         <span class="tag" id="tag" style="background:var(--b1);color:var(--accent)">Talento</span>
@@ -156,13 +163,13 @@
     </article>
 
     <div class="side">
-      <div class="feat-img" id="featImg"><div class="fi-scene" id="featScene"></div><img class="fi-photo" id="fiPhoto" alt="" referrerpolicy="no-referrer" /><div class="fi-shade"></div><span class="fi-fig" id="featFig"></span></div>
       <p class="qtitle">A continuación</p>
       <div id="queue"></div>
       <p class="foot">
         Titulares: Google Noticias · Contexto generado por la <b>IA de ADN Minero</b> (puede equivocarse; contrasta antes de decidir).<br>
         <a href="adn-minero-empleos.html">Ver todos los titulares</a> · <a href="index.html">Inicio</a>
       </p>
+    </div>
     </div>
   </div>
 
