@@ -63,6 +63,7 @@
     .feat-img{ display:none }
     .fi-scene{ display:none }
     .fi-fig{ display:none }
+    .fi-cap{ display:none }
     .readat{ display:none }
     .bar{ position:absolute; left:0; bottom:0; height:4px; width:0; background:linear-gradient(90deg, var(--accent2), var(--accent)); box-shadow:0 0 12px var(--glow) }
     /* queue */
@@ -81,13 +82,18 @@
     @media (min-width:980px) and (orientation:landscape){
       html,body{ height:100vh; overflow:hidden }
       .wrap{ max-width:none; width:100vw; height:100vh; padding:min(3.2vh,32px) min(3.2vw,44px);
-        display:grid; grid-template-columns:1.5fr 1fr; grid-template-rows:auto minmax(0,1fr);
-        grid-template-areas:"top top" "img rail"; gap:min(2.2vh,24px) min(2.4vw,30px); }
+        display:grid; grid-template-columns:0.92fr 1.35fr; grid-template-rows:auto auto auto minmax(0,1fr);
+        grid-template-areas:"top top" "img txt" "cap txt" "que txt"; gap:min(1.4vh,16px) min(2.4vw,32px); }
       .topbar{ grid-area:top }
-      .feat-img{ grid-area:img; display:flex; align-items:center; justify-content:center; width:100%; height:100%; border-radius:26px; margin:0; position:relative; overflow:hidden; box-shadow:inset 0 0 120px rgba(0,0,0,.5), 0 22px 55px -12px rgba(0,0,0,.6); }
-      .rail{ grid-area:rail; display:flex; flex-direction:column; min-height:0; gap:min(1.6vh,18px); }
-      .feat{ flex:0 0 auto; margin-top:0; border-radius:24px; padding:min(2vh,22px) min(1.8vw,28px) min(2.2vh,24px); overflow:hidden; }
-      .feat-img::after{ content:''; position:absolute; inset:0; background:radial-gradient(60% 85% at 28% 18%, rgba(255,255,255,.16), transparent 60%) }
+      .feat-img{ grid-area:img; display:flex; align-items:center; justify-content:center; width:100%; aspect-ratio:4/3; border-radius:20px; margin:0; position:relative; overflow:hidden; box-shadow:inset 0 0 70px rgba(0,0,0,.45), 0 16px 40px -14px rgba(0,0,0,.6); }
+      .fi-cap{ grid-area:cap; display:flex; flex-direction:column; gap:3px; padding:2px 4px 0; opacity:0; transition:opacity .4s ease }
+      .fi-cap.show{ opacity:1 }
+      .fi-cap .cap-t{ font-size:clamp(12px,.95vw,16px); font-weight:700; color:#d8c9b8; line-height:1.25;
+        display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden }
+      .fi-cap .cap-a{ font-size:clamp(10px,.72vw,12px); font-weight:600; color:#8f8172; letter-spacing:.01em }
+      .feat{ grid-area:txt; margin-top:0; border-radius:24px; padding:min(2.4vh,28px) min(2vw,34px) min(2.6vh,28px); overflow:hidden; }
+      .side{ grid-area:que; display:flex; flex-direction:column; min-height:0; margin-top:min(1vh,8px) }
+      .feat-img::after{ content:''; position:absolute; inset:0; background:radial-gradient(60% 85% at 28% 18%, rgba(255,255,255,.14), transparent 60%) }
       .fi-scene{ display:block; position:absolute; inset:0; z-index:0; transition:opacity .6s ease }
       .fi-scene svg{ width:100%; height:100%; display:block }
       .fi-photo{ position:absolute; inset:0; z-index:1; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity .6s ease }
@@ -101,15 +107,14 @@
         background:linear-gradient(0deg,rgba(0,0,0,.72),rgba(0,0,0,.28) 70%,transparent); text-shadow:0 2px 10px rgba(0,0,0,.6) }
       .fi-fig.on{ display:block }
       .readat{ display:flex; align-items:center; gap:9px; margin-top:auto; padding-top:min(2.2vh,20px); color:var(--accent); font-weight:800; font-size:clamp(15px,1.25vw,21px); line-height:1.3 }
-      .side{ flex:1 1 auto; display:flex; flex-direction:column; min-height:0; }
       #queue{ flex:1; overflow:hidden } .qtitle{ margin-top:0 } .foot{ margin-top:auto }
       .live{ font-size:clamp(12px,1.05vw,16px) } .brand{ font-size:clamp(17px,1.5vw,23px) } #clock{ font-size:clamp(13px,1.1vw,17px) }
       .tag{ font-size:clamp(13px,1.05vw,16px); padding:7px 16px } .meta{ font-size:clamp(13px,1vw,16px) }
-      h1.head{ font-size:clamp(26px,2.5vw,46px); margin-top:min(1vh,10px); line-height:1.1;
-        display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden }
-      .ctx-l{ font-size:clamp(12px,.82vw,14px); margin:min(1.8vh,18px) 0 min(1vh,9px) }
-      .ctx{ font-size:clamp(16px,1.25vw,23px); line-height:1.5;
-        display:-webkit-box; -webkit-line-clamp:5; -webkit-box-orient:vertical; overflow:hidden }
+      h1.head{ font-size:clamp(30px,2.9vw,52px); margin-top:min(1.4vh,12px); line-height:1.08;
+        display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden }
+      .ctx-l{ font-size:clamp(12px,.85vw,15px); margin:min(2.4vh,24px) 0 min(1.2vh,11px) }
+      .ctx{ font-size:clamp(17px,1.4vw,26px); line-height:1.55;
+        display:-webkit-box; -webkit-line-clamp:7; -webkit-box-orient:vertical; overflow:hidden }
       .cta{ display:none }
       .qtitle{ font-size:clamp(10px,.78vw,12px) } .qt{ font-size:clamp(12px,.92vw,15px); -webkit-line-clamp:2 } .qm{ font-size:clamp(10px,.72vw,12px) }
       .qn{ font-size:11px; width:17px } .qrow{ padding:min(1.25vh,12px) 11px; gap:9px }
@@ -147,8 +152,8 @@
     </div>
 
     <div class="feat-img" id="featImg"><div class="fi-scene" id="featScene"></div><img class="fi-photo" id="fiPhoto" alt="" referrerpolicy="no-referrer" /><div class="fi-shade"></div><span class="fi-fig" id="featFig"></span></div>
+    <figcaption class="fi-cap" id="fiCap"><span class="cap-t" id="capT"></span><span class="cap-a" id="capA"></span></figcaption>
 
-    <div class="rail">
     <article class="feat">
       <div class="tagrow" id="tagrow">
         <span class="tag" id="tag" style="background:var(--b1);color:var(--accent)">Tecnología</span>
@@ -169,7 +174,6 @@
         Titulares: Google Noticias · Contexto generado por la <b>IA de ADN Minero</b> (puede equivocarse; contrasta antes de decidir).<br>
         <a href="adn-minero-prensa.html">Ver todos los titulares</a> · <a href="index.html">Inicio</a>
       </p>
-    </div>
     </div>
   </div>
 
@@ -265,29 +269,39 @@
         .catch(function(){ delete preBusy[h]; });
     }
 
-    // ===== Imagen de apoyo realista: foto real de la nota (og:image) → foto del tema → ilustración SVG =====
-    var _imgCache={}; // link -> url ('' = sin foto)
+    // ===== Imagen de apoyo realista del tema (Creative Commons) → ilustración SVG. Con descripción al pie. =====
+    var _imgCache={}; // titular -> {url,title,author,source,license} | null (sin foto)
     function _seed(t){ var h=5381,i=(t||'').length; while(i) h=(h*33)^(t.charCodeAt(--i)); return Math.abs(h); }
     function imgFetch(s){
       return fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},
         body:JSON.stringify({task:'img',title:s.t||'',topic:CFG.topic,q:CFG.label,seed:_seed(s.t)})})
         .then(function(r){ return r.ok?r.json():null; })
-        .then(function(j){ return (j&&j.image)||''; });
+        .then(function(j){ return (j&&j.image)?j:null; });
     }
+    function capFrom(d){ // arma la descripción al pie de la foto
+      var capT=$('capT'), capA=$('capA'), cap=$('fiCap'); if(!cap) return;
+      var t=(d&&d.title||'').trim();
+      var junk=/^(img|dsc|dscn|image|photo|foto|p\d|_|20\d\d[-_]|screen|captura)/i;
+      if(t.length<8 || !/\s/.test(t) || junk.test(t)) t='Imagen referencial del tema';
+      var who=(d&&d.author||'').trim(), src=(d&&d.source||'').trim(), lic=(d&&d.license||'').trim();
+      var att='Imagen referencial'; if(who) att+=' · Foto: '+who; if(src) att+=' / '+src; att+=lic?(' · '+lic):' · CC';
+      if(capT) capT.textContent=t; if(capA) capA.textContent=att; cap.classList.add('show');
+    }
+    function clearCap(){ var cap=$('fiCap'),capT=$('capT'),capA=$('capA'); if(cap)cap.classList.remove('show'); if(capT)capT.textContent=''; if(capA)capA.textContent=''; }
     function loadFeat(s, my){
       if(!s||!s.t) return; var k=s.t, fi=$('featImg'), fp=$('fiPhoto'); if(!fi||!fp) return;
-      var apply=function(url){
-        if(my!==idx||!url) return;
+      var apply=function(d){
+        if(my!==idx||!d||!d.image) return;
         var pre=new Image();
-        pre.onload=function(){ if(my!==idx) return; fp.src=url; fi.classList.add('has-photo'); };
-        pre.src=url; // si falla la carga, se queda la ilustración (no se añade has-photo)
+        pre.onload=function(){ if(my!==idx) return; fp.src=d.image; fi.classList.add('has-photo'); capFrom(d); };
+        pre.src=d.image; // si falla la carga, se queda la ilustración (sin has-photo ni caption)
       };
       if(_imgCache[k]!==undefined){ apply(_imgCache[k]); return; }
-      imgFetch(s).then(function(url){ _imgCache[k]=url; apply(url); }).catch(function(){ _imgCache[k]=''; });
+      imgFetch(s).then(function(d){ _imgCache[k]=d; apply(d); }).catch(function(){ _imgCache[k]=null; });
     }
     function prefetchImg(s){
       if(!s||!s.t||_imgCache[s.t]!==undefined) return; var k=s.t;
-      imgFetch(s).then(function(url){ _imgCache[k]=url; if(url){ var im=new Image(); im.src=url; } }).catch(function(){ _imgCache[k]=''; });
+      imgFetch(s).then(function(d){ _imgCache[k]=d; if(d&&d.image){ var im=new Image(); im.src=d.image; } }).catch(function(){ _imgCache[k]=null; });
     }
 
     var STORIES=[], idx=0, timer=null, barT=null, DWELL=40000;
@@ -466,7 +480,7 @@
         $('metaline').textContent=(s.s?s.s+' · ':'')+rel(s.ts);
         head.textContent=s.t; $('cta').href=s.link;
         var tv=topicVisual(s.t); var fi=$('featImg'), fsc=$('featScene'); if(fi){ fi.style.background=tv.g; } if(fsc){ fsc.innerHTML=tv.svg; }
-        var fp=$('fiPhoto'); if(fi){ fi.classList.remove('has-photo'); } if(fp){ fp.removeAttribute('src'); }
+        var fp=$('fiPhoto'); if(fi){ fi.classList.remove('has-photo'); } if(fp){ fp.removeAttribute('src'); } clearCap();
         var ff=$('featFig'); if(ff){ var kf=keyFigure(s.t); if(kf){ ff.textContent=kf; ff.classList.add('on'); } else { ff.textContent=''; ff.classList.remove('on'); } }
         var ra=$('readat'); if(ra){ ra.innerHTML='<span style="opacity:.85">📰 Lee la nota completa en</span>&nbsp; <b>'+esc(s.s||'la fuente original')+'</b>'; }
         ctx.innerHTML='<span class="skel" style="display:block;height:14px;width:92%;margin-bottom:8px"></span><span class="skel" style="display:block;height:14px;width:76%"></span>';

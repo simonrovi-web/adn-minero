@@ -69,9 +69,12 @@
   if(ORDER){ var w=ORDER.toLowerCase().split(',').map(function(s){return s.trim();}).filter(Boolean);
     var f=CH.filter(function(c){ return w.some(function(k){ return c[0].indexOf(k)>=0; }); }); if(f.length) CH=f; }
 
-  var fa=document.getElementById('fa'), fb=document.getElementById('fb');
+  // Un SOLO iframe: al cambiar el src, el canal anterior se descarga y su voz se corta
+  // de inmediato → nunca se escuchan dos voces a la vez.
+  var frame=document.getElementById('fa');
+  var fb=document.getElementById('fb'); if(fb) fb.style.display='none';
   var hud=document.getElementById('hud'), hudt=document.getElementById('hudt');
-  var active=fa, hidden=fb, i=-1, count=0, safety=null, started=false;
+  var i=-1, count=0, safety=null, started=false, switching=false;
 
   function chUrl(k){ return CH[k][0]+'?voz='+encodeURIComponent(VOZ)+'&auto=1'; }
   function setHud(k){ hudt.innerHTML = CH[k][1] + ' &nbsp;<small>· canal '+(k+1)+'/'+CH.length+'</small>';
@@ -80,21 +83,21 @@
   function resetSafety(){ clearTimeout(safety); safety=setTimeout(nextChannel, 95000); } // si una noticia se cuelga, igual avanza
 
   function loadChannel(k){
+    switching=true; clearTimeout(safety);
     i = ((k % CH.length) + CH.length) % CH.length;
     count = 0;
-    // carga en el iframe oculto y hace crossfade
-    hidden.onload = function(){
-      hidden.classList.add('on'); active.classList.remove('on');
-      var t=active; active=hidden; hidden=t;
-      setHud(i); resetSafety();
-    };
-    hidden.src = chUrl(i);
+    frame.classList.remove('on'); // fundido de salida mientras recarga (tapa el parpadeo)
+    setTimeout(function(){
+      frame.onload = function(){ frame.classList.add('on'); setHud(i); switching=false; resetSafety(); };
+      frame.src = chUrl(i); // reemplazar el src descarga el canal anterior y detiene su audio
+    }, 420);
   }
-  function nextChannel(){ loadChannel(i+1); }
+  function nextChannel(){ if(switching) return; loadChannel(i+1); }
 
   // El panel embebido avisa cada vez que termina de narrar una noticia
   window.addEventListener('message', function(e){
     var d = e.data; if(!d || d.adn!=='narrated') return;
+    if(switching) return;
     count = d.n || (count+1);
     resetSafety();
     if(count >= N) nextChannel();

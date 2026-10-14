@@ -163,8 +163,11 @@
     await loadInto(hidden, url);
     tagt.innerHTML = name + ' <small>· ADN Minero</small>';
     hidden.classList.add('on'); active.classList.remove('on');
+    const outgoing=active;
     const tmp=active; active=hidden; hidden=tmp;
     hideUpNext();
+    // Con voz: descarga el panel saliente para cortar su narración y no solapar dos voces
+    if(VZ){ try{ outgoing.src='about:blank'; }catch(e){} }
     setTimeout(()=>startScroll(active), 800); // deja renderizar antes de medir
   }
 
