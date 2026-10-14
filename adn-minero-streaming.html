@@ -81,6 +81,10 @@
 
     <section class="sect">
       <h2>▶️ Playlists para OBS (rotación automática)</h2>
+      <a class="pbtn" id="pl-loop" href="#" style="display:block;margin-bottom:12px;background:linear-gradient(135deg, rgba(111,224,198,.18), rgba(43,37,32,.5))">
+        <span class="ic">📺</span><b>Noticias en bucle (con voz) — recomendado</b>
+        <small>Un solo link con los 9 canales. Cambia de canal cuando la voz termina las 12 noticias, y así en bucle.</small>
+      </a>
       <div class="plist">
         <a class="pbtn" id="pl-vivo" href="#"><span class="ic">📰</span><b>Solo noticias</b><small>Rota los 9 canales · 3 min c/u</small></a>
         <a class="pbtn" id="pl-all" href="paneles-stream.html"><span class="ic">🗂️</span><b>Todos los paneles</b><small>Mapas, sismos, commodities y más</small></a>
@@ -131,6 +135,8 @@
     });
     // playlist "solo noticias": si la voz está activa, pásale voz+auto para OBS
     document.getElementById('pl-vivo').href='paneles-stream.html?only=vivo&min=3'+(voiceOn?'&voz=azure&auto=1':'');
+    // bucle de noticias con voz: siempre voz chilena; &auto=1 (arranque sin clic) cuando el interruptor está activo (OBS)
+    document.getElementById('pl-loop').href='adn-minero-noticias-loop.html?voz=azure&n=12'+(voiceOn?'&auto=1':'');
   }
 
   document.addEventListener('click', function(e){

@@ -480,7 +480,11 @@
       var d=(Voz&&Voz.active())?75000:DWELL;
       timer=setTimeout(function(){ show(idx+1); schedule(); }, d); }
     // avanza cuando la voz termina de relatar el resumen (pausa breve entre noticias)
-    Voz.onNarrationEnd(function(){ clearTimeout(timer); timer=setTimeout(function(){ show(idx+1); schedule(); }, 1400); });
+    var _narr=0;
+    Voz.onNarrationEnd(function(){ clearTimeout(timer);
+      _narr++; // avisa al reproductor (si está embebido) que terminó de narrarse una noticia
+      try{ if(window.parent && window.parent!==window) window.parent.postMessage({adn:'narrated', n:_narr, label:CFG.label}, '*'); }catch(e){}
+      timer=setTimeout(function(){ show(idx+1); schedule(); }, 1400); });
     // si se activa/desactiva/cambia la voz, re-agenda con el criterio correcto
     Voz.onChange(function(){ if(STORIES.length) schedule(); });
 
