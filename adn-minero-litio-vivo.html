@@ -412,6 +412,8 @@
         onStory:function(h){ stop(); if(on&&h) enq(h,false); },
         onSummary:function(txt){ if(on&&txt) enq(txt,true); },
         active:function(){ return on&&mode!=='off'; },
+        enabled:function(){ return mode!=='off'; },
+        start:function(){ if(!on&&mode!=='off') activate(); },
         onNarrationEnd:function(fn){ endCb=fn; },
         onChange:function(fn){ changeCb=fn; }
       };
@@ -453,6 +455,10 @@
       var s=await loadNews();
       if(!s.length){ $('head').textContent='No hay titulares por ahora'; $('ctx').textContent='Revisa tu conexión y vuelve a intentar.'; return; }
       STORIES=s; idx=-1; show(0); schedule(); draw();
+      // Arranque automático de la voz (para OBS, que permite autoplay): ?auto=1
+      try{ if(/^(1|true|si|on)$/i.test(new URLSearchParams(location.search).get('auto')||'') && Voz && Voz.enabled()){
+        setTimeout(function(){ Voz.start(); }, 1200);
+      } }catch(e){}
       setInterval(async function(){ var ns=await loadNews(); if(ns.length){ STORIES=ns; renderQueue(); } }, 600000);
     }
     draw();

@@ -93,8 +93,8 @@
     </section>
 
     <div class="note">
-      <b>🎙️ Voz:</b> activa el interruptor de arriba para abrir los canales con narración (voz chilena). Dentro del canal, toca <b>“Activar voz”</b> una vez. También puedes alternar Navegador / Neural / Chilena.<br>
-      <b>⚙️ OBS:</b> usa un <b>Browser Source</b> a <code>1920 × 1080</code>. Para una secuencia a tu medida: <code>paneles-stream.html?seq=mercado:4,seguridad:3,litio:3</code>.
+      <b>🎙️ Voz automática (OBS):</b> activa el interruptor de arriba y copia el link del canal. Ese link lleva <code>?voz=azure&auto=1</code>, así que en <b>OBS la narración arranca sola</b> al cargar (OBS permite autoplay). En un navegador normal, por su política, puede pedir un clic en <b>“Activar voz”</b>.<br>
+      <b>⚙️ OBS:</b> usa un <b>Browser Source</b> a <code>1920 × 1080</code> y marca <b>“Apagar fuente cuando no esté visible”</b> desactivado para que no se corte. Secuencia a tu medida: <code>paneles-stream.html?seq=mercado:4,seguridad:3,litio:3&voz=azure&auto=1</code>.
     </div>
 
     <footer>
@@ -118,7 +118,7 @@
   ];
   var voiceOn = false;
   function esc(s){ return s.replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
-  function vzSuffix(){ return voiceOn ? '?voz=azure' : ''; }
+  function vzSuffix(){ return voiceOn ? '?voz=azure&auto=1' : ''; }
 
   function render(){
     var g = document.getElementById('grid'); g.innerHTML='';
@@ -129,8 +129,8 @@
         +'<button class="cpy" title="Copiar link" data-url="'+esc(url)+'">⧉</button><span class="go">↗</span>';
       g.appendChild(a);
     });
-    // playlist "solo noticias" respeta nada de voz (es la playlist), queda fijo
-    document.getElementById('pl-vivo').href='paneles-stream.html?only=vivo&min=3';
+    // playlist "solo noticias": si la voz está activa, pásale voz+auto para OBS
+    document.getElementById('pl-vivo').href='paneles-stream.html?only=vivo&min=3'+(voiceOn?'&voz=azure&auto=1':'');
   }
 
   document.addEventListener('click', function(e){

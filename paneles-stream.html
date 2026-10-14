@@ -127,7 +127,10 @@
   function showUpNext(name){ if(!SHOW_TAG) return; upnextt.textContent=name; upnext.classList.add('on'); }
   function hideUpNext(){ upnext.classList.remove('on'); }
 
-  function loadInto(frame, url){ return new Promise(res=>{ let done=false; const fin=()=>{ if(!done){done=true;res();} }; frame.onload=fin; frame.src=url; setTimeout(fin, 2500); }); }
+  // Narración: pasa ?voz=&auto= de la playlist a los paneles *-vivo.html (para OBS)
+  const VZ = (function(){ const v=(p.get('voz')||'').toLowerCase(); if(!/^(browser|neural|azure)$/.test(v)) return ''; let s='?voz='+v; if(/^(1|true|si|on)$/i.test(p.get('auto')||'')) s+='&auto=1'; return s; })();
+  function vzUrl(url){ return (VZ && /-vivo\.html$/i.test(url)) ? url+VZ : url; }
+  function loadInto(frame, url){ return new Promise(res=>{ let done=false; const fin=()=>{ if(!done){done=true;res();} }; frame.onload=fin; frame.src=vzUrl(url); setTimeout(fin, 2500); }); }
 
   function stopScroll(){ if(scrollRAF){ cancelAnimationFrame(scrollRAF); scrollRAF=null; } }
   function startScroll(frame){
