@@ -278,14 +278,12 @@
         .then(function(r){ return r.ok?r.json():null; })
         .then(function(j){ return (j&&j.image)?j:null; });
     }
-    function capFrom(d){ // arma la descripción al pie de la foto
+    function capFrom(d){ // pie decorativo: nombre del lugar + crédito de la foto
       var capT=$('capT'), capA=$('capA'), cap=$('fiCap'); if(!cap) return;
-      var t=(d&&d.title||'').trim();
-      var junk=/^(img|dsc|dscn|image|photo|foto|p\d|_|20\d\d[-_]|screen|captura)/i;
-      if(t.length<8 || !/\s/.test(t) || junk.test(t)) t='Imagen referencial del tema';
+      var place=(d&&d.place||'').trim();
       var who=(d&&d.author||'').trim(), src=(d&&d.source||'').trim(), lic=(d&&d.license||'').trim();
-      var att='Imagen referencial'; if(who) att+=' · Foto: '+who; if(src) att+=' / '+src; att+=lic?(' · '+lic):' · CC';
-      if(capT) capT.textContent=t; if(capA) capA.textContent=att; cap.classList.add('show');
+      var att=''; if(who) att='Foto: '+who; if(src) att+=(att?' / ':'Foto: ')+src; if(lic) att+=(att?' · ':'')+lic;
+      if(capT) capT.textContent=place; if(capA) capA.textContent=att; cap.classList.add('show');
     }
     function clearCap(){ var cap=$('fiCap'),capT=$('capT'),capA=$('capA'); if(cap)cap.classList.remove('show'); if(capT)capT.textContent=''; if(capA)capA.textContent=''; }
     function loadFeat(s, my){
