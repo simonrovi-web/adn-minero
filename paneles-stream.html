@@ -118,6 +118,11 @@
     if (only){ const w=only.split(',').map(s=>s.trim().toLowerCase()); const f=PANELS.filter(x=>w.some(k=>x[0].includes(k))); if(f.length) base=f; }
     const skip = p.get('skip');
     if (skip){ const w=skip.split(',').map(s=>s.trim().toLowerCase()); base=base.filter(x=>!w.some(k=>x[0].includes(k))); }
+    // Arranca con los canales de noticias (los que llevan voz) y luego el resto, salvo ?orden=fijo
+    if (p.get('orden') !== 'fijo'){
+      const isVivo = x => /-vivo\.html$/i.test(x[0]);
+      base = [...base.filter(isVivo), ...base.filter(x => !isVivo(x))];
+    }
     LIST = base.map(x=>({ url:x[0], name:x[1], seconds:SECONDS }));
   }
 
