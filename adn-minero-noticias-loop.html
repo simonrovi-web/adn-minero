@@ -86,11 +86,12 @@
     switching=true; clearTimeout(safety);
     i = ((k % CH.length) + CH.length) % CH.length;
     count = 0;
-    frame.classList.remove('on'); // fundido de salida mientras recarga (tapa el parpadeo)
+    frame.classList.remove('on');          // fundido de salida
+    try{ frame.src='about:blank'; }catch(e){} // CORTA YA el audio del canal anterior (descarga el panel saliente)
     setTimeout(function(){
       frame.onload = function(){ frame.classList.add('on'); setHud(i); switching=false; resetSafety(); };
-      frame.src = chUrl(i); // reemplazar el src descarga el canal anterior y detiene su audio
-    }, 420);
+      frame.src = chUrl(i);                 // carga el nuevo canal (único iframe => una sola voz)
+    }, 450);
   }
   function nextChannel(){ if(switching) return; loadChannel(i+1); }
 
