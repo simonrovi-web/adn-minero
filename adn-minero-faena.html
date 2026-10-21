@@ -222,7 +222,7 @@
     $('noticias').innerHTML='<div class="sk" style="height:40px"></div><div class="sk" style="height:40px"></div>';
     try{
       const rss='https://news.google.com/rss/search?q='+encodeURIComponent('"'+f.n+'" minería')+'&hl=es-419&gl=CL&ceid=CL:es-419';
-      const j=await (await fetch('https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(rss))).json();
+      const j=await (await fetch('https://adn-minero-ia.simonrovi.workers.dev/rss?rss_url='+encodeURIComponent(rss))).json();
       const items=(j.items||[]).slice(0,5);
       if(!items.length){ $('noticias').innerHTML='<p class="text-stone-400 text-sm">Sin noticias recientes que la mencionen.</p>'; return; }
       $('noticias').innerHTML=items.map(it=>{

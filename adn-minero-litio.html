@@ -401,7 +401,7 @@
     $('noticias').innerHTML='<p class="text-stone-500 text-sm">Cargando noticias…</p>';
     try{
       const rss='https://news.google.com/rss/search?q='+encodeURIComponent('litio Chile')+'&hl=es-419&gl=CL&ceid=CL:es-419';
-      const j=await (await fetch('https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(rss))).json();
+      const j=await (await fetch('https://adn-minero-ia.simonrovi.workers.dev/rss?rss_url='+encodeURIComponent(rss))).json();
       const items=(j.items||[]).slice(0,6);
       if(!items.length){ $('noticias').innerHTML='<p class="text-stone-400 text-sm">Sin noticias recientes.</p>'; return; }
       $('noticias').innerHTML=items.map(it=>{

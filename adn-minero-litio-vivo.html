@@ -185,7 +185,7 @@
       label:'Litio'
     };
     var WORKER='https://adn-minero-ia.simonrovi.workers.dev';
-    var api=function(q){ return 'https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent('https://news.google.com/rss/search?q='+encodeURIComponent(q)+'&hl=es-419&gl=CL&ceid=CL:es'); };
+    var api=function(q){ return 'https://adn-minero-ia.simonrovi.workers.dev/rss?rss_url='+encodeURIComponent('https://news.google.com/rss/search?q='+encodeURIComponent(q)+'&hl=es-419&gl=CL&ceid=CL:es'); };
     var $=function(id){ return document.getElementById(id); };
     var draw=function(){ try{ window.lucide&&lucide.createIcons(); }catch(e){} };
 
