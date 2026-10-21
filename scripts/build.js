@@ -13,7 +13,7 @@ const SW = path.join(ROOT, 'app', 'sw.js');
 function collect(dir, rel = '') {
   let files = [];
   for (const name of fs.readdirSync(dir)) {
-    if (name === 'node_modules' || name === '.git' || name === 'lucide.full.min.js') continue;
+    if (name === 'node_modules' || name === '.git' || name === 'news' || name === 'lucide.full.min.js') continue;
     const fp = path.join(dir, name);
     const st = fs.statSync(fp);
     if (st.isDirectory()) files = files.concat(collect(fp, rel + name + '/'));

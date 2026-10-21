@@ -1,0 +1,41 @@
+name: Titulares (Google Noticias)
+
+# Baja los titulares a news/*.json (ver scripts/titulares.js).
+on:
+  schedule:
+    - cron: '*/20 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: titulares
+  cancel-in-progress: false
+
+jobs:
+  titulares:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Bajar titulares
+        run: node scripts/titulares.js
+      - name: Guardar cambios
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add -A news
+          if git diff --cached --quiet; then echo "Sin cambios"; exit 0; fi
+          git commit -q -m "Titulares: actualización automática"
+          git pull -q --rebase
+          git push -q
+          echo "PUSHED=1" >> "$GITHUB_ENV"
+      - name: Publicar en GitHub Pages
+        if: env.PUSHED == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds" || true

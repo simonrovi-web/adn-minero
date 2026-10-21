@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <script>/* Titulares: JSON estático en news/ (ver scripts/titulares.js) */function adnNews(u){var p=new URL(u),k=(p.searchParams.get('q')||'')+'|'+(p.searchParams.get('ceid')||''),h=2166136261;for(var i=0;i<k.length;i++){h^=k.charCodeAt(i);h=Math.imul(h,16777619);}return 'https://simonrovi-web.github.io/adn-minero/news/'+(h>>>0).toString(16)+'.json';}</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#141110" />
@@ -179,7 +180,7 @@
     'SQM OR Albemarle OR litio OR salar Chile',
     'Cochilco OR Sernageomin OR "Ministerio de Minería" OR royalty minero Chile'
   ];
-  const apiUrl=q=>'https://adn-minero-ia.simonrovi.workers.dev/rss?rss_url='+encodeURIComponent('https://news.google.com/rss/search?q='+encodeURIComponent(q)+'&hl=es-419&gl=CL&ceid=CL:es');
+  const apiUrl=q=>adnNews('https://news.google.com/rss/search?q='+encodeURIComponent(q)+'&hl=es-419&gl=CL&ceid=CL:es');
   const REFRESH_MS=12*60*1000, ROTATE_MS=11000, MAX_AGE_MS=7*24*60*60*1000; // se prioriza la última semana
   const $=id=>document.getElementById(id);
   const drawIcons=()=>window.lucide&&lucide.createIcons();

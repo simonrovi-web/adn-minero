@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="es">
 <head>
+  <script>/* Titulares: JSON estático en news/ (ver scripts/titulares.js) */function adnNews(u){var p=new URL(u),k=(p.searchParams.get('q')||'')+'|'+(p.searchParams.get('ceid')||''),h=2166136261;for(var i=0;i<k.length;i++){h^=k.charCodeAt(i);h=Math.imul(h,16777619);}return 'https://simonrovi-web.github.io/adn-minero/news/'+(h>>>0).toString(16)+'.json';}</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>ADN Minero · Paneles Mineros de Chile</title>
@@ -44,7 +45,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://mindicador.cl" />
   <link rel="preconnect" href="https://adn-muro.simonrovi.workers.dev" />
-  <link rel="dns-prefetch" href="https://adn-minero-ia.simonrovi.workers.dev" />
   <link rel="dns-prefetch" href="https://earthquake.usgs.gov" />
   <link rel="dns-prefetch" href="https://api.open-meteo.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
@@ -170,7 +170,7 @@
           else vStop();
         });
       })();
-      function api(q){return 'https://adn-minero-ia.simonrovi.workers.dev/rss?rss_url='+encodeURIComponent('https://news.google.com/rss/search?q='+encodeURIComponent(q)+'&hl=es-419&gl=CL&ceid=CL:es');}
+      function api(q){return adnNews('https://news.google.com/rss/search?q='+encodeURIComponent(q)+'&hl=es-419&gl=CL&ceid=CL:es');}
       function clean(t){t=(t||'').trim();var i=t.lastIndexOf(' - ');return i>40?{t:t.slice(0,i),s:t.slice(i+3)}:{t:t,s:''};}
       function ckey(h){return 'adn_res3_'+h.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,60);}
       function cget(h){try{var v=JSON.parse(localStorage.getItem(ckey(h))||'null');if(v&&v.x&&(Date.now()-v.ts)<864e5)return v.x;}catch(e){}return null;}
@@ -609,7 +609,7 @@
       const el=document.getElementById('titulares'); if(!el) return;
       const esc=s=>(s||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
       const pref=(/\/app\//.test(location.pathname))?'../':'';
-      const api=q=>'https://adn-minero-ia.simonrovi.workers.dev/rss?rss_url='+encodeURIComponent('https://news.google.com/rss/search?q='+encodeURIComponent(q)+'&hl=es-419&gl=CL&ceid=CL:es');
+      const api=q=>adnNews('https://news.google.com/rss/search?q='+encodeURIComponent(q)+'&hl=es-419&gl=CL&ceid=CL:es');
       const rel=ts=>{ if(!ts) return ''; const s=(Date.now()-ts)/1000; if(s<3600) return 'hace '+Math.max(1,Math.round(s/60))+' min'; if(s<86400) return 'hace '+Math.round(s/3600)+' h'; return 'hace '+Math.round(s/86400)+' d'; };
       const clean=t=>{ t=(t||'').trim(); const i=t.lastIndexOf(' - '); return i>40?{t:t.slice(0,i),s:t.slice(i+3)}:{t:t,s:''}; };
       if(!document.getElementById('titcss')){ const st=document.createElement('style'); st.id='titcss';
@@ -878,7 +878,7 @@
       if(co){ try{ const j=await (await fetch('https://api.open-meteo.com/v1/forecast?latitude='+co[0]+'&longitude='+co[1]+'&current=temperature_2m,wind_speed_10m&wind_speed_unit=kmh&timezone=America%2FSantiago',{cache:'no-store'})).json(); const w=j.current; if(w) setHoy('hClima', Math.round(w.temperature_2m)+'° · '+Math.round(w.wind_speed_10m)+' km/h'); }catch(e){} }
       else setHoy('hClima','34 faenas');
       setHoy('hTv', TV_LIVE?'EN VIVO 🔴':'fuera de aire');
-      try{ const API='https://adn-minero-ia.simonrovi.workers.dev/rss?rss_url='+encodeURIComponent('https://news.google.com/rss/search?q='+encodeURIComponent('minería Chile cobre litio')+'&hl=es-419&gl=CL&ceid=CL:es');
+      try{ const API=adnNews('https://news.google.com/rss/search?q='+encodeURIComponent('minería Chile cobre litio')+'&hl=es-419&gl=CL&ceid=CL:es');
         const j=await (await fetch(API,{cache:'no-store'})).json(); if(j.items&&j.items[0]){ let t=j.items[0].title; const i=t.lastIndexOf(' - '); if(i>20)t=t.slice(0,i); const e=document.getElementById('hNews'); if(e) e.textContent=t.trim(); try{ localStorage.setItem('adn_hoy_news', t.trim()); }catch(_){} } }catch(e){}
     }
 

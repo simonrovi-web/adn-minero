@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <script>/* Titulares: JSON estático en news/ (ver scripts/titulares.js) */function adnNews(u){var p=new URL(u),k=(p.searchParams.get('q')||'')+'|'+(p.searchParams.get('ceid')||''),h=2166136261;for(var i=0;i<k.length;i++){h^=k.charCodeAt(i);h=Math.imul(h,16777619);}return 'https://simonrovi-web.github.io/adn-minero/news/'+(h>>>0).toString(16)+'.json';}</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#120d0a" />
@@ -185,7 +186,7 @@
       label:'Minería'
     };
     var WORKER='https://adn-minero-ia.simonrovi.workers.dev';
-    var api=function(q){ return 'https://adn-minero-ia.simonrovi.workers.dev/rss?rss_url='+encodeURIComponent('https://news.google.com/rss/search?q='+encodeURIComponent(q)+'&hl=es-419&gl=CL&ceid=CL:es'); };
+    var api=function(q){ return adnNews('https://news.google.com/rss/search?q='+encodeURIComponent(q)+'&hl=es-419&gl=CL&ceid=CL:es'); };
     var $=function(id){ return document.getElementById(id); };
     var draw=function(){ try{ window.lucide&&lucide.createIcons(); }catch(e){} };
 

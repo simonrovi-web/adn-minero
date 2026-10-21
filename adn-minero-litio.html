@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <script>/* Titulares: JSON estático en news/ (ver scripts/titulares.js) */function adnNews(u){var p=new URL(u),k=(p.searchParams.get('q')||'')+'|'+(p.searchParams.get('ceid')||''),h=2166136261;for(var i=0;i<k.length;i++){h^=k.charCodeAt(i);h=Math.imul(h,16777619);}return 'https://simonrovi-web.github.io/adn-minero/news/'+(h>>>0).toString(16)+'.json';}</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#141110" />
@@ -401,7 +402,7 @@
     $('noticias').innerHTML='<p class="text-stone-500 text-sm">Cargando noticias…</p>';
     try{
       const rss='https://news.google.com/rss/search?q='+encodeURIComponent('litio Chile')+'&hl=es-419&gl=CL&ceid=CL:es-419';
-      const j=await (await fetch('https://adn-minero-ia.simonrovi.workers.dev/rss?rss_url='+encodeURIComponent(rss))).json();
+      const j=await (await fetch(adnNews(rss))).json();
       const items=(j.items||[]).slice(0,6);
       if(!items.length){ $('noticias').innerHTML='<p class="text-stone-400 text-sm">Sin noticias recientes.</p>'; return; }
       $('noticias').innerHTML=items.map(it=>{
