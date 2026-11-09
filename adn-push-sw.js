@@ -3,7 +3,7 @@ const WORKER = 'https://adn-muro.simonrovi.workers.dev';
 const ICON = 'https://simonrovi-web.github.io/adn-minero/app/icon-192.png';
 const HOME = 'https://simonrovi-web.github.io/adn-minero/';
 
-const OFFLINE_CACHE = 'adn-offline-v1';
+const OFFLINE_CACHE = 'adn-offline-v2';
 // CDN de terceros que la app usa (Tailwind, iconos, fuentes). Se cachean para
 // funcionar sin señal o si la red de la empresa los bloquea.
 const CDN_CACHE = 'adn-cdn-v1';

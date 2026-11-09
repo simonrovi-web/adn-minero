@@ -1,0 +1,41 @@
+:root {
+  --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px; --space-3xl: 96px; --space-4xl: 144px;
+  --text-xs: 0.8125rem; --text-sm: 0.875rem; --text-md: 1rem; --text-lg: 1.25rem; --text-xl: 1.5625rem; --text-2xl: 1.953rem; --text-3xl: 2.441rem;
+  --text-display-s: clamp(2.25rem, 4vw + 0.5rem, 3.75rem); --text-display: clamp(2.5rem, 4.6vw + 1rem, 4.5rem);
+  --text-section: clamp(1.6rem, 2.2vw + 1rem, 2.6rem); --text-title: clamp(1.25rem, 0.75vw + 0.875rem, 1.625rem); --text-lead: clamp(1.05rem, 0.4vw + 0.95rem, 1.3rem);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in: cubic-bezier(0.7, 0, 0.84, 0); --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms; --dur-short: 220ms; --dur-long: 420ms;
+  --color-error: oklch(52% 0.19 27); --color-success: oklch(50% 0.12 150);
+  --container: 1152px; --gutter: 32px; --gap-columns: 20px; --section-gap-s: 120px; --section-gap: 144px; --section-gap-l: 176px;
+  --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
+
+  /* ===== ADN Minero · roca + cobre (evolucionado) ===== */
+  --color-paper: #130F0D;        /* roca profunda, cálida */
+  --color-paper-2: #1C1613;      /* panel */
+  --color-paper-3: #261E18;      /* elevado / hover */
+  --color-well: #0C0908;         /* hueco (métricas) */
+  --color-ink: #F3ECE3;          /* texto papel cálido */
+  --color-ink-2: #E8C9A6;        /* realce cobre claro (marca) */
+  --color-muted: #AC9C8C;        /* texto apagado */
+  --color-faint: #7E7064;        /* el más tenue */
+  --color-rule: rgba(216,180,146,0.14);
+  --color-rule-2: rgba(216,180,146,0.26);
+
+  --color-accent: #CF9B6F;       /* cobre de marca */
+  --color-accent-bright: #F0D7B6;
+  --color-accent-deep: #B5734F;
+  --color-accent-ink: #241611;   /* texto sobre cobre */
+  --color-ember: #E0715A;        /* en vivo / alerta */
+  --color-pos: #9CC79A;          /* positivo */
+  --color-focus: #F0D7B6;        /* anillo de foco (3:1 sobre roca) */
+
+  --font-display: "Archivo", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-outlier: var(--font-body);
+  --display-weight: 800;
+
+  --radius-card: 16px; --radius-pill: 999px; --rule-hair: 1px;
+  --shadow-card: 0 1px 0 rgba(240,215,182,0.05) inset, 0 18px 40px -24px rgba(0,0,0,0.75);
+  --shadow-raise: 0 1px 0 rgba(240,215,182,0.08) inset, 0 26px 60px -28px rgba(0,0,0,0.85);
+  --tracking-display: -0.025em;
+}
